@@ -22,6 +22,14 @@
     <servlet-name>GuessingGameServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.GuessingGameServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>CheckOutServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CheckOutServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ThankYouServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ThankYouServlet</servlet-class>
+  </servlet>
   
   <!-- AJAX servlets. -->
   <servlet>
@@ -49,6 +57,14 @@
   <servlet-mapping>
     <servlet-name>GuessingGameServlet</servlet-name>
     <url-pattern>/guessingGame</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CheckOutServlet</servlet-name>
+    <url-pattern>/checkOut</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ThankYouServlet</servlet-name>
+    <url-pattern>/thankYou</url-pattern>
   </servlet-mapping>
   
   <!--  AJAX servlet mappings. -->
