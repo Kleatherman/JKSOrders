@@ -1,16 +1,20 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html>
 	<head>
-		<title>Index view</title>
+		<title>Work Page</title>
+		<style type="text/css">
+		</style>
 	</head>
 
 	<body>
-		<form action="${pageContext.servletContext.contextPath}/index" method="post">
+	<p> This is the WorkPage </p>
+		<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
 			<div>
-				<input name="addNumbers" type="submit" value="Add Numbers!" />
-				<input name="multiplyNumbers" type="submit" value="Multiply Numbers!" />
-				<input name="guessingGame" type="submit" value="Guessing Game" />
+				<input name="profilePage" type="submit" value="Profile Page!" />
+				
 			</div>
 		</form>
 	</body>

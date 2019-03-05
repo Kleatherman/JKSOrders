@@ -4,39 +4,20 @@
 
 <html>
 	<head>
-		<title>Multiply Numbers</title>
+		<title>Profile Page</title>
 		<style type="text/css">
-		.error {
-			color: red;
-		}
-		
-		td.label {
-			text-align: right;
-		}
 		</style>
 	</head>
 
 	<body>
-		<c:if test="${! empty errorMessage}">
-			<div class="error">${errorMessage}</div>
-		</c:if>
+		This is the Profile Page
 	
-		<form action="${pageContext.servletContext.contextPath}/multiplyNumbers" method="post">
-			<table>
-				<tr>
-					<td class="label">First number:</td>
-					<td><input type="text" name="first" size="12" value="${first}" /></td>
-				</tr>
-				<tr>
-					<td class="label">Second number:</td>
-					<td><input type="text" name="second" size="12" value="${second}" /></td>
-				</tr>
-				<tr>
-					<td class="label">Result:</td>
-					<td>${result}</td>
-				</tr>
-			</table>
-			<input type="Submit" name="submit" value="Multiply Numbers!">
+		<form action="${pageContext.servletContext.contextPath}/profilePage" method="post">
+			<div>
+				<input name="storePage" type="submit" value="Store Page!" />
+				<input name="workPage" type="submit" value="Work Page!"/>
+				
+			</div>
 		</form>
 	</body>
 </html>
