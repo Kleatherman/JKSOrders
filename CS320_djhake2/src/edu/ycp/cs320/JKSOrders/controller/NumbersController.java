@@ -1,4 +1,4 @@
-package edu.ycp.cs320.djhake2.controller;
+package edu.ycp.cs320.JKSOrders.controller;
 
 public class NumbersController {
 

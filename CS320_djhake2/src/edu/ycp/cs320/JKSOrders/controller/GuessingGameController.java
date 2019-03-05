@@ -1,6 +1,6 @@
-package edu.ycp.cs320.djhake2.controller;
+package edu.ycp.cs320.JKSOrders.controller;
 
-import edu.ycp.cs320.djhake2.model.GuessingGame;
+import edu.ycp.cs320.JKSOrders.model.GuessingGame;
 
 /**
  * Controller for the guessing game.
