@@ -24,7 +24,7 @@ public class LoginInfo implements Comparable{
 		this.password = password;
 	}
 
-	@Override
+
 	public int compareTo(LoginInfo login) {
 		//TO-DO: Implement this
 		return 0;
