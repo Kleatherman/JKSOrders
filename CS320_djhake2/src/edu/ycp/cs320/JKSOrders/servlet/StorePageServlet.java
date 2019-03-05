@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.controller.NumbersController;
 
-public class MultiplyNumbersServlet extends HttpServlet {
+public class StorePageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
