@@ -15,7 +15,9 @@
 	</head>
 
 	<body>
-		<div class = text>You are placing an order!</div>
+		<div class = text>
+			You are placing an order!
+		</div>
 		
 		<form action="${pageContext.servletContext.contextPath}/multiplyNumbers" method="post">
 			<input type="Submit" name="cancel" value="Cancel Order">
