@@ -1,4 +1,4 @@
-package edu.ycp.cs320.djhake2.servlet;
+package edu.ycp.cs320.JKSOrders.servlet;
 
 import java.io.IOException;
 
