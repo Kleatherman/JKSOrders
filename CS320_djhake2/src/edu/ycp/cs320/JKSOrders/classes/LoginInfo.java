@@ -29,6 +29,12 @@ public class LoginInfo implements Comparable{
 		//TO-DO: Implement this
 		return 0;
 	}
+
+	@Override
+	public int compareTo(Object o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 }

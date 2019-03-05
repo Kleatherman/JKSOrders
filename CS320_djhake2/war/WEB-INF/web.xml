@@ -51,18 +51,27 @@
 
   <!-- Servlet mappings -->
   <servlet-mapping>
-    <servlet-name>IndexServlet</servlet-name>
-    <url-pattern>/index</url-pattern>
+    <servlet-name>CustomerForgotInfoServlet</servlet-name>
+    <url-pattern>/customerForgotInfo</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>AddNumbersServlet</servlet-name>
-    <url-pattern>/addNumbers</url-pattern>
+    <servlet-name>CustomerLoginServlet</servlet-name>
+    <url-pattern>/customerLogin</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
+<<<<<<< HEAD
+    <servlet-name>EmployeeForgotLoginServlet</servlet-name>
+    <url-pattern>/employeeForgotLogin</url-pattern>
+=======
     <servlet-name>StorePageServlet</servlet-name>
     <url-pattern>/storePage</url-pattern>
+>>>>>>> branch 'Sam' of https://github.com/Kleatherman/JKSOrders.git
   </servlet-mapping>  
   <servlet-mapping>
+<<<<<<< HEAD
+    <servlet-name>CustomerLoginServlet</servlet-name>
+    <url-pattern>/customerLogin</url-pattern>
+=======
     <servlet-name>WorkPageServlet</servlet-name>
     <url-pattern>/workPage</url-pattern>
   </servlet-mapping> 
@@ -73,6 +82,7 @@
   <servlet-mapping>
     <servlet-name>GuessingGameServlet</servlet-name>
     <url-pattern>/guessingGame</url-pattern>
+>>>>>>> branch 'Sam' of https://github.com/Kleatherman/JKSOrders.git
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>CheckOutServlet</servlet-name>
