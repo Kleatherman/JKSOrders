@@ -4,7 +4,7 @@
 
 <html>
 	<head>
-		<title>Multiply Numbers</title>
+		<title>Thank You</title>
 		<style type="text/css">
 		.error {
 			color: red;
