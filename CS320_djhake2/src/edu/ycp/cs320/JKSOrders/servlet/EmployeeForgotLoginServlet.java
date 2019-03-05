@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-public class IndexServlet extends HttpServlet {
+public class EmployeeForgotLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
@@ -17,7 +17,7 @@ public class IndexServlet extends HttpServlet {
 		
 		System.out.println("Index Servlet: doGet");
 		
-		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/employeeForgotLoginInfo.jsp").forward(req, resp);
 	}
 	
 	@Override
@@ -27,17 +27,9 @@ public class IndexServlet extends HttpServlet {
 		System.out.println("Index Servlet: doPost");
 		
 		// check which button the user pressed
-		if (req.getParameter("addNumbers") != null) {
-			// call addNumbers JSP
-			req.getRequestDispatcher("/_view/addNumbers.jsp").forward(req, resp);
-		}
-		else if (req.getParameter("multiplyNumbers") != null) {
-			// call multiplyNumbers JSP
-			req.getRequestDispatcher("/_view/multiplyNumbers.jsp").forward(req, resp);
-		}
-		else if (req.getParameter("guessingGame") != null) {
-			// call guessingGame JSP
-			req.getRequestDispatcher("/_view/guessingGame.jsp").forward(req, resp);			
+		if (req.getParameter("LoginPage") != null) {
+			// call employeeLogin JSP
+			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		else {
 			throw new ServletException("Unknown command");
