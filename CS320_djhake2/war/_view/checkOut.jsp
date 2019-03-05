@@ -13,7 +13,7 @@
 
 	<body>
 		<div class = text>
-			You are placing an order!
+			This is checkout!
 		</div>
 		
 		<form action="${pageContext.servletContext.contextPath}/multiplyNumbers" method="post">
