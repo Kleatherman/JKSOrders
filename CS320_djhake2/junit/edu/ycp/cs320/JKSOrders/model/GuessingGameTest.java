@@ -1,4 +1,4 @@
-package edu.ycp.cs320.djhake2.model;
+package edu.ycp.cs320.JKSOrders.model;
 
 import static org.junit.Assert.*;
 
