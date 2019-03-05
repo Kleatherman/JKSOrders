@@ -7,30 +7,30 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>IndexServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.djhake2.servlet.IndexServlet</servlet-class>
+    
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.IndexServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>AddNumbersServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.djhake2.servlet.AddNumbersServlet</servlet-class>
-  </servlet>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.AddNumbersServlet</servlet-class>
+  <servlet-name>IndexServlet</servlet-name></servlet>
   <servlet>
     <servlet-name>MultiplyNumbersServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.djhake2.servlet.MultiplyNumbersServlet</servlet-class>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.MultiplyNumbersServlet</servlet-class>
   </servlet>  
   <servlet>
     <servlet-name>GuessingGameServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.djhake2.servlet.GuessingGameServlet</servlet-class>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.GuessingGameServlet</servlet-class>
   </servlet>
   
   <!-- AJAX servlets. -->
   <servlet>
     <servlet-name>AddNumbersAjaxServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.djhake2.servlet.ajax.AddNumbersAjaxServlet</servlet-class>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ajax.AddNumbersAjaxServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>NextGuessAjaxServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.djhake2.servlet.ajax.NextGuessAjaxServlet</servlet-class>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ajax.NextGuessAjaxServlet</servlet-class>
   </servlet>
 
   <!-- Servlet mappings -->
