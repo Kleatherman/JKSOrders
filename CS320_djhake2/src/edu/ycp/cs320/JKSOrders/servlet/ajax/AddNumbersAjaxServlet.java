@@ -1,4 +1,4 @@
-package edu.ycp.cs320.djhake2.servlet.ajax;
+package edu.ycp.cs320.JKSOrders.servlet.ajax;
 
 import java.io.IOException;
 
@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.ycp.cs320.djhake2.controller.NumbersController;
+import edu.ycp.cs320.JKSOrders.controller.NumbersController;
 
 public class AddNumbersAjaxServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

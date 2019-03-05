@@ -1,4 +1,4 @@
-package edu.ycp.cs320.djhake2.model;
+package edu.ycp.cs320.JKSOrders.model;
 
 // model class for GuessingGame
 // only the controller should be allowed to call the set methods
