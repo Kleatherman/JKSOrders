@@ -5,16 +5,9 @@
          version="2.5"
          xmlns="http://java.sun.com/xml/ns/javaee">
 
-  <!-- Servlets -->
-  <servlet>
-     <servlet-name>IndexServlet</servlet-name></servlet>
-    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.IndexServlet</servlet-class>
-  </servlet>
+  <!-- Servlets -->  
   
-  <servlet>
-    <servlet-name>AddNumbersServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.AddNumbersServlet</servlet-class>
-  <servlet>
+   <servlet>
     <servlet-name>StorePageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.StorePageServlet</servlet-class>
   </servlet>
@@ -25,11 +18,23 @@
   <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ProfilePageServlet</servlet-class>
-  </servlet>     
-  <servlet>
-    <servlet-name>GuessingGameServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.GuessingGameServlet</servlet-class>
   </servlet>
+   <servlet>
+    <servlet-name>CustomerLoginServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CustomerLoginServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>EmployeeLoginServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.EmployeeLoginServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>CustomerForgotLoginServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CustomerForgotLoginServlet</servlet-class>
+  </servlet> 
+  <servlet>
+    <servlet-name>EmployeeForgotLoginServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.EmployeeForgotLoginServlet</servlet-class>
+  </servlet>          
   <servlet>
     <servlet-name>CheckOutServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CheckOutServlet</servlet-class>
@@ -59,19 +64,18 @@
     <url-pattern>/customerLogin</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-<<<<<<< HEAD
     <servlet-name>EmployeeForgotLoginServlet</servlet-name>
     <url-pattern>/employeeForgotLogin</url-pattern>
-=======
+  </servlet-mapping>
+   <servlet-mapping>
+    <servlet-name>EmployeeLoginServlet</servlet-name>
+    <url-pattern>/employeeLogin</url-pattern>
+    </servlet-mapping> 
+   <servlet-mapping>
     <servlet-name>StorePageServlet</servlet-name>
     <url-pattern>/storePage</url-pattern>
->>>>>>> branch 'Sam' of https://github.com/Kleatherman/JKSOrders.git
   </servlet-mapping>  
-  <servlet-mapping>
-<<<<<<< HEAD
-    <servlet-name>CustomerLoginServlet</servlet-name>
-    <url-pattern>/customerLogin</url-pattern>
-=======
+   <servlet-mapping> 
     <servlet-name>WorkPageServlet</servlet-name>
     <url-pattern>/workPage</url-pattern>
   </servlet-mapping> 
@@ -79,11 +83,6 @@
     <servlet-name>ProfilePageServlet</servlet-name>
     <url-pattern>/profilePage</url-pattern>
   </servlet-mapping> 
-  <servlet-mapping>
-    <servlet-name>GuessingGameServlet</servlet-name>
-    <url-pattern>/guessingGame</url-pattern>
->>>>>>> branch 'Sam' of https://github.com/Kleatherman/JKSOrders.git
-  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>CheckOutServlet</servlet-name>
     <url-pattern>/checkOut</url-pattern>
