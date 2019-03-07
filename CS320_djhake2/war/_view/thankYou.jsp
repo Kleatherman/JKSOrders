@@ -21,7 +21,7 @@
 		
 		<div class = text>Thank You for using our services!</div>
 		
-		<form action="${pageContext.servletContext.contextPath}/multiplyNumbers" method="post">
+		<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">
 			<input type="Submit" name="storePage" value="Close">
 		</form>
 	</body>

@@ -61,8 +61,8 @@
 
   <!-- Servlet mappings -->
   <servlet-mapping>
-    <servlet-name>CustomerForgotInfoServlet</servlet-name>
-    <url-pattern>/customerForgotInfo</url-pattern>
+    <servlet-name>CustomerForgotLoginServlet</servlet-name>
+    <url-pattern>/customerForgotLogin</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>IndexServlet</servlet-name>
@@ -111,7 +111,3 @@
     <url-pattern>/ajax/nextGuess</url-pattern>
   </servlet-mapping>
 
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-  </welcome-file-list>
-</web-app>
