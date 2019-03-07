@@ -4,5 +4,10 @@
   </head>
   
   <body>
-    This website is under construction</body>
+    This website is under construction
+    <form action="${pageContext.servletContext.contextPath}/indexPage" method="post">
+			<input type="Submit" name="customer" value="Customer Login">
+			<input type="Submit" name="employee" value="Employee Login">
+		</form>
+  </body>
 </html>
