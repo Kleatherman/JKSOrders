@@ -17,8 +17,10 @@
 		</div>
 		
 		<form action="${pageContext.servletContext.contextPath}/checkOut" method="post">
-			<input type="Submit" name="cancel" value="Cancel Order">
-			<input type="Submit" name="thankYou" value="Submit Order">
+			<div>
+				<input type="Submit" name="cancel" value="Cancel Order">
+				<input type="Submit" name="thankYou" value="Submit Order">
+			</div>
 		</form>
 	</body>
 </html>

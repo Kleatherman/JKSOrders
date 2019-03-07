@@ -16,7 +16,6 @@
 			<div>
 				<input name="storePage" type="submit" value="Store Page!" />
 				<input name="workPage" type="submit" value="Work Page!"/>
-				
 			</div>
 		</form>
 	</body>
