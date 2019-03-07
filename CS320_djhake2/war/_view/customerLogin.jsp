@@ -17,6 +17,7 @@
 	</head>
 
 	<body>
+		<h1>Customer Login</h1>
 		<form action="${pageContext.servletContext.contextPath}/customerLogin" method="post">
 			<table>
 				<tr>
