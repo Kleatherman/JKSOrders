@@ -20,10 +20,12 @@
 		<h1>Employee Login</h1>
 		<form action="${pageContext.servletContext.contextPath}/employeeLogin" method="post">
 			<table>
+				
 				<tr>
 					<td class="label">Username:</td>
 					<td><input type="text" name="username" size="12" value="${username}" /></td>
 				</tr>
+				
 				<tr>
 					<td class="label">Pin:</td>
 					<td><input type="text" name="pin" size="12" value="${pin}" /></td>
