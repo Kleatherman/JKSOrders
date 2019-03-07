@@ -18,9 +18,9 @@
 
 	<body>
 		<form action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
-		<div>
-			<input type="Submit" name="LoginPage" value="Go Back">
-		</div>
+			<div>
+				<input type="Submit" name="LoginPage" value="Go Back">
+			</div>
 		</form>
 	</body>
 </html>
