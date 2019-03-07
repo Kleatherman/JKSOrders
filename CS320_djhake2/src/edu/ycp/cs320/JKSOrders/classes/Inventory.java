@@ -4,17 +4,17 @@ import java.util.ArrayList;
 	import java.util.Map;
 
 	public class Inventory {
-	private Map quanityMap;
+	private Map<String, Integer> quanityMap;
 
-	public Map getQuanityMap() {
-	return quanityMap;
-}
+	public Map<String, Integer> getQuanityMap() {
+		return quanityMap;
+	}
 
-	public void setQuanityMap(Map quanityMap) {
-	this.quanityMap = quanityMap;
-}
+	public void setQuanityMap(Map<String, Integer> quanityMap) {
+		this.quanityMap = quanityMap;
+	}
 
-	public ArrayList returnGreaterorLess(int x, ArrayList greater, ArrayList less ) {
-	return null;
-}
+	public ArrayList<String> returnGreaterorLess(int x, ArrayList<String> greater, ArrayList<String> less) {
+		return null;
+	}
 }

@@ -5,30 +5,30 @@ import java.util.Map;
 public class Catalog {
 	private Item item; 
 	private String UPC;
-	private Map ItemMap;
+	private Map<String, Item> ItemMap;
 
 	public Item getItem() {
-	return item;
-}
+		return item;
+	}
 
 	public void setItem(Item item) {
-	this.item = item;
-}
+		this.item = item;
+	}
 
 	public String getUPC() {
-	return UPC;
-}
+		return UPC;
+	}
 
 	public void setUPC(String uPC) {
-	UPC = uPC;
-}
+		UPC = uPC;
+	}
 
-	public Map getItemMap() {
-	return ItemMap;
-}
+	public Map<String, Item> getItemMap() {
+		return ItemMap;
+	}
 
-	public void setItemMap(Map itemMap) {
-	ItemMap = itemMap;
-}
+	public void setItemMap(Map<String, Item> itemMap) {
+		ItemMap = itemMap;
+	}
  
 }
