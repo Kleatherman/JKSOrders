@@ -17,6 +17,7 @@
 	</head>
 
 	<body>
+		This is the customer forgot login page
 		<form action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
 			<div>
 				<input type="Submit" name="LoginPage" value="Go Back">
