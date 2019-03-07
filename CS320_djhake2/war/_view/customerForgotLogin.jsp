@@ -17,9 +17,6 @@
 	</head>
 
 	<body>
-		<c:if test="${! empty errorMessage}">
-			<div class="error">${errorMessage}</div>
-		</c:if>
 		<form action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
 		<div>
 			<input type="Submit" name="LoginPage" value="Go Back">
