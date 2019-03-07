@@ -15,18 +15,17 @@ public class CustomerForgotLoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("Index Servlet: doGet");
+		System.out.println("CustomerForgotLogin Servlet: doGet");
 		
-		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("Index Servlet: doPost");
-		
-		// check which button the user pressed
+		System.out.println("CustomerForgotLogin Servlet: doPost");
+		// check button the user pressed
 		if (req.getParameter("LoginPage") != null) {
 			// call customerLogin JSP
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);

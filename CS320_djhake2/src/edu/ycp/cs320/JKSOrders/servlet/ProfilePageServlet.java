@@ -18,7 +18,7 @@ public class ProfilePageServlet extends HttpServlet{
 		System.out.println("ProfilePage Servlet: doGet");	
 		
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 	}
 	
 	@Override
