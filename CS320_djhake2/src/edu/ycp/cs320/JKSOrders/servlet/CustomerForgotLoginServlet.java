@@ -17,7 +17,7 @@ public class CustomerForgotLoginServlet extends HttpServlet {
 		
 		System.out.println("Index Servlet: doGet");
 		
-		req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 	}
 	
 	@Override

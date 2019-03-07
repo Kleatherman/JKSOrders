@@ -1,9 +1,14 @@
 package edu.ycp.cs320.JKSOrders.classes;
 
+/* The Stats class contains data pertaining to employee efficiency
+ * It is accessed
+ */
 public class Stats {
 	private double timeTaken;
 	private int numitemsProcessed;
 	private double itemsperMin;
+	
+	
 	public double getTimeTaken() {
 		return timeTaken;
 	}
