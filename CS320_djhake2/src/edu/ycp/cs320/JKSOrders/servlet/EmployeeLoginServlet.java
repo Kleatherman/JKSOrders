@@ -18,7 +18,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 		System.out.println("CustomerLogin Servlet: doGet");	
 		
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 	}
 	
 	@Override
@@ -35,21 +35,21 @@ public class EmployeeLoginServlet extends HttpServlet {
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			String username  = req.getParameter("username");
+			/*String username  = req.getParameter("username");
 			String pin       = req.getParameter("pin");
 			
 			// check for errors in the form data before using is in a calculation
 			if (pin == null || username  == null) {
 				errorMessage = "Please enter your email address and password";
-			}
+			}*/
 			// otherwise, data is good, do the calculation
 			// must create the controller each time, since it doesn't persist between POSTs
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
-			else if (req.getParameter("submit")!=null) {
+			if (req.getParameter("submit")!=null) {
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
-			else if(req.getParameter("forgot")!=null) {
+			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
 
