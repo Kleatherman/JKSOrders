@@ -1,6 +1,6 @@
 package edu.ycp.cs320.JKSOrders.classes;
 
-public class LoginInfo implements Comparable{
+public class LoginInfo{
 	private String userName;
 	private String password;
 	
@@ -24,17 +24,28 @@ public class LoginInfo implements Comparable{
 		this.password = password;
 	}
 
-
-	public int compareTo(LoginInfo login) {
-		//TO-DO: Implement this
-		return 0;
-	}
-
 	@Override
-	public int compareTo(Object o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LoginInfo other = (LoginInfo) obj;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (userName == null) {
+			if (other.userName != null)
+				return false;
+		} else if (!userName.equals(other.userName))
+			return false;
+		return true;
 	}
+	
 	
 	
 }
