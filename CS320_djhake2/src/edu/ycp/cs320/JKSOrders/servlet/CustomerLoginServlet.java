@@ -52,7 +52,7 @@ public class CustomerLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 			else if(req.getParameter("forgot")!=null) {
-				req.getRequestDispatcher("/_view/customerForgotInfo.jsp").forward(req, resp);
+				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
 		} catch (NumberFormatException e) {
 			errorMessage = "Invalid input";
