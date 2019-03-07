@@ -10,7 +10,7 @@
 	</head>
 
 	<body>
-	<p> This is the WorkPage </p>
+	<p> Welcome to work </p>
 		<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
 			<div>
 				<input name="profilePage" type="submit" value="Profile Page!" />
