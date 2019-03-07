@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.controller.SystemController;
+
 
 public class CustomerLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -30,15 +33,25 @@ public class CustomerLoginServlet extends HttpServlet {
 
 		// holds the error message text, if there is any
 		String errorMessage = null;
-
+		System.out.println("We are going to try to initilize the system");
+		SystemController system = new SystemController();
+		System.out.println("We initilized the system!!!");
 		// result of calculation goes here
 		 
 		
 		// decode POSTed form parameters and dispatch to controller
+
+		System.out.println("We are going to try to get the password and email address out of the webpage");
 		try {
-			String email_address  = req.getParameter("email address");
+			String email_address  = req.getParameter("emailAddress");
 			String password       = req.getParameter("password");
+			System.out.println("We got the password and email address out of the webpage");
+			System.out.println("Password = "+password);
+			System.out.println("UserName = " + email_address);
 			
+			LoginInfo login = new LoginInfo();
+			login.setPassword(password);
+			login.setUserName(email_address);
 			// check for errors in the form data before using is in a calculation
 			/*if (email_address == null || password == null) {
 				errorMessage = "Please enter your email address and password";
@@ -47,12 +60,16 @@ public class CustomerLoginServlet extends HttpServlet {
 			// must create the controller each time, since it doesn't persist between POSTs
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
-			if (req.getParameter("submit")!=null) {
-				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
-			}
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
+			if(!system.verifyLoginInfo(login)) {
+				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+			}
+			else if (req.getParameter("submit")!=null) {
+				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+			}
+			
 		} catch (NumberFormatException e) {
 			errorMessage = "Invalid input";
 		}

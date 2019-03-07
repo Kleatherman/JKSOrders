@@ -30,5 +30,8 @@ public class Catalog {
 	public void setItemMap(Map<String, Item> itemMap) {
 		ItemMap = itemMap;
 	}
- 
+	
+	public void setItemKey(Item item) {
+		ItemMap.put(item.getUPC(), item);
+	}
 }
