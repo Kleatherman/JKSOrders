@@ -37,6 +37,9 @@ public class StorePageServlet extends HttpServlet {
 			// call multiplyNumbers JSP
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
+		else if(req.getParameter("logOut")!=null) {
+			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}
