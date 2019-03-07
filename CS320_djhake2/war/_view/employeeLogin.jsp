@@ -28,8 +28,10 @@
 					<td><input type="text" name="pin" size="12" value="${pin}" /></td>
 				</tr>
 			</table>
-			<input type="Submit" name="submit" value="Login">
-			<input type="Submit" name="forgot" value="Forgot Info">
+			<div>
+				<input type="Submit" name="submit" value="Login">
+				<input type="Submit" name="forgot" value="Forgot Info">
+			</div>
 		</form>
 	</body>
 </html>

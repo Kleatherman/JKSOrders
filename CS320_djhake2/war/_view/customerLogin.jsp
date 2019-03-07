@@ -27,11 +27,11 @@
 					<td class="label">Password:</td>
 					<td><input type="text" name="password" size="12" value="${password}" /></td>
 				</tr>
-				
-			
 			</table>
-			<input type="Submit" name="submit" value="Login">
-			<input type="Submit" name="forgot" value="Forgot Info">
+			<div>
+				<input type="Submit" name="submit" value="Login">
+				<input type="Submit" name="forgot" value="Forgot Info">
+			</div>
 		</form>
 	</body>
 </html>

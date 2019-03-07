@@ -18,8 +18,10 @@
 		</div>
 		
 		<form action="${pageContext.servletContext.contextPath}/index" method="post">
-			<input type="Submit" name="customer" value="Customer Login">
-			<input type="Submit" name="employee" value="Employee Login">
+			<div>	
+				<input type="Submit" name="customer" value="Customer Login">
+				<input type="Submit" name="employee" value="Employee Login">
+			</div>
 		</form>
 	</body>
 </html>
