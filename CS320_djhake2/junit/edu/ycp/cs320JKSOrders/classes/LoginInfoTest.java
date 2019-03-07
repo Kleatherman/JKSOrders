@@ -6,12 +6,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class LoginInfo {
-	LoginInfo login;
+public class LoginInfoTest {
+	LoginInfoTest login;
 	
 	@Before
 	public void setUp() {
-		login = new LoginInfo();
+		login = new LoginInfoTest();
 	}
 	
 	@Test
