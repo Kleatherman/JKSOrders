@@ -17,7 +17,7 @@
 			<h2>This Website is under construction</h2>
 		</div>
 		
-		<form action="${pageContext.servletContext.contextPath}/multiplyNumbers" method="post">
+		<form action="${pageContext.servletContext.contextPath}/index" method="post">
 			<input type="Submit" name="customer" value="Customer Login">
 			<input type="Submit" name="employee" value="Employee Login">
 		</form>

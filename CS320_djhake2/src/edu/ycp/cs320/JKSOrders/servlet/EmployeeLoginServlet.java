@@ -50,7 +50,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 			else if(req.getParameter("forgot")!=null) {
-				req.getRequestDispatcher("/_view/employeeForgotInfo.jsp").forward(req, resp);
+				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
 
 		}catch (NumberFormatException e) {

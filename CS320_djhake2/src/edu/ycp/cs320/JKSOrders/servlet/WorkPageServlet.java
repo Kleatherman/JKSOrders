@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 
-public class WorkPageServelet  extends HttpServlet{
+public class WorkPageServlet  extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override
