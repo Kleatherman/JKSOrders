@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.ycp.cs320.JKSOrders.controller.NumbersController;
 
 public class EmployeeLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
