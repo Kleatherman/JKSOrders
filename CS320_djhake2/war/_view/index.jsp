@@ -5,8 +5,7 @@
 		<style type="text/css">
 		
 		.text {
-			color: red;
-			text-align: right;
+			text-align: left;
 		}
 		</style>
 	</head>

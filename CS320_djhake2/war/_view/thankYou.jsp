@@ -8,15 +8,14 @@
 		}
 		
 		.text {
-			color: red;
-			text-align: right;
+			text-align: left;
 		}
 		</style>
 	</head>
 
 	<body>
 		<div class = text>Thank You for using our services!</div>
-		
+		<h1>Thank You page</h1>
 		<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">
 			<div>
 				<input type="Submit" name="storePage" value="Close">
