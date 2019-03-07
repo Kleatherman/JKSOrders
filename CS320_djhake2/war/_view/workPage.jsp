@@ -14,6 +14,7 @@
 		<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
 			<div>
 				<input name="profilePage" type="submit" value="Profile Page!" />
+				<input name="employeeLogin" type="submit" value="Log out!" />
 			</div>
 		</form>
 	</body>

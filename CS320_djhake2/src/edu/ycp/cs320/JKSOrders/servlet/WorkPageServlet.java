@@ -33,6 +33,10 @@ public class WorkPageServlet  extends HttpServlet{
 			// call addNumbers JSP
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
+		else if (req.getParameter("employeeLogin") != null) {
+			// call addNumbers JSP
+			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+		}
 		
 		else {
 			throw new ServletException("Unknown command");
