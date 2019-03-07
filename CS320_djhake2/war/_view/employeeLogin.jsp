@@ -17,10 +17,6 @@
 	</head>
 
 	<body>
-		<c:if test="${! empty errorMessage}">
-			<div class="error">${errorMessage}</div>
-		</c:if>
-	
 		<form action="${pageContext.servletContext.contextPath}/employeeLogin" method="post">
 			<table>
 				<tr>
@@ -31,8 +27,6 @@
 					<td class="label">Pin:</td>
 					<td><input type="text" name="pin" size="12" value="${pin}" /></td>
 				</tr>
-				
-			
 			</table>
 			<input type="Submit" name="submit" value="Login">
 			<input type="Submit" name="forgot" value="Forgot Info">

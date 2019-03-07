@@ -15,10 +15,6 @@
 	</head>
 
 	<body>
-		<c:if test="${! empty errorMessage}">
-			<div class="error">${errorMessage}</div>
-		</c:if>
-		
 		<div class = text>Thank You for using our services!</div>
 		
 		<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">
