@@ -6,7 +6,7 @@ import java.util.Map;
 public class Order {
 	private ArrayList<Item> Itemlist;
 	private double totalPrice;
-	private Map QuantityMap;
+	private Map<String, Integer> QuantityMap;
 	private boolean pickupOrder;
 	private Account account;
 	public ArrayList<Item> getItemlist() {
@@ -21,10 +21,10 @@ public class Order {
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	public Map getQuantityMap() {
+	public Map<String, Integer> getQuantityMap() {
 		return QuantityMap;
 	}
-	public void setQuantityMap(Map quantityMap) {
+	public void setQuantityMap(Map<String, Integer> quantityMap) {
 		QuantityMap = quantityMap;
 	}
 	public boolean isPickupOrder() {
