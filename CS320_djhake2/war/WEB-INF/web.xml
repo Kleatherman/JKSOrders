@@ -51,8 +51,8 @@
   
   <!-- AJAX servlets. -->
   <servlet>
-    <servlet-name>AddNumbersAjaxServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ajax.AddNumbersAjaxServlet</servlet-class>
+    <servlet-name>CheckOutAjaxServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ajax.CheckOutAjaxServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>NextGuessAjaxServlet</servlet-name>
@@ -110,4 +110,4 @@
     <servlet-name>NextGuessAjaxServlet</servlet-name>
     <url-pattern>/ajax/nextGuess</url-pattern>
   </servlet-mapping>
-
+</web-app>
