@@ -28,13 +28,13 @@ public class ProfilePageServlet extends HttpServlet{
 		System.out.println("ProfilePage Servlet: doPost");
 		
 		// check which button the user pressed
-		if (req.getParameter("StorePage") != null) {
+		if (req.getParameter("storePage") != null) {
 			// call addNumbers JSP
-			req.getRequestDispatcher("/_view/StorePage.jsp").forward(req, resp);
+			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
-		else if (req.getParameter("WorkPage") != null) {
+		else if (req.getParameter("workPage") != null) {
 			// call addNumbers JSP
-			req.getRequestDispatcher("/_view/WorkPage.jsp").forward(req, resp);
+			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		
 		else {

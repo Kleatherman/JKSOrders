@@ -40,17 +40,17 @@ public class CustomerLoginServlet extends HttpServlet {
 			String password       = req.getParameter("password");
 			
 			// check for errors in the form data before using is in a calculation
-			if (email_address == null || password == null) {
+			/*if (email_address == null || password == null) {
 				errorMessage = "Please enter your email address and password";
-			}
+			}*/
 			// otherwise, data is good, do the calculation
 			// must create the controller each time, since it doesn't persist between POSTs
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
-			else if (req.getParameter("submit")!=null) {
+			if (req.getParameter("submit")!=null) {
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
-			else if(req.getParameter("forgot")!=null) {
+			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
 		} catch (NumberFormatException e) {
