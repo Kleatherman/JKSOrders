@@ -103,8 +103,8 @@
   
   <!--  AJAX servlet mappings. -->
   <servlet-mapping>
-    <servlet-name>AddNumbersAjaxServlet</servlet-name>
-    <url-pattern>/ajax/addNumbers</url-pattern>
+    <servlet-name>CheckOutAjaxServlet</servlet-name>
+    <url-pattern>/ajax/checkOut</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>NextGuessAjaxServlet</servlet-name>
