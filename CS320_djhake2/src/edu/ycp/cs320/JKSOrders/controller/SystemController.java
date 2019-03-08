@@ -21,6 +21,7 @@ public class SystemController {
 	public SystemController() {
 		login = new ArrayList<LoginInfo>();
 		initializeLoginArrayList(login);
+		notifications = new ArrayList<Notification>();
 	}
 	
 	public boolean verifyLoginInfo(LoginInfo loginTest) {
@@ -36,6 +37,8 @@ public class SystemController {
 	
 	public void createNotification(Notification notify) {
 		notifications.add(notify);
+
+		System.out.println(notify.getMessage());
 	}
 
 	public void updateCatalogItem(Item item) {
