@@ -2,6 +2,7 @@ package edu.ycp.cs320.JKSOrders.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
@@ -20,8 +21,12 @@ public class SystemController {
 	
 	public SystemController() {
 		login = new ArrayList<LoginInfo>();
-		initializeLoginArrayList(login);
 		notifications = new ArrayList<Notification>();
+		inventory = new Inventory();
+		catalog = new Catalog();
+		
+		initializeLoginArrayList(login);
+		initilizeCatalogInventory(catalog, inventory);
 	}
 	
 	public boolean verifyLoginInfo(LoginInfo loginTest) {
@@ -50,7 +55,13 @@ public class SystemController {
 	public void createAccount() {
 		
 	}
-
+	
+	public void setVisability(int i) {
+		ArrayList<String> less = new ArrayList<String>();
+		ArrayList<String> more = new ArrayList<String>();
+		inventory.returnGreaterorLess(i, more, less);
+	}
+	
 	private void initializeLoginArrayList(ArrayList<LoginInfo> logins) {
 		LoginInfo login;
 		for(int i = 0; i<10; i++) {
@@ -65,4 +76,21 @@ public class SystemController {
 	//private void initializeAccountArrayList(ArrayList<Account> accounts) {
 		
 	//}
+	
+	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
+		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
+		
+		for(int i = 0; i<itemNames.length; i++) {
+			Item item = new Item();
+			item.setItemName(itemNames[i]);
+			item.setUPC(itemNames[i]+i);
+			item.setPrice(11.1*i);
+			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
+			item.setLocation("A"+i+"B"+(5-1));
+			catalog.setItemKey(item);
+			inventory.setItemQuantity(item.getUPC(), i);
+		}
+		
+		this.setVisability(3);
+	}
 }
