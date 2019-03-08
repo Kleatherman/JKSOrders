@@ -52,6 +52,10 @@
     <servlet-name>CreateEmployeeAccountServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateEmployeeAccountServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>CreateCustomerAccountServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateCustomerAccountServlet</servlet-class>
+  </servlet>
   
   <!-- AJAX servlets. -->
   <servlet>
@@ -104,9 +108,13 @@
     <servlet-name>ThankYouServlet</servlet-name>
     <url-pattern>/thankYou</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
+  <servlet-mapping>
     <servlet-name>CreateEmployeeAccountServlet</servlet-name>
     <url-pattern>/createEmployeeAccount</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CreateCustomerAccountServlet</servlet-name>
+    <url-pattern>/createCustomerAccount</url-pattern>
   </servlet-mapping>
   <!--  AJAX servlet mappings. -->
   <servlet-mapping>
