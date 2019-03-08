@@ -56,10 +56,18 @@ public class SystemController {
 		
 	}
 	
-	public void setVisability(int i) {
+	public void setVisability(int x) {
+		System.out.println("Setting visability");
 		ArrayList<String> less = new ArrayList<String>();
 		ArrayList<String> more = new ArrayList<String>();
-		inventory.returnGreaterorLess(i, more, less);
+		inventory.returnGreaterorLess(x, more, less);
+		for(int i = 0; i<more.size(); i++) {
+			catalog.getItem(more.get(i)).setVisable(true);
+		}
+		for(int j = 0; j<less.size(); j++) {
+			catalog.getItem(less.get(j)).setVisable(false);
+		}
+		
 	}
 	
 	private void initializeLoginArrayList(ArrayList<LoginInfo> logins) {
@@ -77,20 +85,34 @@ public class SystemController {
 		
 	//}
 	
+	public ArrayList<Item> getVisibleItems() {
+		ArrayList<Item> visibleItems = new ArrayList<Item>();
+		Iterator<String> i = catalog.getItemMap().keySet().iterator();
+		while(i.hasNext()) {
+			Item item = catalog.getItem(i.next());
+			if(item.isVisable()) {
+				visibleItems.add(item);
+				System.out.println(item.getDescription());
+			}
+		}
+		return visibleItems;
+	}
+	
 	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
 		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
-		
+		System.out.println("Initilizing Inventory and Catalog");
 		for(int i = 0; i<itemNames.length; i++) {
 			Item item = new Item();
 			item.setItemName(itemNames[i]);
 			item.setUPC(itemNames[i]+i);
 			item.setPrice(11.1*i);
 			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
+			System.out.println(item.getDescription());
 			item.setLocation("A"+i+"B"+(5-1));
 			catalog.setItemKey(item);
 			inventory.setItemQuantity(item.getUPC(), i);
 		}
 		
-		this.setVisability(3);
+		this.setVisability(2);
 	}
 }

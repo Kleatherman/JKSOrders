@@ -1,11 +1,15 @@
 package edu.ycp.cs320.JKSOrders.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.controller.SystemController;
 
 
 
@@ -17,7 +21,7 @@ public class StorePageServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("StorePage Servlet: doGet");	
-		
+			
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 	}
@@ -26,8 +30,8 @@ public class StorePageServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
+
 		System.out.println("StorePage Servlet: doPost");
-		
 		// check which button the user pressed
 		if (req.getParameter("checkOut") != null) {
 			// call addNumbers JSP
@@ -43,6 +47,7 @@ public class StorePageServlet extends HttpServlet {
 		else {
 			throw new ServletException("Unknown command");
 		}
+
 		
 	}
 }
