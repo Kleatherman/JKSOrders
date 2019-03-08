@@ -60,6 +60,10 @@ public class CustomerLoginServlet extends HttpServlet {
 			// must create the controller each time, since it doesn't persist between POSTs
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
+			if (req.getParameter("createCustomerAccount")!=null) {
+				System.out.println("We're headed to customer account JSP");
+				req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
+			}
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
