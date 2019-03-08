@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.controller.SystemController;
+
 
 public class EmployeeLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -15,7 +18,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("CustomerLogin Servlet: doGet");	
+		System.out.println("EmployeeLogin Servlet: doGet");	
 		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
@@ -26,7 +29,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("EmployeeLogin Servlet: doPost");
-		
+		SystemController system = new SystemController();
 
 		// holds the error message text, if there is any
 		String errorMessage = null;
@@ -35,22 +38,26 @@ public class EmployeeLoginServlet extends HttpServlet {
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			/*String username  = req.getParameter("username");
+			String username  = req.getParameter("username");
 			String pin       = req.getParameter("pin");
+			LoginInfo login = new LoginInfo();
+			login.setPassword(pin);
+			login.setUserName(username);
 			
-			// check for errors in the form data before using is in a calculation
-			if (pin == null || username  == null) {
-				errorMessage = "Please enter your email address and password";
-			}*/
-			// otherwise, data is good, do the calculation
-			// must create the controller each time, since it doesn't persist between POSTs
-			// the view does not alter data, only controller methods should be used for that
-			// thus, always call a controller method to operate on the data
-			if (req.getParameter("submit")!=null) {
-				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
+			
+			
+			if (req.getParameter("createEmployeeAccount")!=null) {
+				System.out.println("We're headed to employee account JSP");
+				req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
 			}
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
+			}
+			if(!system.verifyLoginInfo(login)) {
+				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+			}
+			else if (req.getParameter("submit")!=null) {
+				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 
 		}catch (NumberFormatException e) {

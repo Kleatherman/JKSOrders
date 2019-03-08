@@ -37,12 +37,18 @@ public class SystemController {
 	
 	public void createNotification(Notification notify) {
 		notifications.add(notify);
-
 		System.out.println(notify.getMessage());
+		if(notify.getUrgency()) {
+			System.out.println("Urgent Message!");
+		}
 	}
 
 	public void updateCatalogItem(Item item) {
 		catalog.setItem(item);		
+	}
+
+	public void createAccount() {
+		
 	}
 
 	private void initializeLoginArrayList(ArrayList<LoginInfo> logins) {

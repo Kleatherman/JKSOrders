@@ -34,6 +34,7 @@
 			<div>
 				<input type="Submit" name="submit" value="Login">
 				<input type="Submit" name="forgot" value="Forgot Info">
+				<input type="Submit" name="createEmployeeAccount" value="Create Account">
 			</div>
 		</form>
 	</body>
