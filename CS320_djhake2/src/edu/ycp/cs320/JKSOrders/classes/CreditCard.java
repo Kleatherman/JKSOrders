@@ -1,12 +1,12 @@
 package edu.ycp.cs320.JKSOrders.classes;
 
-public class CraditCard {
+public class CreditCard {
 	private String accountNumber;
 	private String CVC;
 	private String nameOnCard;
-	private String expirationgDate;
+	private String expirationDate;
 	
-	public CraditCard() {
+	public CreditCard() {
 		super();
 	}
 
@@ -34,12 +34,12 @@ public class CraditCard {
 		this.nameOnCard = nameOnCard;
 	}
 
-	public String getExpirationgDate() {
-		return expirationgDate;
+	public String getExpirationDate() {
+		return expirationDate;
 	}
 
-	public void setExpirationgDate(String expirationgDate) {
-		this.expirationgDate = expirationgDate;
+	public void setExpirationDate(String expirationDate) {
+		this.expirationDate = expirationDate;
 	}
 	
 	

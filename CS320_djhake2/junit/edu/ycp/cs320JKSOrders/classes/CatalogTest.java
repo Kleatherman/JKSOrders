@@ -2,42 +2,44 @@ package edu.ycp.cs320JKSOrders.classes;
 
 import static org.junit.Assert.*;
 
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
+import edu.ycp.cs320.JKSOrders.classes.Catalog;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 
-import edu.ycp.cs320.JKSOrders.classes.Car;
-import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
 
 public class CatalogTest {
-	Car car;
+	Catalog catalog;
+	Item item;
+	Map<String, Item> itemMap;
 	
 	@Before
 	public void setUp() {
-		car = new Car();
+		catalog = new Catalog();
+		item    = new Item();
+		
+		
 	}
 	
 	@Test
-	public void testSetYear() {
-		car.setYear(2004);
-		assertTrue(2004==car.getYear());
+	public void testSetItem() {
+		catalog.setItem(item);
+		assertEquals(item,catalog.getItem());
 	}
 	
 	@Test
-	public void testSetBrand() {
-		car.setBrand("Subaru");
-		assertEquals("Subaru", car.getBrand());
+	public void testSetUPC() {
+		catalog.setUPC("825005043653");
+		assertEquals("825005043653", catalog.getUPC());
 	}
 	
 	@Test
-	public void testSetColor() {
-		car.setColor("Silver");
-		assertEquals("Silver", car.getColor());
+	public void testSetItemMap() {
+		catalog.setItemMap(itemMap);;
+		assertEquals(itemMap, catalog.getUPC());
 	}
 	
-	@Test
-	public void testSetType() {
-		car.setType("Forester");
-		assertEquals("Forester", car.getType());
-	}
-	
+
 }

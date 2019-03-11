@@ -5,39 +5,51 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ycp.cs320.JKSOrders.classes.Car;
-import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
+import edu.ycp.cs320.JKSOrders.classes.Item;
+
 
 public class ItemTest {
-	Car car;
-	
-	@Before
-	public void setUp() {
-		car = new Car();
-	}
-	
+	 Item item;
+	 
+	 
+	 @Before
+	 public void setUp() {
+		 item = new Item();
+	 }
 	@Test
-	public void testSetYear() {
-		car.setYear(2004);
-		assertTrue(2004==car.getYear());
+	public void testSetItemName() {
+		item.setItemName("Book");
+		assertEquals("Book",item.getItemName());
 	}
 	
-	@Test
-	public void testSetBrand() {
-		car.setBrand("Subaru");
-		assertEquals("Subaru", car.getBrand());
+	public void testSetUPC() {
+		item.setUPC("000000000000");
+		assertEquals("000000000000",item.getUPC());
 	}
 	
-	@Test
-	public void testSetColor() {
-		car.setColor("Silver");
-		assertEquals("Silver", car.getColor());
+	
+	public void testSetPrice() {
+		item.setPrice(50.99);
+		assertEquals(50.99,item.getPrice(),.005);
 	}
 	
-	@Test
-	public void testSetType() {
-		car.setType("Forester");
-		assertEquals("Forester", car.getType());
+	public void testSetDescription() {
+		item.setDescription("This is an item Description");
+		assertEquals("This is an item Description",item.getDescription());
 	}
 	
+	public void testSetLocation() {
+		item.setLocation("This is an item Location");
+		assertEquals("This is an item Location",item.getLocation());
+	}
+	
+	public void testSetPhoto() {
+		item.setPhoto("This is an item Photo");
+		assertEquals("This is an item Photo",item.getPhoto());
+	}
+	
+	public void testisVisible() {
+		item.setVisable(true);
+		assertTrue(item.isVisable());
+	}
 }

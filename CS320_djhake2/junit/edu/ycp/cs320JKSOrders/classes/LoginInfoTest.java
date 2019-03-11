@@ -5,27 +5,32 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+
 
 public class LoginInfoTest {
-	LoginInfoTest login;
+	LoginInfo login;
 	
 	@Before
 	public void setUp() {
-		login = new LoginInfoTest();
+		login = new LoginInfo();
 	}
 	
 	@Test
 	public void testSetUserName() {
-	//	login.setUserName("jsam");
+		login.setUserName("jsam");
+		assertEquals("jsam",login.getUserName());
 	}
 	
 	@Test
 	public void testSetStoreID() {
-		
+		login.setPassword("Password");
+		assertEquals("Password",login.getPassword());
 	}
 	
 	@Test
-	public void testSetCar() {
-		
+	public void testEquals() {
+		assertTrue(login.equals(login));
+		assertTrue(!login.equals(null));
 	}
 }

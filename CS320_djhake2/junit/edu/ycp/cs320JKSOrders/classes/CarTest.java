@@ -6,7 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ycp.cs320.JKSOrders.classes.Car;
-import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
 
 public class CarTest {
 	Car car;

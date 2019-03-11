@@ -8,6 +8,7 @@ public class Item {
 	private String location;
 	private String Photo;
 	private boolean visable;
+	
 	public String getItemName() {
 		return itemName;
 	}
