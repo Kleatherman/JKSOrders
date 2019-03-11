@@ -3,7 +3,7 @@ package edu.ycp.cs320.JKSOrders.classes;
 public class CustomerAccount extends Account{
 	private String phoneNumber;
 	private String email;
-	private CraditCard creditCard;
+	private CreditCard creditCard;
 	
 	public CustomerAccount() {
 		super();
@@ -25,11 +25,11 @@ public class CustomerAccount extends Account{
 		this.email = email;
 	}
 	
-	public CraditCard getCreditCard() {
+	public CreditCard getCreditCard() {
 		return creditCard;
 	}
 	
-	public void setCreditCard(CraditCard creditCard) {
+	public void setCreditCard(CreditCard creditCard) {
 		this.creditCard = creditCard;
 	}
 

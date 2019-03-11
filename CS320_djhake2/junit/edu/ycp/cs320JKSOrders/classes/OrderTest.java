@@ -2,42 +2,42 @@ package edu.ycp.cs320JKSOrders.classes;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ycp.cs320.JKSOrders.classes.Car;
+import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
 
 public class OrderTest {
-	Car car;
+	Order order;
 	
 	@Before
 	public void setUp() {
-		car = new Car();
+		order = new Order();
 	}
 	
 	@Test
-	public void testSetYear() {
-		car.setYear(2004);
-		assertTrue(2004==car.getYear());
+	public void testSetItemList() {
+		ArrayList<Item> itemlist = null;
+		order.setItemlist(itemlist);
+		assertEquals(itemlist,order.getItemlist());
 	}
 	
 	@Test
-	public void testSetBrand() {
-		car.setBrand("Subaru");
-		assertEquals("Subaru", car.getBrand());
+	public void testSetQuantityMap() {
+		Map<String, Integer> quantityMap = null;
+		order.setQuantityMap(quantityMap);
+		assertEquals(quantityMap,order.getQuantityMap());
 	}
 	
 	@Test
-	public void testSetColor() {
-		car.setColor("Silver");
-		assertEquals("Silver", car.getColor());
-	}
-	
-	@Test
-	public void testSetType() {
-		car.setType("Forester");
-		assertEquals("Forester", car.getType());
+	public void testSetPickupOrder() {
+		order.setPickupOrder(true);
+		assertTrue(order.isPickupOrder());
 	}
 	
 }
