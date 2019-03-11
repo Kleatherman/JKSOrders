@@ -10,11 +10,14 @@
 	</head>
 
 	<body>
-	<p> This is the WorkPage </p>
+	<p> Welcome to work </p>
 		<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
 			<div>
 				<input name="profilePage" type="submit" value="Profile Page!" />
 				<input name="employeeLogin" type="submit" value="Log out!" />
+				<input name="message" type="text" value="${message}" length=300 />
+				<input name="urgency" type="checkbox" value="Urgent" />
+				<input name="notify" type="submit" value="Submit Notification" />
 			</div>
 		</form>
 	</body>

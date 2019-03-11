@@ -12,8 +12,28 @@
 
 	<body>
 	<p>This is the Store Page</p>
-		
-	
+		<table>
+			<tr>
+				<th>Name</th>
+				<th>Description</th>
+				<th>Price</th>
+			</tr>
+			<tr>
+				<td>${item0.itemName}</td>
+				<td>${item0.description}</td>
+				<td>${item0.price}</td>
+			</tr>
+			<tr>
+				<td>${item1.itemName}</td>
+				<td>${item1.description}</td>
+				<td>${item1.price}</td>
+			</tr>
+			<tr>
+				<td>${item2.itemName}</td>
+				<td>${item2.description}</td>
+				<td>${item2.price}</td>
+			</tr>
+		</table>
 		<form action="${pageContext.servletContext.contextPath}/storePage" method="post">
 			<div>
 				<input name="checkOut" type="submit" value="CheckOut!" />

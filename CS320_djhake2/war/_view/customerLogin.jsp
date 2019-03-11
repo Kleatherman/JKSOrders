@@ -26,12 +26,13 @@
 				</tr>
 				<tr>
 					<td class="label">Password:</td>
-					<td><input type="text" name="password" size="12" value="${password}" /></td>
+					<td><input type="password" name="password" size="12" value="${password}" /></td>
 				</tr>
 			</table>
 			<div>
 				<input type="Submit" name="submit" value="Login">
 				<input type="Submit" name="forgot" value="Forgot Info">
+				<input type="Submit" name="createCustomerAccount" value="Create Account">
 			</div>
 		</form>
 	</body>
