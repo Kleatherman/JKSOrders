@@ -2,10 +2,11 @@ package edu.ycp.cs320.JKSOrders.controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Inventory;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
@@ -15,7 +16,8 @@ import edu.ycp.cs320.JKSOrders.classes.Notification;
 public class SystemController {
 	private ArrayList<LoginInfo> employeeLogin;
 	private ArrayList<LoginInfo> customerLogin;
-	private ArrayList<Account> accounts;
+	private ArrayList<Account> employeeAccounts;
+	private ArrayList<Account> customerAccounts;
 	private Inventory inventory;
 	private Catalog catalog;
 	private ArrayList<Notification> notifications;
@@ -26,7 +28,11 @@ public class SystemController {
 		notifications = new ArrayList<Notification>();
 		inventory = new Inventory();
 		catalog = new Catalog();
+		employeeAccounts = new ArrayList<Account>();
+		customerAccounts = new ArrayList<Account>();
 		
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		initializeCustomerAccountArrayList(customerAccounts);
 		initializeEmployeeLoginArrayList(employeeLogin);
 		initializeCustomerLoginArrayList(customerLogin);
 		initilizeCatalogInventory(catalog, inventory);
@@ -85,30 +91,55 @@ public class SystemController {
 	}
 	
 	private void initializeEmployeeLoginArrayList(ArrayList<LoginInfo> logins) {
-		LoginInfo login;
-		for(int i = 0; i<10; i++) {
-			login = new LoginInfo();
-			login.setPassword("PassWord"+i);
-			login.setUserName("employee"+i);
-			logins.add(login);
-			System.out.println("System Login #"+i+": Password = "+login.getPassword()+", UserName = "+login.getUserName());
+		Iterator<Account> i = employeeAccounts.iterator();
+		while(i.hasNext()) {
+			Account account = i.next();
+			System.out.println("initilize Employee Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getName());
+			logins.add(account.getLogin());
 		}
 	}
 	
 	private void initializeCustomerLoginArrayList(ArrayList<LoginInfo> logins) {
-		LoginInfo login;
-		for(int i = 0; i<10; i++) {
-			login = new LoginInfo();
-			login.setPassword("password"+i);
-			login.setUserName("user"+i);
-			logins.add(login);
-			System.out.println("System Login #"+i+": Password = "+login.getPassword()+", UserName = "+login.getUserName());
+		Iterator<Account> i = customerAccounts.iterator();
+		while(i.hasNext()) {
+			Account account = i.next();
+			System.out.println("initilize customer Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getName());
+			logins.add(account.getLogin());
 		}
 	}
 
-	//private void initializeAccountArrayList(ArrayList<Account> accounts) {
-		
-	//}
+	private void initializeEmployeeAccountArrayList(ArrayList<Account> accounts) {
+		Account account;
+		String[] names = {"John Adams", "William Wallace", "Henry Morris", "Thomas Edison", "Nikola Tesla", "Kyle Leatherman", "Josiah Sam", "Sam Cesario", "Don Hake", "Elvis Presley"};
+		LoginInfo login;
+		for(int i = 0; i<10; i++) {
+			account = new EmployeeAccount();
+			account.setAccountNumber("ABCDEF"+i);
+			account.setName(names[i]);
+			login = new LoginInfo();
+			login.setPassword("PassWord"+i);
+			login.setUserName("employee"+i);
+			System.out.println("employee account initilization" + login.getPassword()+" "+login.getUserName());
+			account.setLogin(login);
+			System.out.println("employee account initilization" + account.getLogin().getPassword()+" "+account.getLogin().getUserName());
+			employeeAccounts.add(account);
+		}
+	}
+	
+	private void initializeCustomerAccountArrayList(ArrayList<Account> accounts) {
+		Account account;
+		String[] names = {"Adams John", "Wallace William", "Morris Henry", "Edison Thomas", "Tesla Nikola", "Leathermen Kyle", "Sam Josiah", "Cesario Sam", "Hake Don", "Presley Elvis"};
+		for(int i = 0; i<10; i++) {
+			account = new CustomerAccount();
+			account.setAccountNumber("GHIJKL"+i);
+			account.setName(names[i]);
+			LoginInfo login = new LoginInfo();
+			login.setPassword("password"+i);
+			login.setUserName("user"+i);
+			account.setLogin(login);
+			customerAccounts.add(account);
+		}
+	}
 	
 	public ArrayList<Item> getVisibleItems() {
 		ArrayList<Item> visibleItems = new ArrayList<Item>();
