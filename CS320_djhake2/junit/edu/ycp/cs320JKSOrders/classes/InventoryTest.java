@@ -2,42 +2,35 @@ package edu.ycp.cs320JKSOrders.classes;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ycp.cs320.JKSOrders.classes.Car;
-import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
+import edu.ycp.cs320.JKSOrders.classes.Inventory;
 
 public class InventoryTest {
-	Car car;
+	Inventory inventory;
 	
 	@Before
 	public void setUp() {
-		car = new Car();
+		inventory = new Inventory();
 	}
 	
 	@Test
-	public void testSetYear() {
-		car.setYear(2004);
-		assertTrue(2004==car.getYear());
+	public void testReturnGreaterOrLess() {
+		int x = 0;
+		ArrayList<String> greater = null;
+		ArrayList<String> less = null;
+		assertEquals(null,inventory.returnGreaterorLess(x, greater, less));
+		
 	}
 	
-	@Test
-	public void testSetBrand() {
-		car.setBrand("Subaru");
-		assertEquals("Subaru", car.getBrand());
+	public void testsetQuanityMap() {
+		Map<String, Integer> quanityMap = null;
+		inventory.setQuanityMap(quanityMap);
+		assertEquals(quanityMap,inventory.getQuanityMap());
+		
 	}
-	
-	@Test
-	public void testSetColor() {
-		car.setColor("Silver");
-		assertEquals("Silver", car.getColor());
-	}
-	
-	@Test
-	public void testSetType() {
-		car.setType("Forester");
-		assertEquals("Forester", car.getType());
-	}
-	
 }

@@ -5,39 +5,34 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import edu.ycp.cs320.JKSOrders.classes.Car;
-import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
+import edu.ycp.cs320.JKSOrders.classes.Stats;
+
 
 public class StatsTest {
-	Car car;
+	Stats stats;
 	
 	@Before
 	public void setUp() {
-		car = new Car();
+		stats = new Stats();
 	}
 	
 	@Test
-	public void testSetYear() {
-		car.setYear(2004);
-		assertTrue(2004==car.getYear());
+	public void testSetTimeTaken() {
+		stats.setTimeTaken(5.5);
+		assertTrue(5.5==stats.getTimeTaken());
 	}
 	
 	@Test
 	public void testSetBrand() {
-		car.setBrand("Subaru");
-		assertEquals("Subaru", car.getBrand());
+		stats.setItemsperMin(5.5);
+		assertTrue(5.5==stats.getItemsperMin());
 	}
 	
 	@Test
-	public void testSetColor() {
-		car.setColor("Silver");
-		assertEquals("Silver", car.getColor());
+	public void testSetNumItemsProcessed() {
+		stats.setNumitemsProcessed(5);
+		assertEquals(5, stats.getNumitemsProcessed());
 	}
 	
-	@Test
-	public void testSetType() {
-		car.setType("Forester");
-		assertEquals("Forester", car.getType());
-	}
 	
 }
