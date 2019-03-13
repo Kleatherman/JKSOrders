@@ -109,7 +109,7 @@ public class SystemController {
 	}
 
 	private void initializeEmployeeAccountArrayList(ArrayList<Account> accounts) {
-		Account account;
+		EmployeeAccount account;
 		String[] names = {"John Adams", "William Wallace", "Henry Morris", "Thomas Edison", "Nikola Tesla", "Kyle Leatherman", "Josiah Sam", "Sam Cesario", "Don Hake", "Elvis Presley"};
 		LoginInfo login;
 		for(int i = 0; i<10; i++) {
@@ -122,6 +122,24 @@ public class SystemController {
 			System.out.println("employee account initilization" + login.getPassword()+" "+login.getUserName());
 			account.setLogin(login);
 			System.out.println("employee account initilization" + account.getLogin().getPassword()+" "+account.getLogin().getUserName());
+			if(account.getName().equals("Josiah Sam")||account.getName().equals("Kyle Leatherman")||account.getName().equals("Sam Cesario")) {
+				account.setManager(true);
+			}
+			if(account.getName().equals("Josiah Sam")) {
+				login.setPassword("FireFox7");
+				login.setUserName("jsam");
+				account.setLogin(login);
+			}
+			else if(account.getName().equals("Kyle Leatherman")) {
+				login.setPassword("BadPassword");
+				login.setUserName("McGee");
+				account.setLogin(login);
+			}
+			else if(account.getName().equals("Sam Cesario")) {
+				login.setPassword("password");
+				login.setUserName("scesario1");
+				account.setLogin(login);
+			}
 			employeeAccounts.add(account);
 		}
 	}
@@ -170,5 +188,16 @@ public class SystemController {
 		}
 		
 		this.setVisability(2);
+	}
+	
+	public Account getEmployeeAccount(String name) {
+		Iterator<Account> i = employeeAccounts.iterator();
+		while(i.hasNext()) {
+			Account account = i.next();
+			if(account.getLogin().getUserName().equals(name)) {
+				return account;
+			}	
+		}
+		return null;
 	}
 }
