@@ -1,12 +1,14 @@
 package edu.ycp.cs320.JKSOrders.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 
@@ -60,6 +62,10 @@ public class CustomerLoginServlet extends HttpServlet {
 			// must create the controller each time, since it doesn't persist between POSTs
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
+			if (req.getParameter("createCustomerAccount")!=null) {
+				System.out.println("We're headed to customer account JSP");
+				req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
+			}
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
@@ -67,6 +73,11 @@ public class CustomerLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
+				ArrayList<Item> items = system.getVisibleItems();
+				System.out.println("StorePage: "+ items.get(0).getDescription());
+				for(int i =0; i<items.size(); i++) {
+					req.setAttribute("item"+i, items.get(i));
+				}
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 			
