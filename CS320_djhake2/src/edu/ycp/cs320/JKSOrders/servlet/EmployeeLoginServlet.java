@@ -57,6 +57,8 @@ public class EmployeeLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
+				String name = system.getEmployeeAccount(username).getName();
+				req.setAttribute("name", name);
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 
