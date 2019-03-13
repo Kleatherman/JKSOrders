@@ -13,25 +13,39 @@ import edu.ycp.cs320.JKSOrders.classes.Notification;
 
 
 public class SystemController {
-	private ArrayList<LoginInfo> login;
+	private ArrayList<LoginInfo> employeeLogin;
+	private ArrayList<LoginInfo> customerLogin;
 	private ArrayList<Account> accounts;
 	private Inventory inventory;
 	private Catalog catalog;
 	private ArrayList<Notification> notifications;
 	
 	public SystemController() {
-		login = new ArrayList<LoginInfo>();
+		employeeLogin = new ArrayList<LoginInfo>();
+		customerLogin = new ArrayList<LoginInfo>();
 		notifications = new ArrayList<Notification>();
 		inventory = new Inventory();
 		catalog = new Catalog();
 		
-		initializeLoginArrayList(login);
+		initializeEmployeeLoginArrayList(employeeLogin);
+		initializeCustomerLoginArrayList(customerLogin);
 		initilizeCatalogInventory(catalog, inventory);
 	}
 	
-	public boolean verifyLoginInfo(LoginInfo loginTest) {
+	public boolean verifyEmployeeLoginInfo(LoginInfo loginTest) {
 		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
-		Iterator<LoginInfo> i = login.iterator();
+		Iterator<LoginInfo> i = employeeLogin.iterator();
+		while(i.hasNext()) {
+			if(i.next().equals(loginTest)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean verifyCustomerLoginInfo(LoginInfo loginTest) {
+		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
+		Iterator<LoginInfo> i = customerLogin.iterator();
 		while(i.hasNext()) {
 			if(i.next().equals(loginTest)) {
 				return true;
@@ -70,7 +84,18 @@ public class SystemController {
 		
 	}
 	
-	private void initializeLoginArrayList(ArrayList<LoginInfo> logins) {
+	private void initializeEmployeeLoginArrayList(ArrayList<LoginInfo> logins) {
+		LoginInfo login;
+		for(int i = 0; i<10; i++) {
+			login = new LoginInfo();
+			login.setPassword("PassWord"+i);
+			login.setUserName("employee"+i);
+			logins.add(login);
+			System.out.println("System Login #"+i+": Password = "+login.getPassword()+", UserName = "+login.getUserName());
+		}
+	}
+	
+	private void initializeCustomerLoginArrayList(ArrayList<LoginInfo> logins) {
 		LoginInfo login;
 		for(int i = 0; i<10; i++) {
 			login = new LoginInfo();
