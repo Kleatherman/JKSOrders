@@ -53,7 +53,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			if(!system.verifyLoginInfo(login)) {
+			if(!system.verifyEmployeeLoginInfo(login)) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
