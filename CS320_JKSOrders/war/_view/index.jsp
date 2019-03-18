@@ -14,23 +14,30 @@
 		<title>Index</title>
 		<style type="text/css">
 		
-		.text {
-			text-align: left;
+		.TitleText2 {
+						font-size: 300%;
+                        font-weight: bold; 
+                        text-align: center;
 		}
 		</style>
 	</head>
 
 	<body>
-		<div class = text>
-			<h1>This is Index page!</h1>
-			<h2>This Website is under construction</h2>
+		<div class = "container-fluid">
+			<div class="row">
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:white;">
+					<div class= "TitleText2">Welcome</div>
+					<div class= "TitleText2">This Page is under construction</div>
+					<form action="${pageContext.servletContext.contextPath}/index" method="post">
+						<div>
+							<input type="Submit" name="customer" value="Customer Login">
+							<input type="Submit" name="employee" value="Employee Login">
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+			</div>	
 		</div>
-		
-		<form action="${pageContext.servletContext.contextPath}/index" method="post">
-			<div>	
-				<input type="Submit" name="customer" value="Customer Login">
-				<input type="Submit" name="employee" value="Employee Login">
-			</div>
-		</form>
 	</body>
 </html>

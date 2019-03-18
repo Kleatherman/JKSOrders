@@ -16,22 +16,28 @@
 		
 		<title>Retrieve customer login</title>
 		<style type="text/css">
-		.error {
-			color: red;
-		}
-		
-		td.label {
-			text-align: right;
+		.TitleText2 {
+						font-size: 300%;
+                        font-weight: bold; 
+                        text-align: center;
 		}
 		</style>
 	</head>
 
 	<body>
-		This is the customer forgot login page
-		<form action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
-			<div>
-				<input type="Submit" name="LoginPage" value="Go Back">
-			</div>
-		</form>
+		<div class = "container-fluid">
+			<div class="row">
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:white;">
+					<div class= "TitleText2">The Customer forgot their login</div>
+					<form action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
+						<div>
+							<input type="Submit" name="LoginPage" value="Go Back">
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+			</div>	
+		</div>
 	</body>
 </html>
