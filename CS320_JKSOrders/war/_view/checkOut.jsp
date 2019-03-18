@@ -22,14 +22,21 @@
 
 	<body>
 		<div class = "container-fluid">
-			This is checkout!
+			<div class="row">
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:white;">
+					<h1> This is checkout </h1>
+					<h1> Hi Y'all </h1>
+					<form action="${pageContext.servletContext.contextPath}/checkOut" method="post">
+						<div>
+							<input type="Submit" name="cancel" value="Cancel Order">
+							<input type="Submit" name="thankYou" value="Submit Order">
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+			</div>	
 		</div>
 		
-		<form action="${pageContext.servletContext.contextPath}/checkOut" method="post">
-			<div>
-				<input type="Submit" name="cancel" value="Cancel Order">
-				<input type="Submit" name="thankYou" value="Submit Order">
-			</div>
-		</form>
 	</body>
 </html>

@@ -17,36 +17,42 @@
 	
 		<title>Employee Login</title>
 		<style type="text/css">
-		.error {
-			color: red;
-		}
-		
-		td.label {
-			text-align: right;
+		.TitleText2 {
+						font-size: 300%;
+                        font-weight: bold; 
+                        text-align: center;
 		}
 		</style>
 	</head>
 
 	<body>
-		<h1>Employee Login</h1>
-		<form action="${pageContext.servletContext.contextPath}/employeeLogin" method="post">
-			<table>
+		<div class = "container-fluid">
+			<div class="row">
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:white;">
+					<div class= "TitleText2">Employee Login</div>
+					<form action="${pageContext.servletContext.contextPath}/employeeLogin" method="post">
+						<table>
 				
-				<tr>
-					<td class="label">Username:</td>
-					<td><input type="text" name="username" size="12" value="${username}" /></td>
-				</tr>
+							<tr>
+								<td class="label">Username:</td>
+								<td><input type="text" name="username" size="12" value="${username}" /></td>
+							</tr>
 				
-				<tr>
-					<td class="label">Pin:</td>
-					<td><input type="password" name="pin" size="12" value="${pin}" /></td>
-				</tr>
-			</table>
-			<div>
-				<input type="Submit" name="submit" value="Login">
-				<input type="Submit" name="forgot" value="Forgot Info">
-				<input type="Submit" name="createEmployeeAccount" value="Create Account">
-			</div>
-		</form>
+							<tr>
+								<td class="label">Pin:</td>
+								<td><input type="password" name="pin" size="12" value="${pin}" /></td>
+							</tr>
+						</table>
+						<div>
+							<input type="Submit" name="submit" value="Login">
+							<input type="Submit" name="forgot" value="Forgot Info">
+							<input type="Submit" name="createEmployeeAccount" value="Create Account">
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+			</div>	
+		</div>
 	</body>
 </html>
