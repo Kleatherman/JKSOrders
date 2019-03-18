@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.database;
+import edu.ycp.cs320.JKSOrders.database.fakeDatabase;
 
 
 public class EmployeeLoginServlet extends HttpServlet {
@@ -27,7 +29,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		database db = new fakeDatabase();
 		System.out.println("EmployeeLogin Servlet: doPost");
 		SystemController system = new SystemController();
 
@@ -53,7 +55,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			if(!system.verifyEmployeeLoginInfo(login)) {
+			if(!system.verifyEmployeeLoginInfo(login, db.getEmployeeLoginInfo())) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
