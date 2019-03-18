@@ -16,17 +16,31 @@
 	
 		<title>Profile Page</title>
 		<style type="text/css">
+		.TitleText2 {
+						font-size: 300%;
+                        font-weight: bold; 
+                        text-align: center;
+		}
 		</style>
 	</head>
 
 	<body>
-		This is the Profile Page
-	
-		<form action="${pageContext.servletContext.contextPath}/profilePage" method="post">
-			<div>
-				<input name="storePage" type="submit" value="Store Page!" />
-				<input name="workPage" type="submit" value="Work Page!"/>
-			</div>
-		</form>
+		<div class = "container-fluid">
+			<div class="row">
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:white;">
+					<div class= "TitleText2">This is your profile page! </div>
+					<div class= "TitleText2">It's void just like your personality! </div>
+					<div class= "TitleText2">Jk ;-) </div>
+					<form action="${pageContext.servletContext.contextPath}/profilePage" method="post">
+						<div>
+							<input name="storePage" type="submit" value="Store Page!" />
+							<input name="workPage" type="submit" value="Work Page!"/>
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+			</div>	
+		</div>
 	</body>
 </html>

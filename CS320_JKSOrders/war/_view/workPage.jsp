@@ -16,19 +16,32 @@
 	
 		<title>Work Page</title>
 		<style type="text/css">
+		.TitleText2 {
+						font-size: 300%;
+                        font-weight: bold; 
+                        text-align: center;
+		}
 		</style>
 	</head>
 
 	<body>
-	<p> Welcome to work ${name}</p>
-		<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
-			<div>
-				<input name="profilePage" type="submit" value="Profile Page!" />
-				<input name="employeeLogin" type="submit" value="Log out!" />
-				<input name="message" type="text" value="${message}" length=300 />
-				<input name="urgency" type="checkbox" value="Urgent" />
-				<input name="notify" type="submit" value="Submit Notification" />
-			</div>
-		</form>
+	<div class = "container-fluid">
+			<div class="row">
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:white;">
+					<div class= "TitleText2">Welcome to work! </div>
+					<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
+						<div>
+							<input name="profilePage" type="submit" value="Profile Page!" />
+							<input name="employeeLogin" type="submit" value="Log out!" />
+							<input name="message" type="text" value="${message}" length=300 />
+							<input name="urgency" type="checkbox" value="Urgent" />
+							<input name="notify" type="submit" value="Submit Notification" />
+						</div>
+					</form>
+				</div>
+				<div class="col-sm-4" style="background-color:lavender;">space</div>
+			</div>	
+		</div>
 	</body>
 </html>
