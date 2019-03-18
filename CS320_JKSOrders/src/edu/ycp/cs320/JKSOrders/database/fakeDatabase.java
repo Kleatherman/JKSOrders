@@ -8,16 +8,17 @@ import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Inventory;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 
 public class fakeDatabase implements database{
-	private ArrayList<LoginInfo> employeeLogin;
+	private Catalog catalog;
+	private ArrayList<CustomerAccount> customerAccounts;
 	private ArrayList<LoginInfo> customerLogin;
 	private ArrayList<EmployeeAccount> employeeAccounts;
-	private ArrayList<CustomerAccount> customerAccounts;
+	private ArrayList<LoginInfo> employeeLogin;
 	private Inventory inventory;
-	private Catalog catalog;
 	private ArrayList<Notification> notifications;
 	
 	public fakeDatabase() {
@@ -25,12 +26,12 @@ public class fakeDatabase implements database{
 	}
 	
 	@Override
-	public ArrayList<EmployeeAccount> getEmployeeAccounts(){
-		employeeAccounts = new ArrayList<EmployeeAccount>();
-		initializeEmployeeAccountArrayList(employeeAccounts);
-		return employeeAccounts;
+	public Catalog getCatalog() {
+		catalog = new Catalog();
+		inventory = new Inventory();
+		initilizeCatalogInventory(catalog, inventory);
+		return catalog;
 	}
-	
 
 	@Override
 	public ArrayList<CustomerAccount> getCustomerAccounts() {
@@ -39,6 +40,19 @@ public class fakeDatabase implements database{
 		return customerAccounts;
 	}
 	
+	@Override
+	public ArrayList<LoginInfo> getCustomerLoginInfo() {
+		customerLogin = new ArrayList<LoginInfo>();
+		initializeCustomerLoginArrayList(customerLogin);
+		return customerLogin;
+	}
+
+	@Override
+	public ArrayList<EmployeeAccount> getEmployeeAccounts(){
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		return employeeAccounts;
+	}
 
 	@Override
 	public ArrayList<LoginInfo> getEmployeeLoginInfo() {
@@ -48,27 +62,42 @@ public class fakeDatabase implements database{
 	}
 
 	@Override
-	public ArrayList<LoginInfo> getCustomerLoginInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Inventory getInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Catalog getCatalog() {
-		// TODO Auto-generated method stub
-		return null;
+		catalog = new Catalog();
+		inventory = new Inventory();
+		initilizeCatalogInventory(catalog, inventory);
+		return inventory;
 	}
 
 	@Override
 	public ArrayList<Notification> getNotifications() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	private void initializeCustomerAccountArrayList(ArrayList<CustomerAccount> accounts) {
+		CustomerAccount account;
+		String[] names = {"Adams John", "Wallace William", "Morris Henry", "Edison Thomas", "Tesla Nikola", "Leathermen Kyle", "Sam Josiah", "Cesario Sam", "Hake Don", "Presley Elvis"};
+		for(int i = 0; i<10; i++) {
+			account = new CustomerAccount();
+			account.setAccountNumber("GHIJKL"+i);
+			account.setName(names[i]);
+			LoginInfo login = new LoginInfo();
+			login.setPassword("password"+i);
+			login.setUserName("user"+i);
+			account.setLogin(login);
+			accounts.add(account);
+		}
+	}
+	
+	private void initializeCustomerLoginArrayList(ArrayList<LoginInfo> logins) {
+		ArrayList<CustomerAccount> accounts = getCustomerAccounts();
+		Iterator<CustomerAccount> i = accounts.iterator();
+		while(i.hasNext()) {
+			Account account = i.next();
+			System.out.println("initilize customer Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getName());
+			logins.add(account.getLogin());
+		}
 	}
 	
 	private void initializeEmployeeAccountArrayList(ArrayList<EmployeeAccount> accounts) {
@@ -106,7 +135,7 @@ public class fakeDatabase implements database{
 			accounts.add(account);
 		}
 	}
-	
+
 	private void initializeEmployeeLoginArrayList(ArrayList<LoginInfo> logins) {
 		ArrayList<EmployeeAccount> accounts = getEmployeeAccounts();
 		Iterator<EmployeeAccount> i = accounts.iterator();
@@ -116,19 +145,37 @@ public class fakeDatabase implements database{
 			logins.add(account.getLogin());
 		}
 	}
-
-	private void initializeCustomerAccountArrayList(ArrayList<CustomerAccount> accounts) {
-		CustomerAccount account;
-		String[] names = {"Adams John", "Wallace William", "Morris Henry", "Edison Thomas", "Tesla Nikola", "Leathermen Kyle", "Sam Josiah", "Cesario Sam", "Hake Don", "Presley Elvis"};
-		for(int i = 0; i<10; i++) {
-			account = new CustomerAccount();
-			account.setAccountNumber("GHIJKL"+i);
-			account.setName(names[i]);
-			LoginInfo login = new LoginInfo();
-			login.setPassword("password"+i);
-			login.setUserName("user"+i);
-			account.setLogin(login);
-			accounts.add(account);
+	
+	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
+		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
+		System.out.println("Initilizing Inventory and Catalog");
+		for(int i = 0; i<itemNames.length; i++) {
+			Item item = new Item();
+			item.setItemName(itemNames[i]);
+			item.setUPC(itemNames[i]+i);
+			item.setPrice(11.1*i);
+			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
+			System.out.println(item.getDescription());
+			item.setLocation("A"+i+"B"+(5-1));
+			catalog.setItemKey(item);
+			inventory.setItemQuantity(item.getUPC(), i);
 		}
+		
+		this.setVisability(2);
 	}
+	
+	public void setVisability(int x) {
+		System.out.println("Setting visability");
+		ArrayList<String> less = new ArrayList<String>();
+		ArrayList<String> more = new ArrayList<String>();
+		inventory.returnGreaterorLess(x, more, less);
+		for(int i = 0; i<more.size(); i++) {
+			catalog.getItem(more.get(i)).setVisable(true);
+		}
+		for(int j = 0; j<less.size(); j++) {
+			catalog.getItem(less.get(j)).setVisable(false);
+		}
+		
+	}
+
 }
