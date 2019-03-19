@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 
 public class CheckOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,6 +31,7 @@ public class CheckOutServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("CheckOut Servlet: doPost");
+		Database db = InitDatabase.init();
 		SystemController system = new SystemController();
 		// Forward to view to render the result HTML document
 		if(req.getParameter("thankYou")!=null) {

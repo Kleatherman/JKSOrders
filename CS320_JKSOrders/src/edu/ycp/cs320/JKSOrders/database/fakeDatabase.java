@@ -178,4 +178,19 @@ public class fakeDatabase implements Database{
 		
 	}
 
+	@Override
+	public ArrayList<Item> getVisibleItems() {
+		ArrayList<Item> visibleItems = new ArrayList<Item>();
+		Catalog catalog = getCatalog();
+		Iterator<String> i = catalog.getItemMap().keySet().iterator();
+		while(i.hasNext()) {
+			Item item = catalog.getItem(i.next());
+			if(item.isVisable()) {
+				visibleItems.add(item);
+				System.out.println(item.getDescription());
+			}
+		}
+		return visibleItems;
+	}
+
 }
