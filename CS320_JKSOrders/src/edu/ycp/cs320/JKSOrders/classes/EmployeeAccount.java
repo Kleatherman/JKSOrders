@@ -8,18 +8,30 @@ public class EmployeeAccount extends Account{
 		super();
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isManager() {
 		return manager;
 	}
 
+	/**
+	 * @param manager
+	 */
 	public void setManager(boolean manager) {
 		this.manager = manager;
 	}
 
+	/**
+	 * @return
+	 */
 	public Stats getStats() {
 		return stats;
 	}
 
+	/**
+	 * @param stats
+	 */
 	public void setStats(Stats stats) {
 		this.stats = stats;
 	}
