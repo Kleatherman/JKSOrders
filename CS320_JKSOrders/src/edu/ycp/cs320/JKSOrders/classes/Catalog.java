@@ -10,8 +10,8 @@ public class Catalog {
 		ItemMap = new TreeMap<String, Item>();
 	}
 	/**
-	 * @param upc
-	 * @return
+	 * @param upc key assigned to i
+	 * @return item with given upc
 	 */
 	public Item getItem(String upc) {
 		if(ItemMap.containsKey(upc)) {
@@ -21,14 +21,14 @@ public class Catalog {
 	}
 
 	/**
-	 * @param item
+	 * @param item item to set
 	 */
 	public void setItem(Item item) {
 		ItemMap.put(item.getUPC(), item);
 	}
 
 	/**
-	 * @return
+	 * @return A Map of Items, with a upc as each item key
 	 */
 	public Map<String, Item> getItemMap() {
 		return ItemMap;
