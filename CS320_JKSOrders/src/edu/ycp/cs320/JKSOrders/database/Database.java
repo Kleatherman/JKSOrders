@@ -9,7 +9,7 @@ import edu.ycp.cs320.JKSOrders.classes.Inventory;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 
-public interface database {
+public interface Database {
 
 	public ArrayList<EmployeeAccount> getEmployeeAccounts();
 	
