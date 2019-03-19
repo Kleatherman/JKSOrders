@@ -25,6 +25,9 @@ public class fakeDatabase implements database{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.ycp.cs320.JKSOrders.database.database#getCatalog()
+	 */
 	@Override
 	public Catalog getCatalog() {
 		catalog = new Catalog();
@@ -33,6 +36,9 @@ public class fakeDatabase implements database{
 		return catalog;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.ycp.cs320.JKSOrders.database.database#getCustomerAccounts()
+	 */
 	@Override
 	public ArrayList<CustomerAccount> getCustomerAccounts() {
 		customerAccounts = new ArrayList<CustomerAccount>();
@@ -40,6 +46,9 @@ public class fakeDatabase implements database{
 		return customerAccounts;
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.ycp.cs320.JKSOrders.database.database#getCustomerLoginInfo()
+	 */
 	@Override
 	public ArrayList<LoginInfo> getCustomerLoginInfo() {
 		customerLogin = new ArrayList<LoginInfo>();
@@ -47,6 +56,9 @@ public class fakeDatabase implements database{
 		return customerLogin;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.ycp.cs320.JKSOrders.database.database#getEmployeeAccounts()
+	 */
 	@Override
 	public ArrayList<EmployeeAccount> getEmployeeAccounts(){
 		employeeAccounts = new ArrayList<EmployeeAccount>();
@@ -54,6 +66,9 @@ public class fakeDatabase implements database{
 		return employeeAccounts;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.ycp.cs320.JKSOrders.database.database#getEmployeeLoginInfo()
+	 */
 	@Override
 	public ArrayList<LoginInfo> getEmployeeLoginInfo() {
 		employeeLogin = new ArrayList<LoginInfo>();
@@ -61,6 +76,9 @@ public class fakeDatabase implements database{
 		return employeeLogin;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.ycp.cs320.JKSOrders.database.database#getInventory()
+	 */
 	@Override
 	public Inventory getInventory() {
 		catalog = new Catalog();
@@ -69,6 +87,9 @@ public class fakeDatabase implements database{
 		return inventory;
 	}
 
+	/* (non-Javadoc)
+	 * @see edu.ycp.cs320.JKSOrders.database.database#getNotifications()
+	 */
 	@Override
 	public ArrayList<Notification> getNotifications() {
 		// TODO Auto-generated method stub
@@ -164,6 +185,9 @@ public class fakeDatabase implements database{
 		this.setVisability(2);
 	}
 	
+	/**
+	 * @param x
+	 */
 	public void setVisability(int x) {
 		System.out.println("Setting visability");
 		ArrayList<String> less = new ArrayList<String>();

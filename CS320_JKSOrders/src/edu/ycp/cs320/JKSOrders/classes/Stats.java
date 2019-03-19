@@ -9,21 +9,39 @@ public class Stats {
 	private double itemsperMin;
 	
 	
+	/**
+	 * @return
+	 */
 	public double getTimeTaken() {
 		return timeTaken;
 	}
+	/**
+	 * @param timeTaken
+	 */
 	public void setTimeTaken(double timeTaken) {
 		this.timeTaken = timeTaken;
 	}
+	/**
+	 * @return
+	 */
 	public int getNumitemsProcessed() {
 		return numitemsProcessed;
 	}
+	/**
+	 * @param numitemsProcessed
+	 */
 	public void setNumitemsProcessed(int numitemsProcessed) {
 		this.numitemsProcessed = numitemsProcessed;
 	}
+	/**
+	 * @return
+	 */
 	public double getItemsperMin() {
 		return itemsperMin;
 	}
+	/**
+	 * @param itemsperMin
+	 */
 	public void setItemsperMin(double itemsperMin) {
 		this.itemsperMin = itemsperMin;
 	}

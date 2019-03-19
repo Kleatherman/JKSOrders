@@ -11,17 +11,38 @@ import edu.ycp.cs320.JKSOrders.classes.Notification;
 
 public interface database {
 
+	/**
+	 * @return
+	 */
 	public ArrayList<EmployeeAccount> getEmployeeAccounts();
 	
+	/**
+	 * @return
+	 */
 	public ArrayList<CustomerAccount> getCustomerAccounts();
 	
+	/**
+	 * @return
+	 */
 	public ArrayList<LoginInfo> getEmployeeLoginInfo();
 	
+	/**
+	 * @return
+	 */
 	public ArrayList<LoginInfo> getCustomerLoginInfo();
 	
+	/**
+	 * @return
+	 */
 	public Inventory getInventory();
 	
+	/**
+	 * @return
+	 */
 	public Catalog getCatalog();
 	
+	/**
+	 * @return
+	 */
 	public ArrayList<Notification> getNotifications();
 }

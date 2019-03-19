@@ -38,6 +38,11 @@ public class SystemController {
 		initilizeCatalogInventory(catalog, inventory);
 	}
 	
+	/**
+	 * @param loginTest
+	 * @param logins
+	 * @return
+	 */
 	public boolean verifyEmployeeLoginInfo(LoginInfo loginTest, ArrayList<LoginInfo> logins) {
 		/*System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
 		Iterator<LoginInfo> i = employeeLogin.iterator();
@@ -58,6 +63,10 @@ public class SystemController {
 		return false;
 	}
 	
+	/**
+	 * @param loginTest
+	 * @return
+	 */
 	public boolean verifyCustomerLoginInfo(LoginInfo loginTest) {
 		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
 		Iterator<LoginInfo> i = customerLogin.iterator();
@@ -77,6 +86,9 @@ public class SystemController {
 		}
 	}
 
+	/**
+	 * @param item
+	 */
 	public void updateCatalogItem(Item item) {
 		catalog.setItem(item);		
 	}
@@ -85,6 +97,9 @@ public class SystemController {
 		
 	}
 	
+	/**
+	 * @param x
+	 */
 	public void setVisability(int x) {
 		System.out.println("Setting visability");
 		ArrayList<String> less = new ArrayList<String>();
