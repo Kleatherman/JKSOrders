@@ -9,7 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
-import edu.ycp.cs320.JKSOrders.database.database;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.database.fakeDatabase;
 
 
@@ -29,7 +30,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		database db = new fakeDatabase();
+		Database db = InitDatabase.init();
 		System.out.println("EmployeeLogin Servlet: doPost");
 		SystemController system = new SystemController();
 

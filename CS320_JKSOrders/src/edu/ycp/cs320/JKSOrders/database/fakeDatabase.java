@@ -12,7 +12,7 @@ import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 
-public class fakeDatabase implements database{
+public class fakeDatabase implements Database{
 	private Catalog catalog;
 	private ArrayList<CustomerAccount> customerAccounts;
 	private ArrayList<LoginInfo> customerLogin;

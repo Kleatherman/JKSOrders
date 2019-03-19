@@ -58,9 +58,18 @@ public class SystemController {
 		return false;
 	}
 	
-	public boolean verifyCustomerLoginInfo(LoginInfo loginTest) {
-		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
+	public boolean verifyCustomerLoginInfo(LoginInfo loginTest, ArrayList<LoginInfo> logins) {
+		/*System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
 		Iterator<LoginInfo> i = customerLogin.iterator();
+		while(i.hasNext()) {
+			if(i.next().equals(loginTest)) {
+				return true;
+			}
+		}
+		return false;*/
+		
+		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
+		Iterator<LoginInfo> i = logins.iterator();
 		while(i.hasNext()) {
 			if(i.next().equals(loginTest)) {
 				return true;
