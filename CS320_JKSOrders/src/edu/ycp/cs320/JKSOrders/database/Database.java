@@ -50,4 +50,6 @@ public interface Database {
 	public ArrayList<Item> getVisibleItems();
 	
 	public void setVisibility(int x);
+	
+	public void addNotification(Notification notify);
 }
