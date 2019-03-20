@@ -10,7 +10,7 @@ public class CustomerAccount extends Account{
 	}
 	
 	/**
-	 * @return
+	 * @return Customers Phone Number
 	 */
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -24,28 +24,28 @@ public class CustomerAccount extends Account{
 	}
 	
 	/**
-	 * @return
+	 * @return email associated with account
 	 */
 	public String getEmail() {
 		return email;
 	}
 	
 	/**
-	 * @param email
+	 * @param email email to set
 	 */
 	public void setEmail(String email) {
 		this.email = email;
 	}
 	
 	/**
-	 * @return
+	 * @return Customers creditCard
 	 */
 	public CreditCard getCreditCard() {
 		return creditCard;
 	}
 	
 	/**
-	 * @param creditCard
+	 * @param creditCard CreditCard to set
 	 */
 	public void setCreditCard(CreditCard creditCard) {
 		this.creditCard = creditCard;
