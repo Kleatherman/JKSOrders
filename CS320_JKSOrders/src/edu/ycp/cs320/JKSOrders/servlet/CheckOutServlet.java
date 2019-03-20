@@ -32,13 +32,12 @@ public class CheckOutServlet extends HttpServlet {
 		
 		System.out.println("CheckOut Servlet: doPost");
 		Database db = InitDatabase.init();
-		SystemController system = new SystemController();
 		// Forward to view to render the result HTML document
 		if(req.getParameter("thankYou")!=null) {
 			req.getRequestDispatcher("/_view/thankYou.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cancel")!=null) {
-			ArrayList<Item> items = system.getVisibleItems();
+			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
 			for(int i =0; i<items.size(); i++) {
 				req.setAttribute("item"+i, items.get(i));

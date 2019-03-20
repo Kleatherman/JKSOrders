@@ -27,4 +27,6 @@ public interface Database {
 	public ArrayList<Notification> getNotifications();
 	
 	public ArrayList<Item> getVisibleItems();
+	
+	public void setVisibility(int x);
 }

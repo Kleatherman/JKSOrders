@@ -181,7 +181,7 @@ public class fakeDatabase implements Database{
 	@Override
 	public ArrayList<Item> getVisibleItems() {
 		ArrayList<Item> visibleItems = new ArrayList<Item>();
-		Catalog catalog = getCatalog();
+		setVisibility(3);
 		Iterator<String> i = catalog.getItemMap().keySet().iterator();
 		while(i.hasNext()) {
 			Item item = catalog.getItem(i.next());
@@ -191,6 +191,21 @@ public class fakeDatabase implements Database{
 			}
 		}
 		return visibleItems;
+	}
+
+	
+	@Override
+	public void setVisibility(int x) {
+		ArrayList<String> less = new ArrayList<String>();
+		ArrayList<String> more = new ArrayList<String>();
+		initilizeCatalogInventory(catalog, inventory);
+		inventory.returnGreaterorLess(x, more, less);
+		for(int i = 0; i<more.size(); i++) {
+			catalog.getItem(more.get(i)).setVisable(true);
+		}
+		for(int j = 0; j<less.size(); j++) {
+			catalog.getItem(less.get(j)).setVisable(false);
+		}
 	}
 
 }
