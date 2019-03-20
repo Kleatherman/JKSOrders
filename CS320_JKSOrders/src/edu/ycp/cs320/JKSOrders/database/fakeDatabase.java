@@ -193,7 +193,6 @@ public class fakeDatabase implements Database{
 		return visibleItems;
 	}
 
-	
 	@Override
 	public void setVisibility(int x) {
 		ArrayList<String> less = new ArrayList<String>();
@@ -205,6 +204,26 @@ public class fakeDatabase implements Database{
 		}
 		for(int j = 0; j<less.size(); j++) {
 			catalog.getItem(less.get(j)).setVisable(false);
+		}
+	}
+
+	@Override
+	public void addNotification(Notification notify) {
+		initilizeNotificationArrayList();
+		notifications.add(notify);
+	}
+	
+	private void initilizeNotificationArrayList() {
+		notifications = new ArrayList<Notification>();
+		Notification notify;
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		for(int i = 0; i<3; i++) {
+			notify = new Notification();
+			notify.addDestinationName(employeeAccounts.get(i).getName());
+			notify.addDestinationName(employeeAccounts.get(i+3).getName());
+			notify.addDestinationName(employeeAccounts.get(i+6).getName());
+			notify.setUrgency(i==2);
+			notify.setMessage("This is notification "+i+". Please respond ASAP!");
 		}
 	}
 

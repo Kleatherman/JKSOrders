@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 
 
 
@@ -30,6 +32,7 @@ public class WorkPageServlet  extends HttpServlet{
 			throws ServletException, IOException {
 		Notification notify = new Notification();
 		SystemController system = new SystemController();
+		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
 		
 		if(req.getParameter("notify")!=null) {

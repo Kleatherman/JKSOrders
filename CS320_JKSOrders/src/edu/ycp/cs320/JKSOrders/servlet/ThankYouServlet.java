@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 
 
 public class ThankYouServlet extends HttpServlet {
@@ -28,12 +30,11 @@ public class ThankYouServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		Database db = InitDatabase.init();
 		System.out.println("ThankYou Servlet: doPost");
-		SystemController system = new SystemController();
 
 		if(req.getParameter("storePage")!= null) {
-			ArrayList<Item> items = system.getVisibleItems();
+			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
 			for(int i =0; i<items.size(); i++) {
 				req.setAttribute("item"+i, items.get(i));
