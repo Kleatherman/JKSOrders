@@ -12,7 +12,7 @@ import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 
-public class fakeDatabase implements database{
+public class fakeDatabase implements Database{
 	private Catalog catalog;
 	private ArrayList<CustomerAccount> customerAccounts;
 	private ArrayList<LoginInfo> customerLogin;
@@ -200,6 +200,36 @@ public class fakeDatabase implements database{
 			catalog.getItem(less.get(j)).setVisable(false);
 		}
 		
+	}
+
+	@Override
+	public ArrayList<Item> getVisibleItems() {
+		ArrayList<Item> visibleItems = new ArrayList<Item>();
+		setVisibility(3);
+		Iterator<String> i = catalog.getItemMap().keySet().iterator();
+		while(i.hasNext()) {
+			Item item = catalog.getItem(i.next());
+			if(item.isVisable()) {
+				visibleItems.add(item);
+				System.out.println(item.getDescription());
+			}
+		}
+		return visibleItems;
+	}
+
+	
+	@Override
+	public void setVisibility(int x) {
+		ArrayList<String> less = new ArrayList<String>();
+		ArrayList<String> more = new ArrayList<String>();
+		initilizeCatalogInventory(catalog, inventory);
+		inventory.returnGreaterorLess(x, more, less);
+		for(int i = 0; i<more.size(); i++) {
+			catalog.getItem(more.get(i)).setVisable(true);
+		}
+		for(int j = 0; j<less.size(); j++) {
+			catalog.getItem(less.get(j)).setVisable(false);
+		}
 	}
 
 }
