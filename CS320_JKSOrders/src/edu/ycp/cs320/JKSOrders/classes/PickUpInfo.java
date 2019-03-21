@@ -5,50 +5,47 @@ public class PickUpInfo {
 	private String StoreID;
 	private Car car;
 	
-	/**
-	 * 
-	 */
+	
 	public PickUpInfo(){
 		
 	}
 
 	/**
-	 * @return
+	 * @return time order is to be picked up
 	 */
 	public double getTime() {
 		return time;
 	}
-
 	/**
-	 * @param time
+	 * @param time set time order is to be picked up
 	 */
 	public void setTime(double time) {
 		this.time = time;
 	}
 
 	/**
-	 * @return
+	 * @return store ID of store order is to be picked up at
 	 */
 	public String getStoreID() {
 		return StoreID;
 	}
 
 	/**
-	 * @param storeID
+	 * @param storeID store ID of store order is to be picked up at to set
 	 */
 	public void setStoreID(String storeID) {
 		StoreID = storeID;
 	}
 
 	/**
-	 * @return
+	 * @return Car class describing customers car
 	 */
 	public Car getCar() {
 		return car;
 	}
 
 	/**
-	 * @param car
+	 * @param car Car class describing customers car to set
 	 */
 	public void setCar(Car car) {
 		this.car = car;

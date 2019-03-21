@@ -9,34 +9,38 @@ public class LoginInfo{
 	}
 
 	/**
-	 * @return
+	 * @return username associated with login info
 	 */
 	public String getUserName() {
 		return userName;
 	}
 
 	/**
-	 * @param userName
+	 * @param userName username to set
 	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
 	/**
-	 * @return
+	 * @return password associated with login info
 	 */
 	public String getPassword() {
 		return password;
 	}
 
 	/**
-	 * @param password
+	 * @param password password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	@Override
+	/**
+	 * This method is used to check the password & login accuracy
+	 * @param obj object being tested against
+	 */
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
