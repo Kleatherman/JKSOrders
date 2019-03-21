@@ -11,6 +11,7 @@ import edu.ycp.cs320.JKSOrders.classes.Inventory;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.database.Database;
 
 
 public class SystemController {
@@ -63,13 +64,27 @@ public class SystemController {
 		return false;
 	}
 	
+<<<<<<< HEAD
+	public boolean verifyCustomerLoginInfo(LoginInfo loginTest, ArrayList<LoginInfo> logins) {
+		/*System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
+=======
 	/**
 	 * @param loginTest
 	 * @return
 	 */
 	public boolean verifyCustomerLoginInfo(LoginInfo loginTest) {
 		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
+>>>>>>> master
 		Iterator<LoginInfo> i = customerLogin.iterator();
+		while(i.hasNext()) {
+			if(i.next().equals(loginTest)) {
+				return true;
+			}
+		}
+		return false;*/
+		
+		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
+		Iterator<LoginInfo> i = logins.iterator();
 		while(i.hasNext()) {
 			if(i.next().equals(loginTest)) {
 				return true;
@@ -78,12 +93,8 @@ public class SystemController {
 		return false;
 	}
 	
-	public void createNotification(Notification notify) {
-		notifications.add(notify);
-		System.out.println(notify.getMessage());
-		if(notify.getUrgency()) {
-			System.out.println("Urgent Message!");
-		}
+	public void createNotification(Notification notify, Database db) {
+		db.addNotification(notify);
 	}
 
 	/**

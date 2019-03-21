@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 
 public class CheckOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -29,13 +31,13 @@ public class CheckOutServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("CheckOut Servlet: doPost");
-		SystemController system = new SystemController();
+		Database db = InitDatabase.init();
 		// Forward to view to render the result HTML document
 		if(req.getParameter("thankYou")!=null) {
 			req.getRequestDispatcher("/_view/thankYou.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cancel")!=null) {
-			ArrayList<Item> items = system.getVisibleItems();
+			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
 			for(int i =0; i<items.size(); i++) {
 				req.setAttribute("item"+i, items.get(i));
