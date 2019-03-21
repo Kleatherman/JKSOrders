@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 
 
 public class CustomerLoginServlet extends HttpServlet {
@@ -29,20 +31,10 @@ public class CustomerLoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		Database db = InitDatabase.init();
 		System.out.println("CustomerLogin Servlet: doPost");
-		
-
-		// holds the error message text, if there is any
-		String errorMessage = null;
-		System.out.println("We are going to try to initilize the system");
 		SystemController system = new SystemController();
-		System.out.println("We initilized the system!!!");
-		// result of calculation goes here
-		 
-		
-		// decode POSTed form parameters and dispatch to controller
-
+		String errorMessage = null;
 		System.out.println("We are going to try to get the password and email address out of the webpage");
 		try {
 			String email_address  = req.getParameter("emailAddress");
@@ -69,7 +61,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
-			if(!system.verifyCustomerLoginInfo(login)) {
+			if(!system.verifyCustomerLoginInfo(login, db.getCustomerLoginInfo())) {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {

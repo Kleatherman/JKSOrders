@@ -6,10 +6,11 @@ import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Inventory;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 
-public interface database {
+public interface Database {
 
 	/**
 	 * @return
@@ -45,4 +46,10 @@ public interface database {
 	 * @return
 	 */
 	public ArrayList<Notification> getNotifications();
+	
+	public ArrayList<Item> getVisibleItems();
+	
+	public void setVisibility(int x);
+	
+	public void addNotification(Notification notify);
 }
