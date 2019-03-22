@@ -44,7 +44,7 @@ public class WorkPageServlet  extends HttpServlet{
 				notify.setUrgency(false);
 			}
 			notify.setMessage(message);
-			system.createNotification(notify);
+			system.createNotification(notify, db);
 			System.out.println("We are about to go back to workPage");
 			req.setAttribute("message", message);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
