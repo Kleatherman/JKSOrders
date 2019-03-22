@@ -26,7 +26,7 @@ public class InventoryTest {
 		assertEquals(null,inventory.returnGreaterorLess(x, greater, less));
 		
 	}
-	
+	@Test
 	public void testsetQuanityMap() {
 		Map<String, Integer> quanityMap = null;
 		inventory.setQuanityMap(quanityMap);

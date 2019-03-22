@@ -27,7 +27,7 @@ public class NotificationTest {
 	
 	@Test
 	public void testSetDestination() {
-		ArrayList<String> destinationNames = null;
+		ArrayList<String> destinationNames = new ArrayList<String>();
 		notification.setDestination(destinationNames);
 		assertEquals(destinationNames, notification.getDestination());
 	}
@@ -40,14 +40,19 @@ public class NotificationTest {
 	
 	@Test
 	public void testAddDestinationName() {
+		ArrayList<String> destinationNames = new ArrayList<String>();
+		notification.setDestination(destinationNames);
 		notification.addDestinationName("name");
 		assertEquals("name", notification.getDestination().get(0));
 	}
 	
 	@Test
 	public void testRemoveDestination() {
+		ArrayList<String> destinationNames = new ArrayList<String>();
+		notification.setDestination(destinationNames);
+		notification.addDestinationName("name");
 		notification.removeDestinationName("name");
-		assertTrue(null==notification.getDestination().get(0));
+		assertTrue(notification.getDestination().isEmpty());
 	}
 	
 }

@@ -2,7 +2,6 @@ package edu.ycp.cs320.JKSOrders.classes;
 
 import java.util.ArrayList;
 
-import edu.ycp.cs320.booksdb.model.Author;
 
 public class Notification {
 	private String message;
