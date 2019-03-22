@@ -7,10 +7,10 @@ package edu.ycp.cs320.JKSOrders.model;
 //    a call to model.getMin()
 // when the JSP specifies if(game.done), that gets converted to
 //    a call to model.isDone()
-public class GuessingGame {
+public class CheckOut {
 	private int min, max;
 	
-	public GuessingGame() {
+	public CheckOut() {
 	}
 	
 	public void setMin(int min) {
@@ -47,4 +47,7 @@ public class GuessingGame {
 		this.min = guess+1;
 	}
 
+	public static void main(String[] args) {
+		
+	}
 }

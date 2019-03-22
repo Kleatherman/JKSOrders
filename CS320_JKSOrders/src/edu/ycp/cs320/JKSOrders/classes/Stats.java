@@ -10,37 +10,37 @@ public class Stats {
 	
 	
 	/**
-	 * @return
+	 * @return time taken to process a task
 	 */
 	public double getTimeTaken() {
 		return timeTaken;
 	}
 	/**
-	 * @param timeTaken
+	 * @param timeTaken time taken to process task to set
 	 */
 	public void setTimeTaken(double timeTaken) {
 		this.timeTaken = timeTaken;
 	}
 	/**
-	 * @return
+	 * @return number of items processed 
 	 */
 	public int getNumitemsProcessed() {
 		return numitemsProcessed;
 	}
 	/**
-	 * @param numitemsProcessed
+	 * @param numitemsProcessed number of items processed to set
 	 */
 	public void setNumitemsProcessed(int numitemsProcessed) {
 		this.numitemsProcessed = numitemsProcessed;
 	}
 	/**
-	 * @return
+	 * @return items processed per minute
 	 */
 	public double getItemsperMin() {
 		return itemsperMin;
 	}
 	/**
-	 * @param itemsperMin
+	 * @param itemsperMin items processed per minute to set
 	 */
 	public void setItemsperMin(double itemsperMin) {
 		this.itemsperMin = itemsperMin;
