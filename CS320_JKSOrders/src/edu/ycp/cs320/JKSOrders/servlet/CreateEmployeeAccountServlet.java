@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.controller.CreateEmployeeAccountController;
+import edu.ycp.cs320.JKSOrders.model.CreateEmployeeAccount;
+
 
 public class CreateEmployeeAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -17,6 +20,8 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 
 		System.out.println("Create Employee Account Servlet: doGet");	
 		
+		
+		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
 	}
@@ -26,9 +31,26 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		System.out.println("Create Employee Account Servlet: doPost");
+		
+
+		// create model - model does not persist between requests
+		// must recreate it each time a Post comes in
+		CreateEmployeeAccount model = new CreateEmployeeAccount();
+
+		// create controller - controller does not persist between requests
+		// must recreate it each time a Post comes in
+		CreateEmployeeAccountController controller = new CreateEmployeeAccountController();
+
+		// assign model reference to controller so that controller can access model
+		controller.setModel(model);
+
+		// call JSP to generate empty form
+		req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
+		
 		if(req.getParameter("loginPage")!=null) {
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
+		req.setAttribute("model", model);
 
 	}
 }

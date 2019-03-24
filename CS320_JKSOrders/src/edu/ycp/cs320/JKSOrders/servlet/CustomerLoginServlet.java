@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+
+import edu.ycp.cs320.JKSOrders.controller.CustomerLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.CustomerLogin;
 
 
 public class CustomerLoginServlet extends HttpServlet {
@@ -33,6 +36,21 @@ public class CustomerLoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		Database db = InitDatabase.init();
 		System.out.println("CustomerLogin Servlet: doPost");
+		
+
+		// create model - model does not persist between requests
+		// must recreate it each time a Post comes in
+		CustomerLogin model = new CustomerLogin();
+
+		// create controller - controller does not persist between requests
+		// must recreate it each time a Post comes in
+		CustomerLoginController controller = new CustomerLoginController();
+
+		// assign model reference to controller so that controller can access model
+		controller.setModel(model);
+
+		
+		
 		SystemController system = new SystemController();
 		String errorMessage = null;
 		System.out.println("We are going to try to get the password and email address out of the webpage");
@@ -40,7 +58,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			String email_address  = req.getParameter("emailAddress");
 			String password       = req.getParameter("password");
 			System.out.println("We got the password and email address out of the webpage");
-			System.out.println("Password = "+password);
+			System.out.println("Password = "+ password);
 			System.out.println("UserName = " + email_address);
 			
 			LoginInfo login = new LoginInfo();
@@ -54,6 +72,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			// must create the controller each time, since it doesn't persist between POSTs
 			// the view does not alter data, only controller methods should be used for that
 			// thus, always call a controller method to operate on the data
+			
 			if (req.getParameter("createCustomerAccount")!=null) {
 				System.out.println("We're headed to customer account JSP");
 				req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
