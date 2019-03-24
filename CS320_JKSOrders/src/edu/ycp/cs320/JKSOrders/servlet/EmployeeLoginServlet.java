@@ -8,10 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.controller.EmployeeLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
-import edu.ycp.cs320.JKSOrders.database.fakeDatabase;
+import edu.ycp.cs320.JKSOrders.model.EmployeeLogin;
 
 
 public class EmployeeLoginServlet extends HttpServlet {
@@ -32,6 +33,19 @@ public class EmployeeLoginServlet extends HttpServlet {
 			throws ServletException, IOException {
 		Database db = InitDatabase.init();
 		System.out.println("EmployeeLogin Servlet: doPost");
+		
+		// create model - model does not persist between requests
+		// must recreate it each time a Post comes in
+		EmployeeLogin model = new EmployeeLogin();
+
+		// create controller - controller does not persist between requests
+		// must recreate it each time a Post comes in
+		EmployeeLoginController controller = new EmployeeLoginController();
+
+		// assign model reference to controller so that controller can access model
+		controller.setModel(model);
+
+		
 		SystemController system = new SystemController();
 
 		// holds the error message text, if there is any
