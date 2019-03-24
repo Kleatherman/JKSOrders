@@ -1,5 +1,7 @@
 package edu.ycp.cs320.JKSOrders.model;
 
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+
 // model class for GuessingGame
 // only the controller should be allowed to call the set methods
 // the JSP will call the "get" and "is" methods implicitly
@@ -8,46 +10,13 @@ package edu.ycp.cs320.JKSOrders.model;
 // when the JSP specifies if(game.done), that gets converted to
 //    a call to model.isDone()
 public class EmployeeLogin {
-	private int min, max;
+	
+LoginInfo login = new LoginInfo();
 	
 	public EmployeeLogin() {
-	}
-	
-	public void setMin(int min) {
-		this.min = min;
-	}
-	
-	public int getMin() {
-		return min;
-	}
-	
-	public void setMax(int max) {
-		this.max = max;
-	}
-	
-	public int getMax() {
-		return max;
-	}
-	
-	public boolean isDone() {
-		System.out.println("model.isDone");
-		return min == max;
-	}
-	
-	public int getGuess() {
-		System.out.println("model.getGuess");
-		return min + (max-min)/2;
-	}
-	
-	public void setIsLessThan(int guess) {
-		this.max = guess-1;
-	}
-	
-	public void setIsGreaterThan(int guess) {
-		this.min = guess+1;
-	}
-
-	public static void main(String[] args) {
 		
 	}
-}
+	
+	}
+	
+	
