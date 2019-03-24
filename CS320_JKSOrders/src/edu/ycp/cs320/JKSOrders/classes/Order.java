@@ -10,61 +10,61 @@ public class Order {
 	private boolean pickupOrder;
 	private Account account;
 	/**
-	 * @return
+	 * @return ArrayList of items in order
 	 */
 	public ArrayList<Item> getItemlist() {
 		return Itemlist;
 	}
 	/**
-	 * @param itemlist
+	 * @param itemlist ArrayList of items in order to set
 	 */
 	public void setItemlist(ArrayList<Item> itemlist) {
 		Itemlist = itemlist;
 	}
 	/**
-	 * @return
+	 * @return total price of order
 	 */
 	public double getTotalPrice() {
 		return totalPrice;
 	}
 	/**
-	 * @param totalPrice
+	 * @param totalPrice total price of order to set
 	 */
 	public void setTotalPrice(double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 	/**
-	 * @return
+	 * @return quantity map of items in order
 	 */
 	public Map<String, Integer> getQuantityMap() {
 		return QuantityMap;
 	}
 	/**
-	 * @param quantityMap
+	 * @param quantityMap  quantity map of items in order to set 
 	 */
 	public void setQuantityMap(Map<String, Integer> quantityMap) {
 		QuantityMap = quantityMap;
 	}
 	/**
-	 * @return
+	 * @return whether the order is a pickup order or an inventory order t/f
 	 */
 	public boolean isPickupOrder() {
 		return pickupOrder;
 	}
 	/**
-	 * @param pickupOrder
+	 * @param pickupOrder sets whether item is a pickup order or inventory order
 	 */
 	public void setPickupOrder(boolean pickupOrder) {
 		this.pickupOrder = pickupOrder;
 	}
 	/**
-	 * @return
+	 * @return returns pickup info for order
 	 */
 	public PickUpInfo getPickUpInfo() {
 		return account.getPickUpInfo();
 	}
 	/**
-	 * @return
+	 * @return get name on account associated with order
 	 */
 	public String getName() {
 		return account.getName();

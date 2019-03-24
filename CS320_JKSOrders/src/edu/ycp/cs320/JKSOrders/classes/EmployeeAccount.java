@@ -9,29 +9,29 @@ public class EmployeeAccount extends Account{
 	}
 
 	/**
-	 * @return
+	 * @return true if the employee is a manager
 	 */
 	public boolean isManager() {
 		return manager;
 	}
 
 	/**
-	 * @param manager
+	 * @param manager employee is manager t/f
 	 */
 	public void setManager(boolean manager) {
 		this.manager = manager;
 	}
 
 	/**
-	 * @return
+	 * @return employee Stats 
 	 */
 	public Stats getStats() {
 		return stats;
 	}
 
 	/**
-	 * @param stats
-	 */
+	 * @param stats employee Stats to set
+	 * 	 */
 	public void setStats(Stats stats) {
 		this.stats = stats;
 	}

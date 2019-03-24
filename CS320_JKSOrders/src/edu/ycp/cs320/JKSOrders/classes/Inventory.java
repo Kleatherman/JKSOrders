@@ -14,31 +14,31 @@ import java.util.TreeSet;
 		quantityMap = new TreeMap<String, Integer>();
 	}
 	/**
-	 * @return
+	 * @return map of item quantities with their upcs as keys 
 	 */
 	public Map<String, Integer> getQuanityMap() {
 		return quantityMap;
 	}
 
 	/**
-	 * @param quanityMap
+	 * @param quanityMap quantityMap (map of item quantities with their upcs as keys) to set
 	 */
 	public void setQuanityMap(Map<String, Integer> quanityMap) {
 		this.quantityMap = quanityMap;
 	}
 
 	/**
-	 * @param item
-	 * @param i
+	 * @param item item to set
+	 * @param i quantity to set
 	 */
 	public void setItemQuantity(String item, Integer i) {
 		quantityMap.put(item, i);
 	}
 	
 	/**
-	 * @param x
-	 * @param greater
-	 * @param less
+	 * @param less < x < greater
+	 * @param greater items where the quantity is greater than x
+	 * @param less	 items where the quantity is less than x		
 	 */
 	public void returnGreaterorLess(int x, ArrayList<String> greater, ArrayList<String> less) {
 		Set upcs = quantityMap.keySet();

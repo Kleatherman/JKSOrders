@@ -2,6 +2,7 @@ package edu.ycp.cs320.JKSOrders.classes;
 
 import java.util.ArrayList;
 
+
 public class Notification {
 	private String message;
 	private ArrayList<String> destinationNames;
@@ -12,56 +13,56 @@ public class Notification {
 	}
 
 	/**
-	 * @return
+	 * @return Notification message 
 	 */
 	public String getMessage() {
 		return message;
 	}
 
 	/**
-	 * @param message
+	 * @param message Notification message to set
 	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
 	/**
-	 * @return
+	 * @return An ArrrayList of item destinations
 	 */
 	public ArrayList<String> getDestination() {
 		return destinationNames;
 	}
 
 	/**
-	 * @param destination
+	 * @param destination ArrayList of Destinations to set
 	 */
 	public void setDestination(ArrayList<String> destination) {
 		this.destinationNames = destination;
 	}
 
 	/**
-	 * @return
+	 * @return urgency of the notification
 	 */
 	public Boolean getUrgency() {
 		return urgency;
 	}
 
 	/**
-	 * @param urgency
+	 * @param urgency urgency to set
 	 */
 	public void setUrgency(Boolean urgency) {
 		this.urgency = urgency;
 	}
 	
 	/**
-	 * @param name
+	 * @param name destination name to remove
 	 */
 	public void removeDestinationName(String name) {
-		
+		destinationNames.remove(name);
 	}
 	
 	/**
-	 * @param name
+	 * @param name destination name to add
 	 */
 	public void addDestinationName(String name) {
 		destinationNames.add(name);
