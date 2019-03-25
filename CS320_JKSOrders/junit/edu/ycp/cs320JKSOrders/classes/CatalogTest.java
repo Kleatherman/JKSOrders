@@ -3,6 +3,7 @@ package edu.ycp.cs320JKSOrders.classes;
 import static org.junit.Assert.*;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +20,8 @@ public class CatalogTest {
 	public void setUp() {
 		catalog = new Catalog();
 		item    = new Item();
+		itemMap = new TreeMap<String, Item>();
+		item.setUPC("0000");
 		
 		
 	}
@@ -26,19 +29,14 @@ public class CatalogTest {
 	@Test
 	public void testSetItem() {
 		catalog.setItem(item);
-		assertEquals(item,catalog.getItem());
+		assertEquals(item,catalog.getItem("0000"));
 	}
 	
-	@Test
-	public void testSetUPC() {
-		catalog.setUPC("825005043653");
-		assertEquals("825005043653", catalog.getUPC());
-	}
 	
 	@Test
 	public void testSetItemMap() {
 		catalog.setItemMap(itemMap);;
-		assertEquals(itemMap, catalog.getUPC());
+		assertEquals(itemMap, catalog.getItemMap());
 	}
 	
 

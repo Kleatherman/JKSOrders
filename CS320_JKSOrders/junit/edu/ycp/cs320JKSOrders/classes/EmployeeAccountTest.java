@@ -54,7 +54,7 @@ public class EmployeeAccountTest {
 			assertEquals(orders, employeeAccount.getOrders());
 		}
 		
-		@Test
+		
 		public void testRemoveOrder() {
 			Order order0 = new Order();
 			Order order1 = new Order();
@@ -66,7 +66,7 @@ public class EmployeeAccountTest {
 			assertEquals(2, employeeAccount.getOrders().size());
 		}
 		
-		@Test
+		
 		public void testaddOrder() {
 			Order order0 = new Order();
 			Order order1 = new Order();

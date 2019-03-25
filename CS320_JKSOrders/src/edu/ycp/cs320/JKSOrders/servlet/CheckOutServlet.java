@@ -14,8 +14,6 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CheckOut;
-import edu.ycp.cs320.lab02a_scesario.controller.GuessingGameController;
-import edu.ycp.cs320.lab02a_scesario.model.GuessingGame;
 
 public class CheckOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

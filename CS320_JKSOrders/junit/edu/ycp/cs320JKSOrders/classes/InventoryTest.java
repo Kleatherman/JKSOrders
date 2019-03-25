@@ -12,20 +12,20 @@ import edu.ycp.cs320.JKSOrders.classes.Inventory;
 
 public class InventoryTest {
 	Inventory inventory;
+	ArrayList<String> greater;
+	ArrayList<String> less;
 	
 	@Before
 	public void setUp() {
 		inventory = new Inventory();
 	}
 	
-	@Test
+	// Need to implement this method
 	public void testReturnGreaterOrLess() {
-		int x = 0;
-		ArrayList<String> greater = null;
-		ArrayList<String> less = null;
-		assertEquals(null,inventory.returnGreaterorLess(x, greater, less));
+	
 		
 	}
+	
 	@Test
 	public void testsetQuanityMap() {
 		Map<String, Integer> quanityMap = null;
