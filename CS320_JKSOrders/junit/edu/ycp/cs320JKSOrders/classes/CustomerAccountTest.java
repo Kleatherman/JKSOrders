@@ -75,7 +75,7 @@ public class CustomerAccountTest {
 		assertEquals(orders, customerAccount.getOrders());
 	}
 	
-	@Test
+	
 	public void testRemoveOrder() {
 		ArrayList<Order> orders = null;
 		customerAccount.setOrders(orders);

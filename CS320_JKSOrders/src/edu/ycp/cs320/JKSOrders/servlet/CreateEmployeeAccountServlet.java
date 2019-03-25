@@ -1,5 +1,4 @@
 package edu.ycp.cs320.JKSOrders.servlet;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
