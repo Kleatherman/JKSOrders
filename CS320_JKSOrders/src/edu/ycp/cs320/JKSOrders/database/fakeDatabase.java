@@ -182,30 +182,16 @@ public class fakeDatabase implements Database{
 			inventory.setItemQuantity(item.getUPC(), i);
 		}
 		
-		this.setVisability(2);
+		this.setVisibility(2);
 	}
 	
-	/**
-	 * @param x
-	 */
-	public void setVisability(int x) {
-		System.out.println("Setting visability");
-		ArrayList<String> less = new ArrayList<String>();
-		ArrayList<String> more = new ArrayList<String>();
-		inventory.returnGreaterorLess(x, more, less);
-		for(int i = 0; i<more.size(); i++) {
-			catalog.getItem(more.get(i)).setVisable(true);
-		}
-		for(int j = 0; j<less.size(); j++) {
-			catalog.getItem(less.get(j)).setVisable(false);
-		}
-		
-	}
 
 	@Override
 	public ArrayList<Item> getVisibleItems() {
+		catalog = new Catalog();
+		inventory = new Inventory();
+		initilizeCatalogInventory(catalog, inventory);
 		ArrayList<Item> visibleItems = new ArrayList<Item>();
-		setVisibility(3);
 		Iterator<String> i = catalog.getItemMap().keySet().iterator();
 		while(i.hasNext()) {
 			Item item = catalog.getItem(i.next());
@@ -221,7 +207,6 @@ public class fakeDatabase implements Database{
 	public void setVisibility(int x) {
 		ArrayList<String> less = new ArrayList<String>();
 		ArrayList<String> more = new ArrayList<String>();
-		initilizeCatalogInventory(catalog, inventory);
 		inventory.returnGreaterorLess(x, more, less);
 		for(int i = 0; i<more.size(); i++) {
 			catalog.getItem(more.get(i)).setVisable(true);
@@ -233,11 +218,13 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void addNotification(Notification notify) {
-		initilizeNotificationArrayList();
+		//initilizeNotificationArrayList();
+		notifications = new ArrayList<Notification>();
 		notifications.add(notify);
 	}
 	
 	private void initilizeNotificationArrayList() {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
 		notifications = new ArrayList<Notification>();
 		Notification notify;
 		initializeEmployeeAccountArrayList(employeeAccounts);
@@ -250,5 +237,11 @@ public class fakeDatabase implements Database{
 			notify.setMessage("This is notification "+i+". Please respond ASAP!");
 		}
 	}
+
+	//@Override
+	//public void setVisibility(int x) {
+		// TODO Auto-generated method stub
+		
+	//}
 
 }
