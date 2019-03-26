@@ -41,7 +41,7 @@ import java.util.TreeSet;
 	 * @param less	 items where the quantity is less than x		
 	 */
 	public void returnGreaterorLess(int x, ArrayList<String> greater, ArrayList<String> less) {
-		Set upcs = quantityMap.keySet();
+		Set<String> upcs = quantityMap.keySet();
 		Iterator<String> i = upcs.iterator();
 		while(i.hasNext()){
 			String item = i.next();

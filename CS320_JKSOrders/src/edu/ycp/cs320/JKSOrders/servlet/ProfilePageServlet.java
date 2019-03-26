@@ -36,7 +36,8 @@ public class ProfilePageServlet extends HttpServlet{
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {
 			// call addNumbers JSP
-			ArrayList<Item> items = db.getVisibleItems();
+			ArrayList<Item> items = new ArrayList<Item>();
+			items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
 			for(int i =0; i<items.size(); i++) {
 				req.setAttribute("item"+i, items.get(i));
