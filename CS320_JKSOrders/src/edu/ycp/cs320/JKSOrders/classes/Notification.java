@@ -10,7 +10,7 @@ public class Notification {
 	private String notificationID;
 	
 	public Notification() {
-		
+		destinationNames = new ArrayList<String>();
 	}
 
 	/**
