@@ -15,7 +15,7 @@ import edu.ycp.cs320.JKSOrders.controller.CustomerLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
-import edu.ycp.cs320.JKSOrders.model.CustomerLogin;
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 
 
 public class CustomerLoginServlet extends HttpServlet {
@@ -40,7 +40,7 @@ public class CustomerLoginServlet extends HttpServlet {
 
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
-		CustomerLogin model = new CustomerLogin();
+		LoginInfo model = new LoginInfo();
 
 		// create controller - controller does not persist between requests
 		// must recreate it each time a Post comes in
@@ -55,15 +55,13 @@ public class CustomerLoginServlet extends HttpServlet {
 		String errorMessage = null;
 		System.out.println("We are going to try to get the password and email address out of the webpage");
 		try {
-			String email_address  = req.getParameter("emailAddress");
-			String password       = req.getParameter("password");
+			controller.setUserName(req.getParameter("emailAddress"));
+			controller.setPassword(req.getParameter("password"));
 			System.out.println("We got the password and email address out of the webpage");
-			System.out.println("Password = "+ password);
-			System.out.println("UserName = " + email_address);
+			System.out.println("Password = "+ model.getPassword());
+			System.out.println("UserName = " + model.getUserName());
 			
-			LoginInfo login = new LoginInfo();
-			login.setPassword(password);
-			login.setUserName(email_address);
+			
 			// check for errors in the form data before using is in a calculation
 			/*if (email_address == null || password == null) {
 				errorMessage = "Please enter your email address and password";
@@ -80,7 +78,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
-			if(!system.verifyCustomerLoginInfo(login, db.getCustomerLoginInfo())) {
+			if(!system.verifyCustomerLoginInfo(model, db.getCustomerLoginInfo())) {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
@@ -106,6 +104,7 @@ public class CustomerLoginServlet extends HttpServlet {
 		// add result objects as attributes
 		// this adds the errorMessage text and the result to the response
 		req.setAttribute("errorMessage", errorMessage);
+		req.setAttribute("model", model);
 		
 		// Forward to view to render the result HTML document
 		
