@@ -36,12 +36,12 @@
 				
 							<tr>
 								<td class="label">Username:</td>
-								<td><input type="text" name="username" size="12" value="${username}" /></td>
+								<td><input type="text" name="username" size="12" value="${model.username}" /></td>
 							</tr>
 				
 							<tr>
 								<td class="label">Pin:</td>
-								<td><input type="password" name="pin" size="12" value="${pin}" /></td>
+								<td><input type="password" name="pin" size="12" value="${model.password}" /></td>
 							</tr>
 						</table>
 						<div>

@@ -34,11 +34,11 @@
 						<table>
 							<tr>
 								<td class="label">Email Address:</td>
-								<td><input type="text" name="emailAddress" size="12" value="${emailAddress}" /></td>
+								<td><input type="text" name="emailAddress" size="12" value="${model.userName}" /></td>
 							</tr>
 							<tr>
 								<td class="label">Password:</td>
-								<td><input type="password" name="password" size="12" value="${password}" /></td>
+								<td><input type="password" name="password" size="12" value="${model.password}" /></td>
 							</tr>
 						</table>
 						<div>
