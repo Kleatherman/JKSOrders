@@ -7,6 +7,7 @@ public class Notification {
 	private String message;
 	private ArrayList<String> destinationNames;
 	private Boolean urgency;
+	private String notificationID;
 	
 	public Notification() {
 		
@@ -66,5 +67,13 @@ public class Notification {
 	 */
 	public void addDestinationName(String name) {
 		destinationNames.add(name);
+	}
+
+	public String getNotificationID() {
+		return notificationID;
+	}
+
+	public void setNotificationID(String notificationID) {
+		this.notificationID = notificationID;
 	}
 }

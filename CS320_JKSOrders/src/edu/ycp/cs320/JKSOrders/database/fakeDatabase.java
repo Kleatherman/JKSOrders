@@ -218,7 +218,7 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void addNotification(Notification notify) {
-		//initilizeNotificationArrayList();
+		initilizeNotificationArrayList();
 		notifications = new ArrayList<Notification>();
 		notifications.add(notify);
 	}
@@ -230,18 +230,40 @@ public class fakeDatabase implements Database{
 		initializeEmployeeAccountArrayList(employeeAccounts);
 		for(int i = 0; i<3; i++) {
 			notify = new Notification();
-			notify.addDestinationName(employeeAccounts.get(i).getName());
-			notify.addDestinationName(employeeAccounts.get(i+3).getName());
-			notify.addDestinationName(employeeAccounts.get(i+6).getName());
+			notify.addDestinationName(employeeAccounts.get(i).getAccountNumber());
+			notify.addDestinationName(employeeAccounts.get(i+3).getAccountNumber());
+			notify.addDestinationName(employeeAccounts.get(i+6).getAccountNumber());
 			notify.setUrgency(i==2);
 			notify.setMessage("This is notification "+i+". Please respond ASAP!");
+			notify.setNotificationID("ABCD"+i);
+			notifications.add(notify);
 		}
 	}
 
-	//@Override
-	//public void setVisibility(int x) {
-		// TODO Auto-generated method stub
-		
-	//}
+	@Override
+	public ArrayList<Notification> getNotifications(String accountNumber) {
+		initilizeNotificationArrayList();
+		ArrayList<Notification> accountNotifications = new ArrayList<Notification>();
+		for(Notification notify : notifications) {
+			for(String destName : notify.getDestination()) {
+				if(destName.equals(accountNumber)) {
+					accountNotifications.add(notify);
+				}
+			}	
+		}
+		return accountNotifications;
+	}
+
+	@Override
+	public Notification getNotification(String notificationID) {
+		initilizeNotificationArrayList();
+		for(Notification notify : notifications) {
+			if(notify.getNotificationID().equals(notificationID)) {
+				return notify;
+			}
+		}
+		return null;
+	}
+	
 
 }

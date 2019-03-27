@@ -52,4 +52,9 @@ public interface Database {
 	public void setVisibility(int x);
 	
 	public void addNotification(Notification notify);
+	
+	public ArrayList<Notification> getNotifications(String accountNumber);
+	
+	public Notification getNotification(String notificationID);
+
 }
