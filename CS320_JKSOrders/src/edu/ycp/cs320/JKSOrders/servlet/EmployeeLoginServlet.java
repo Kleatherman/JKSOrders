@@ -12,7 +12,6 @@ import edu.ycp.cs320.JKSOrders.controller.EmployeeLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
-import edu.ycp.cs320.JKSOrders.model.EmployeeLogin;
 
 
 public class EmployeeLoginServlet extends HttpServlet {
@@ -36,7 +35,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 		
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
-		EmployeeLogin model = new EmployeeLogin();
+		LoginInfo model = new LoginInfo();
 
 		// create controller - controller does not persist between requests
 		// must recreate it each time a Post comes in
@@ -55,11 +54,8 @@ public class EmployeeLoginServlet extends HttpServlet {
 		
 		// decode POSTed form parameters and dispatch to controller
 		try {
-			String username  = req.getParameter("username");
-			String pin       = req.getParameter("pin");
-			LoginInfo login = new LoginInfo();
-			login.setPassword(pin);
-			login.setUserName(username);
+			controller.setUserName(req.getParameter("username"));
+			controller.setPassword(req.getParameter("pin"));
 			
 			
 			
@@ -70,11 +66,11 @@ public class EmployeeLoginServlet extends HttpServlet {
 			if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			if(!system.verifyEmployeeLoginInfo(login, db.getEmployeeLoginInfo())) {
+			if(!system.verifyEmployeeLoginInfo(model, db.getEmployeeLoginInfo())) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
-				String name = system.getEmployeeAccount(username).getName();
+				String name = system.getEmployeeAccount(model.getUserName()).getName();
 				req.setAttribute("name", name);
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
