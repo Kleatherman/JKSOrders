@@ -235,12 +235,13 @@ public class fakeDatabase implements Database{
 			notify.addDestinationName(employeeAccounts.get(i+6).getAccountNumber());
 			notify.setUrgency(i==2);
 			notify.setMessage("This is notification "+i+". Please respond ASAP!");
+			notify.setNotificationID("ABCD"+i);
 			notifications.add(notify);
 		}
 	}
 
 	@Override
-	public ArrayList<Notification> getNotification(String accountNumber) {
+	public ArrayList<Notification> getNotifications(String accountNumber) {
 		initilizeNotificationArrayList();
 		ArrayList<Notification> accountNotifications = new ArrayList<Notification>();
 		for(Notification notify : notifications) {
@@ -251,9 +252,18 @@ public class fakeDatabase implements Database{
 			}	
 		}
 		return accountNotifications;
-		
 	}
 
+	@Override
+	public Notification getNotification(String notificationID) {
+		initilizeNotificationArrayList();
+		for(Notification notify : notifications) {
+			if(notify.getNotificationID().equals(notificationID)) {
+				return notify;
+			}
+		}
+		return null;
+	}
 	
 
 }

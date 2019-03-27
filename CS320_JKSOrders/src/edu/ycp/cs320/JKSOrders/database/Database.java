@@ -53,7 +53,8 @@ public interface Database {
 	
 	public void addNotification(Notification notify);
 	
-	public ArrayList<Notification> getNotification(String accountNumber);
+	public ArrayList<Notification> getNotifications(String accountNumber);
 	
-	
+	public Notification getNotification(String notificationID);
+
 }
