@@ -263,6 +263,25 @@ public class fakeDatabase implements Database{
 		}
 		return null;
 	}
+
+	@Override
+	public Account getAccount(String accountNumber) {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
+		for(Account account : employeeAccounts) {
+			if(account.getAccountNumber().equals(accountNumber)||account.getName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
+				return account;
+			}
+		}
+		for(Account account : customerAccounts) {
+			if(account.getAccountNumber().equals(accountNumber)||account.getName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
+				return account;
+			}
+		}
+		return null;
+	}
 	
 
 }
