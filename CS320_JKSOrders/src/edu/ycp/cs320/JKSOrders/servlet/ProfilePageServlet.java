@@ -35,9 +35,13 @@ public class ProfilePageServlet extends HttpServlet{
 		System.out.println("ProfilePage Servlet: doPost");
 		Database db = InitDatabase.init();
 		SystemController system = new SystemController();
-		EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(req.getParameter("accountNumber"));
-		req.setAttribute("accountNumber", account.getAccountNumber());
-		req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
+		String accountNumber = req.getParameter("accountNumber");
+		if(accountNumber == null) {
+			EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(accountNumber);
+			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
+			req.setAttribute("accountNumber", account.getAccountNumber());
+			req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
+		}
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {
 			// call addNumbers JSP
