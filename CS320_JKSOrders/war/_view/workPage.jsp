@@ -38,6 +38,9 @@
 							<input name="urgency" type="checkbox" value="Urgent" />
 							<input name="notify" type="submit" value="Submit Notification" />
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
+							<c:if test="${isManager}">
+								Hey, I'm a manager!!!! WOOO
+							</c:if>
 						</div>
 					</form>
 					<div>${notify.message}</div>

@@ -32,6 +32,7 @@ public class WorkPageServlet  extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		boolean isManager = false;
 		Notification notify = new Notification();
 		SystemController system = new SystemController();
 		Database db = InitDatabase.init();
@@ -43,7 +44,9 @@ public class WorkPageServlet  extends HttpServlet{
 			if(db.getNotifications(accountNumber).get(0)!=null) {
 				notify = db.getNotifications(accountNumber).get(0);
 				req.setAttribute("notify", notify);
-			}			
+			}
+			isManager = db.getEmployeeAccount(accountNumber).isManager();
+			req.setAttribute("isManager", isManager);
 		}
 		if(req.getParameter("notify")!=null) {
 			String message = req.getParameter("message");

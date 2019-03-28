@@ -33,7 +33,7 @@ public class ProfilePageServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		boolean isManager = false;
 		System.out.println("ProfilePage Servlet: doPost");
 		Database db = InitDatabase.init();
 		SystemController system = new SystemController();
@@ -45,6 +45,8 @@ public class ProfilePageServlet extends HttpServlet{
 			if(db.getNotifications(accountNumber).get(0)!=null) {
 				Notification notify = db.getNotifications(accountNumber).get(0);
 				req.setAttribute("notify", notify);
+				isManager = db.getEmployeeAccount(accountNumber).isManager();
+				req.setAttribute("isManager", isManager);
 			}	
 		}
 		// check which button the user pressed
