@@ -132,9 +132,7 @@ public class fakeDatabase implements Database{
 			login = new LoginInfo();
 			login.setPassword("PassWord"+i);
 			login.setUserName("employee"+i);
-			System.out.println("employee account initilization" + login.getPassword()+" "+login.getUserName());
 			account.setLogin(login);
-			System.out.println("employee account initilization" + account.getLogin().getPassword()+" "+account.getLogin().getUserName());
 			if(account.getName().equals("Josiah Sam")||account.getName().equals("Kyle Leatherman")||account.getName().equals("Sam Cesario")) {
 				account.setManager(true);
 			}
@@ -153,6 +151,8 @@ public class fakeDatabase implements Database{
 				login.setUserName("scesario1");
 				account.setLogin(login);
 			}
+			System.out.println("employee account initilization" + account.getLogin().getPassword()+" "+account.getLogin().getUserName());
+			System.out.println("employee account initilization" + login.getPassword()+" "+login.getUserName());
 			accounts.add(account);
 		}
 	}
@@ -254,6 +254,7 @@ public class fakeDatabase implements Database{
 		return accountNotifications;
 	}
 
+	
 	@Override
 	public Notification getNotification(String notificationID) {
 		initilizeNotificationArrayList();
