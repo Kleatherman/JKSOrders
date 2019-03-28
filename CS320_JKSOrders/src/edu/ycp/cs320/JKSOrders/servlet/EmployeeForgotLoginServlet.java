@@ -51,7 +51,6 @@ public class EmployeeForgotLoginServlet extends HttpServlet {
 			model.setUsername(Username);
 			
 			
-			System.out.println("Got Here");
 			if (Username == null || Pnum == null ) {
 				error = "Please fill both fields";
 				System.out.println(Username);
@@ -66,26 +65,27 @@ public class EmployeeForgotLoginServlet extends HttpServlet {
 		} catch (Exception e) {
 			error = "Invalid String";
 		}
+		// Add parameters as request attributes
+				// this creates attributes named "first" and "second for the response, and grabs the
+				// values that were originally assigned to the request attributes, also named "first" and "second"
+				// they don't have to be named the same, but in this case, since we are passing them back
+				// and forth, it's a good idea
+				req.setAttribute("Username", req.getParameter("Username"));
+				req.setAttribute("Phone", req.getParameter("Phone"));
+				
+				// add result objects as attributes
+				// this adds the errorMessage text and the result to the response
+				req.setAttribute("errorMessage", error);
+				req.setAttribute("result", password);
+				
+				// Forward to view to render the result HTML document
+				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 	}
 		else {
 			throw new ServletException("Unknown command");
 		}
 		
-		// Add parameters as request attributes
-		// this creates attributes named "first" and "second for the response, and grabs the
-		// values that were originally assigned to the request attributes, also named "first" and "second"
-		// they don't have to be named the same, but in this case, since we are passing them back
-		// and forth, it's a good idea
-		req.setAttribute("Username", req.getParameter("Username"));
-		req.setAttribute("Phone", req.getParameter("Phone"));
 		
-		// add result objects as attributes
-		// this adds the errorMessage text and the result to the response
-		req.setAttribute("errorMessage", error);
-		req.setAttribute("result", password);
-		
-		// Forward to view to render the result HTML document
-		req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 		
 		
 	}
