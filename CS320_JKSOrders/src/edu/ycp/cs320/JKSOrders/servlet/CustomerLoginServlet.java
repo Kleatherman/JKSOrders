@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 
@@ -60,7 +61,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			System.out.println("We got the password and email address out of the webpage");
 			System.out.println("Password = "+ model.getPassword());
 			System.out.println("UserName = " + model.getUserName());
-			
+			CustomerAccount account = (CustomerAccount) db.getAccount(model.getUserName());
 			
 			// check for errors in the form data before using is in a calculation
 			/*if (email_address == null || password == null) {
@@ -83,6 +84,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			}
 			else if (req.getParameter("submit")!=null) {
 				ArrayList<Item> items = system.getVisibleItems();
+				req.setAttribute("accountNumber", account.getAccountNumber());
 				System.out.println("StorePage: "+ items.get(0).getDescription());
 				for(int i =0; i<items.size(); i++) {
 					req.setAttribute("item"+i, items.get(i));

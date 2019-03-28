@@ -49,6 +49,7 @@
 							<input name="checkOut" type="submit" value="CheckOut!" />
 							<input name="profilePage" type="submit" value="Profile Page!"/>
 							<input name="logOut" type="submit" value="LogOut"/>
+							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
 				</div>
