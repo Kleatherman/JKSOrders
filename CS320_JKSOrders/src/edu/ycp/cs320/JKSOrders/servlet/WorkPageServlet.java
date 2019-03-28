@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
@@ -31,16 +32,21 @@ public class WorkPageServlet  extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		boolean isManager = false;
 		Notification notify = new Notification();
 		SystemController system = new SystemController();
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
 		String accountNumber = req.getParameter("accountNumber");
-		if(accountNumber == null) {
-			EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(accountNumber);
-			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
+		if(accountNumber != null) {
+			Account account = db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
-			req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
+			if(db.getNotifications(accountNumber).get(0)!=null) {
+				notify = db.getNotifications(accountNumber).get(0);
+				req.setAttribute("notify", notify);
+			}
+			isManager = db.getEmployeeAccount(accountNumber).isManager();
+			req.setAttribute("isManager", isManager);
 		}
 		if(req.getParameter("notify")!=null) {
 			String message = req.getParameter("message");
@@ -54,6 +60,10 @@ public class WorkPageServlet  extends HttpServlet{
 			db.addNotification(notify);
 			System.out.println("We are about to go back to workPage");
 			req.setAttribute("message", message);
+			if(db.getNotifications(accountNumber).get(0)!=null) {
+				notify = db.getNotifications(accountNumber).get(0);
+				req.setAttribute("notify", notify);
+			}
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			System.out.println("We went back to workPage");
 		}

@@ -263,6 +263,74 @@ public class fakeDatabase implements Database{
 		}
 		return null;
 	}
+
+	@Override
+	public String getPasswordForCustomerAccount(Account account) {
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
+		for(Account cAccount : customerAccounts ) {
+			if(cAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
+				return cAccount.getLogin().getPassword();
+			}
+		}
+		return "Account was not found";
+	}
+	@Override
+	public String getPasswordForEmployeeAccount(Account account) {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		for(Account eAccount : employeeAccounts ) {
+			if(eAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
+				return eAccount.getLogin().getPassword();
+			}
+		}
+		
+		return "Account was not found";
+	}
+
+	@Override
+	public Account getAccount(String accountNumber) {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
+		for(Account account : employeeAccounts) {
+			if(account.getAccountNumber().equals(accountNumber)||account.getName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
+				return account;
+			}
+		}
+		for(Account account : customerAccounts) {
+			if(account.getAccountNumber().equals(accountNumber)||account.getName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
+				return account;
+			}
+		}
+		return null;
+
+	}
+
+	@Override
+	public EmployeeAccount getEmployeeAccount(String name) {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		for(EmployeeAccount account : employeeAccounts) {
+			if(account.getAccountNumber().equals(name)||account.getName().equals(name)||account.getLogin().getUserName().equals(name)) {
+				return account;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public CustomerAccount getCustomerAccount(String name) {
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
+		for(CustomerAccount account : customerAccounts) {
+			if(account.getAccountNumber().equals(name)||account.getName().equals(name)||account.getLogin().getUserName().equals(name)) {
+				return account;
+			}
+		}
+		return null;
+	}
 	
 
 }

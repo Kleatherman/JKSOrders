@@ -7,8 +7,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
@@ -31,16 +33,21 @@ public class ProfilePageServlet extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		boolean isManager = false;
 		System.out.println("ProfilePage Servlet: doPost");
 		Database db = InitDatabase.init();
 		SystemController system = new SystemController();
 		String accountNumber = req.getParameter("accountNumber");
-		if(accountNumber == null) {
-			EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(accountNumber);
+		if(accountNumber != null) {
+			Account account =  db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
-			req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
+			if(db.getNotifications(accountNumber).get(0)!=null) {
+				Notification notify = db.getNotifications(accountNumber).get(0);
+				req.setAttribute("notify", notify);
+				isManager = db.getEmployeeAccount(accountNumber).isManager();
+				req.setAttribute("isManager", isManager);
+			}	
 		}
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {

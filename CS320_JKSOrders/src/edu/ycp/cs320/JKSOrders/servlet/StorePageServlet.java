@@ -8,8 +8,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 
 
 
@@ -32,13 +37,19 @@ public class StorePageServlet extends HttpServlet {
 		
 
 		System.out.println("StorePage Servlet: doPost");
-		// check which button the user pressed
+		SystemController system = new SystemController();
+		Database db = InitDatabase.init();
+		String accountNumber = req.getParameter("accountNumber");
+
+		
+		if(accountNumber != null) {
+			Account account =  db.getAccount(accountNumber);
+			req.setAttribute("accountNumber", account.getAccountNumber());
+		}
 		if (req.getParameter("checkOut") != null) {
-			// call addNumbers JSP
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("profilePage") != null) {
-			// call multiplyNumbers JSP
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {

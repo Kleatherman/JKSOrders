@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.EmployeeLoginController;
@@ -71,11 +72,16 @@ public class EmployeeLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
-				String name = system.getEmployeeAccount(model.getUserName()).getName();
+				String accountNumber = system.getEmployeeAccount(model.getUserName()).getAccountNumber();
+				String name = db.getAccount(accountNumber).getName();
 				Notification notify = db.getNotifications(system.getEmployeeAccount(model.getUserName()).getAccountNumber()).get(0);
-				req.setAttribute("notify", notify);
+				if(notify!=null) {
+					req.setAttribute("notify", notify);
+				}
+				boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
+				req.setAttribute("isManager", isManager);
 				req.setAttribute("name", name);
-				req.setAttribute("accountNumber", system.getEmployeeAccount(model.getUserName()).getAccountNumber());
+				req.setAttribute("accountNumber", accountNumber);
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 
