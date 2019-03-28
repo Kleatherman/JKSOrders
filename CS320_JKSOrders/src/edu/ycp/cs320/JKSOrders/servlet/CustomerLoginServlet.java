@@ -61,7 +61,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			System.out.println("We got the password and email address out of the webpage");
 			System.out.println("Password = "+ model.getPassword());
 			System.out.println("UserName = " + model.getUserName());
-			CustomerAccount account = (CustomerAccount) db.getAccount(model.getUserName());
+			
 			
 			// check for errors in the form data before using is in a calculation
 			/*if (email_address == null || password == null) {
@@ -83,6 +83,7 @@ public class CustomerLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
+				CustomerAccount account = (CustomerAccount) db.getAccount(model.getUserName());
 				ArrayList<Item> items = system.getVisibleItems();
 				req.setAttribute("accountNumber", account.getAccountNumber());
 				System.out.println("StorePage: "+ items.get(0).getDescription());
