@@ -46,6 +46,7 @@
 					<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">
 						<div>
 							<input type="Submit" name="storePage" value="Close">
+							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
 				</div>
