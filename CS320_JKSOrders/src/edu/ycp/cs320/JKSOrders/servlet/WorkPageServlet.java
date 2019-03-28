@@ -60,6 +60,10 @@ public class WorkPageServlet  extends HttpServlet{
 			db.addNotification(notify);
 			System.out.println("We are about to go back to workPage");
 			req.setAttribute("message", message);
+			if(db.getNotifications(accountNumber).get(0)!=null) {
+				notify = db.getNotifications(accountNumber).get(0);
+				req.setAttribute("notify", notify);
+			}
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			System.out.println("We went back to workPage");
 		}

@@ -34,11 +34,11 @@
 						<div>
 							<input name="profilePage" type="submit" value="Profile Page!" />
 							<input name="employeeLogin" type="submit" value="Log out!" />
-							<input name="message" type="text" value="${message}" length=300 />
-							<input name="urgency" type="checkbox" value="Urgent" />
-							<input name="notify" type="submit" value="Submit Notification" />
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 							<c:if test="${isManager}">
+								<input name="message" type="text" value="${message}" length=300 />
+								<input name="notify" type="submit" value="Submit Notification" />
+								<input name="urgency" type="checkbox" value="Urgent" />
 								Hey, I'm a manager!!!! WOOO
 							</c:if>
 						</div>
