@@ -29,10 +29,27 @@
 			<div class="row">
 				<div class="col-sm-4" style="background-color:lavender;">space</div>
 				<div class="col-sm-4" style="background-color:white;">
-					<div class= "TitleText2">This is the Page to Create an Customer</div>
+					<div class= "TitleText2">Create Account</div>
 					<form action="${pageContext.servletContext.contextPath}/createCustomerAccount" method="post">
+					
+	
+			
+							Email Address:<br>
+							<input type="text" name="emailAddress" size="12" value="${model.userName}" /><br>
+							Password:<br>	
+							<input type="password" name="password" size="12" value="${model.password}" /><br>
+				
+							Name:<br>	
+							<input type="text" name="Name" size="12" value="${model.userName}" /><br>
+						
+							Phone Number:<br>		
+							<input type="text" name="phoneNumber" size="12" value="${model.phoneNumber}" /><br>
+					
+						
+						
 						<div>
-							<input type="Submit" name="loginPage" value="Go Back">
+							<input type="Submit" name="submit" value="Create Account">
+							
 						</div>
 					</form>
 				</div>

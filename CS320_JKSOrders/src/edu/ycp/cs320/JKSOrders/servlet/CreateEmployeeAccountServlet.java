@@ -53,7 +53,7 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		else {
 			req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 		}
-		// req.setAttribute("model", model);
+		 req.setAttribute("model", model);
 
 	}
 }
