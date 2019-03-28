@@ -75,10 +75,10 @@ public class CustomerLoginServlet extends HttpServlet {
 				System.out.println("We're headed to customer account JSP");
 				req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 			}
-			if(req.getParameter("forgot")!=null) {
-				req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
+			else if(req.getParameter("forgot")!=null) {
+			 	req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
-			if(!system.verifyCustomerLoginInfo(model, db.getCustomerLoginInfo())) {
+			else if(!system.verifyCustomerLoginInfo(model, db.getCustomerLoginInfo())) {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
