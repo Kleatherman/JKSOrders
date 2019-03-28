@@ -194,6 +194,23 @@ public class SystemController {
 		}
 		return visibleItems;
 	}
+	public String getPasswordForCustomerAccount(Account account) {
+		for(Account cAccount : customerAccounts ) {
+			if(cAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
+				return cAccount.getLogin().getPassword();
+			}
+		}
+		return "Account was not found";
+	}
+	public String getPasswordForEmployeeAccount(Account account) {
+		for(Account eAccount : employeeAccounts ) {
+			if(eAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
+				return eAccount.getLogin().getPassword();
+			}
+		}
+		
+		return "Account was not found";
+	}
 	
 	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
 		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};

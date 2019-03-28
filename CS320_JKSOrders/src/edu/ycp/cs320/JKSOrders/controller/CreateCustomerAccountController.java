@@ -3,17 +3,18 @@ package edu.ycp.cs320.JKSOrders.controller;
 
 
 
-import edu.ycp.cs320.JKSOrders.model.CreateCustomerAccount;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 
 
 
 public class CreateCustomerAccountController {
-	private CreateCustomerAccount model;
+	private CustomerAccount model;
 	
 		
 	
-		public void setModel( CreateCustomerAccount model) {
+		public void setModel( CustomerAccount model) {
 			this.model = model;
 		}
+		
 	}
 	
