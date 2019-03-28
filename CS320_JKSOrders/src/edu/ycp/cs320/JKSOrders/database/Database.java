@@ -58,8 +58,13 @@ public interface Database {
 	
 	public Notification getNotification(String notificationID);
 
-	String getPasswordForCustomerAccount(Account account);
 
-	String getPasswordForEmployeeAccount(Account account);
+	public String getPasswordForCustomerAccount(Account account);
+
+	public String getPasswordForEmployeeAccount(Account account);
+
+
+	
+	public Account getAccount(String accountNumber);
 
 }

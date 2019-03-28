@@ -52,13 +52,16 @@ public class CustomerForgotLoginServlet extends HttpServlet {
 				String phone= getStringFromParameter(req.getParameter("Phone"));
 				model.setUsername(username);
 				
+				System.out.println("Phone "+phone);
+				
 				if(username==null || phone== null) {
 					error= "Please fill in both fields";
 				}
-				
-				controller.setModel(model);
-				controller.getPassword(dbase);
-				password= model.getPassword();
+				else {
+					controller.setModel(model);
+					controller.getPassword(dbase);
+					password= model.getPassword();
+				}
 				
 			}catch(Exception e){
 				error= "Something went wrong";
