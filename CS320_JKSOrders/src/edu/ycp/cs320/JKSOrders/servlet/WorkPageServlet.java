@@ -36,10 +36,12 @@ public class WorkPageServlet  extends HttpServlet{
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
 		String accountNumber = req.getParameter("accountNumber");
-		EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(accountNumber);
-		System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
-		req.setAttribute("accountNumber", account.getAccountNumber());
-		req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
+		if(accountNumber == null) {
+			EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(accountNumber);
+			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
+			req.setAttribute("accountNumber", account.getAccountNumber());
+			req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
+		}
 		if(req.getParameter("notify")!=null) {
 			String message = req.getParameter("message");
 			if(req.getAttribute("urgent")!=null) {
