@@ -32,6 +32,7 @@ public class CheckOutServlet extends HttpServlet {
 
 		System.out.println("CheckOut Servlet: doPost");
 		Database db = InitDatabase.init();
+		
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
 		CheckOut model = new CheckOut();
