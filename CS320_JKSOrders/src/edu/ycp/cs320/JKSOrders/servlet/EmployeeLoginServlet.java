@@ -75,7 +75,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 				Notification notify = db.getNotifications(system.getEmployeeAccount(model.getUserName()).getAccountNumber()).get(0);
 				req.setAttribute("notify", notify);
 				req.setAttribute("name", name);
-				req.setAttribute("AccountNumber", system.getEmployeeAccount(model.getUserName()).getAccountNumber());
+				req.setAttribute("accountNumber", system.getEmployeeAccount(model.getUserName()).getAccountNumber());
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 

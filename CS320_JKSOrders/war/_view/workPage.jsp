@@ -40,7 +40,7 @@
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
-					<div>"${notify.message}"</div>
+					<div>${notify.message}</div>
 				</div>
 				<div class="col-sm-4" style="background-color:lavender;">space</div>
 			</div>	
