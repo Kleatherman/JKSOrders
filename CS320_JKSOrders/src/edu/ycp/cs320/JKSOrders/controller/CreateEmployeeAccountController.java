@@ -3,15 +3,16 @@ package edu.ycp.cs320.JKSOrders.controller;
 
 
 
-import edu.ycp.cs320.JKSOrders.model.CreateEmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 
 
 
 public class CreateEmployeeAccountController {
-	private CreateEmployeeAccount model;
+	private EmployeeAccount model;
 			
 	
-		public void setModel( CreateEmployeeAccount model) {
+		public void setModel( EmployeeAccount model) {
 			this.model = model;
 		}
+		
 	}
