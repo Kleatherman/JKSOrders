@@ -63,10 +63,10 @@ public class EmployeeLoginServlet extends HttpServlet {
 				System.out.println("We're headed to employee account JSP");
 				req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
 			}
-			if(req.getParameter("forgot")!=null) {
+			else if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			if(!system.verifyEmployeeLoginInfo(model, db.getEmployeeLoginInfo())) {
+			else if(!system.verifyEmployeeLoginInfo(model, db.getEmployeeLoginInfo())) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
