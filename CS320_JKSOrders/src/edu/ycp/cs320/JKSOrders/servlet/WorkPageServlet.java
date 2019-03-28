@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
@@ -34,7 +35,11 @@ public class WorkPageServlet  extends HttpServlet{
 		SystemController system = new SystemController();
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
-		
+		String accountNumber = req.getParameter("accountNumber");
+		EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(accountNumber);
+		System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
+		req.setAttribute("accountNumber", account.getAccountNumber());
+		req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
 		if(req.getParameter("notify")!=null) {
 			String message = req.getParameter("message");
 			if(req.getAttribute("urgent")!=null) {
