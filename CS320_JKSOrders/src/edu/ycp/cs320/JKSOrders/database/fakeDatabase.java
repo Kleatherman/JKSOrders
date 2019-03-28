@@ -265,6 +265,8 @@ public class fakeDatabase implements Database{
 	}
 	@Override
 	public String getPasswordForCustomerAccount(Account account) {
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
 		for(Account cAccount : customerAccounts ) {
 			if(cAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				return cAccount.getLogin().getPassword();
@@ -274,6 +276,8 @@ public class fakeDatabase implements Database{
 	}
 	@Override
 	public String getPasswordForEmployeeAccount(Account account) {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
 		for(Account eAccount : employeeAccounts ) {
 			if(eAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				return eAccount.getLogin().getPassword();
