@@ -54,6 +54,10 @@
 								<td class="label">Username:</td>
 								<td>${Username}</td>
 							</tr>
+							<tr>
+								<td class="label">Password:</td>
+								<td>${password}</td>
+							</tr>
 						</table>
 						<div>
 							<input name="storePage" type="submit" value="Store Page!" />

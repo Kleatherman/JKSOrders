@@ -1,5 +1,6 @@
 package edu.ycp.cs320.JKSOrders.controller;
 
+import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.model.CustomerForgotLogin;
 
 public class CustomerForgotLoginController {
@@ -10,8 +11,8 @@ public class CustomerForgotLoginController {
 		this.model=model;
 	}
 	
-	public void getPassword(SystemController scontrol) {
-		model.setPassword(scontrol.getPasswordForCustomerAccount(model.getAccount()));
+	public void getPassword(Database dbase) {
+		model.setPassword(dbase.getPasswordForCustomerAccount(model.getAccount()));
 	}
 
 }
