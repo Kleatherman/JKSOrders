@@ -24,6 +24,9 @@
 		.error {
 			color: red;
 		}
+		.standard{
+			font-weight: bold;
+		}
 		</style>
 	</head>
 
@@ -39,12 +42,12 @@
 					<form action="${pageContext.servletContext.contextPath}/employeeForgotLogin" method="post">
 						<table>
 							<tr>
-								<td class="label">Username:</td>
-								<td><input type="text" name="first" size="12" value="${Username}" /></td>
+								<td class="standard">Username:</td>
+								<td><input type="text" name="Username" size="12" value="${Username}" /></td>
 							</tr>
 							<tr>
-								<td class="label">Phone number:</td>
-								<td><input type="text" name="second" size="12" value="${Phone}" /></td>
+								<td class="standard">Phone number:</td>
+								<td><input type="text" name="Phone" size="12" value="${Phone}" /></td>
 							</tr>
 				
 							<tr>

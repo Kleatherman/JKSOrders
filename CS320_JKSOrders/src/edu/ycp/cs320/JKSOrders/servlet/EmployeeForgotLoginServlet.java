@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.controller.EmployeeForgotLoginController;
+import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.model.EmployeeForgotLogin;
 
 
@@ -33,33 +34,41 @@ public class EmployeeForgotLoginServlet extends HttpServlet {
 		
 		String password= null;
 		EmployeeForgotLogin model = new EmployeeForgotLogin();
+		SystemController scontrol = new SystemController();
 		
 		// check which button the user pressed
 		if (req.getParameter("LoginPage") != null) {
 			// call employeeLogin JSP
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
-		else {
-			throw new ServletException("Unknown command");
-		}
+		else if (req.getParameter("submit") != null) {
+			
+		
 		
 		try {
 			String Username = getStringFromParameter(req.getParameter("Username"));
 			String Pnum = getStringFromParameter(req.getParameter("Phone"));
 			model.setUsername(Username);
-			model.setPhoneNumber(Pnum);
 			
+			
+			System.out.println("Got Here");
 			if (Username == null || Pnum == null ) {
 				error = "Please fill both fields";
+				System.out.println(Username);
+				System.out.println(Pnum);
 			}
 			else {
 				EmployeeForgotLoginController controller = new EmployeeForgotLoginController();
 				controller.setModel(model);
-				controller.getPassword();
+				controller.getPassword(scontrol);
 				password = model.getPassword();
 			}
 		} catch (Exception e) {
 			error = "Invalid String";
+		}
+	}
+		else {
+			throw new ServletException("Unknown command");
 		}
 		
 		// Add parameters as request attributes
@@ -82,6 +91,7 @@ public class EmployeeForgotLoginServlet extends HttpServlet {
 	}
 	private String getStringFromParameter(String s) {
 		if (s == null || s.equals("")) {
+			System.out.println(s);
 			return null;
 		} else {
 			return s;
