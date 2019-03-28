@@ -21,6 +21,12 @@
                         font-weight: bold; 
                         text-align: center;
 		}
+		.error {
+			color: red;
+		}
+		.standard{
+			font-weight: bold;
+		}
 		</style>
 	</head>
 
@@ -30,9 +36,25 @@
 				<div class="col-sm-4" style="background-color:lavender;">space</div>
 				<div class="col-sm-4" style="background-color:white;">
 					<div class= "TitleText2">This is your profile page! </div>
-					<div class= "TitleText2">It's void just like your personality! </div>
-					<div class= "TitleText2">Jk ;-) </div>
 					<form action="${pageContext.servletContext.contextPath}/profilePage" method="post">
+						<table>
+							<tr>
+								<td class="label">Name:</td>
+								<td>${Name}</td>
+							</tr>
+							<tr>
+								<td class="label">Account Number:</td>
+								<td>${Anumber}</td>
+							</tr>
+							<tr>
+								<td class="label">Phone Number:</td>
+								<td>${Pnumber}</td>
+							</tr>
+							<tr>
+								<td class="label">Username:</td>
+								<td>${Username}</td>
+							</tr>
+						</table>
 						<div>
 							<input name="storePage" type="submit" value="Store Page!" />
 							<input name="workPage" type="submit" value="Work Page!"/>
