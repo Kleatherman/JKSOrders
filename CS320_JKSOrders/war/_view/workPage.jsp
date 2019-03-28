@@ -37,8 +37,10 @@
 							<input name="message" type="text" value="${message}" length=300 />
 							<input name="urgency" type="checkbox" value="Urgent" />
 							<input name="notify" type="submit" value="Submit Notification" />
+							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
+					<div>"${notify.message}"</div>
 				</div>
 				<div class="col-sm-4" style="background-color:lavender;">space</div>
 			</div>	

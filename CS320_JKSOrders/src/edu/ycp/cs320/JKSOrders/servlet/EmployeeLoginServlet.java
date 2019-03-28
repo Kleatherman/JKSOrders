@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.EmployeeLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
@@ -71,7 +72,10 @@ public class EmployeeLoginServlet extends HttpServlet {
 			}
 			else if (req.getParameter("submit")!=null) {
 				String name = system.getEmployeeAccount(model.getUserName()).getName();
+				Notification notify = db.getNotifications(system.getEmployeeAccount(model.getUserName()).getAccountNumber()).get(0);
+				req.setAttribute("notify", notify);
 				req.setAttribute("name", name);
+				req.setAttribute("AccountNumber", system.getEmployeeAccount(model.getUserName()).getAccountNumber());
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 

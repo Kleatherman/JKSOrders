@@ -185,7 +185,6 @@ public class fakeDatabase implements Database{
 		this.setVisibility(2);
 	}
 	
-
 	@Override
 	public ArrayList<Item> getVisibleItems() {
 		catalog = new Catalog();
@@ -254,7 +253,6 @@ public class fakeDatabase implements Database{
 		return accountNotifications;
 	}
 
-	
 	@Override
 	public Notification getNotification(String notificationID) {
 		initilizeNotificationArrayList();
