@@ -238,6 +238,13 @@ public class SystemController {
 				return account;
 			}	
 		}
+		Iterator<Account> j = employeeAccounts.iterator();
+		while(j.hasNext()) {
+			Account account = j.next();
+			if(account.getAccountNumber().equals(name)) {
+				return account;
+			}	
+		}
 		return null;
 	}
 }

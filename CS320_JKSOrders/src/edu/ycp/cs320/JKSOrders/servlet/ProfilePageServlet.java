@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
@@ -33,6 +34,10 @@ public class ProfilePageServlet extends HttpServlet{
 		
 		System.out.println("ProfilePage Servlet: doPost");
 		Database db = InitDatabase.init();
+		SystemController system = new SystemController();
+		EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(req.getParameter("accountNumber"));
+		req.setAttribute("accountNumber", account.getAccountNumber());
+		req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {
 			// call addNumbers JSP

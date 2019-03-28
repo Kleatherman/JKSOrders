@@ -37,10 +37,12 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 	//	controller.setModel(model);
 
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 		
 		if (req.getParameter("loginPage") != null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		}
+		else {
+			req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 		}
 		//	req.setAttribute("model", model);
 
