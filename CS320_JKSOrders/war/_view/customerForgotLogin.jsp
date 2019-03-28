@@ -21,6 +21,12 @@
                         font-weight: bold; 
                         text-align: center;
 		}
+		.error {
+			color: red;
+		}
+		.standard{
+			font-weight: bold;
+		}
 		</style>
 	</head>
 
@@ -29,8 +35,27 @@
 			<div class="row">
 				<div class="col-sm-4" style="background-color:lavender;">space</div>
 				<div class="col-sm-4" style="background-color:white;">
+					<c:if test="${! empty errorMessage}">
+						<div class="error">${errorMessage}</div>
+					</c:if>
 					<div class= "TitleText2">The Customer forgot their login</div>
 					<form action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
+						<table>
+							<tr>
+								<td class="standard">Username:</td>
+								<td><input type="text" name="Username" size="12" value="${Username}" /></td>
+							</tr>
+							<tr>
+								<td class="standard">Phone number:</td>
+								<td><input type="text" name="Phone" size="12" value="${Phone}" /></td>
+							</tr>
+				
+							<tr>
+								<td class="label">Password:</td>
+								<td>${result}</td>
+							</tr>
+						</table>
+						<input type="Submit" name="submit" value="Get Info">
 						<div>
 							<input type="Submit" name="LoginPage" value="Go Back">
 						</div>

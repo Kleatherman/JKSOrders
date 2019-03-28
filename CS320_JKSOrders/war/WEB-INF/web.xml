@@ -62,10 +62,6 @@
     <servlet-name>CheckOutAjaxServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ajax.CheckOutAjaxServlet</servlet-class>
   </servlet>
-  <servlet>
-    <servlet-name>NextGuessAjaxServlet</servlet-name>
-    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ajax.NextGuessAjaxServlet</servlet-class>
-  </servlet>
 
   <!-- Servlet mappings -->
   <servlet-mapping>
@@ -120,9 +116,5 @@
   <servlet-mapping>
     <servlet-name>CheckOutAjaxServlet</servlet-name>
     <url-pattern>/ajax/checkOut</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>NextGuessAjaxServlet</servlet-name>
-    <url-pattern>/ajax/nextGuess</url-pattern>
   </servlet-mapping>
 </web-app>
