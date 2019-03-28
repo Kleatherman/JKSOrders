@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.controller.CreateEmployeeAccountController;
 
 
@@ -34,7 +35,7 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
-	//	CreateEmployeeAccount model = new CreateEmployeeAccount();
+		EmployeeAccount model = new EmployeeAccount();
 
 		// create controller - controller does not persist between requests
 		// must recreate it each time a Post comes in
@@ -52,7 +53,7 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		else {
 			req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 		}
-		// req.setAttribute("model", model);
+		 req.setAttribute("model", model);
 
 	}
 }

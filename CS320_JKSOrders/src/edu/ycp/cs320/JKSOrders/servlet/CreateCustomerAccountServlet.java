@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.controller.CreateCustomerAccountController;
 
 public class CreateCustomerAccountServlet extends HttpServlet {
@@ -23,28 +24,26 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		System.out.println("Create Customer Account Servlet: doPost");
-		
 
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
-	//	CreateCustomerAccount model = new CreateCustomerAccount();
+		CustomerAccount model = new CustomerAccount();
 
 		// create controller - controller does not persist between requests
 		// must recreate it each time a Post comes in
 		CreateCustomerAccountController controller = new CreateCustomerAccountController();
 
 		// assign model reference to controller so that controller can access model
-	//	controller.setModel(model);
+		controller.setModel(model);
 
 		// call JSP to generate empty form
-		
+
 		if (req.getParameter("loginPage") != null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
-		}
-		else {
+		} else {
 			req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 		}
-		//	req.setAttribute("model", model);
+		req.setAttribute("model", model);
 
 	}
 }
