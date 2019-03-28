@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
@@ -41,6 +42,10 @@ public class ProfilePageServlet extends HttpServlet{
 			Account account =  db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
+			if(db.getNotifications(accountNumber).get(0)!=null) {
+				Notification notify = db.getNotifications(accountNumber).get(0);
+				req.setAttribute("notify", notify);
+			}	
 		}
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {
