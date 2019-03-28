@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.controller.EmployeeForgotLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.EmployeeForgotLogin;
 
 
@@ -34,7 +36,7 @@ public class EmployeeForgotLoginServlet extends HttpServlet {
 		
 		String password= null;
 		EmployeeForgotLogin model = new EmployeeForgotLogin();
-		SystemController scontrol = new SystemController();
+		Database dbase= InitDatabase.init();
 		
 		// check which button the user pressed
 		if (req.getParameter("LoginPage") != null) {
@@ -59,7 +61,7 @@ public class EmployeeForgotLoginServlet extends HttpServlet {
 			else {
 				EmployeeForgotLoginController controller = new EmployeeForgotLoginController();
 				controller.setModel(model);
-				controller.getPassword(scontrol);
+				controller.getPassword(dbase);
 				password = model.getPassword();
 			}
 		} catch (Exception e) {

@@ -57,6 +57,14 @@ public interface Database {
 	public ArrayList<Notification> getNotifications(String accountNumber);
 	
 	public Notification getNotification(String notificationID);
+
+
+	public String getPasswordForCustomerAccount(Account account);
+
+	public String getPasswordForEmployeeAccount(Account account);
+
+
 	
 	public Account getAccount(String accountNumber);
+
 }
