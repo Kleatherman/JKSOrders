@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.controller.CustomerForgotLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CustomerForgotLogin;
 
 
@@ -34,7 +36,7 @@ public class CustomerForgotLoginServlet extends HttpServlet {
 		String error= null;
 		
 		String password= null;
-		SystemController scontrol = new SystemController();
+		Database dbase= InitDatabase.init();
 		CustomerForgotLoginController controller= new CustomerForgotLoginController(); 
 		CustomerForgotLogin model = new CustomerForgotLogin();
 		
@@ -55,7 +57,7 @@ public class CustomerForgotLoginServlet extends HttpServlet {
 				}
 				
 				controller.setModel(model);
-				controller.getPassword(scontrol);
+				controller.getPassword(dbase);
 				password= model.getPassword();
 				
 			}catch(Exception e){
