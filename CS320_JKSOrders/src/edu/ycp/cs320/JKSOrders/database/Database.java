@@ -63,7 +63,9 @@ public interface Database {
 
 	public String getPasswordForEmployeeAccount(Account account);
 
-
+	public EmployeeAccount getEmployeeAccount(String name);
+	
+	public CustomerAccount getCustomerAccount(String name);
 	
 	public Account getAccount(String accountNumber);
 

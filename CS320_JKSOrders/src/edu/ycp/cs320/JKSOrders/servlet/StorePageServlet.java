@@ -41,25 +41,15 @@ public class StorePageServlet extends HttpServlet {
 		Database db = InitDatabase.init();
 		String accountNumber = req.getParameter("accountNumber");
 
-		System.out.println("about to set account number");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
-		System.out.println("");
+		
 		if(accountNumber != null) {
-			System.out.println("Made it here");
 			Account account =  db.getAccount(accountNumber);
-			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
 		}
-		// check which button the user pressed
 		if (req.getParameter("checkOut") != null) {
-			// call addNumbers JSP
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("profilePage") != null) {
-			// call multiplyNumbers JSP
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {
