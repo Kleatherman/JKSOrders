@@ -46,6 +46,7 @@
 							<input type="Submit" name="forgot" value="Forgot Info">
 							<input type="Submit" name="createCustomerAccount" value="Create Account">
 						</div>
+						<input name="accountNumber" type="hidden" value="${accountNumber}" />
 					</form>
 				</div>
 				<div class="col-sm-4" style="background-color:lavender;">space</div>

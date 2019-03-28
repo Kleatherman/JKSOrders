@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.controller.CheckOutController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
@@ -32,6 +35,12 @@ public class CheckOutServlet extends HttpServlet {
 
 		System.out.println("CheckOut Servlet: doPost");
 		Database db = InitDatabase.init();
+		String accountNumber = req.getParameter("accountNumber");
+		if(accountNumber != null) {
+			Account account = db.getAccount(accountNumber);
+			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
+			req.setAttribute("accountNumber", account.getAccountNumber());
+		}
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
 		CheckOut model = new CheckOut();

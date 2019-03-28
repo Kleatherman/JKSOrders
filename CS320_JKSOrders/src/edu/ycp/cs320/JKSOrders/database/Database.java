@@ -2,6 +2,7 @@ package edu.ycp.cs320.JKSOrders.database;
 
 import java.util.ArrayList;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
@@ -56,5 +57,6 @@ public interface Database {
 	public ArrayList<Notification> getNotifications(String accountNumber);
 	
 	public Notification getNotification(String notificationID);
-
+	
+	public Account getAccount(String accountNumber);
 }

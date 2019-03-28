@@ -31,6 +31,7 @@
 						<div>
 							<input type="Submit" name="cancel" value="Cancel Order">
 							<input type="Submit" name="thankYou" value="Submit Order">
+							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
 				</div>

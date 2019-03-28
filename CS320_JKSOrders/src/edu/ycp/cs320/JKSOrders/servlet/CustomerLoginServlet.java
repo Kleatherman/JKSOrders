@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 
@@ -82,7 +83,9 @@ public class CustomerLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
+				CustomerAccount account = (CustomerAccount) db.getAccount(model.getUserName());
 				ArrayList<Item> items = system.getVisibleItems();
+				req.setAttribute("accountNumber", account.getAccountNumber());
 				System.out.println("StorePage: "+ items.get(0).getDescription());
 				for(int i =0; i<items.size(); i++) {
 					req.setAttribute("item"+i, items.get(i));
