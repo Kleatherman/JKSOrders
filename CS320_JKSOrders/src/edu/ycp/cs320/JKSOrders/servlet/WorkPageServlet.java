@@ -36,7 +36,7 @@ public class WorkPageServlet  extends HttpServlet{
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
 		String accountNumber = req.getParameter("accountNumber");
-		if(accountNumber == null) {
+		if(accountNumber != null) {
 			EmployeeAccount account = (EmployeeAccount) system.getEmployeeAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());

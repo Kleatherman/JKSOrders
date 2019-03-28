@@ -39,11 +39,18 @@ public class StorePageServlet extends HttpServlet {
 		SystemController system = new SystemController();
 		Database db = InitDatabase.init();
 		String accountNumber = req.getParameter("accountNumber");
-		if(accountNumber == null) {
+
+		System.out.println("about to set account number");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("");
+		if(accountNumber != null) {
+			System.out.println("Made it here");
 			CustomerAccount account = (CustomerAccount) db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
-			req.setAttribute("notify", db.getNotifications(account.getAccountNumber()).get(0));
 		}
 		// check which button the user pressed
 		if (req.getParameter("checkOut") != null) {
