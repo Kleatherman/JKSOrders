@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
@@ -48,7 +49,7 @@ public class StorePageServlet extends HttpServlet {
 		System.out.println("");
 		if(accountNumber != null) {
 			System.out.println("Made it here");
-			CustomerAccount account = (CustomerAccount) db.getAccount(accountNumber);
+			Account account =  db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
 		}
