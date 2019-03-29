@@ -78,6 +78,8 @@ public class EmployeeLoginServlet extends HttpServlet {
 				if(notify!=null) {
 					req.setAttribute("notify", notify);
 				}
+				boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
+				req.setAttribute("isManager", isManager);
 				req.setAttribute("name", name);
 				req.setAttribute("accountNumber", accountNumber);
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);

@@ -35,12 +35,14 @@ public class CheckOutServlet extends HttpServlet {
 
 		System.out.println("CheckOut Servlet: doPost");
 		Database db = InitDatabase.init();
+
 		String accountNumber = req.getParameter("accountNumber");
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
-		}
+
+
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
 		CheckOut model = new CheckOut();
@@ -65,4 +67,5 @@ public class CheckOutServlet extends HttpServlet {
 			req.setAttribute("model", model);
 		}
 	}
+}
 }
