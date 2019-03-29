@@ -41,11 +41,13 @@ public class WorkPageServlet  extends HttpServlet{
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
-			if(db.getNotifications(accountNumber).get(0)!=null) {
+			if(db.getNotifications(accountNumber).size()!=0) {
 				notify = db.getNotifications(accountNumber).get(0);
 				req.setAttribute("notify", notify);
 			}
-			isManager = db.getEmployeeAccount(accountNumber).isManager();
+			if(db.getEmployeeAccount(accountNumber)!=null) {
+				isManager = db.getEmployeeAccount(accountNumber).isManager();
+			}
 			req.setAttribute("isManager", isManager);
 		}
 		if(req.getParameter("notify")!=null) {
