@@ -309,11 +309,11 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-	public EmployeeAccount getEmployeeAccount(String name) {
+	public EmployeeAccount getEmployeeAccount(String Accountnum) {
 		employeeAccounts = new ArrayList<EmployeeAccount>();
 		initializeEmployeeAccountArrayList(employeeAccounts);
 		for(EmployeeAccount account : employeeAccounts) {
-			if(account.getAccountNumber().equals(name)||account.getName().equals(name)||account.getLogin().getUserName().equals(name)) {
+			if(account.getAccountNumber().equals(Accountnum)||account.getName().equals(Accountnum)||account.getLogin().getUserName().equals(Accountnum)) {
 				return account;
 			}
 		}
@@ -321,11 +321,11 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-	public CustomerAccount getCustomerAccount(String name) {
+	public CustomerAccount getCustomerAccount(String Accountnum) {
 		customerAccounts = new ArrayList<CustomerAccount>();
 		initializeCustomerAccountArrayList(customerAccounts);
 		for(CustomerAccount account : customerAccounts) {
-			if(account.getAccountNumber().equals(name)||account.getName().equals(name)||account.getLogin().getUserName().equals(name)) {
+			if(account.getAccountNumber().equals(Accountnum)||account.getName().equals(Accountnum)||account.getLogin().getUserName().equals(Accountnum)) {
 				return account;
 			}
 		}
