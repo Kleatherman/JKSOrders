@@ -1,60 +1,54 @@
+ 
 <!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html lag= "en">
 	<head>
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<head>
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Create an Account</h5>
+            <form class="form-signin">
+             
 
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	
-		<title>Create Customer Account</title>
-		<style type="text/css">
-		.TitleText2 {
-						font-size: 300%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		</style>
-	</head>
 
-	<body>
-		<div class = "container-fluid">
-			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-				<div class="col-sm-4" style="background-color:white;">
-					<div class= "TitleText2">Create Account</div>
-					<form action="${pageContext.servletContext.contextPath}/createCustomerAccount" method="post">
-					
-	
-			
-							Email Address:<br>
-							<input type="text" name="emailAddress" size="12" value="${model.userName}" /><br>
-							Password:<br>	
-							<input type="password" name="password" size="12" value="${model.password}" /><br>
+ 				<div class="form-label-group">
+                <input type="email" id="inputEmail" class="form-control" value="${model.userName}" placeholder="Email address" required autofocus>
+                <label for="inputEmail">Email address</label>
+              </div>
+
 				
-							Name:<br>	
-							<input type="text" name="Name" size="12" value="${model.userName}" /><br>
-						
-							Phone Number:<br>		
-							<input type="text" name="phoneNumber" size="12" value="${model.phoneNumber}" /><br>
-					
-						
-						
-						<div>
-							<input type="Submit" name="submit" value="Create Account">
-							
-						</div>
-					</form>
-				</div>
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-			</div>	
-		</div>
-	</body>
+              
+              <div class="form-label-group">
+                <input type="password" id="inputPassword" class="form-control" value="${model.userName}" placeholder="Password" requiredautofocus>
+                <label for="inputPassword">Password</label>
+              </div>
+
+				<div class="form-label-group">
+                <input type="name" id="inputname" class="form-control" value="${model.name}" placeholder="Name" required autofocus>
+                <label for="inputName">Name</label>
+              </div>
+              
+				<div class="form-label-group">
+                <input type="phoneNumber" id="inputphoneNumber" class="form-control" value="${model.phoneNumber}" placeholder="Phone Number" required autofocus>
+                <label for="inputphoneNumber">Phone Number</label>
+              </div>
+              
+              
+  
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" value="Create Account" >Create Account </button>
+              <hr class="my-4">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
