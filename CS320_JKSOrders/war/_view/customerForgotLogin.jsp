@@ -47,7 +47,7 @@
 							</tr>
 							<tr>
 								<td class="standard">Phone number:</td>
-								<td><input type="text" name="Phone" size="12" value="${Phone}" /></td>
+								<td><input type="text" name="Phone" size="12" /></td>
 							</tr>
 				
 							<tr>
