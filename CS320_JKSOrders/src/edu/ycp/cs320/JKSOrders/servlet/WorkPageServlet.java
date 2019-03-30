@@ -24,9 +24,13 @@ public class WorkPageServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("WorkPage Servlet: doGet");	
-		
+		if(req.getAttribute("accountNumber")==null) {
+			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+		}
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
+		else{
+			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
+		}
 	}
 	
 	@Override
@@ -38,6 +42,7 @@ public class WorkPageServlet  extends HttpServlet{
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
 		String accountNumber = req.getParameter("accountNumber");
+		
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
@@ -75,7 +80,7 @@ public class WorkPageServlet  extends HttpServlet{
 			// call addNumbers JSP
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
-		else if (req.getParameter("employeeLogin") != null) {
+		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
 			// call addNumbers JSP
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}

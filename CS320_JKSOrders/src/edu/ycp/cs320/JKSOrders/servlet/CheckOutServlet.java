@@ -25,9 +25,13 @@ public class CheckOutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		System.out.println("CheckOut Servlet: doGet");
-
+		if(req.getAttribute("accountNumber")==null) {
+			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		}
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
+		else{
+			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
+		}
 	}
 
 	@Override
