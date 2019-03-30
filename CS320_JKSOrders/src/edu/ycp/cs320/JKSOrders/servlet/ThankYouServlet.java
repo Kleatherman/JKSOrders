@@ -22,9 +22,13 @@ public class ThankYouServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("Thank You Servlet: doGet");	
-		
+		if(req.getAttribute("accountNumber")==null) {
+			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		}
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/thankYou.jsp").forward(req, resp);
+		else{
+			req.getRequestDispatcher("/_view/thankYou.jsp").forward(req, resp);
+		}
 	}
 	
 	@Override
