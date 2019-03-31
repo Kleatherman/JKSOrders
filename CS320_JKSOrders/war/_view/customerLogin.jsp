@@ -1,56 +1,39 @@
+
 <!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html lag= "en">
 	<head>
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<head>
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Sign In</h5>
+            
+	<form formnovalidate action="${pageContext.servletContext.contextPath}/customerLogin" method="post">
+		 <div class="form-label-group">
+                <input type="emailAddress" id="inputuserName" value="${model.userName}" name="emailAddress" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputuserName">Email address</label>
+              </div>
 
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	
-		<title>Customer Login</title>
-		<style type="text/css">
-		.TitleText2 {
-						font-size: 300%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		</style>
-	</head>
-
-	<body>
-		<div class = "container-fluid">
-			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-				<div class="col-sm-4" style="background-color:white;">
-					<div class= "TitleText2">Customer Login</div>
-					<form action="${pageContext.servletContext.contextPath}/customerLogin" method="post">
-						<table>
-							<tr>
-								<td class="label">Email Address:</td>
-								<td><input type="text" name="emailAddress" size="12" value="${model.userName}" /></td>
-							</tr>
-							<tr>
-								<td class="label">Password:</td>
-								<td><input type="password" name="password" size="12" value="${model.password}" /></td>
-							</tr>
-						</table>
-						<div>
-							<input type="Submit" name="submit" value="Login">
-							<input type="Submit" name="forgot" value="Forgot Info">
-							<input type="Submit" name="createCustomerAccount" value="Create Account">
-						</div>
-						<input name="accountNumber" type="hidden" value="${accountNumber}" />
-					</form>
-				</div>
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-			</div>	
-		</div>
-	</body>
-</html>
+              <div class="form-label-group">
+                <input type="password" id="inputPassword" class="form-control"  name="password" value="${model.password}" placeholder="Password" required>
+                <label for="inputPassword">Password</label>
+              </div>
+         
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" name="submit"  value="Login" type="submit">Sign in</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" formnovalidate name="forgot" value="Forgot Info" type="submit">Forgot Login</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" formnovalidate name="createCustomerAccount" value="Create Account" type="submit">Create Account</button>
+              <hr class="my-4">
+              <input name="accountNumber" type="hidden" value="${accountNumber}" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
