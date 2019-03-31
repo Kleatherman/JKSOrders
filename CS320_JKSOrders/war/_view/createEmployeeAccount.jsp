@@ -32,7 +32,7 @@
 
 				<div class="form-label-group">
                 <input type="name" id="inputname" class="form-control" value="${model.name}" placeholder="Name" required autofocus>
-                <label for="inputName">Name</label>S
+                <label for="inputName">Name</label>
               </div>
               
 				<div class="form-label-group">
