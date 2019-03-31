@@ -51,7 +51,7 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		else {
-			req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
+			req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
 		}
 		 req.setAttribute("model", model);
 
