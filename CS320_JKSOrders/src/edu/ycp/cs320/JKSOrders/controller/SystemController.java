@@ -247,4 +247,40 @@ public class SystemController {
 		}
 		return null;
 	}
+
+	public boolean isEmployee(String accountNumber) {
+		accountNumber.toLowerCase();
+		char[] number = accountNumber.toCharArray();
+		if(number[0]=='e') {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isInventoryOrder(String orderNumber) {
+		orderNumber.toLowerCase();
+		char[] number = orderNumber.toCharArray();
+		if(number[0]=='i') {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isManagerOrder(String accountNumber) {
+		accountNumber.toLowerCase();
+		char[] number = accountNumber.toCharArray();
+		if(number[0]=='m') {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isUrgentNotification(String notificationNumber) {
+		notificationNumber.toLowerCase();
+		char[] number = notificationNumber.toCharArray();
+		if(number[0]=='u') {
+			return true;
+		}
+		return false;
+	}
 }

@@ -227,11 +227,13 @@ public class fakeDatabase implements Database{
 		notifications = new ArrayList<Notification>();
 		Notification notify;
 		initializeEmployeeAccountArrayList(employeeAccounts);
+		String[] accountNumberManagers = {employeeAccounts.get(5).getAccountNumber(), employeeAccounts.get(6).getAccountNumber(), employeeAccounts.get(7).getAccountNumber()};
 		for(int i = 0; i<3; i++) {
 			notify = new Notification();
 			notify.addDestinationName(employeeAccounts.get(i).getAccountNumber());
 			notify.addDestinationName(employeeAccounts.get(i+3).getAccountNumber());
 			notify.addDestinationName(employeeAccounts.get(i+6).getAccountNumber());
+			notify.setSourceAccountNumber(accountNumberManagers[i]);
 			notify.setUrgency(i==2);
 			notify.setMessage("This is notification "+i+". Please respond ASAP!");
 			notify.setNotificationID("ABCD"+i);
