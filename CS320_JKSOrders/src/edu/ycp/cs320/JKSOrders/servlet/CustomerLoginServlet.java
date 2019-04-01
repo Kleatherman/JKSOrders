@@ -16,6 +16,7 @@ import edu.ycp.cs320.JKSOrders.controller.CustomerLoginController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.Login;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 
 
@@ -41,7 +42,7 @@ public class CustomerLoginServlet extends HttpServlet {
 
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
-		LoginInfo model = new LoginInfo();
+		Login model = new Login();
 
 		// create controller - controller does not persist between requests
 		// must recreate it each time a Post comes in
@@ -79,7 +80,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			else if(req.getParameter("forgot")!=null) {
 			 	req.getRequestDispatcher("/_view/customerForgotLogin.jsp").forward(req, resp);
 			}
-			else if(!system.verifyCustomerLoginInfo(model, db.getCustomerLoginInfo())) {
+			else if(!system.verifyCustomerLoginInfo(model.getLoginInfo(), db.getCustomerLoginInfo())) {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {

@@ -1,11 +1,12 @@
 package edu.ycp.cs320.JKSOrders.controller;
 
-import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+
+import edu.ycp.cs320.JKSOrders.model.Login;
 
 public class CustomerLoginController {
-	private LoginInfo model;
+	private Login model;
 
-	public void setModel(LoginInfo model) {
+	public void setModel(Login model) {
 		this.model = model;
 	}
 

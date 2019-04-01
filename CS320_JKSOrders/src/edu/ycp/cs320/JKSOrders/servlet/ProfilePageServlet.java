@@ -42,7 +42,7 @@ public class ProfilePageServlet extends HttpServlet{
 			Account account =  db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
-			if(db.getNotifications(accountNumber).get(0)!=null) {
+			if(db.getNotifications(accountNumber).size()!=0) {
 				Notification notify = db.getNotifications(accountNumber).get(0);
 				req.setAttribute("notify", notify);
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
