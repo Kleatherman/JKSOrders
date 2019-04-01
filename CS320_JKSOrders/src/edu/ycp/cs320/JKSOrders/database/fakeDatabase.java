@@ -331,6 +331,18 @@ public class fakeDatabase implements Database{
 		}
 		return null;
 	}
+
+	@Override
+	public void addEmployeeAccount(EmployeeAccount account) {
+		employeeAccounts.add(account);
+		
+	}
+
+	@Override
+	public void addCustomerAccount(CustomerAccount account) {
+		customerAccounts.add(account);
+		
+	}
 	
 
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.controller.CreateCustomerAccountController;
+import edu.ycp.cs320.JKSOrders.model.CreateCustomerAccount;
 
 public class CreateCustomerAccountServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,7 +28,7 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
-		CustomerAccount model = new CustomerAccount();
+		CreateCustomerAccount model = new CreateCustomerAccount();
 
 		// create controller - controller does not persist between requests
 		// must recreate it each time a Post comes in
