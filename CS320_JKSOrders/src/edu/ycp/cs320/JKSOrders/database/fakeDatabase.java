@@ -227,11 +227,13 @@ public class fakeDatabase implements Database{
 		notifications = new ArrayList<Notification>();
 		Notification notify;
 		initializeEmployeeAccountArrayList(employeeAccounts);
+		String[] accountNumberManagers = {employeeAccounts.get(5).getAccountNumber(), employeeAccounts.get(6).getAccountNumber(), employeeAccounts.get(7).getAccountNumber()};
 		for(int i = 0; i<3; i++) {
 			notify = new Notification();
 			notify.addDestinationName(employeeAccounts.get(i).getAccountNumber());
 			notify.addDestinationName(employeeAccounts.get(i+3).getAccountNumber());
 			notify.addDestinationName(employeeAccounts.get(i+6).getAccountNumber());
+			notify.setSourceAccountNumber(accountNumberManagers[i]);
 			notify.setUrgency(i==2);
 			notify.setMessage("This is notification "+i+". Please respond ASAP!");
 			notify.setNotificationID("ABCD"+i);
@@ -275,6 +277,7 @@ public class fakeDatabase implements Database{
 		}
 		return "Account was not found";
 	}
+	
 	@Override
 	public String getPasswordForEmployeeAccount(Account account) {
 		employeeAccounts = new ArrayList<EmployeeAccount>();
@@ -334,13 +337,18 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void addEmployeeAccount(EmployeeAccount account) {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
 		employeeAccounts.add(account);
-		
+		System.out.println("new employee Login: "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getPassword()+" "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getUserName()+" "+employeeAccounts.get(employeeAccounts.size()-1).getName());
 	}
 
 	@Override
 	public void addCustomerAccount(CustomerAccount account) {
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
 		customerAccounts.add(account);
+		System.out.println("new customer Login: "+customerAccounts.get(customerAccounts.size()-1).getLogin().getPassword()+" "+customerAccounts.get(customerAccounts.size()-1).getLogin().getUserName()+" "+customerAccounts.get(customerAccounts.size()-1).getName());
 		
 	}
 	

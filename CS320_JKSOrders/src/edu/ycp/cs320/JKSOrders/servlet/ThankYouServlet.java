@@ -44,9 +44,7 @@ public class ThankYouServlet extends HttpServlet {
 		if(req.getParameter("storePage")!= null) {
 			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
-			for(int i =0; i<items.size(); i++) {
-				req.setAttribute("item"+i, items.get(i));
-			}
+			req.setAttribute("items", items);
 			// Forward to view to render the result HTML document
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}

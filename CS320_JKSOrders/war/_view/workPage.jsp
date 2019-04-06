@@ -43,7 +43,26 @@
 							</c:if>
 						</div>
 					</form>
-					<div>${notify.message}</div>
+					<table>
+						<tr>
+							<th>Message</th>
+							<th>Urgent?</th>
+						</tr>
+						<c:forEach items="${notification}" var="notify">
+							<tr>
+								<td>${notify.message}</td>
+								<c:choose>
+									<c:when test = "${notify.urgency}">
+										<td>Yes!</td>
+									</c:when>
+									<c:otherwise>
+										<td>No</td>
+									</c:otherwise>
+								</c:choose>
+							</tr>
+						</c:forEach>
+						
+					</table>
 				</div>
 				<div class="col-sm-4" style="background-color:lavender;">space</div>
 			</div>	
