@@ -1,68 +1,50 @@
+
 <!DOCTYPE html>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <html lag= "en">
 	<head>
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+	<head>
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	
-		<title>Retrieve Employee Login</title>
-		<style type="text/css">
-		.TitleText2 {
-						font-size: 300%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		.error {
-			color: red;
-		}
-		.standard{
-			font-weight: bold;
-		}
-		</style>
-	</head>
-
-	<body>
-		<div class = "container-fluid">
-			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-				<div class="col-sm-4" style="background-color:white;">
-					<c:if test="${! empty errorMessage}">
+<body style="background-color:#cccccc;">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Recover Password</h5>
+            
+            <c:if test="${! empty errorMessage}">
 						<div class="error">${errorMessage}</div>
 					</c:if>
-					<div class= "TitleText2">The Employee forgot their login</div>
-					<form action="${pageContext.servletContext.contextPath}/employeeForgotLogin" method="post">
-						<table>
-							<tr>
-								<td class="standard">Username:</td>
-								<td><input type="text" name="Username" size="12" value="${Username}" /></td>
-							</tr>
-							<tr>
-								<td class="standard">Phone number:</td>
-								<td><input type="text" name="Phone" size="12" value="${Phone}" /></td>
-							</tr>
-				
-							<tr>
-								<td class="label">Password:</td>
-								<td>${result}</td>
-							</tr>
-						</table>
-						<input type="Submit" name="submit" value="Get Info">
-						<div>
-							<input type="Submit" name="LoginPage" value="Go Back">
-						</div>
-					</form>
-				</div>
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-			</div>	
-		</div>
-	</body>
+            
+	<form formnovalidate action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
+		 <div class="form-label-group">
+                <input type="emailAddress" id="inputuserName" name="Username" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputuserName">Email address</label>
+              </div>
+
+              <div class="form-label-group">
+                <input type="phoneNumber" id="inputPhoneNumber" class="form-control"  name="Phone" placeholder="Phone Number" required>
+                <label for="inputPhoneNumber">Phone Number</label>
+              </div>
+         
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" formnovalidate name="LoginPage"  value="LoginPage" type="submit">Go Back</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" name="submit" value="submit" type="submit">Recover Password</button>
+             
+			 ${result}
+								
+              <hr class="my-4">
+            
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </body>
 </html>
