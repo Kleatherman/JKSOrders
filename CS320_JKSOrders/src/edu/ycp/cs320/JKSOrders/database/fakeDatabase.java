@@ -277,6 +277,7 @@ public class fakeDatabase implements Database{
 		}
 		return "Account was not found";
 	}
+	
 	@Override
 	public String getPasswordForEmployeeAccount(Account account) {
 		employeeAccounts = new ArrayList<EmployeeAccount>();
