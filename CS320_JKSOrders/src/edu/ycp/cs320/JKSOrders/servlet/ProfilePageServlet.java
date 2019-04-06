@@ -11,9 +11,11 @@ import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.controller.ProfilePageController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 
 
 public class ProfilePageServlet extends HttpServlet{
@@ -36,7 +38,9 @@ public class ProfilePageServlet extends HttpServlet{
 		boolean isManager = false;
 		System.out.println("ProfilePage Servlet: doPost");
 		Database db = InitDatabase.init();
-		SystemController system = new SystemController();
+		ProfilePageController controller= new ProfilePageController();
+		ProfilePage model= new ProfilePage();
+		controller.setModel(model);
 		String accountNumber = req.getParameter("accountNumber");
 		if(accountNumber != null) {
 			Account account =  db.getAccount(accountNumber);
