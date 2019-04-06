@@ -60,9 +60,13 @@
 							</tr>
 						</table>
 						<div>
-							<input name="storePage" type="submit" value="Store Page!" />
-							<input name="workPage" type="submit" value="Work Page!"/>
-							<input name="accountNumber" type="hidden" value="${accountNumber}" />
+							<c:if test="${isCustomer}">
+								<input name="storePage" type="submit" value="Store Page!" />
+							</c:if>
+							<c:if test="${isEmployee}">
+								<input name="workPage" type="submit" value="Work Page!"/>
+							</c:if>	
+								<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
 				</div>
