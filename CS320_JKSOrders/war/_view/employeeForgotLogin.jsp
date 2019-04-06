@@ -22,7 +22,7 @@
 						<div class="error">${errorMessage}</div>
 					</c:if>
             
-	<form formnovalidate action="${pageContext.servletContext.contextPath}/customerForgotLogin" method="post">
+	<form formnovalidate action="${pageContext.servletContext.contextPath}/employeeForgotLogin" method="post">
 		 <div class="form-label-group">
                 <input type="emailAddress" id="inputuserName" name="Username" class="form-control" placeholder="Username" required autofocus>
                 <label for="inputuserName">Email address</label>
