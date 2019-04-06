@@ -337,13 +337,18 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void addEmployeeAccount(EmployeeAccount account) {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
 		employeeAccounts.add(account);
-		
+		System.out.println("new employee Login: "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getPassword()+" "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getUserName()+" "+employeeAccounts.get(employeeAccounts.size()-1).getName());
 	}
 
 	@Override
 	public void addCustomerAccount(CustomerAccount account) {
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
 		customerAccounts.add(account);
+		System.out.println("new customer Login: "+customerAccounts.get(customerAccounts.size()-1).getLogin().getPassword()+" "+customerAccounts.get(customerAccounts.size()-1).getLogin().getUserName()+" "+customerAccounts.get(customerAccounts.size()-1).getName());
 		
 	}
 	
