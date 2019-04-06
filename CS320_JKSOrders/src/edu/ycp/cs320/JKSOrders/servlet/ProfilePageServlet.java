@@ -25,7 +25,7 @@ public class ProfilePageServlet extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("ProfilePage Servlet: doGet");	
-		
+
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 	}
@@ -42,9 +42,9 @@ public class ProfilePageServlet extends HttpServlet{
 			Account account =  db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
-			if(db.getNotifications(accountNumber).size()!=0) {
-				Notification notify = db.getNotifications(accountNumber).get(0);
-				req.setAttribute("notify", notify);
+			ArrayList<Notification> notify = db.getNotifications(accountNumber);
+			if(notify.size()!=0) {
+				req.setAttribute("notification", notify);
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
 				req.setAttribute("isManager", isManager);
 			}	
@@ -55,9 +55,7 @@ public class ProfilePageServlet extends HttpServlet{
 			ArrayList<Item> items = new ArrayList<Item>();
 			items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
-			for(int i =0; i<items.size(); i++) {
-				req.setAttribute("item"+i, items.get(i));
-			}
+			req.setAttribute("items", items);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("workPage") != null) {

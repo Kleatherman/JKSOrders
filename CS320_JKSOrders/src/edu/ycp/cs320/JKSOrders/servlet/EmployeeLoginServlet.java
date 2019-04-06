@@ -73,9 +73,9 @@ public class EmployeeLoginServlet extends HttpServlet {
 			else if (req.getParameter("submit")!=null) {
 				String accountNumber = system.getEmployeeAccount(model.getUserName()).getAccountNumber();
 				String name = db.getAccount(accountNumber).getName();
-				Notification notify = db.getNotifications(system.getEmployeeAccount(model.getUserName()).getAccountNumber()).get(0);
-				if(notify!=null) {
-					req.setAttribute("notify", notify);
+				if(db.getNotifications(accountNumber).size()!=0) {
+					System.out.println("This is the first notification!!!!!!!!!!!");
+					req.setAttribute("notification", db.getNotifications(accountNumber));
 				}
 				boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
 				req.setAttribute("isManager", isManager);

@@ -8,6 +8,7 @@ public class Notification {
 	private ArrayList<String> destinationNames;
 	private Boolean urgency;
 	private String notificationID;
+	private String sourceAccountNumber;
 	
 	public Notification() {
 		destinationNames = new ArrayList<String>();
@@ -25,6 +26,14 @@ public class Notification {
 	 */
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getSourceAccountNumber() {
+		return sourceAccountNumber;
+	}
+
+	public void setSourceAccountNumber(String sourceAccountNumber) {
+		this.sourceAccountNumber = sourceAccountNumber;
 	}
 
 	/**
