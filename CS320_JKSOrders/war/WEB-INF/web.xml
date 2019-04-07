@@ -21,6 +21,10 @@
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.WorkPageServlet</servlet-class>
   </servlet> 
   <servlet>
+    <servlet-name>EditNotificationServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.EditNotificationServlet</servlet-class>
+  </servlet> 
+  <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ProfilePageServlet</servlet-class>
   </servlet>
@@ -87,7 +91,11 @@
    <servlet-mapping>
     <servlet-name>StorePageServlet</servlet-name>
     <url-pattern>/storePage</url-pattern>
-  </servlet-mapping>  
+  </servlet-mapping>
+   <servlet-mapping> 
+    <servlet-name>EditNotificationServlet</servlet-name>
+    <url-pattern>/editNotification</url-pattern>
+  </servlet-mapping>   
    <servlet-mapping> 
     <servlet-name>WorkPageServlet</servlet-name>
     <url-pattern>/workPage</url-pattern>
