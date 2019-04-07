@@ -351,6 +351,25 @@ public class fakeDatabase implements Database{
 		System.out.println("new customer Login: "+customerAccounts.get(customerAccounts.size()-1).getLogin().getPassword()+" "+customerAccounts.get(customerAccounts.size()-1).getLogin().getUserName()+" "+customerAccounts.get(customerAccounts.size()-1).getName());
 		
 	}
+
+	@Override
+	public String getLastCustomerAccountNumber() {
+		customerAccounts = new ArrayList<CustomerAccount>();
+		initializeCustomerAccountArrayList(customerAccounts);
+		
+		return customerAccounts.get(customerAccounts.size()-1).getAccountNumber() ;
+		
+		
+	}
+
+	@Override
+	public String getLastEmployeeAccountNumber() {
+		
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		return employeeAccounts.get(employeeAccounts.size()-1).getAccountNumber() ;
+		
+	}
 	
 
 }

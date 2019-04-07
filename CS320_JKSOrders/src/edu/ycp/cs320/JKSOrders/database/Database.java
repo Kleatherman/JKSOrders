@@ -72,5 +72,10 @@ public interface Database {
 	public void addCustomerAccount(CustomerAccount account);
 	
 	public Account getAccount(String accountNumber);
+	
+	public String getLastCustomerAccountNumber();
+	
+	public String getLastEmployeeAccountNumber();
+	
 
 }
