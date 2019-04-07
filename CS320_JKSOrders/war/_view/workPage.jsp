@@ -42,6 +42,13 @@
 									<c:forEach items="${employeeNames}" var="name">
 										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
 									</c:forEach>
+									<h1>Your Notifications</h1>
+									<select name="editNotification">	
+										<c:forEach items="${sourceNotifications}" var = "sourceNotify">
+											<option value="${sourceNotify.notificationID}">${sourceNotify.notificationID}</option>
+										</c:forEach>
+									</select>
+								<input name="editNotification" type="submit" value="Edit Notification" />
 							</c:if>
 						</div>
 					</form>

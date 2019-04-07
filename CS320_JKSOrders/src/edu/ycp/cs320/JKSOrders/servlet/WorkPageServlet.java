@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.controller.EditNotificationController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.controller.WorkPageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -114,8 +116,28 @@ public class WorkPageServlet  extends HttpServlet{
 			// call addNumbers JSP
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
+		else if (req.getParameter("editNotification")!= null) {
+			EditNotificationController editController = new EditNotificationController();
+			EditNotificationModel editModel = new EditNotificationModel();
+			editController.setModel(editModel);
+			editController.setErrorMessage("No notification Selected for editing");
+			String editNotifyID = req.getParameter("editNotification");
+			System.out.println("Source Notification ID: "+ editNotifyID);
+			for(Notification note : db.getSourceNotifications(accountNumber)) {
+				System.out.println("We are looking for the notification!!");
+				if(editNotifyID.equals(note.getNotificationID())) {
+					System.out.println("We found the notification! it has ID#:" + note.getNotificationID());
+					editController.setModelNotification(note);
+					editController.setErrorMessage(null);
+				}
+			}
+			editController.setModelAllNames(db.AllEmployeeNames());
+			editController.setDestinationNames();
+			req.setAttribute("model", editModel);
+			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
+		}
 		else {
-			throw new ServletException("Unknown command");
+			throw new ServletException("Unknown command from work page");
 		}
 		
 	}
