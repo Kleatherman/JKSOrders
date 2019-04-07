@@ -54,7 +54,6 @@ public class SystemController {
 		}
 		return false;*/
 		
-		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
 		Iterator<LoginInfo> i = logins.iterator();
 		while(i.hasNext()) {
 			if(i.next().equals(loginTest)) {
@@ -71,7 +70,6 @@ public class SystemController {
 	 * @return
 	 */
 	public boolean verifyCustomerLoginInfo(LoginInfo loginTest, ArrayList<LoginInfo> logins) {
-		System.out.println("Test login: "+loginTest.getPassword()+" "+loginTest.getUserName());
 		Iterator<LoginInfo> i = logins.iterator();
 		while(i.hasNext()) {
 			if(i.next().equals(loginTest)) {
@@ -100,7 +98,6 @@ public class SystemController {
 	 * @param x
 	 */
 	public void setVisability(int x) {
-		System.out.println("Setting visability");
 		ArrayList<String> less = new ArrayList<String>();
 		ArrayList<String> more = new ArrayList<String>();
 		inventory.returnGreaterorLess(x, more, less);
@@ -117,7 +114,6 @@ public class SystemController {
 		Iterator<Account> i = employeeAccounts.iterator();
 		while(i.hasNext()) {
 			Account account = i.next();
-			System.out.println("initilize Employee Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getName());
 			logins.add(account.getLogin());
 		}
 	}
@@ -142,9 +138,7 @@ public class SystemController {
 			login = new LoginInfo();
 			login.setPassword("PassWord"+i);
 			login.setUserName("employee"+i);
-			System.out.println("employee account initilization" + login.getPassword()+" "+login.getUserName());
 			account.setLogin(login);
-			System.out.println("employee account initilization" + account.getLogin().getPassword()+" "+account.getLogin().getUserName());
 			if(account.getName().equals("Josiah Sam")||account.getName().equals("Kyle Leatherman")||account.getName().equals("Sam Cesario")) {
 				account.setManager(true);
 			}
@@ -189,11 +183,11 @@ public class SystemController {
 			Item item = catalog.getItem(i.next());
 			if(item.isVisable()) {
 				visibleItems.add(item);
-				System.out.println(item.getDescription());
 			}
 		}
 		return visibleItems;
 	}
+	
 	public String getPasswordForCustomerAccount(Account account) {
 		for(Account cAccount : customerAccounts ) {
 			if(cAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
@@ -202,6 +196,7 @@ public class SystemController {
 		}
 		return "Account was not found";
 	}
+	
 	public String getPasswordForEmployeeAccount(Account account) {
 		for(Account eAccount : employeeAccounts ) {
 			if(eAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
@@ -214,14 +209,12 @@ public class SystemController {
 	
 	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
 		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
-		System.out.println("Initilizing Inventory and Catalog");
 		for(int i = 0; i<itemNames.length; i++) {
 			Item item = new Item();
 			item.setItemName(itemNames[i]);
 			item.setUPC(itemNames[i]+i);
 			item.setPrice(11.1*i);
 			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
-			System.out.println(item.getDescription());
 			item.setLocation("A"+i+"B"+(5-1));
 			catalog.setItemKey(item);
 			inventory.setItemQuantity(item.getUPC(), i);
@@ -283,4 +276,5 @@ public class SystemController {
 		}
 		return false;
 	}
+
 }
