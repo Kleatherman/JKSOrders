@@ -61,6 +61,7 @@ public class WorkPageServlet  extends HttpServlet{
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
 			}
 			req.setAttribute("isManager", isManager);
+			req.setAttribute("employeeNames", db.AllEmployeeNames());
 		}
 		if(req.getParameter("notify")!=null) {
 			String message = req.getParameter("message");

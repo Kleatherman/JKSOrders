@@ -51,6 +51,7 @@ public class ProfilePageServlet extends HttpServlet{
 				req.setAttribute("notification", notify);
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
 				req.setAttribute("isManager", isManager);
+				req.setAttribute("employeeNames",db.AllEmployeeNames());
 			}	
 		}
 		// check which button the user pressed

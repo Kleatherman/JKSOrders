@@ -73,4 +73,5 @@ public interface Database {
 	
 	public Account getAccount(String accountNumber);
 
+	public ArrayList<String> AllEmployeeNames();
 }
