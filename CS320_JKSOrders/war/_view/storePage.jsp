@@ -29,21 +29,14 @@
 								<th>Description</th>
 								<th>Price</th>
 							</tr>
-							<tr>
-								<td>${item0.itemName}</td>
-								<td>${item0.description}</td>
-								<td>${item0.price}</td>
-							</tr>
-							<tr>
-								<td>${item1.itemName}</td>
-								<td>${item1.description}</td>
-								<td>${item1.price}</td>
-							</tr>
-							<tr>
-								<td>${item2.itemName}</td>
-								<td>${item2.description}</td>
-								<td>${item2.price}</td>
-							</tr>
+							<c:forEach items="${items}" var="item">
+								<tr>
+									<td>${item.itemName}</td>
+									<td>${item.description}</td>
+									<td>${item.price}</td>
+								</tr>
+							</c:forEach>
+							
 						</table>
 						<div>
 							<input name="checkOut" type="submit" value="CheckOut!" />

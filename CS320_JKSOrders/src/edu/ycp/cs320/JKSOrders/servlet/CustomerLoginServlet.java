@@ -88,9 +88,7 @@ public class CustomerLoginServlet extends HttpServlet {
 				ArrayList<Item> items = system.getVisibleItems();
 				req.setAttribute("accountNumber", account.getAccountNumber());
 				System.out.println("StorePage: "+ items.get(0).getDescription());
-				for(int i =0; i<items.size(); i++) {
-					req.setAttribute("item"+i, items.get(i));
-				}
+				req.setAttribute("items", items);
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 			
