@@ -11,8 +11,10 @@ import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
+import edu.ycp.cs320.JKSOrders.controller.WorkPageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
 
@@ -37,8 +39,12 @@ public class WorkPageServlet  extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		boolean isManager = false;
+		boolean isEmployee = false;
+		boolean isCustomer= false;
 		Notification notify = new Notification();
-		SystemController system = new SystemController();
+		WorkPage model = new WorkPage();
+		WorkPageController controller= new WorkPageController();
+		controller.setModel(model);
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
 		String accountNumber = req.getParameter("accountNumber");
@@ -46,6 +52,7 @@ public class WorkPageServlet  extends HttpServlet{
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
+			accountNumber = req.getParameter("accountNumber");
 			if(db.getNotifications(accountNumber).size()!=0) {
 				notify = db.getNotifications(accountNumber).get(0);
 				req.setAttribute("notify", notify);
@@ -77,7 +84,18 @@ public class WorkPageServlet  extends HttpServlet{
 		
 		// check which button the user pressed
 		else if (req.getParameter("profilePage") != null) {
-			// call addNumbers JSP
+			if (accountNumber!=null) {
+				controller.loadUpEmployeeAccount(db, accountNumber);
+				if(model.getEmployeeAccount()!= null) {
+					isEmployee= true; 
+					req.setAttribute("Anumber", model.getEmployeeAccount().getAccountNumber());
+					req.setAttribute("Username", model.getEmployeeAccount().getLogin().getUserName());
+					req.setAttribute("password", model.getEmployeeAccount().getLogin().getPassword());
+					req.setAttribute("Name", model.getEmployeeAccount().getName());
+					req.setAttribute("isEmployee", isEmployee);
+					req.setAttribute("isCustomer", isCustomer);
+				}
+			}
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
