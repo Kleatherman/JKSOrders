@@ -77,6 +77,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 					req.setAttribute("notification", db.getNotifications(accountNumber));
 				}
 				boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
+				req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 				req.setAttribute("isManager", isManager);
 				req.setAttribute("employeeNames", db.AllEmployeeNames());
 				req.setAttribute("name", name);

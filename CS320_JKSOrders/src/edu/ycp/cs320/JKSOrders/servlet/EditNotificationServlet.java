@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.controller.EditNotificationController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.controller.WorkPageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -45,24 +47,12 @@ public class EditNotificationServlet  extends HttpServlet{
 		String accountNumber = req.getParameter("accountNumber");
 		req.setAttribute("accountNumber", accountNumber);
 		boolean isManager = false;
-		if(accountNumber != null) {
-			Account account = db.getAccount(accountNumber);
-			req.setAttribute("accountNumber", account.getAccountNumber());
-			accountNumber = req.getParameter("accountNumber");
-			if(db.getNotifications(accountNumber).size()!=0) {
-				req.setAttribute("notify", db.getNotifications(accountNumber).get(0));
-			}
-			if(db.getEmployeeAccount(accountNumber)!=null) {
-				isManager = db.getEmployeeAccount(accountNumber).isManager();
-			}
-			req.setAttribute("isManager", isManager);
-			req.setAttribute("employeeNames", db.AllEmployeeNames());
-		}
 		if(req.getParameter("workPage")!=null) {
 			String name = db.getAccount(accountNumber).getName();
 			if(db.getNotifications(accountNumber).size()!=0) {
 				req.setAttribute("notification", db.getNotifications(accountNumber));
 			}
+			isManager = db.getEmployeeAccount(accountNumber).isManager();
 			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.setAttribute("isManager", isManager);
 			req.setAttribute("employeeNames", db.AllEmployeeNames());
@@ -70,7 +60,45 @@ public class EditNotificationServlet  extends HttpServlet{
 			req.setAttribute("accountNumber", accountNumber);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
-		else if(req.getAttribute("update")!=null) {
+		else if(req.getParameter("update")!=null) {
+			Notification notify = new Notification();
+			notify.setSourceAccountNumber(accountNumber);
+			String message = req.getParameter("message");
+			ArrayList<String> destNames = new ArrayList<String>();
+			for(EmployeeAccount account : db.getEmployeeAccounts()) {
+				if(req.getParameter(account.getName())!=null) {
+					destNames.add(account.getAccountNumber());
+				}
+			}
+			if(destNames.size()!=0) {
+				notify.setDestination(destNames);
+			}
+			if(req.getParameter("urgency")!=null) {
+				notify.setUrgency(true);
+			}
+			else {
+				notify.setUrgency(false);
+			}
+			if(message!=null) {
+				notify.setMessage(message);
+			}
+			String editNotifyID = req.getParameter("editNotification");
+			notify.setNotificationID(editNotifyID);
+			db.updateNotification(notify);
+			EditNotificationController editController = new EditNotificationController();
+			EditNotificationModel editModel = new EditNotificationModel();
+			editController.setModel(editModel);
+			editController.setErrorMessage("No notification Selected for editing");
+			
+			for(Notification note : db.getSourceNotifications(accountNumber)) {
+				if(editNotifyID.equals(note.getNotificationID())) {
+					editController.setModelNotification(note);
+					editController.setErrorMessage(null);
+				}
+			}
+			editController.setModelAllNames(db.AllEmployeeNames());
+			editController.setDestinationNames();
+			req.setAttribute("model", editModel);
 			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
 		}
 		else {

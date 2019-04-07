@@ -371,4 +371,30 @@ public class fakeDatabase implements Database{
 		}
 		return "NABCD"+i;
 	}
+
+	
+	@Override
+	public ArrayList<Notification> getSourceNotifications(String accountNumber) {
+		initilizeNotificationArrayList();
+		ArrayList<Notification> accountNotifications = new ArrayList<Notification>();
+		for(Notification notify : notifications) {
+			if(notify.getSourceAccountNumber().equals(accountNumber)) {
+				accountNotifications.add(notify);
+			}	
+		}
+		return accountNotifications;
+	}
+
+	@Override
+	public void updateNotification(Notification notify) {
+		initilizeNotificationArrayList();
+		Iterator<Notification> i = notifications.iterator();
+		while(i.hasNext()) {
+			Notification note = i.next();
+			if(note.getNotificationID().equals(notify.getNotificationID())) {
+				i.remove();
+			}
+		}
+		addNotification(notify);
+	}
 }

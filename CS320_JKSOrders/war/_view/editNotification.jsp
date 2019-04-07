@@ -41,9 +41,15 @@
 							<input name="workPage" type="submit" value="Return to Work Page" />
 							<input name="update" type="submit" value="Update Notification" />
 							<input name="accountNumber" type="hidden" value="${accountNumber}"/>
+							<input name="editNotification" type="hidden" value="${model.notify.notificationID}"/>
 							<input name="message" style="height:50px;font-size:14pt;width:150%" type="text" value="${model.notify.message}" /><br>
 							<input name="urgency" type="checkbox" />Urgency<br>
 						</div>
+						
+						<h1>Choose New Recipient List</h1>
+						<c:forEach items="${model.allNames}" var="name">
+							<input name="${name}" type="checkbox" value="${name}" />${name}<br>
+						</c:forEach>
 					</form>
 					<table>
 						<tr>
@@ -55,10 +61,7 @@
 							</tr>
 						</c:forEach>
 					</table>
-					<h1>Choose New Recipient List</h1>
-						<c:forEach items="${model.allNames}" var="name">
-								<input name="${name}" type="checkbox" value="${name}" />${name}<br>
-						</c:forEach>
+					
 					<span class = ErrorMessage>${model.errorMessage}</span>
 				</div>
 				<div class="col-sm-4" style="background-color:lavender;">space</div>
