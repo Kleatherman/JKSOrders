@@ -1,6 +1,7 @@
 package edu.ycp.cs320.JKSOrders.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -64,23 +65,33 @@ public class WorkPageServlet  extends HttpServlet{
 			req.setAttribute("employeeNames", db.AllEmployeeNames());
 		}
 		if(req.getParameter("notify")!=null) {
+			notify = new Notification();
+			notify.setSourceAccountNumber(accountNumber);
 			String message = req.getParameter("message");
-			if(req.getAttribute("urgent")!=null) {
+			ArrayList<String> destNames = new ArrayList<String>();
+			for(EmployeeAccount account : db.getEmployeeAccounts()) {
+				if(req.getParameter(account.getName())!=null) {
+					destNames.add(account.getAccountNumber());
+				}
+			}
+			if(destNames.size()!=0) {
+				notify.setDestination(destNames);
+			}
+			if(req.getParameter("urgency")!=null) {
 				notify.setUrgency(true);
 			}
 			else {
 				notify.setUrgency(false);
 			}
-			notify.setMessage(message);
+			if(message!=null) {
+				notify.setMessage(message);
+			}
 			db.addNotification(notify);
-			System.out.println("We are about to go back to workPage");
 			req.setAttribute("message", message);
 			if(db.getNotifications(accountNumber).size()!=0) {
-				System.out.println("This is the first notification!!!!!!!!!!!");
 				req.setAttribute("notification", db.getNotifications(accountNumber));
 			}
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
-			System.out.println("We went back to workPage");
 		}
 		
 		// check which button the user pressed

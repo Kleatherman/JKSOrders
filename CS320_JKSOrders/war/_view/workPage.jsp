@@ -38,12 +38,10 @@
 							<c:if test="${isManager}">
 								<input name="message" type="text" value="${message}" length=300 />
 								<input name="notify" type="submit" value="Submit Notification" />
-								<input name="urgency" type="checkbox" value="Urgent" />	
-								<select multiple>
+								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
 									<c:forEach items="${employeeNames}" var="name">
-										<option value="${name}">${name}</option>
+										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
 									</c:forEach>
-								</select>
 							</c:if>
 						</div>
 					</form>
