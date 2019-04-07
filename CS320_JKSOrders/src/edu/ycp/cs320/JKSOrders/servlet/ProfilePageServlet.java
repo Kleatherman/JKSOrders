@@ -65,6 +65,7 @@ public class ProfilePageServlet extends HttpServlet{
 		}
 		else if (req.getParameter("workPage") != null) {
 			// call addNumbers JSP
+			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		
