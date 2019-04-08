@@ -51,6 +51,7 @@ public class ProfilePageServlet extends HttpServlet{
 				req.setAttribute("notification", notify);
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
 				req.setAttribute("isManager", isManager);
+				req.setAttribute("employeeNames",db.AllEmployeeNames());
 			}	
 		}
 		// check which button the user pressed
@@ -64,6 +65,7 @@ public class ProfilePageServlet extends HttpServlet{
 		}
 		else if (req.getParameter("workPage") != null) {
 			// call addNumbers JSP
+			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		

@@ -21,53 +21,47 @@ import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
 
-public class WorkPageServlet  extends HttpServlet{
+public class EditNotificationServlet  extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("WorkPage Servlet: doGet");	
+		System.out.println("Edit Notification Servlet: doGet");	
 		if(req.getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
 		else{
-			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
+			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
 		}
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		boolean isManager = false;
-		boolean isEmployee = false;
-		boolean isCustomer= false;
-		Notification notify = new Notification();
-		WorkPage model = new WorkPage();
-		WorkPageController controller= new WorkPageController();
-		controller.setModel(model);
-		Database db = InitDatabase.init();
-		System.out.println("WorkPage Servlet: doPost");
-		String accountNumber = req.getParameter("accountNumber");
 		
-		if(accountNumber != null) {
-			Account account = db.getAccount(accountNumber);
-			req.setAttribute("accountNumber", account.getAccountNumber());
-			accountNumber = req.getParameter("accountNumber");
+		Database db = InitDatabase.init();
+		System.out.println("Edit Notification Servlet: doPost");
+		String accountNumber = req.getParameter("accountNumber");
+		req.setAttribute("accountNumber", accountNumber);
+		boolean isManager = false;
+		if(req.getParameter("workPage")!=null) {
+			String name = db.getAccount(accountNumber).getName();
 			if(db.getNotifications(accountNumber).size()!=0) {
-				notify = db.getNotifications(accountNumber).get(0);
-				req.setAttribute("notify", notify);
+				req.setAttribute("notification", db.getNotifications(accountNumber));
 			}
-			if(db.getEmployeeAccount(accountNumber)!=null) {
-				isManager = db.getEmployeeAccount(accountNumber).isManager();
-			}
+			isManager = db.getEmployeeAccount(accountNumber).isManager();
+			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.setAttribute("isManager", isManager);
 			req.setAttribute("employeeNames", db.AllEmployeeNames());
+			req.setAttribute("name", name);
+			req.setAttribute("accountNumber", accountNumber);
+			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
-		if(req.getParameter("notify")!=null) {
-			notify = new Notification();
+		else if(req.getParameter("update")!=null) {
+			Notification notify = new Notification();
 			notify.setSourceAccountNumber(accountNumber);
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();
@@ -88,45 +82,16 @@ public class WorkPageServlet  extends HttpServlet{
 			if(message!=null) {
 				notify.setMessage(message);
 			}
-			db.addNotification(notify);
-			req.setAttribute("message", message);
-			if(db.getNotifications(accountNumber).size()!=0) {
-				req.setAttribute("notification", db.getNotifications(accountNumber));
-			}
-			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
-		}
-		
-		// check which button the user pressed
-		else if (req.getParameter("profilePage") != null) {
-			if (accountNumber!=null) {
-				controller.loadUpEmployeeAccount(db, accountNumber);
-				if(model.getEmployeeAccount()!= null) {
-					isEmployee= true; 
-					req.setAttribute("Anumber", model.getEmployeeAccount().getAccountNumber());
-					req.setAttribute("Username", model.getEmployeeAccount().getLogin().getUserName());
-					req.setAttribute("password", model.getEmployeeAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getEmployeeAccount().getName());
-					req.setAttribute("isEmployee", isEmployee);
-					req.setAttribute("isCustomer", isCustomer);
-				}
-			}
-			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
-		}
-		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
-			// call addNumbers JSP
-			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
-		}
-		else if (req.getParameter("editNotification")!= null) {
+			String editNotifyID = req.getParameter("editNotification");
+			notify.setNotificationID(editNotifyID);
+			db.updateNotification(notify);
 			EditNotificationController editController = new EditNotificationController();
 			EditNotificationModel editModel = new EditNotificationModel();
 			editController.setModel(editModel);
 			editController.setErrorMessage("No notification Selected for editing");
-			String editNotifyID = req.getParameter("editNotification");
-			System.out.println("Source Notification ID: "+ editNotifyID);
+			
 			for(Notification note : db.getSourceNotifications(accountNumber)) {
-				System.out.println("We are looking for the notification!!");
 				if(editNotifyID.equals(note.getNotificationID())) {
-					System.out.println("We found the notification! it has ID#:" + note.getNotificationID());
 					editController.setModelNotification(note);
 					editController.setErrorMessage(null);
 				}
@@ -137,7 +102,7 @@ public class WorkPageServlet  extends HttpServlet{
 			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
 		}
 		else {
-			throw new ServletException("Unknown command from work page");
+			throw new ServletException("Unknown command");
 		}
 		
 	}
