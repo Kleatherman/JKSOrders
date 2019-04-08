@@ -116,7 +116,6 @@ public class fakeDatabase implements Database{
 		Iterator<CustomerAccount> i = accounts.iterator();
 		while(i.hasNext()) {
 			Account account = i.next();
-			System.out.println("initilize customer Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getName());
 			logins.add(account.getLogin());
 		}
 	}
@@ -151,8 +150,6 @@ public class fakeDatabase implements Database{
 				login.setUserName("scesario1");
 				account.setLogin(login);
 			}
-			System.out.println("employee account initilization" + account.getLogin().getPassword()+" "+account.getLogin().getUserName());
-			System.out.println("employee account initilization" + login.getPassword()+" "+login.getUserName());
 			accounts.add(account);
 		}
 	}
@@ -162,21 +159,18 @@ public class fakeDatabase implements Database{
 		Iterator<EmployeeAccount> i = accounts.iterator();
 		while(i.hasNext()) {
 			Account account = i.next();
-			System.out.println("initilize Employee Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getName());
 			logins.add(account.getLogin());
 		}
 	}
 	
 	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
 		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
-		System.out.println("Initilizing Inventory and Catalog");
 		for(int i = 0; i<itemNames.length; i++) {
 			Item item = new Item();
 			item.setItemName(itemNames[i]);
 			item.setUPC(itemNames[i]+i);
 			item.setPrice(11.1*i);
 			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
-			System.out.println(item.getDescription());
 			item.setLocation("A"+i+"B"+(5-1));
 			catalog.setItemKey(item);
 			inventory.setItemQuantity(item.getUPC(), i);
@@ -217,9 +211,17 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void addNotification(Notification notify) {
-		initilizeNotificationArrayList();
 		notifications = new ArrayList<Notification>();
+		initilizeNotificationArrayList();
+		notify.setNotificationID(generateNotificationCode(notify.getUrgency(), notifications.size()+1));
 		notifications.add(notify);
+		Notification notification = new Notification();
+		notification = notifications.get(notifications.size()-1);
+		System.out.println("This is a new notification "+notification.getNotificationID()+". Message reads: "+notification.getMessage());
+		System.out.println("This is the source account number: "+notification.getSourceAccountNumber()+". These are the destination numbers: ");
+		for(String numbers : notification.getDestination()) {
+			System.out.println(numbers);
+		}
 	}
 	
 	private void initilizeNotificationArrayList() {
@@ -372,4 +374,48 @@ public class fakeDatabase implements Database{
 	}
 	
 
+
+	@Override
+	public ArrayList<String> AllEmployeeNames() {
+		employeeAccounts = new ArrayList<EmployeeAccount>();
+		initializeEmployeeAccountArrayList(employeeAccounts);
+		ArrayList<String> employeeNames = new ArrayList<String>();
+		for(EmployeeAccount account : employeeAccounts) {
+			employeeNames.add(account.getName());
+		}
+		return employeeNames;
+	}
+	
+	private String generateNotificationCode(boolean urgent, int i) {
+		if(urgent) {
+			return "UABCD"+i;
+		}
+		return "NABCD"+i;
+	}
+
+	
+	@Override
+	public ArrayList<Notification> getSourceNotifications(String accountNumber) {
+		initilizeNotificationArrayList();
+		ArrayList<Notification> accountNotifications = new ArrayList<Notification>();
+		for(Notification notify : notifications) {
+			if(notify.getSourceAccountNumber().equals(accountNumber)) {
+				accountNotifications.add(notify);
+			}	
+		}
+		return accountNotifications;
+	}
+
+	@Override
+	public void updateNotification(Notification notify) {
+		initilizeNotificationArrayList();
+		Iterator<Notification> i = notifications.iterator();
+		while(i.hasNext()) {
+			Notification note = i.next();
+			if(note.getNotificationID().equals(notify.getNotificationID())) {
+				i.remove();
+			}
+		}
+		addNotification(notify);
+	}
 }

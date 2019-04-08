@@ -58,7 +58,8 @@ public interface Database {
 	
 	public Notification getNotification(String notificationID);
 
-
+	public ArrayList<Notification> getSourceNotifications(String accountNumber);
+	
 	public String getPasswordForCustomerAccount(Account account);
 
 	public String getPasswordForEmployeeAccount(Account account);
@@ -78,4 +79,7 @@ public interface Database {
 	public String getLastEmployeeAccountNumber();
 	
 
+	public ArrayList<String> AllEmployeeNames();
+
+	public void updateNotification(Notification notify);
 }
