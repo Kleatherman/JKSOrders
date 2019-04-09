@@ -38,8 +38,17 @@
 							<c:if test="${isManager}">
 								<input name="message" type="text" value="${message}" length=300 />
 								<input name="notify" type="submit" value="Submit Notification" />
-								<input name="urgency" type="checkbox" value="Urgent" />
-								Hey, I'm a manager!!!! WOOO
+								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
+									<c:forEach items="${employeeNames}" var="name">
+										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
+									</c:forEach>
+									<h1>Your Notifications</h1>
+									<select name="editNotification">	
+										<c:forEach items="${sourceNotifications}" var = "sourceNotify">
+											<option value="${sourceNotify.notificationID}">${sourceNotify.notificationID}</option>
+										</c:forEach>
+									</select>
+								<input name="editNotification" type="submit" value="Edit Notification" />
 							</c:if>
 						</div>
 					</form>
