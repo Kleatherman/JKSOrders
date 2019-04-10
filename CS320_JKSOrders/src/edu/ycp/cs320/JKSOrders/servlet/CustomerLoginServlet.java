@@ -50,7 +50,7 @@ public class CustomerLoginServlet extends HttpServlet {
 
 		// assign model reference to controller so that controller can access model
 		controller.setModel(model);
-
+		
 		
 		
 		SystemController system = new SystemController();

@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.controller.CreateCustomerAccountController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CreateCustomerAccount;
 
 public class CreateCustomerAccountServlet extends HttpServlet {
@@ -37,12 +39,18 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 		// assign model reference to controller so that controller can access model
 		controller.setModel(model);
 
-		// call JSP to generate empty form
+		// call JSP to generate form
+		Database dbase = InitDatabase.init();
 
+		
 		if (req.getParameter("loginPage") != null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		} else {
 			req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
+			
+			controller.setLogin(req.getParameter("password"), req.getParameter("username"));
+			controller.setAccountNumber(dbase);
+			controller.addAccount(dbase);
 		}
 		req.setAttribute("model", model);
 
