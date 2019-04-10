@@ -13,9 +13,7 @@ public abstract class Account {
 	
 	}
 	
-	/**
-	 * @return An ArrayList of Orders
-	 */
+	
 	public ArrayList<Order> getOrders() {
 		return orders;
 	}
