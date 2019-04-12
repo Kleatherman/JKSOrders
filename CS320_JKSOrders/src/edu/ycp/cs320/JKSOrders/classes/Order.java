@@ -10,6 +10,7 @@ public class Order {
 	private boolean pickupOrder;
 	private Account account;
 	private String orderType;
+	private String accountNum;
 	/**
 	 * @return ArrayList of items in order
 	 */
@@ -76,6 +77,12 @@ public class Order {
 	}
 	public void setOrderType(String orderType) {
 		this.orderType = orderType;
+	}
+	public String getAccountNum() {
+		return accountNum;
+	}
+	public void setAccountNum(String accountNum) {
+		this.accountNum = accountNum;
 	}
 	
 	
