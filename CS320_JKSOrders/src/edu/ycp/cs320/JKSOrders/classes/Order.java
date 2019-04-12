@@ -67,7 +67,8 @@ public class Order {
 	 * @return get name on account associated with order
 	 */
 	public String getName() {
-		return account.getName();
+		return account.getFirstName();
+		//add lastname
 	}
 	
 	

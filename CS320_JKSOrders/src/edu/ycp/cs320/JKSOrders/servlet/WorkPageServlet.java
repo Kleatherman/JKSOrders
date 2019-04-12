@@ -73,7 +73,7 @@ public class WorkPageServlet  extends HttpServlet{
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();
 			for(EmployeeAccount account : db.getEmployeeAccounts()) {
-				if(req.getParameter(account.getName())!=null) {
+				if(req.getParameter(account.getFirstName())!=null) {
 					destNames.add(account.getAccountNumber());
 				}
 			}
@@ -106,7 +106,7 @@ public class WorkPageServlet  extends HttpServlet{
 					req.setAttribute("Anumber", model.getEmployeeAccount().getAccountNumber());
 					req.setAttribute("Username", model.getEmployeeAccount().getLogin().getUserName());
 					req.setAttribute("password", model.getEmployeeAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getEmployeeAccount().getName());
+					req.setAttribute("Name", model.getEmployeeAccount().getFirstName());
 					req.setAttribute("isEmployee", isEmployee);
 					req.setAttribute("isCustomer", isCustomer);
 				}
