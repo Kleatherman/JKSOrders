@@ -22,7 +22,7 @@ public class EditNotificationController {
 		ArrayList<String> names = new ArrayList<String>();
 		Database db = InitDatabase.init();
 		for(String accountNumber : model.getNotify().getDestination()) {
-			names.add(db.getAccount(accountNumber).getName());
+			names.add(db.getAccount(accountNumber).getFirstName());
 		}
 		model.setDestinationNames(names);
 	}

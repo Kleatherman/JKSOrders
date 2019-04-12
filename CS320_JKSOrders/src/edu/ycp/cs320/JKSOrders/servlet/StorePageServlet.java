@@ -68,7 +68,7 @@ public class StorePageServlet extends HttpServlet {
 					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
 					req.setAttribute("Username", model.getCustomerAccount().getLogin().getUserName());
 					req.setAttribute("password", model.getCustomerAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getCustomerAccount().getName());
+					req.setAttribute("Name", model.getCustomerAccount().getFirstName());
 					req.setAttribute("isCustomer", isCustomer);
 					req.setAttribute("isEmployee", isEmployee);
 					}

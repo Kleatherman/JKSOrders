@@ -39,7 +39,7 @@
 					<form action="${pageContext.servletContext.contextPath}/profilePage" method="post">
 						<table>
 							<tr>
-								<td class="label">Name:</td>
+								<td class="label">First name:</td>
 								<td>${Name}</td>
 							</tr>
 							<tr>
