@@ -9,6 +9,7 @@ public class Order {
 	private Map<String, Integer> QuantityMap;
 	private boolean pickupOrder;
 	private Account account;
+	private String orderType;
 	/**
 	 * @return ArrayList of items in order
 	 */
@@ -69,6 +70,12 @@ public class Order {
 	public String getName() {
 		return account.getFirstName();
 		//add lastname
+	}
+	public String getOrderType() {
+		return orderType;
+	}
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
 	}
 	
 	
