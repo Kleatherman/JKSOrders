@@ -5,6 +5,7 @@ package edu.ycp.cs320.JKSOrders.controller;
 
 
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.model.CreateCustomerAccount;
 
 
@@ -26,5 +27,15 @@ public class CreateCustomerAccountController {
 			login.setPassword(password);
 			model.getAccount().setLogin(login);
 		}
-	}
+		
+		public void setAccountNumber(Database dbase) {
+			model.getAccount().setAccountNumber(dbase.getLastCustomerAccountNumber().substring(0, 1) + Integer.parseInt(dbase.getLastCustomerAccountNumber())+1);
+			
+		}
+		public void addAccount(Database dbase) {
+			dbase.addCustomerAccount(model.getAccount());
+			
+		}
+		}
+
 	

@@ -68,6 +68,7 @@ public class WorkPageServlet  extends HttpServlet{
 		}
 		if(req.getParameter("notify")!=null) {
 			notify = new Notification();
+			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			notify.setSourceAccountNumber(accountNumber);
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();

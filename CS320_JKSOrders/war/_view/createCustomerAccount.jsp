@@ -22,24 +22,24 @@
 
 
  				<div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" value="${model.userName}" placeholder="Email address" required autofocus>
+                <input type="email" id="inputEmail" class="form-control" name = "email" placeholder="Email address" required autofocus>
                 <label for="inputEmail">Email address</label>
               </div>
 
 				
               
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" value="${model.userName}" placeholder="Password" requiredautofocus>
+                <input type="password" id="inputPassword" class="form-control" name = "password" placeholder="Password" requiredautofocus>
                 <label for="inputPassword">Password</label>
               </div>
 
 				<div class="form-label-group">
-                <input type="name" id="inputname" class="form-control" value="${model.name}" placeholder="Name" required autofocus>
+                <input type="name" id="inputname" class="form-control"  placeholder="Name" name = "name" required autofocus>
                 <label for="inputName">Name</label>
               </div>
               
 				<div class="form-label-group">
-                <input type="phoneNumber" id="inputphoneNumber" class="form-control" value="${model.phoneNumber}" placeholder="Phone Number" required autofocus>
+                <input type="phoneNumber" id="inputphoneNumber" class="form-control" name = "phoneNumber" placeholder="Phone Number" required autofocus>
                 <label for="inputphoneNumber">Phone Number</label>
               </div>
               
