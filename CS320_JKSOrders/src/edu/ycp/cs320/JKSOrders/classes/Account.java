@@ -86,7 +86,7 @@ public abstract class Account {
 	/**
 	 * @param name name to set
 	 */
-	public void setName(String name) {
+	public void setFirstName(String name) {
 		this.firstName = name;
 	}
 
@@ -97,12 +97,24 @@ public abstract class Account {
 		return accountNumber;
 	}
 
+	
 	/**
 	 * @param accountNumber
 	 */
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
 	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+
 
 	/**
 	 * @return
