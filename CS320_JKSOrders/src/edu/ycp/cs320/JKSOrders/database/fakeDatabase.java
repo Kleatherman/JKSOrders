@@ -102,7 +102,7 @@ public class fakeDatabase implements Database{
 		for(int i = 0; i<10; i++) {
 			account = new CustomerAccount();
 			account.setAccountNumber("GHIJKL"+i);
-			account.setName(names[i]);
+			account.setFirstName(names[i]);
 			LoginInfo login = new LoginInfo();
 			login.setPassword("password"+i);
 			login.setUserName("user"+i);
@@ -127,25 +127,25 @@ public class fakeDatabase implements Database{
 		for(int i = 0; i<10; i++) {
 			account = new EmployeeAccount();
 			account.setAccountNumber("ABCDEF"+i);
-			account.setName(names[i]);
+			account.setFirstName(names[i]);
 			login = new LoginInfo();
 			login.setPassword("PassWord"+i);
 			login.setUserName("employee"+i);
 			account.setLogin(login);
-			if(account.getName().equals("Josiah Sam")||account.getName().equals("Kyle Leatherman")||account.getName().equals("Sam Cesario")) {
+			if(account.getFirstName().equals("Josiah Sam")||account.getFirstName().equals("Kyle Leatherman")||account.getFirstName().equals("Sam Cesario")) {
 				account.setManager(true);
 			}
-			if(account.getName().equals("Josiah Sam")) {
+			if(account.getFirstName().equals("Josiah Sam")) {
 				login.setPassword("FireFox7");
 				login.setUserName("jsam");
 				account.setLogin(login);
 			}
-			else if(account.getName().equals("Kyle Leatherman")) {
+			else if(account.getFirstName().equals("Kyle Leatherman")) {
 				login.setPassword("BadPassword");
 				login.setUserName("McGee");
 				account.setLogin(login);
 			}
-			else if(account.getName().equals("Sam Cesario")) {
+			else if(account.getFirstName().equals("Sam Cesario")) {
 				login.setPassword("password");
 				login.setUserName("scesario1");
 				account.setLogin(login);
@@ -300,12 +300,12 @@ public class fakeDatabase implements Database{
 		customerAccounts = new ArrayList<CustomerAccount>();
 		initializeCustomerAccountArrayList(customerAccounts);
 		for(Account account : employeeAccounts) {
-			if(account.getAccountNumber().equals(accountNumber)||account.getName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
+			if(account.getAccountNumber().equals(accountNumber)||account.getFirstName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
 				return account;
 			}
 		}
 		for(Account account : customerAccounts) {
-			if(account.getAccountNumber().equals(accountNumber)||account.getName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
+			if(account.getAccountNumber().equals(accountNumber)||account.getFirstName().equals(accountNumber)||account.getLogin().getUserName().equals(accountNumber)) {
 				return account;
 			}
 		}
@@ -318,7 +318,7 @@ public class fakeDatabase implements Database{
 		employeeAccounts = new ArrayList<EmployeeAccount>();
 		initializeEmployeeAccountArrayList(employeeAccounts);
 		for(EmployeeAccount account : employeeAccounts) {
-			if(account.getAccountNumber().equals(Accountnum)||account.getName().equals(Accountnum)||account.getLogin().getUserName().equals(Accountnum)) {
+			if(account.getAccountNumber().equals(Accountnum)||account.getFirstName().equals(Accountnum)||account.getLogin().getUserName().equals(Accountnum)) {
 				return account;
 			}
 		}
@@ -330,7 +330,7 @@ public class fakeDatabase implements Database{
 		customerAccounts = new ArrayList<CustomerAccount>();
 		initializeCustomerAccountArrayList(customerAccounts);
 		for(CustomerAccount account : customerAccounts) {
-			if(account.getAccountNumber().equals(Accountnum)||account.getName().equals(Accountnum)||account.getLogin().getUserName().equals(Accountnum)) {
+			if(account.getAccountNumber().equals(Accountnum)||account.getFirstName().equals(Accountnum)||account.getLogin().getUserName().equals(Accountnum)) {
 				return account;
 			}
 		}
@@ -342,7 +342,7 @@ public class fakeDatabase implements Database{
 		employeeAccounts = new ArrayList<EmployeeAccount>();
 		initializeEmployeeAccountArrayList(employeeAccounts);
 		employeeAccounts.add(account);
-		System.out.println("new employee Login: "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getPassword()+" "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getUserName()+" "+employeeAccounts.get(employeeAccounts.size()-1).getName());
+		System.out.println("new employee Login: "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getPassword()+" "+employeeAccounts.get(employeeAccounts.size()-1).getLogin().getUserName()+" "+employeeAccounts.get(employeeAccounts.size()-1).getFirstName());
 	}
 
 	@Override
@@ -350,7 +350,7 @@ public class fakeDatabase implements Database{
 		customerAccounts = new ArrayList<CustomerAccount>();
 		initializeCustomerAccountArrayList(customerAccounts);
 		customerAccounts.add(account);
-		System.out.println("new customer Login: "+customerAccounts.get(customerAccounts.size()-1).getLogin().getPassword()+" "+customerAccounts.get(customerAccounts.size()-1).getLogin().getUserName()+" "+customerAccounts.get(customerAccounts.size()-1).getName());
+		System.out.println("new customer Login: "+customerAccounts.get(customerAccounts.size()-1).getLogin().getPassword()+" "+customerAccounts.get(customerAccounts.size()-1).getLogin().getUserName()+" "+customerAccounts.get(customerAccounts.size()-1).getFirstName());
 		
 	}
 
@@ -381,7 +381,7 @@ public class fakeDatabase implements Database{
 		initializeEmployeeAccountArrayList(employeeAccounts);
 		ArrayList<String> employeeNames = new ArrayList<String>();
 		for(EmployeeAccount account : employeeAccounts) {
-			employeeNames.add(account.getName());
+			employeeNames.add(account.getFirstName());
 		}
 		return employeeNames;
 	}

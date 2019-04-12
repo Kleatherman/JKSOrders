@@ -48,7 +48,7 @@ public class EditNotificationServlet  extends HttpServlet{
 		req.setAttribute("accountNumber", accountNumber);
 		boolean isManager = false;
 		if(req.getParameter("workPage")!=null) {
-			String name = db.getAccount(accountNumber).getName();
+			String name = db.getAccount(accountNumber).getFirstName();
 			if(db.getNotifications(accountNumber).size()!=0) {
 				req.setAttribute("notification", db.getNotifications(accountNumber));
 			}
@@ -66,7 +66,7 @@ public class EditNotificationServlet  extends HttpServlet{
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();
 			for(EmployeeAccount account : db.getEmployeeAccounts()) {
-				if(req.getParameter(account.getName())!=null) {
+				if(req.getParameter(account.getFirstName())!=null) {
 					destNames.add(account.getAccountNumber());
 				}
 			}
