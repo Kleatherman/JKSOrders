@@ -51,8 +51,8 @@ public class CustomerAccountTest {
 	
 	@Test
 	public void testSetName() {
-		customerAccount.setName("Name");
-		assertEquals("Name", customerAccount.getName());
+		customerAccount.setFirstName("Name");
+		assertEquals("Name", customerAccount.getFirstName());
 	}
 	
 	@Test
