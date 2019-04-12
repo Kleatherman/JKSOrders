@@ -35,7 +35,7 @@ public class EmployeeAccountTest {
 		
 		@Test
 		public void testSetName() {
-			employeeAccount.setName("Name");
+			employeeAccount.setFirstName("Name");
 			assertEquals("Name", employeeAccount.getFirstName());
 		}
 		

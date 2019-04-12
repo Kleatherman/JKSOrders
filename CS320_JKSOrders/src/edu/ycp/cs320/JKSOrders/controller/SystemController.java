@@ -134,7 +134,7 @@ public class SystemController {
 		for(int i = 0; i<10; i++) {
 			account = new EmployeeAccount();
 			account.setAccountNumber("ABCDEF"+i);
-			account.setName(names[i]);
+			account.setFirstName(names[i]);
 			login = new LoginInfo();
 			login.setPassword("PassWord"+i);
 			login.setUserName("employee"+i);
@@ -167,7 +167,7 @@ public class SystemController {
 		for(int i = 0; i<10; i++) {
 			account = new CustomerAccount();
 			account.setAccountNumber("GHIJKL"+i);
-			account.setName(names[i]);
+			account.setFirstName(names[i]);
 			LoginInfo login = new LoginInfo();
 			login.setPassword("password"+i);
 			login.setUserName("user"+i);

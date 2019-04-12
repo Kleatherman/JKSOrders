@@ -86,7 +86,7 @@ public abstract class Account {
 	/**
 	 * @param name name to set
 	 */
-	public void setName(String name) {
+	public void setFirstName(String name) {
 		this.firstName = name;
 	}
 
