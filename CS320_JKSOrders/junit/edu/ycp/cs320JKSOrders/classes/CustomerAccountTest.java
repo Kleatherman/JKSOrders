@@ -52,7 +52,7 @@ public class CustomerAccountTest {
 	@Test
 	public void testSetName() {
 		customerAccount.setName("Name");
-		assertEquals("Name", customerAccount.getName());
+		assertEquals("Name", customerAccount.getFirstName());
 	}
 	
 	@Test

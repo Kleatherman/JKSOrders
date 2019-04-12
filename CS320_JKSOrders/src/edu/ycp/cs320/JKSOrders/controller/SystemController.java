@@ -122,7 +122,7 @@ public class SystemController {
 		Iterator<Account> i = customerAccounts.iterator();
 		while(i.hasNext()) {
 			Account account = i.next();
-			System.out.println("initilize customer Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getName());
+			System.out.println("initilize customer Login: "+account.getLogin().getPassword()+" "+account.getLogin().getUserName()+" "+account.getFirstName());// add lastname
 			logins.add(account.getLogin());
 		}
 	}
@@ -139,20 +139,20 @@ public class SystemController {
 			login.setPassword("PassWord"+i);
 			login.setUserName("employee"+i);
 			account.setLogin(login);
-			if(account.getName().equals("Josiah Sam")||account.getName().equals("Kyle Leatherman")||account.getName().equals("Sam Cesario")) {
+			if(account.getFirstName().equals("Josiah Sam")||account.getFirstName().equals("Kyle Leatherman")||account.getFirstName().equals("Sam Cesario")) {
 				account.setManager(true);
 			}
-			if(account.getName().equals("Josiah Sam")) {
+			if(account.getFirstName().equals("Josiah Sam")) {
 				login.setPassword("FireFox7");
 				login.setUserName("jsam");
 				account.setLogin(login);
 			}
-			else if(account.getName().equals("Kyle Leatherman")) {
+			else if(account.getFirstName().equals("Kyle Leatherman")) {
 				login.setPassword("BadPassword");
 				login.setUserName("McGee");
 				account.setLogin(login);
 			}
-			else if(account.getName().equals("Sam Cesario")) {
+			else if(account.getFirstName().equals("Sam Cesario")) {
 				login.setPassword("password");
 				login.setUserName("scesario1");
 				account.setLogin(login);

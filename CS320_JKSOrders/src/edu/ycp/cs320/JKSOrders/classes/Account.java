@@ -3,7 +3,8 @@
 import java.util.ArrayList;
 
 public abstract class Account {
-	private String name;
+	private String firstName;
+	private String lastName;
 	private String accountNumber;
 	private LoginInfo login;
 	private PickUpInfo pickUpInfo;
@@ -78,15 +79,15 @@ public abstract class Account {
 	/**
 	 * @return name associated with the account
 	 */
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
 	/**
 	 * @param name name to set
 	 */
 	public void setName(String name) {
-		this.name = name;
+		this.firstName = name;
 	}
 
 	/**
