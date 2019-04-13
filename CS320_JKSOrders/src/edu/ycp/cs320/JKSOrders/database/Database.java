@@ -78,7 +78,8 @@ public interface Database {
 	
 	public String getLastEmployeeAccountNumber();
 	
-
+	public void deleteNotification(String notification_id);
+	
 	public ArrayList<String> AllEmployeeNames();
 
 	public void updateNotification(Notification notify);
