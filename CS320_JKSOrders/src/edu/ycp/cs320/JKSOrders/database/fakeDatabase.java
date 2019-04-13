@@ -415,6 +415,7 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void deleteNotification(String notification_id) {
+		System.out.println("We are in the deleteNotification Method");
 		initilizeNotificationArrayList();
 		Iterator<Notification> i = notifications.iterator();
 		while(i.hasNext()) {
@@ -423,6 +424,7 @@ public class fakeDatabase implements Database{
 				i.remove();
 			}
 		}
+		System.out.println("Successfully deleted notification "+notification_id);
 	}
 	
 	
