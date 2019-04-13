@@ -22,7 +22,7 @@ public class fakeDatabase implements Database{
 	private ArrayList<Notification> notifications;
 	
 	public fakeDatabase() {
-		
+		initilizeNotificationArrayList();
 	}
 	
 	/* (non-Javadoc)
@@ -139,16 +139,19 @@ public class fakeDatabase implements Database{
 				login.setPassword("FireFox7");
 				login.setUserName("jsam");
 				account.setLogin(login);
+				account.setAccountNumber("M2");
 			}
 			else if(account.getFirstName().equals("Kyle Leatherman")) {
 				login.setPassword("BadPassword");
 				login.setUserName("McGee");
 				account.setLogin(login);
+				account.setAccountNumber("M1");
 			}
 			else if(account.getFirstName().equals("Sam Cesario")) {
 				login.setPassword("password");
 				login.setUserName("scesario1");
 				account.setLogin(login);
+				account.setAccountNumber("M0");
 			}
 			accounts.add(account);
 		}
@@ -239,14 +242,13 @@ public class fakeDatabase implements Database{
 			notify.setSourceAccountNumber(accountNumberManagers[i]);
 			notify.setUrgency(i==2);
 			notify.setMessage("This is notification "+i+". Please respond ASAP!");
-			notify.setNotificationID("ABCD"+i);
+			notify.setNotificationID(generateNotificationCode(notify.getUrgency(), notifications.size()));
 			notifications.add(notify);
 		}
 	}
 
 	@Override
 	public ArrayList<Notification> getNotifications(String accountNumber) {
-		initilizeNotificationArrayList();
 		ArrayList<Notification> accountNotifications = new ArrayList<Notification>();
 		for(Notification notify : notifications) {
 			for(String destName : notify.getDestination()) {
@@ -260,7 +262,6 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public Notification getNotification(String notificationID) {
-		initilizeNotificationArrayList();
 		for(Notification notify : notifications) {
 			if(notify.getNotificationID().equals(notificationID)) {
 				return notify;
@@ -397,7 +398,6 @@ public class fakeDatabase implements Database{
 	
 	@Override
 	public ArrayList<Notification> getSourceNotifications(String accountNumber) {
-		initilizeNotificationArrayList();
 		ArrayList<Notification> accountNotifications = new ArrayList<Notification>();
 		for(Notification notify : notifications) {
 			if(notify.getSourceAccountNumber().equals(accountNumber)) {
@@ -416,7 +416,6 @@ public class fakeDatabase implements Database{
 	@Override
 	public void deleteNotification(String notification_id) {
 		System.out.println("We are in the deleteNotification Method");
-		initilizeNotificationArrayList();
 		Iterator<Notification> i = notifications.iterator();
 		while(i.hasNext()) {
 			Notification note = i.next();
