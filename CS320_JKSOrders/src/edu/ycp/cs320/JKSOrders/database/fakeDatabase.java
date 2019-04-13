@@ -213,7 +213,8 @@ public class fakeDatabase implements Database{
 	public void addNotification(Notification notify) {
 		notifications = new ArrayList<Notification>();
 		initilizeNotificationArrayList();
-		notify.setNotificationID(generateNotificationCode(notify.getUrgency(), notifications.size()+1));
+		if(notify.getNotificationID()==null)
+			notify.setNotificationID(generateNotificationCode(notify.getUrgency(), notifications.size()+1));
 		notifications.add(notify);
 		Notification notification = new Notification();
 		notification = notifications.get(notifications.size()-1);
@@ -408,14 +409,23 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void updateNotification(Notification notify) {
+		deleteNotification(notify.getNotificationID());
+		addNotification(notify);
+	}
+
+	@Override
+	public void deleteNotification(String notification_id) {
+		System.out.println("We are in the deleteNotification Method");
 		initilizeNotificationArrayList();
 		Iterator<Notification> i = notifications.iterator();
 		while(i.hasNext()) {
 			Notification note = i.next();
-			if(note.getNotificationID().equals(notify.getNotificationID())) {
+			if(note.getNotificationID().equals(notification_id)) {
 				i.remove();
 			}
 		}
-		addNotification(notify);
+		System.out.println("Successfully deleted notification "+notification_id);
 	}
+	
+	
 }
