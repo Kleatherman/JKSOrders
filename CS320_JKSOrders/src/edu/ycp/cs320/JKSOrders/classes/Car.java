@@ -1,6 +1,7 @@
 package edu.ycp.cs320.JKSOrders.classes;
 
 public class Car {
+	private String owner;
 	private String color;
 	private String brand;
 	private String type;
@@ -65,6 +66,14 @@ public class Car {
 	 */
 	public void setYear(int year) {
 		this.year = year;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 	

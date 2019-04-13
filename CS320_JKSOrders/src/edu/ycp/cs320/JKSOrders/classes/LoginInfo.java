@@ -3,6 +3,7 @@ package edu.ycp.cs320.JKSOrders.classes;
 public class LoginInfo{
 	private String userName;
 	private String password;
+	private String ownerAccount;
 	
 	public LoginInfo() {
 		
@@ -60,6 +61,14 @@ public class LoginInfo{
 		} else if (!userName.equals(other.userName))
 			return false;
 		return true;
+	}
+
+	public String getOwnerAccount() {
+		return ownerAccount;
+	}
+
+	public void setOwnerAccount(String ownerAccount) {
+		this.ownerAccount = ownerAccount;
 	}
 	
 	
