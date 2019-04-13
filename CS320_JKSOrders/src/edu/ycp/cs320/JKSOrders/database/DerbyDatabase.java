@@ -82,7 +82,7 @@ public class DerbyDatabase implements Database {
 	// TODO: Change it here and in SQLDemo.java under CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
 	// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 	private Connection connect() throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:H:/CS320/Workspace2/LibraryExample-DB/library.db;create=true");		
+		Connection conn = DriverManager.getConnection("jdbc:derby:C:/JKSOrders-2019-LibraryExample-DB/library.db;create=true");		
 		
 		// Set autocommit() to false to allow the execution of
 		// multiple queries/statements as part of the same transaction.
@@ -118,6 +118,7 @@ public class DerbyDatabase implements Database {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
+				System.out.println("Creating Prepared Statements");
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt2 = null;
 				PreparedStatement stmt3 = null;	
@@ -129,26 +130,26 @@ public class DerbyDatabase implements Database {
 				PreparedStatement stmt9 = null;	
 			
 				try {
+
+					System.out.println("Beginning to create tables");
 					stmt1 = conn.prepareStatement(
-						"create table cars (" +
-						"	cars_id varchar(5) primary key, "	+						
-						"	color varchar(40)," +
-						"	brand varchar(40)" +
-						"	make varchar(40)" +
-						"	year varchar(40)" +
-						")"
-					);	
-					stmt1.executeUpdate();
+							"create table cars (" +
+							"	cars_id varchar(5),"	+						
+							"	color varchar(40)," +
+							"	brand varchar(40)," +
+							"	make varchar(40), built integer)"
+						);	
+						stmt1.executeUpdate();
 					
 					System.out.println("cars table created");
 					
 					stmt2 = conn.prepareStatement(
 							"create table catalog (" +
-							"	item_id varchar(5) primary key " +
+							"	item_id varchar(5) primary key, " +
 							"	iten_name varchar(70)," +
-							"	price float(50, 2)," +
-							"   location char(4)" +
-							"	quantity integer" +
+							"	price float(10)," +
+							"   location char(4)," +
+							"	quantity integer," +
 							"	visible integer" +
 							")"
 					);
@@ -158,11 +159,11 @@ public class DerbyDatabase implements Database {
 					
 					stmt3 = conn.prepareStatement(
 							"create table customers (" +
-							"	curtomer_id varchar(5) primary key " +
+							"	curtomer_id varchar(5) primary key, " +
 							"	first_name varchar(50)," +
 							"	last_name varchar(50)," +
 							"	email varchar(50)," +
-							"	phoneNumber integer(50)," +
+							"	phoneNumber integer," +
 							"	creditCard_id integer" +
 							")"
 					);
@@ -172,11 +173,11 @@ public class DerbyDatabase implements Database {
 					
 					stmt4 = conn.prepareStatement(
 							"create table employees (" +
-							"	employee_id varchar(5) primary key " +
+							"	employee_id varchar(5) primary key, " +
 							"	first_name varchar(50)," +
 							"	last_name varchar(50)," +
 							"	email varchar(50)," +
-							"	phoneNumber integer(50)," +
+							"	phoneNumber integer" +
 							")"
 					);
 					stmt4.executeUpdate();
@@ -185,10 +186,9 @@ public class DerbyDatabase implements Database {
 					
 					stmt5 = conn.prepareStatement(
 							"create table login (" +
-							"	employee_id varchar(5) " +
+							"	employee_id varchar(5), " +
 							"	username varchar(50)," +
-							"	password varchar(50)," +
-							")"
+							"	password varchar(50))"
 					);
 					stmt5.executeUpdate();
 					
@@ -196,9 +196,9 @@ public class DerbyDatabase implements Database {
 					
 					stmt6 = conn.prepareStatement(
 							"create table notifications (" +
-							"	notification_id varchar(5) " +
+							"	notification_id varchar(5) primary key, " +
 							"	employee_id varchar(50)," +
-							"	message varchar(1000)," +
+							"	message varchar(1000)" +
 							")"
 					);
 					stmt6.executeUpdate();
@@ -207,19 +207,19 @@ public class DerbyDatabase implements Database {
 					
 					stmt7 = conn.prepareStatement(
 							"create table orders (" +
-							"	order_id varchar(5) " +
-							"	employee_id varchar(50) constraint employee_id references employees," +
-							"	message varchar(1000)," +
+							"	order_id varchar(5) primary key, " +
+							"	employee_id varchar(5) constraint employee_id references employees," +
+							"	message varchar(1000)" +
 							")"
 					);
 					stmt7.executeUpdate();
 					
-					System.out.println("notifications table created");
+					System.out.println("Order Junction table created");
 					
 					stmt8 = conn.prepareStatement(
 							"create table notificationRecipients (" +
-							"	notification_id varchar(5) constraint notification_id references notifications" +
-							"	employee_id varchar(5) constraint employee_id references employees," +
+							"	notification_id varchar(5) constraint notification_id references notifications," +
+							"	employee_id varchar(5)" +
 							")"
 					);
 					stmt8.executeUpdate();
@@ -228,9 +228,9 @@ public class DerbyDatabase implements Database {
 					
 					stmt9 = conn.prepareStatement(
 							"create table orderItemJunction (" +
-							"	order_id varchar(5) constraint order_id references orders" +
+							"	order_id varchar(5) constraint order_id references orders," +
 							"	item_id varchar(5) constraint item_id references catalog," +
-							"	quantity integer," +
+							"	quantity integer" +
 							")"
 					);
 					stmt9.executeUpdate();
