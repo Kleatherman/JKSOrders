@@ -35,6 +35,10 @@ import java.util.TreeSet;
 		quantityMap.put(item, i);
 	}
 	
+	public Integer getItemQuantity(String item) {
+		return quantityMap.get(item);
+	}
+	
 	/**
 	 * @param less < x < greater
 	 * @param greater items where the quantity is greater than x
