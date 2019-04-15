@@ -211,7 +211,7 @@ public class InitialData {
 	public static List<Notification> getInitialNotifications() throws IOException {
 		List<Notification> pokeList = new ArrayList<Notification>();
 		ReadCSV readPokes = new ReadCSV("Notifications.csv");
-		ReadCSV readPokees = new ReadCSV("NotificationsRecipients.csv");
+		ReadCSV readPokees = new ReadCSV("NotificationRecipients.csv");
 		try {
 			
 			while (true) {
