@@ -28,12 +28,15 @@
 								<th>Name</th>
 								<th>Description</th>
 								<th>Price</th>
+								<th>Quantity</th>
 							</tr>
 							<c:forEach items="${items}" var="item">
 								<tr>
 									<td>${item.itemName}</td>
 									<td>${item.description}</td>
 									<td>${item.price}</td>
+									<td><input name="${item.itemName}" type="number" /></td>
+									<td><input name="${item.itemName}AddToCart" type="submit" value="Add ${item.itemName} to Cart" /></td>
 								</tr>
 							</c:forEach>
 							
@@ -42,6 +45,7 @@
 							<input name="checkOut" type="submit" value="CheckOut!" />
 							<input name="profilePage" type="submit" value="Profile Page!"/>
 							<input name="logOut" type="submit" value="LogOut"/>
+							<input name="cart" type="submit" value="My Cart" />
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
