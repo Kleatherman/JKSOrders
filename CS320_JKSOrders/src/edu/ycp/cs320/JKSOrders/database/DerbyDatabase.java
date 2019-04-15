@@ -147,7 +147,7 @@ class DerbyDatabase /*implements Database*/ {
 							"	first_name varchar(50)," +
 							"	last_name varchar(50)," +
 							"	email varchar(50)," +
-							"	phoneNumber integer" +
+							"	phoneNumber varchar(20)" +
 							")"
 					);
 					stmt4.executeUpdate();
