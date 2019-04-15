@@ -53,15 +53,13 @@ public class Catalog {
 	}
 	
 	public void returnGreaterorLess(int x, ArrayList<String> greater, ArrayList<String> less) {
-		Set<String> upcs = quantityMap.keySet();
-		Iterator<String> i = upcs.iterator();
-		while(i.hasNext()){
-			String item = i.next();
-			if(quantityMap.get(item)<x) {
-				less.add(item);
+		for(Item item: ItemMap.values()) {
+			if (item.getNumInInventory() <= x) 
+			{
+			less.add(item.getUPC());
 			}
 			else
-				greater.add(item);
+				greater.add(item.getUPC());
 		}
 
 }
