@@ -398,9 +398,9 @@ class DerbyDatabase /*implements Database*/ {
 		DerbyDatabase db = new DerbyDatabase();
 		db.createTables();
 		
-		//System.out.println("Loading initial data...");
-		//db.loadInitialData();
+		System.out.println("Loading initial data...");
+		db.loadInitialData();
 		
-		//System.out.println("Library DB successfully initialized!");
+		System.out.println("Library DB successfully initialized!");
 	}
 }
