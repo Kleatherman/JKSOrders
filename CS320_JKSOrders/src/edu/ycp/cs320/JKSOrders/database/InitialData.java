@@ -140,6 +140,9 @@ public class InitialData {
 		List<Order> orderList = new ArrayList<Order>();
 		ReadCSV readOrders = new ReadCSV("Orders.csv");
 		ReadCSV readJunc= new ReadCSV("OrderItemJunction.csv");
+		Catalog catalog = new Catalog();
+		Inventory inven = new Inventory();
+		 getInitialCatalog(catalog,inven);
 		try {
 			
 			while (true) {
@@ -161,9 +164,11 @@ public class InitialData {
 				}
 				Iterator<String> i = tuple.iterator();
 				String orderid=i.next();
-				for(int j=0; j<orderList.size(); j++) {
-					if(orderList.get(j).getOrderType()== orderid) {
-							orderList.get(j).getQuantityMap().put(i.next(),  Integer.parseInt(i.next())); 
+				for(Order order : orderList) {
+					if(order.getOrderType().equals(orderid)) {
+						String upc = i.next();
+						order.getQuantityMap().put(upc,  Integer.parseInt(i.next())); 
+						order.getItemlist().add(catalog.getItem(upc));
 					}
 				}
 				
@@ -172,6 +177,7 @@ public class InitialData {
 			return orderList;
 		} finally {
 			readOrders.close();
+			readJunc.close();
 		}
 	}
 	
@@ -191,7 +197,7 @@ public class InitialData {
 				Item item = new Item();
 				item.setUPC(i.next());
 				item.setItemName(i.next());
-				item.setPrice(Integer.parseInt(i.next()));
+				item.setPrice(Float.parseFloat(i.next()));
 				item.setLocation(i.next());
 				Integer quantity= Integer.parseInt(i.next());
 				

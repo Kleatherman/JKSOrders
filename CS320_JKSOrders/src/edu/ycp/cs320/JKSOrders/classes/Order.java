@@ -2,6 +2,7 @@ package edu.ycp.cs320.JKSOrders.classes;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Order {
 	private ArrayList<Item> Itemlist;
@@ -11,6 +12,12 @@ public class Order {
 	private Account account;
 	private String orderType;
 	private String accountNum;
+	
+	public Order(){
+		Itemlist= new ArrayList<Item>();
+		QuantityMap= new TreeMap<String, Integer>();
+	}
+	
 	/**
 	 * @return ArrayList of items in order
 	 */
