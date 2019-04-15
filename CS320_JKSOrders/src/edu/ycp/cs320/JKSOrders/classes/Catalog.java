@@ -42,6 +42,7 @@ public class Catalog {
 	}
 	
 	/**
+	 *	Sets the item key
 	 * @param item
 	 */
 	public void setItemKey(Item item) {
