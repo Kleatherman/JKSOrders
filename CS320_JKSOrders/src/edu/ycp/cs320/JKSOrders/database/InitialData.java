@@ -5,99 +5,257 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import edu.ycp.cs320.booksdb.model.Author;
-import edu.ycp.cs320.booksdb.model.Book;
-import edu.ycp.cs320.booksdb.model.BookAuthor;
+
+
+import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.Car;
+import edu.ycp.cs320.JKSOrders.classes.Catalog;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.Inventory;
+import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
+
 
 public class InitialData {
 
-	// reads initial Author data from CSV file and returns a List of Authors
-	public static List<Author> getAuthors() throws IOException {
-		List<Author> authorList = new ArrayList<Author>();
-		ReadCSV readAuthors = new ReadCSV("authors.csv");
+	// There are tests for these methods although they aren't very comprehensive yet
+	// Most of these methods return a list with the exception of the Catalog method
+	
+	public static List<CustomerAccount> getInitialCustomerAccounts() throws IOException {
+		List<CustomerAccount> accountList = new ArrayList<CustomerAccount>();
+		ReadCSV readAccounts = new ReadCSV("customers.csv");
 		try {
-			// auto-generated primary key for authors table
-			Integer authorId = 1;
+			
 			while (true) {
-				List<String> tuple = readAuthors.next();
+				List<String> tuple = readAccounts.next();
 				if (tuple == null) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
-				Author author = new Author();
+				CustomerAccount customeraccount = new CustomerAccount();
+			
+				
+				customeraccount.setAccountNumber(i.next());			
+				customeraccount.setFirstName(i.next());
+				customeraccount.setLastName(i.next());
+				customeraccount.setEmail(i.next());
+				customeraccount.setPhoneNumber(i.next());
+				customeraccount.getCreditCard().setAccountNumber(i.next());;
+				accountList.add(customeraccount);
+			}
 
-				// read author ID from CSV file, but don't use it
-				// it's there for reference purposes, just make sure that it is correct
-				// when setting up the BookAuthors CSV file				
-				Integer.parseInt(i.next());
-				// auto-generate author ID, instead
-				author.setAuthorId(authorId++);				
-				author.setLastname(i.next());
-				author.setFirstname(i.next());
-				authorList.add(author);
-			}
-			System.out.println("authorList loaded from CSV file");
-			return authorList;
-		} finally {
-			readAuthors.close();
+			System.out.println("Customer List loaded from CSV file");
+			return accountList;
+		}finally {
+			readAccounts.close();
 		}
+		
 	}
-	
-	// reads initial Book data from CSV file and returns a List of Books
-	public static List<Book> getBooks() throws IOException {
-		List<Book> bookList = new ArrayList<Book>();
-		ReadCSV readBooks = new ReadCSV("books.csv");
+	public static List<EmployeeAccount> getInitialEmployeeAccounts() throws IOException {
+		List<EmployeeAccount> accountList = new ArrayList<EmployeeAccount>();
+		ReadCSV readAccounts = new ReadCSV("employees.csv");
 		try {
-			// auto-generated primary key for table books
-			Integer bookId = 1;
+			
 			while (true) {
-				List<String> tuple = readBooks.next();
+				List<String> tuple = readAccounts.next();
 				if (tuple == null) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
-				Book book = new Book();
+				EmployeeAccount employeeaccount = new EmployeeAccount();
+
 				
-				// read book ID from CSV file, but don't use it
-				// it's there for reference purposes, just make sure that it is correct
-				// when setting up the BookAuthors CSV file
-				Integer.parseInt(i.next());
-				// auto-generate book ID, instead
-				book.setBookId(bookId++);				
-//				book.setAuthorId(Integer.parseInt(i.next()));  // no longer in books table
-				book.setTitle(i.next());
-				book.setIsbn(i.next());
-				book.setPublished(Integer.parseInt(i.next()));
+				employeeaccount.setAccountNumber(i.next());;				
+				employeeaccount.setFirstName(i.next());
+				employeeaccount.setLastName(i.next());
+				employeeaccount.setEmail(i.next());
+				employeeaccount.setPhoneNumber(i.next());;
 				
-				bookList.add(book);
+				accountList.add(employeeaccount);
 			}
-			System.out.println("bookList loaded from CSV file");			
-			return bookList;
+			System.out.println("Employee List loaded from CSV file");
+			return accountList;
 		} finally {
-			readBooks.close();
+			readAccounts.close();
 		}
 	}
-	
-	// reads initial BookAuthor data from CSV file and returns a List of BookAuthors
-	public static List<BookAuthor> getBookAuthors() throws IOException {
-		List<BookAuthor> bookAuthorList = new ArrayList<BookAuthor>();
-		ReadCSV readBookAuthors = new ReadCSV("book_authors.csv");
+	public static List<Car> getInitialCars() throws IOException {
+		List<Car> carList = new ArrayList<Car>();
+		ReadCSV readCars = new ReadCSV("Cars.csv");
 		try {
+			
 			while (true) {
-				List<String> tuple = readBookAuthors.next();
+				List<String> tuple = readCars.next();
 				if (tuple == null) {
 					break;
 				}
 				Iterator<String> i = tuple.iterator();
-				BookAuthor bookAuthor = new BookAuthor();
-				bookAuthor.setBookId(Integer.parseInt(i.next()));				
-				bookAuthor.setAuthorId(Integer.parseInt(i.next()));
-				bookAuthorList.add(bookAuthor);
+				Car car= new Car();
+		
+				
+				car.setOwner(i.next());
+				car.setColor(i.next());
+				car.setBrand(i.next());
+				car.setType(i.next());
+				car.setYear(Integer.parseInt(i.next()));
+				carList.add(car);
 			}
-			System.out.println("bookAuthorList loaded from CSV file");			
-			return bookAuthorList;
+			System.out.println("Car List loaded from CSV file");
+			return carList;
 		} finally {
-			readBookAuthors.close();
+			readCars.close();
 		}
 	}
+	
+	public static List<LoginInfo> getInitialLoginInfo() throws IOException {
+		List<LoginInfo> infoList = new ArrayList<LoginInfo>();
+		ReadCSV readInfo = new ReadCSV("LoginInfo.csv");
+		try {
+			
+			while (true) {
+				List<String> tuple = readInfo.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				LoginInfo login= new LoginInfo();
+				login.setOwnerAccount(i.next());
+				login.setUserName(i.next());
+				login.setPassword(i.next());
+				infoList.add(login);
+			}
+			System.out.println("Login Info loaded from CSV file");
+			return infoList;
+		} finally {
+			readInfo.close();
+		}
+	}
+	
+	//Since order has a quantity map in it this will also call the Junction CSV
+	
+	public static List<Order> getInitialOrders() throws IOException {
+		List<Order> orderList = new ArrayList<Order>();
+		ReadCSV readOrders = new ReadCSV("Orders.csv");
+		ReadCSV readJunc= new ReadCSV("OrderItemJunction.csv");
+		try {
+			
+			while (true) {
+				List<String> tuple = readOrders.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Order order = new Order();
+				order.setOrderType(i.next());
+				order.setAccountNum(i.next());
+				
+				orderList.add(order);
+			}
+			while(true) {
+				List<String> tuple = readJunc.next();
+				if(tuple== null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				String orderid=i.next();
+				for(int j=0; j<orderList.size(); j++) {
+					if(orderList.get(j).getOrderType()== orderid) {
+							orderList.get(j).getQuantityMap().put(i.next(),  Integer.parseInt(i.next())); 
+					}
+				}
+				
+			}
+			System.out.println("Order List loaded from CSV file");
+			return orderList;
+		} finally {
+			readOrders.close();
+		}
+	}
+	
+	//this was done as a controller method 
+	
+	public static void getInitialCatalog(Catalog catalog, Inventory inventory) throws IOException {
+		List<Item> itemList = new ArrayList<Item>();
+		ReadCSV readItems = new ReadCSV("Catalog.csv");
+		try {
+			
+			while (true) {
+				List<String> tuple = readItems.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Item item = new Item();
+				item.setUPC(i.next());
+				item.setItemName(i.next());
+				item.setPrice(Integer.parseInt(i.next()));
+				item.setLocation(i.next());
+				Integer quantity= Integer.parseInt(i.next());
+				
+				inventory.setItemQuantity(item.getUPC(), quantity);
+				catalog.setItem(item);
+				
+				itemList.add(item);
+			}
+			System.out.println("Catalog and Inventory loaded from CSV file");
+		} finally {
+			readItems.close();
+		}
+	}
+	
+	//Since notification has a list of recipients build in notificationrecipients.csv is included
+	
+	public static List<Notification> getInitialNotifications() throws IOException {
+		List<Notification> pokeList = new ArrayList<Notification>();
+		ReadCSV readPokes = new ReadCSV("Notifications.csv");
+		ReadCSV readPokees = new ReadCSV("NotificationRecipients.csv");
+		try {
+			
+			while (true) {
+				List<String> tuple = readPokes.next();
+				if (tuple == null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				Notification poke= new Notification();
+				
+				poke.setNotificationID(i.next());
+				poke.setSourceAccountNumber(i.next());
+				poke.setMessage(i.next());
+				
+				pokeList.add(poke);
+			}
+			
+			while(true) {
+				List<String> tuple = readPokees.next();
+				if(tuple== null) {
+					break;
+				}
+				Iterator<String> i = tuple.iterator();
+				String id=i.next();
+				for(int j=0; j<pokeList.size(); j++) {
+					if(pokeList.get(j).getNotificationID()==id) {
+						while(i.hasNext()) {
+							pokeList.get(j).addDestinationName(i.next()); 
+						}
+					}
+				}
+				
+			}
+			System.out.println("Notifications loaded from CSV file");
+			return pokeList;
+		} finally {
+			readPokes.close();
+			readPokees.close();
+		}
+	}
+	
+	
+	
+	
+	
+	
 }

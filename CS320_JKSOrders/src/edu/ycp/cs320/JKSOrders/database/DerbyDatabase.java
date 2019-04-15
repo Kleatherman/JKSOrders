@@ -9,16 +9,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.ycp.cs320.booksdb.model.Author;
-import edu.ycp.cs320.booksdb.model.Book;
-import edu.ycp.cs320.booksdb.model.BookAuthor;
-import edu.ycp.cs320.booksdb.model.Pair;
-import edu.ycp.cs320.booksdb.persist.DBUtil;
-import edu.ycp.cs320.booksdb.persist.IDatabase;
-import edu.ycp.cs320.booksdb.persist.InitialData;
-import edu.ycp.cs320.booksdb.persist.PersistenceException;
+import edu.ycp.cs320.JKSOrders.classes.Car;
+import edu.ycp.cs320.JKSOrders.classes.Catalog;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.Inventory;
+import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 
-public class DerbyDatabase implements IDatabase {
+class DerbyDatabase /*implements Database*/ {
 	static {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -33,507 +34,6 @@ public class DerbyDatabase implements IDatabase {
 
 	private static final int MAX_ATTEMPTS = 10;
 
-	
-	// transaction that retrieves a Book, and its Author by Title
-	@Override
-	public List<Pair<Author, Book>> findAuthorAndBookByTitle(final String title) {
-		return executeTransaction(new Transaction<List<Pair<Author,Book>>>() {
-			@Override
-			public List<Pair<Author, Book>> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
-				
-				try {
-					stmt = conn.prepareStatement(
-							"select authors.*, books.* " +
-							"  from  authors, books, bookAuthors " +
-							"  where books.title = ? " +
-							"    and authors.author_id = bookAuthors.author_id " +
-							"    and books.book_id     = bookAuthors.book_id"
-					);
-					stmt.setString(1, title);
-					
-					List<Pair<Author, Book>> result = new ArrayList<Pair<Author,Book>>();
-					
-					resultSet = stmt.executeQuery();
-					
-					// for testing that a result was returned
-					Boolean found = false;
-					
-					while (resultSet.next()) {
-						found = true;
-						
-						Author author = new Author();
-						loadAuthor(author, resultSet, 1);
-						Book book = new Book();
-						loadBook(book, resultSet, 4);
-						
-						result.add(new Pair<Author, Book>(author, book));
-					}
-					
-					// check if the title was found
-					if (!found) {
-						System.out.println("<" + title + "> was not found in the books table");
-					}
-					
-					return result;
-				} finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(stmt);
-				}
-			}
-		});
-	}
-	
-	
-	// transaction that retrieves a list of Books with their Authors, given Author's last name
-	@Override
-	public List<Pair<Author, Book>> findAuthorAndBookByAuthorLastName(final String lastName) {
-		return executeTransaction(new Transaction<List<Pair<Author,Book>>>() {
-			@Override
-			public List<Pair<Author, Book>> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
-
-				// try to retrieve Authors and Books based on Author's last name, passed into query
-				try {
-					stmt = conn.prepareStatement(
-							"select authors.*, books.* " +
-							"  from  authors, books, bookAuthors " +
-							"  where authors.lastname = ? " +
-							"    and authors.author_id = bookAuthors.author_id " +
-							"    and books.book_id     = bookAuthors.book_id "   +
-							"  order by books.title asc, books.published asc"
-					);
-					stmt.setString(1, lastName);
-					
-					// establish the list of (Author, Book) Pairs to receive the result
-					List<Pair<Author, Book>> result = new ArrayList<Pair<Author,Book>>();
-					
-					// execute the query, get the results, and assemble them in an ArrayLsit
-					resultSet = stmt.executeQuery();
-					while (resultSet.next()) {
-						Author author = new Author();
-						loadAuthor(author, resultSet, 1);
-						Book book = new Book();
-						loadBook(book, resultSet, 4);
-						
-						result.add(new Pair<Author, Book>(author, book));
-					}
-					
-					return result;
-				} finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(stmt);
-				}
-			}
-		});
-	}
-	
-	
-	// transaction that retrieves all Books in Library, with their respective Authors
-	@Override
-	public List<Pair<Author, Book>> findAllBooksWithAuthors() {
-		return executeTransaction(new Transaction<List<Pair<Author,Book>>>() {
-			@Override
-			public List<Pair<Author, Book>> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
-				
-				try {
-					stmt = conn.prepareStatement(
-							"select authors.*, books.* " +
-							"  from authors, books, bookAuthors " +
-							"  where authors.author_id = bookAuthors.author_id " +
-							"    and books.book_id     = bookAuthors.book_id "   +
-							"  order by books.title asc"
-					);
-					
-					List<Pair<Author, Book>> result = new ArrayList<Pair<Author,Book>>();
-					
-					resultSet = stmt.executeQuery();
-					
-					// for testing that a result was returned
-					Boolean found = false;
-					
-					while (resultSet.next()) {
-						found = true;
-						
-						Author author = new Author();
-						loadAuthor(author, resultSet, 1);
-						Book book = new Book();
-						loadBook(book, resultSet, 4);
-						
-						result.add(new Pair<Author, Book>(author, book));
-					}
-					
-					// check if any books were found
-					if (!found) {
-						System.out.println("No books were found in the database");
-					}
-					
-					return result;
-				} finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(stmt);
-				}
-			}
-		});
-	}	
-	
-	
-	// transaction that retrieves all Authors in Library
-	@Override
-	public List<Author> findAllAuthors() {
-		return executeTransaction(new Transaction<List<Author>>() {
-			@Override
-			public List<Author> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt = null;
-				ResultSet resultSet = null;
-				
-				try {
-					stmt = conn.prepareStatement(
-							"select * from authors " +
-							" order by lastname asc, firstname asc"
-					);
-					
-					List<Author> result = new ArrayList<Author>();
-					
-					resultSet = stmt.executeQuery();
-					
-					// for testing that a result was returned
-					Boolean found = false;
-					
-					while (resultSet.next()) {
-						found = true;
-						
-						Author author = new Author();
-						loadAuthor(author, resultSet, 1);
-						
-						result.add(author);
-					}
-					
-					// check if any authors were found
-					if (!found) {
-						System.out.println("No authors were found in the database");
-					}
-					
-					return result;
-				} finally {
-					DBUtil.closeQuietly(resultSet);
-					DBUtil.closeQuietly(stmt);
-				}
-			}
-		});
-	}
-	
-	
-	// transaction that inserts new Book into the Books table
-	// also first inserts new Author into Authors table, if necessary
-	// and then inserts entry into BookAuthors junction table
-	@Override
-	public Integer insertBookIntoBooksTable(final String title, final String isbn, final int published, final String lastName, final String firstName) {
-		return executeTransaction(new Transaction<Integer>() {
-			@Override
-			public Integer execute(Connection conn) throws SQLException {
-				PreparedStatement stmt1 = null;
-				PreparedStatement stmt2 = null;
-				PreparedStatement stmt3 = null;
-				PreparedStatement stmt4 = null;
-				PreparedStatement stmt5 = null;
-				PreparedStatement stmt6 = null;				
-				
-				ResultSet resultSet1 = null;
-				ResultSet resultSet3 = null;
-				ResultSet resultSet5 = null;				
-				
-				// for saving author ID and book ID
-				Integer author_id = -1;
-				Integer book_id   = -1;
-
-				// try to retrieve author_id (if it exists) from DB, for Author's full name, passed into query
-				try {
-					stmt1 = conn.prepareStatement(
-							"select author_id from authors " +
-							"  where lastname = ? and firstname = ? "
-					);
-					stmt1.setString(1, lastName);
-					stmt1.setString(2, firstName);
-					
-					// execute the query, get the result
-					resultSet1 = stmt1.executeQuery();
-
-					
-					// if Author was found then save author_id					
-					if (resultSet1.next())
-					{
-						author_id = resultSet1.getInt(1);
-						System.out.println("Author <" + lastName + ", " + firstName + "> found with ID: " + author_id);						
-					}
-					else
-					{
-						System.out.println("Author <" + lastName + ", " + firstName + "> not found");
-				
-						// if the Author is new, insert new Author into Authors table
-						if (author_id <= 0) {
-							// prepare SQL insert statement to add Author to Authors table
-							stmt2 = conn.prepareStatement(
-									"insert into authors (lastname, firstname) " +
-									"  values(?, ?) "
-							);
-							stmt2.setString(1, lastName);
-							stmt2.setString(2, firstName);
-							
-							// execute the update
-							stmt2.executeUpdate();
-							
-							System.out.println("New author <" + lastName + ", " + firstName + "> inserted in Authors table");						
-						
-							// try to retrieve author_id for new Author - DB auto-generates author_id
-							stmt3 = conn.prepareStatement(
-									"select author_id from authors " +
-									"  where lastname = ? and firstname = ? "
-							);
-							stmt3.setString(1, lastName);
-							stmt3.setString(2, firstName);
-							
-							// execute the query							
-							resultSet3 = stmt3.executeQuery();
-							
-							// get the result - there had better be one							
-							if (resultSet3.next())
-							{
-								author_id = resultSet3.getInt(1);
-								System.out.println("New author <" + lastName + ", " + firstName + "> ID: " + author_id);						
-							}
-							else	// really should throw an exception here - the new author should have been inserted, but we didn't find them
-							{
-								System.out.println("New author <" + lastName + ", " + firstName + "> not found in Authors table (ID: " + author_id);
-							}
-						}
-					}
-					
-					// now insert new Book into Books table
-					// prepare SQL insert statement to add new Book to Books table
-					stmt4 = conn.prepareStatement(
-							"insert into books (title, isbn, published) " +
-							"  values(?, ?, ?) "
-					);
-					stmt4.setString(1, title);
-					stmt4.setString(2, isbn);
-					stmt4.setInt(3, published);
-					
-					// execute the update
-					stmt4.executeUpdate();
-					
-					System.out.println("New book <" + title + "> inserted into Books table");					
-
-					// now retrieve book_id for new Book, so that we can set up BookAuthor entry
-					// and return the book_id, which the DB auto-generates
-					// prepare SQL statement to retrieve book_id for new Book
-					stmt5 = conn.prepareStatement(
-							"select book_id from books " +
-							"  where title = ? and isbn = ? and published = ? "
-									
-					);
-					stmt5.setString(1, title);
-					stmt5.setString(2, isbn);
-					stmt5.setInt(3, published);
-
-					// execute the query
-					resultSet5 = stmt5.executeQuery();
-					
-					// get the result - there had better be one
-					if (resultSet5.next())
-					{
-						book_id = resultSet5.getInt(1);
-						System.out.println("New book <" + title + "> ID: " + book_id);						
-					}
-					else	// really should throw an exception here - the new book should have been inserted, but we didn't find it
-					{
-						System.out.println("New book <" + title + "> not found in Books table (ID: " + book_id);
-					}
-					
-					// now that we have all the information, insert entry into BookAuthors table
-					// which is the junction table for Books and Authors
-					// prepare SQL insert statement to add new Book to Books table
-					stmt6 = conn.prepareStatement(
-							"insert into bookAuthors (book_id, author_id) " +
-							"  values(?, ?) "
-					);
-					stmt6.setInt(1, book_id);
-					stmt6.setInt(2, author_id);
-					
-					// execute the update
-					stmt6.executeUpdate();
-					
-					System.out.println("New entry for book ID <" + book_id + "> and author ID <" + author_id + "> inserted into BookAuthors junction table");						
-					
-					System.out.println("New book <" + title + "> inserted into Books table");					
-					
-					return book_id;
-				} finally {
-					DBUtil.closeQuietly(resultSet1);
-					DBUtil.closeQuietly(stmt1);
-					DBUtil.closeQuietly(stmt2);					
-					DBUtil.closeQuietly(resultSet3);
-					DBUtil.closeQuietly(stmt3);					
-					DBUtil.closeQuietly(stmt4);
-					DBUtil.closeQuietly(resultSet5);
-					DBUtil.closeQuietly(stmt5);
-					DBUtil.closeQuietly(stmt6);
-				}
-			}
-		});
-	}
-	
-	
-	// transaction that deletes Book (and possibly its Author) from Library
-	@Override
-	public List<Author> removeBookByTitle(final String title) {
-		return executeTransaction(new Transaction<List<Author>>() {
-			@Override
-			public List<Author> execute(Connection conn) throws SQLException {
-				PreparedStatement stmt1 = null;
-				PreparedStatement stmt2 = null;
-				PreparedStatement stmt3 = null;
-				PreparedStatement stmt4 = null;
-				PreparedStatement stmt5 = null;
-				PreparedStatement stmt6 = null;							
-				
-				ResultSet resultSet1    = null;			
-				ResultSet resultSet2    = null;
-				ResultSet resultSet5    = null;
-				
-				try {
-					// first get the Author(s) of the Book to be deleted
-					// just in case it's the only Book by this Author
-					// in which case, we should also remove the Author(s)
-					stmt1 = conn.prepareStatement(
-							"select authors.* " +
-							"  from  authors, books, bookAuthors " +
-							"  where books.title = ? " +
-							"    and authors.author_id = bookAuthors.author_id " +
-							"    and books.book_id     = bookAuthors.book_id"
-					);
-					
-					// get the Book's Author(s)
-					stmt1.setString(1, title);
-					resultSet1 = stmt1.executeQuery();
-					
-					// assemble list of Authors from query
-					List<Author> authors = new ArrayList<Author>();					
-				
-					while (resultSet1.next()) {
-						Author author = new Author();
-						loadAuthor(author, resultSet1, 1);
-						authors.add(author);
-					}
-					
-					// check if any Authors were found
-					// this shouldn't be necessary, there should not be a Book in the DB without an Author
-					if (authors.size() == 0) {
-						System.out.println("No author was found for title <" + title + "> in the database");
-					}
-										
-					// now get the Book(s) to be deleted
-					// we will need the book_id to remove associated entries in BookAuthors (junction table)
-				
-					stmt2 = conn.prepareStatement(
-							"select books.* " +
-							"  from  books " +
-							"  where books.title = ? "
-					);
-					
-					// get the Book(s)
-					stmt2.setString(1, title);
-					resultSet2 = stmt2.executeQuery();
-					
-					// assemble list of Books from query
-					List<Book> books = new ArrayList<Book>();					
-				
-					while (resultSet2.next()) {
-						Book book = new Book();
-						loadBook(book, resultSet2, 1);
-						books.add(book);
-					}
-					
-					// first delete entries in BookAuthors junction table
-					// can't delete entries in Books or Authors tables while they have foreign keys in junction table
-					// prepare to delete the junction table entries (bookAuthors)
-					stmt3 = conn.prepareStatement(
-							"delete from bookAuthors " +
-							"  where book_id = ? "
-					);
-					
-					// delete the junction table entries from the DB for this title
-					// this works if there are not multiple books with the same name
-					stmt3.setInt(1, books.get(0).getBookId());
-					stmt3.executeUpdate();
-					
-					System.out.println("Deleted junction table entries for book(s) <" + title + "> from DB");									
-					
-					// now delete entries in Books table for this title
-					stmt4 = conn.prepareStatement(
-							"delete from books " +
-							"  where title = ? "
-					);
-					
-					// delete the Book entries from the DB for this title
-					stmt4.setString(1, title);
-					stmt4.executeUpdate();
-					
-					System.out.println("Deleted book(s) with title <" + title + "> from DB");									
-					
-					// now check if the Author(s) have any Books remaining in the DB
-					// only need to check if there are any entries in junction table that have this author ID
-					for (int i = 0; i < authors.size(); i++) {
-						// prepare to find Books for this Author
-						stmt5 = conn.prepareStatement(
-								"select books.book_id from books, bookAuthors " +
-								"  where bookAuthors.author_id = ? "
-						);
-						
-						// retrieve any remaining books for this Author
-						stmt5.setInt(1, books.get(i).getAuthorId());
-						resultSet5 = stmt5.executeQuery();						
-
-						// if nothing returned, then delete Author
-						if (!resultSet5.next()) {
-							stmt6 = conn.prepareStatement(
-								"delete from authors " +
-								"  where author_id = ?"
-							);
-							
-							// delete the Author from DB
-							stmt6.setInt(1, authors.get(i).getAuthorId());
-							stmt6.executeUpdate();
-							
-							System.out.println("Deleted author <" + authors.get(i).getLastname() + ", " + authors.get(i).getFirstname() + "> from DB");
-							
-							// we're done with this, so close it, since we might have more to do
-							DBUtil.closeQuietly(stmt6);
-						}
-						
-						// we're done with this, so close it since we might have more to do
-						DBUtil.closeQuietly(resultSet5);
-						DBUtil.closeQuietly(stmt5);
-					}
-					return authors;
-				} finally {
-					DBUtil.closeQuietly(resultSet1);
-					DBUtil.closeQuietly(resultSet2);
-					
-					DBUtil.closeQuietly(stmt1);
-					DBUtil.closeQuietly(stmt2);
-					DBUtil.closeQuietly(stmt3);					
-					DBUtil.closeQuietly(stmt4);					
-				}
-			}
-		});
-	}
-	
-	
 	// wrapper SQL transaction function that calls actual transaction function (which has retries)
 	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 		try {
@@ -583,7 +83,7 @@ public class DerbyDatabase implements IDatabase {
 	// TODO: Change it here and in SQLDemo.java under CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
 	// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
 	private Connection connect() throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:H:/CS320/Workspace2/LibraryExample-DB/library.db;create=true");		
+		Connection conn = DriverManager.getConnection("jdbc:derby:C:/JKSOrders-2019-LibraryExample-DB/library.db;create=true");		
 		
 		// Set autocommit() to false to allow the execution of
 		// multiple queries/statements as part of the same transaction.
@@ -592,78 +92,142 @@ public class DerbyDatabase implements IDatabase {
 		return conn;
 	}
 	
-	// retrieves Author information from query result set
-	private void loadAuthor(Author author, ResultSet resultSet, int index) throws SQLException {
-		author.setAuthorId(resultSet.getInt(index++));
-		author.setLastname(resultSet.getString(index++));
-		author.setFirstname(resultSet.getString(index++));
-	}
 	
-	// retrieves Book information from query result set
-	private void loadBook(Book book, ResultSet resultSet, int index) throws SQLException {
-		book.setBookId(resultSet.getInt(index++));
-//		book.setAuthorId(resultSet.getInt(index++));  // no longer used
-		book.setTitle(resultSet.getString(index++));
-		book.setIsbn(resultSet.getString(index++));
-		book.setPublished(resultSet.getInt(index++));
-	}
-	
-	// retrieves WrittenBy information from query result set
-	private void loadBookAuthors(BookAuthor bookAuthor, ResultSet resultSet, int index) throws SQLException {
-		bookAuthor.setBookId(resultSet.getInt(index++));
-		bookAuthor.setAuthorId(resultSet.getInt(index++));
-	}
-	
-	//  creates the Authors and Books tables
 	public void createTables() {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
+				System.out.println("Creating Prepared Statements");
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt2 = null;
-				PreparedStatement stmt3 = null;				
+				PreparedStatement stmt3 = null;	
+				PreparedStatement stmt4 = null;
+				PreparedStatement stmt5 = null;
+				PreparedStatement stmt6 = null;	
+				PreparedStatement stmt7 = null;
+				PreparedStatement stmt8 = null;
+				PreparedStatement stmt9 = null;	
 			
 				try {
-					stmt1 = conn.prepareStatement(
-						"create table authors (" +
-						"	author_id integer primary key " +
-						"		generated always as identity (start with 1, increment by 1), " +									
-						"	lastname varchar(40)," +
-						"	firstname varchar(40)" +
-						")"
-					);	
-					stmt1.executeUpdate();
+
+					System.out.println("Beginning to create tables");
 					
-					System.out.println("Authors table created");
 					
 					stmt2 = conn.prepareStatement(
-							"create table books (" +
-							"	book_id integer primary key " +
-							"		generated always as identity (start with 1, increment by 1), " +
-//							"	author_id integer constraint author_id references authors, " +  	// this is now in the BookAuthors table
-							"	title varchar(70)," +
-							"	isbn varchar(15)," +
-							"   published integer" +
+							"create table catalog (" +
+							"	item_id varchar(5) primary key, " +
+							"	item_name varchar(70)," +
+							"	price float(10)," +
+							"   location char(4)," +
+							"	quantity integer," +
+							"	visible integer" +
 							")"
 					);
 					stmt2.executeUpdate();
 					
-					System.out.println("Books table created");					
+					System.out.println("Catalog table created");		
 					
 					stmt3 = conn.prepareStatement(
-							"create table bookAuthors (" +
-							"	book_id   integer constraint book_id references books, " +
-							"	author_id integer constraint author_id references authors " +
+							"create table customers (" +
+							"	curtomer_id varchar(5) primary key, " +
+							"	first_name varchar(50)," +
+							"	last_name varchar(50)," +
+							"	email varchar(50)," +
+							"	phoneNumber varchar(12)," +
+							"	creditCard_id varchar(20)" +
 							")"
 					);
 					stmt3.executeUpdate();
 					
-					System.out.println("BookAuthors table created");					
+					System.out.println("Customers table created");
+					
+					stmt4 = conn.prepareStatement(
+							"create table employees (" +
+							"	employee_id varchar(5) primary key, " +
+							"	first_name varchar(50)," +
+							"	last_name varchar(50)," +
+							"	email varchar(50)," +
+							"	phoneNumber integer" +
+							")"
+					);
+					stmt4.executeUpdate();
+					
+					System.out.println("Employees table created");
+					
+					stmt1 = conn.prepareStatement(
+							"create table cars (" +
+							"	customer_id varchar(5) constraint customer_id references customers,"	+						
+							"	color varchar(40)," +
+							"	brand varchar(40)," +
+							"	make varchar(40), built integer)"
+						);	
+						stmt1.executeUpdate();
+					
+					System.out.println("cars table created");
+					
+					stmt5 = conn.prepareStatement(
+							"create table login (" +
+							"	user_id varchar(5), " +
+							"	username varchar(50)," +
+							"	password varchar(50))"
+					);
+					stmt5.executeUpdate();
+					
+					System.out.println("login table created");
+					
+					stmt6 = conn.prepareStatement(
+							"create table notifications (" +
+							"	notification_id varchar(5) primary key, " +
+							"	employee_id varchar(50)," +
+							"	message varchar(1000)" +
+							")"
+					);
+					stmt6.executeUpdate();
+					
+					System.out.println("notifications table created");
+					
+					stmt7 = conn.prepareStatement(
+							"create table orders (" +
+							"	order_id varchar(5) primary key, " +
+							"	user_id varchar(5)" +
+							")"
+					);
+					stmt7.executeUpdate();
+					
+					System.out.println("Order table created");
+					
+					stmt8 = conn.prepareStatement(
+							"create table notificationRecipients (" +
+							"	notification_id varchar(5) constraint notification_id references notifications," +
+							"	employee_id varchar(5)" +
+							")"
+					);
+					stmt8.executeUpdate();
+					
+					System.out.println("notificationRecipients table created");
+					
+					stmt9 = conn.prepareStatement(
+							"create table orderItemJunction (" +
+							"	order_id varchar(5) constraint order_id references orders," +
+							"	item_id varchar(5) constraint item_id references catalog," +
+							"	quantity integer" +
+							")"
+					);
+					stmt9.executeUpdate();
+					
+					System.out.println("orderItemJunction table created");			
 										
 					return true;
 				} finally {
 					DBUtil.closeQuietly(stmt1);
 					DBUtil.closeQuietly(stmt2);
+					DBUtil.closeQuietly(stmt3);
+					DBUtil.closeQuietly(stmt4);
+					DBUtil.closeQuietly(stmt5);
+					DBUtil.closeQuietly(stmt6);
+					DBUtil.closeQuietly(stmt7);
+					DBUtil.closeQuietly(stmt8);
+					DBUtil.closeQuietly(stmt9);
 				}
 			}
 		});
@@ -674,66 +238,155 @@ public class DerbyDatabase implements IDatabase {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				List<Author> authorList;
-				List<Book> bookList;
-				List<BookAuthor> bookAuthorList;
+				List<Car> carsList;
+				List<CustomerAccount> customersList;
+				List<EmployeeAccount> employeesList;
+				List<LoginInfo> loginInfoList;
+				List<Notification> notificationsList;
+				List<Order> ordersList;
 				
 				try {
-					authorList     = InitialData.getAuthors();
-					bookList       = InitialData.getBooks();
-					bookAuthorList = InitialData.getBookAuthors();					
+/*1*/				carsList			= InitialData.getInitialCars();
+/*2*/				customersList		= InitialData.getInitialCustomerAccounts();
+/*3*/				employeesList		= InitialData.getInitialEmployeeAccounts();
+/*4*/				loginInfoList 		= InitialData.getInitialLoginInfo();
+/*5*/				notificationsList 	= InitialData.getInitialNotifications();
+/*6*/				ordersList			= InitialData.getInitialOrders();
+
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
 				}
 
-				PreparedStatement insertAuthor     = null;
-				PreparedStatement insertBook       = null;
-				PreparedStatement insertBookAuthor = null;
-
+				PreparedStatement insertCar     				= null;
+				PreparedStatement insertCustomer				= null;
+				PreparedStatement insertEmployee 				= null;
+				PreparedStatement insertLoginInfo				= null;
+				PreparedStatement insertNotification			= null;
+				PreparedStatement insertOrder					= null;
+				PreparedStatement insertNotificationRecipients	= null;
+				PreparedStatement insertOrderItemJunction		= null;
+				PreparedStatement insertCatalog					= null;
+				
 				try {
 					// must completely populate Authors table before populating BookAuthors table because of primary keys
-					insertAuthor = conn.prepareStatement("insert into authors (lastname, firstname) values (?, ?)");
-					for (Author author : authorList) {
+					insertCar = conn.prepareStatement("insert into cars (cars_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
+					for (Car car : carsList) {
 //						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
-						insertAuthor.setString(1, author.getLastname());
-						insertAuthor.setString(2, author.getFirstname());
-						insertAuthor.addBatch();
+						insertCar.setString(1, car.getOwner());
+						insertCar.setString(2, car.getColor());
+						insertCar.setString(3, car.getBrand());
+						insertCar.setString(4, car.getType());
+						insertCar.setInt(5, car.getYear());
+						insertCar.addBatch();
 					}
-					insertAuthor.executeBatch();
+					insertCar.executeBatch();
 					
-					System.out.println("Authors table populated");
+					System.out.println("Cars table populated");
 					
 					// must completely populate Books table before populating BookAuthors table because of primary keys
-					insertBook = conn.prepareStatement("insert into books (title, isbn, published) values (?, ?, ?)");
-					for (Book book : bookList) {
-//						insertBook.setInt(1, book.getBookId());		// auto-generated primary key, don't insert this
-//						insertBook.setInt(1, book.getAuthorId());	// this is now in the BookAuthors table
-						insertBook.setString(1, book.getTitle());
-						insertBook.setString(2, book.getIsbn());
-						insertBook.setInt(3, book.getPublished());
-						insertBook.addBatch();
+					insertCustomer = conn.prepareStatement("insert into customers (customer_id, first_name, last_name, email, phoneNumber, creditCard_id) values (?, ?, ?, ?, ?, ?)");
+					for (CustomerAccount customer : customersList) {
+						insertCustomer.setString(1, customer.getAccountNumber());
+						insertCustomer.setString(2, customer.getFirstName());
+						insertCustomer.setString(3, customer.getLastName());
+						insertCustomer.setString(4, customer.getEmail());
+						insertCustomer.setString(6, customer.getPhoneNumber());
+						insertCustomer.setString(7, customer.getCreditCard().getAccountNumber());
+						insertCustomer.addBatch();
 					}
-					insertBook.executeBatch();
+					insertCustomer.executeBatch();
 					
-					System.out.println("Books table populated");					
+					System.out.println("Customers table populated");					
 					
 					// must wait until all Books and all Authors are inserted into tables before creating BookAuthor table
 					// since this table consists entirely of foreign keys, with constraints applied
-					insertBookAuthor = conn.prepareStatement("insert into bookAuthors (book_id, author_id) values (?, ?)");
-					for (BookAuthor bookAuthor : bookAuthorList) {
-						insertBookAuthor.setInt(1, bookAuthor.getBookId());
-						insertBookAuthor.setInt(2, bookAuthor.getAuthorId());
-						insertBookAuthor.addBatch();
+					insertEmployee = conn.prepareStatement("insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
+					for (EmployeeAccount employee : employeesList) {
+						insertEmployee.setString(1, employee.getAccountNumber());
+						insertEmployee.setString(2, employee.getFirstName());
+						insertEmployee.setString(3, employee.getLastName());
+						insertEmployee.setString(4, employee.getEmail());
+						insertEmployee.setString(6, employee.getPhoneNumber());
+						insertEmployee.addBatch();
 					}
-					insertBookAuthor.executeBatch();	
+					insertEmployee.executeBatch();	
 					
-					System.out.println("BookAuthors table populated");					
+					System.out.println("Employees table populated");					
 					
+					insertLoginInfo = conn.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
+					for (LoginInfo login : loginInfoList) {
+						insertLoginInfo.setString(1, login.getOwnerAccount());
+						insertLoginInfo.setString(2, login.getUserName());
+						insertLoginInfo.setString(3, login.getPassword());
+						insertLoginInfo.addBatch();
+					}
+					insertLoginInfo.executeBatch();	
+					
+					System.out.println("LoginInfo table populated");
+					
+					insertNotification = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
+					for (Notification notify : notificationsList) {
+						insertNotification.setString(1, notify.getNotificationID());
+						insertNotification.setString(2, notify.getSourceAccountNumber());
+						insertNotification.setString(3, notify.getMessage());
+						insertNotification.addBatch();
+					}
+					insertNotification.executeBatch();	
+					
+					System.out.println("Notifications table populated");
+					
+					insertNotificationRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
+					for (Notification notify : notificationsList) {
+						for(String employeeID : notify.getDestination()) {
+							insertNotificationRecipients.setString(1, notify.getNotificationID());
+							insertNotificationRecipients.setString(2, employeeID);
+							insertNotificationRecipients.addBatch();
+						}
+					}
+					insertNotificationRecipients.executeBatch();	
+					
+					System.out.println("notificationRecipients table populated");
+					
+					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
+					for (Order order : ordersList) {
+						insertOrder.setString(1, order.getOrderType());
+						insertOrder.setString(2, order.getAccountNum());
+						insertOrder.addBatch();
+					}
+					insertOrder.executeBatch();	
+					
+					System.out.println("Orders table populated");
+					
+					insertOrderItemJunction = conn.prepareStatement("insert into orderItemJunction (order_id, item_id, quantity) values (?, ?, ?)");
+					for (Order order : ordersList) {
+						for(Item item : order.getItemlist()) {
+							insertOrderItemJunction.setString(1, order.getOrderType());
+							insertOrderItemJunction.setString(2, item.getUPC());
+							insertOrderItemJunction.setInt(3, order.getQuantityMap().get(item.getUPC()));
+							insertOrderItemJunction.addBatch();
+						}
+					}
+					insertOrderItemJunction.executeBatch();	
+					
+					System.out.println("OrderItemJunction table populated");
+					/*
+					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?)");
+					Catalog catalog = new Catalog();
+					Inventory inventory = new Inventory();
+					edu.ycp.cs320.JKSOrders.database.InitialData.getInitialCatalog(catalog, inventory);
+					for(Item item : )
+					*/
 					return true;
 				} finally {
-					DBUtil.closeQuietly(insertBook);
-					DBUtil.closeQuietly(insertAuthor);
-					DBUtil.closeQuietly(insertBookAuthor);					
+					DBUtil.closeQuietly(insertCar);
+					DBUtil.closeQuietly(insertCustomer);
+					DBUtil.closeQuietly(insertEmployee);	
+					DBUtil.closeQuietly(insertLoginInfo);
+					DBUtil.closeQuietly(insertNotification);
+					DBUtil.closeQuietly(insertOrder);
+					DBUtil.closeQuietly(insertNotificationRecipients);
+					DBUtil.closeQuietly(insertOrderItemJunction);
+					DBUtil.closeQuietly(insertCatalog);				
 				}
 			}
 		});
