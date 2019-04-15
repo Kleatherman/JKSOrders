@@ -6,6 +6,7 @@ public class CustomerAccount extends Account{
 	
 	public CustomerAccount() {
 		super();
+		creditCard = new CreditCard();
 	}
 	
 	/**

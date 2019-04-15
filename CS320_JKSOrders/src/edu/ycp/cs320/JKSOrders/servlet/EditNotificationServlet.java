@@ -101,6 +101,20 @@ public class EditNotificationServlet  extends HttpServlet{
 			req.setAttribute("model", editModel);
 			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
 		}
+		else if(req.getParameter("delete")!=null) {
+			db.deleteNotification(req.getParameter("editNotification"));
+			String name = db.getAccount(accountNumber).getFirstName();
+			if(db.getNotifications(accountNumber).size()!=0) {
+				req.setAttribute("notification", db.getNotifications(accountNumber));
+			}
+			isManager = db.getEmployeeAccount(accountNumber).isManager();
+			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
+			req.setAttribute("isManager", isManager);
+			req.setAttribute("employeeNames", db.AllEmployeeNames());
+			req.setAttribute("name", name);
+			req.setAttribute("accountNumber", accountNumber);
+			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}
