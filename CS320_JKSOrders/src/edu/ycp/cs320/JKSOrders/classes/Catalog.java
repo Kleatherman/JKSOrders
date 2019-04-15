@@ -1,6 +1,9 @@
 package edu.ycp.cs320.JKSOrders.classes;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Catalog {
@@ -48,4 +51,19 @@ public class Catalog {
 	public void setItemKey(Item item) {
 		ItemMap.put(item.getUPC(), item);
 	}
+	
+	public void returnGreaterorLess(int x, ArrayList<String> greater, ArrayList<String> less) {
+		Set<String> upcs = quantityMap.keySet();
+		Iterator<String> i = upcs.iterator();
+		while(i.hasNext()){
+			String item = i.next();
+			if(quantityMap.get(item)<x) {
+				less.add(item);
+			}
+			else
+				greater.add(item);
+		}
+
+}
+
 }
