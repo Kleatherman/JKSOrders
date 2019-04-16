@@ -78,6 +78,10 @@ public class StorePageServlet extends HttpServlet {
 		else if(req.getParameter("logOut")!=null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
+		else if(req.getParameter("cart")!=null) {
+			req.setAttribute("accountNumber", accountNumber);
+			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}
