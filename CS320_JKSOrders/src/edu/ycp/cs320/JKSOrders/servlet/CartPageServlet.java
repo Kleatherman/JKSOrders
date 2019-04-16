@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.controller.EditNotificationController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
@@ -41,11 +42,16 @@ public class CartPageServlet  extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+		Database db = InitDatabase.init();
 		
 		if(req.getParameter("store")!=null) {
+			ArrayList<Item> items = new ArrayList<Item>();
+			items = db.getVisibleItems();
+			System.out.println("StorePage: "+ items.get(0).getDescription());
+			req.setAttribute("items", items);
 			String accountNumber = (String)req.getParameter("accountNumber");
 			req.setAttribute("accountNumber", accountNumber);
+			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else {
 			throw new ServletException("Unknown command");
