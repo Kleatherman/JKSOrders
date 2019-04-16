@@ -38,6 +38,7 @@
 					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
 						Hey!!! This is your cart.....it is empty!<br/>
 						<input name="store" type="Submit" value="Back to Store" />
+						<input name="checkOut" type="Submit" value="Checkout" />
 						<input name="accountNumber" type="Hidden" value="${accountNumber}"/>
 					</form>		
 					<span class = ErrorMessage>${model.errorMessage}</span>
