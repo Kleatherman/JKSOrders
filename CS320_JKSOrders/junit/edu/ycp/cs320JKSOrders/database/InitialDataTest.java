@@ -12,6 +12,7 @@ import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Inventory;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.classes.Order;
@@ -31,6 +32,8 @@ public class InitialDataTest {
 	@Before
 	public void setUp() {
 		try {
+			catalog= new Catalog();
+			inventory= new Inventory();
 			car = InitialData.getInitialCars() ;
 			eaccount= InitialData.getInitialEmployeeAccounts();
 			caccount= InitialData.getInitialCustomerAccounts();
@@ -76,9 +79,16 @@ public class InitialDataTest {
 	}
 	@Test
 	public void testOrder() {
+		
+		
 		System.out.println(order.get(0).getOrderType());
-		if(order.get(0).getOrderType().equals("P0")) {
+		System.out.println(order.get(0).getQuantityMap().get("I0"));
+		System.out.println(order.get(0).getItemlist().get(0).getUPC());
+		if(order.get(0).getOrderType().equals("P0") && order.get(0).getItemlist().get(0).getUPC().equals("I0")) {
 			assert true;
+		}
+		else {
+			assert false;
 		}
 	}
 	@Test
@@ -103,6 +113,7 @@ public class InitialDataTest {
 		if(inventory.getItemQuantity("I0").equals(5)) {
 			assert true;
 		}
+		
 	}
 
 	
