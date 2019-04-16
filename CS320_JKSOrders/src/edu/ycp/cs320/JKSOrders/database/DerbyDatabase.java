@@ -209,7 +209,7 @@ class DerbyDatabase /*implements Database*/ {
 					stmt9 = conn.prepareStatement(
 							"create table orderItemJunction (" +
 							"	order_id varchar(5) constraint order_id references orders," +
-							"	item_id varchar(5) constraint item_id references catalog," +
+							"	item_id varchar(5)," +
 							"	quantity integer" +
 							")"
 					);
@@ -266,6 +266,7 @@ class DerbyDatabase /*implements Database*/ {
 				PreparedStatement insertNotificationRecipients	= null;
 				PreparedStatement insertOrderItemJunction		= null;
 				PreparedStatement insertCatalog					= null;
+				PreparedStatement testCall						= null;
 				
 				try {
 					// must completely populate Authors table before populating BookAuthors table because of primary keys
@@ -371,6 +372,7 @@ class DerbyDatabase /*implements Database*/ {
 					insertOrderItemJunction.executeBatch();	
 					
 					System.out.println("OrderItemJunction table populated");
+					
 					/*
 					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?)");
 					Catalog catalog = new Catalog();
@@ -388,7 +390,8 @@ class DerbyDatabase /*implements Database*/ {
 					DBUtil.closeQuietly(insertOrder);
 					DBUtil.closeQuietly(insertNotificationRecipients);
 					DBUtil.closeQuietly(insertOrderItemJunction);
-					DBUtil.closeQuietly(insertCatalog);				
+					DBUtil.closeQuietly(insertCatalog);
+					DBUtil.closeQuietly(testCall);	
 				}
 			}
 		});
@@ -403,6 +406,6 @@ class DerbyDatabase /*implements Database*/ {
 		System.out.println("Loading initial data...");
 		db.loadInitialData();
 		
-		System.out.println("Library DB successfully initialized!");
+		System.out.println("JKSOrders DB successfully initialized!");
 	}
 }

@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Mon Apr 15 13:44:32 EDT 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-2219-b859-000006a0f7f8 
-on database directory C:\JKSOrders-2019-LibraryExample-DB\library.db with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
-Loaded from file:/H:/CS320/Workspace/CS320_Derby/lib/derby.jar
+Mon Apr 15 20:50:15 EDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.10.2.0 - (1582446): instance a816c00e-016a-239f-77ec-00000e23f768 
+on database directory C:\JKSOrders-2019-LibraryExample-DB\library.db with class loader sun.misc.Launcher$AppClassLoader@2a139a55 
+Loaded from file:/C:/Users/josia/OneDrive/Documents/Documents/College%202018-2019/cs320/GitHub/JKSOrders/CS320_Derby/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_181-b13
-user.dir=H:\CS320\GitHub\JKSOrders\CS320_JKSOrders
+java.runtime.version=1.8.0_192-b12
+user.dir=C:\Users\josia\OneDrive\Documents\Documents\College 2018-2019\cs320\GitHub\JKSOrders\CS320_JKSOrders
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
