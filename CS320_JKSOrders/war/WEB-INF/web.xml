@@ -23,7 +23,11 @@
   <servlet>
     <servlet-name>EditNotificationServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.EditNotificationServlet</servlet-class>
-  </servlet> 
+  </servlet>
+   <servlet>
+    <servlet-name>CartPageServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CartPageServlet</servlet-class>
+  </servlet>  
   <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ProfilePageServlet</servlet-class>
@@ -95,7 +99,11 @@
    <servlet-mapping> 
     <servlet-name>EditNotificationServlet</servlet-name>
     <url-pattern>/editNotification</url-pattern>
-  </servlet-mapping>   
+  </servlet-mapping>
+  <servlet-mapping> 
+    <servlet-name>CartPageServlet</servlet-name>
+    <url-pattern>/cart</url-pattern>
+  </servlet-mapping>     
    <servlet-mapping> 
     <servlet-name>WorkPageServlet</servlet-name>
     <url-pattern>/workPage</url-pattern>

@@ -2,6 +2,7 @@ package edu.ycp.cs320.JKSOrders.classes;
 
 public class Item {
 	private String itemName;
+	private Integer numInInventory;
 	private String UPC;
 	private double price;
 	private String description;
@@ -92,6 +93,13 @@ public class Item {
 	 */
 	public void setVisable(boolean visable) {
 		this.visable = visable;
+	}
+	
+	public Integer getNumInInventory() {
+		return numInInventory;
+	}
+	public void setNumInInventory(Integer numInInventory) {
+		this.numInInventory = numInInventory;
 	}
 	
 	

@@ -7,7 +7,6 @@ import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
-import edu.ycp.cs320.JKSOrders.classes.Inventory;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
@@ -19,7 +18,6 @@ public class SystemController {
 	private ArrayList<LoginInfo> customerLogin;
 	private ArrayList<Account> employeeAccounts;
 	private ArrayList<Account> customerAccounts;
-	private Inventory inventory;
 	private Catalog catalog;
 	private ArrayList<Notification> notifications;
 	
@@ -27,7 +25,6 @@ public class SystemController {
 		employeeLogin = new ArrayList<LoginInfo>();
 		customerLogin = new ArrayList<LoginInfo>();
 		notifications = new ArrayList<Notification>();
-		inventory = new Inventory();
 		catalog = new Catalog();
 		employeeAccounts = new ArrayList<Account>();
 		customerAccounts = new ArrayList<Account>();
@@ -36,7 +33,7 @@ public class SystemController {
 		initializeCustomerAccountArrayList(customerAccounts);
 		initializeEmployeeLoginArrayList(employeeLogin);
 		initializeCustomerLoginArrayList(customerLogin);
-		initilizeCatalogInventory(catalog, inventory);
+		initilizeCatalog(catalog);
 	}
 	
 	/**
@@ -100,7 +97,7 @@ public class SystemController {
 	public void setVisability(int x) {
 		ArrayList<String> less = new ArrayList<String>();
 		ArrayList<String> more = new ArrayList<String>();
-		inventory.returnGreaterorLess(x, more, less);
+		catalog.returnGreaterorLess(x, more, less);
 		for(int i = 0; i<more.size(); i++) {
 			catalog.getItem(more.get(i)).setVisable(true);
 		}
@@ -207,7 +204,7 @@ public class SystemController {
 		return "Account was not found";
 	}
 	
-	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
+	private void initilizeCatalog(Catalog catalog) {
 		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
 		for(int i = 0; i<itemNames.length; i++) {
 			Item item = new Item();
@@ -217,7 +214,7 @@ public class SystemController {
 			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
 			item.setLocation("A"+i+"B"+(5-1));
 			catalog.setItemKey(item);
-			inventory.setItemQuantity(item.getUPC(), i);
+			item.setNumInInventory(i);
 		}
 		
 		this.setVisability(2);

@@ -45,7 +45,7 @@ public class CheckOutServlet extends HttpServlet {
 			Account account = db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
-
+		}
 
 		// create model - model does not persist between requests
 		// must recreate it each time a Post comes in
@@ -61,6 +61,7 @@ public class CheckOutServlet extends HttpServlet {
 		// Forward to view to render the result HTML document
 		if (req.getParameter("thankYou") != null) {
 			req.getRequestDispatcher("/_view/thankYou.jsp").forward(req, resp);
+		
 		} else if (req.getParameter("cancel") != null) {
 			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: " + items.get(0).getDescription());
@@ -68,6 +69,9 @@ public class CheckOutServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			req.setAttribute("model", model);
 		}
+		else if (req.getParameter("cart") != null) {
+			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+		}
+		
 	}
-}
 }

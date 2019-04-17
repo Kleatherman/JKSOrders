@@ -12,7 +12,6 @@ import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
-import edu.ycp.cs320.JKSOrders.classes.Inventory;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
@@ -183,7 +182,7 @@ public class InitialData {
 	
 	//this was done as a controller method 
 	
-	public static void getInitialCatalog(Catalog catalog, Inventory inventory) throws IOException {
+	public static void getInitialCatalog(Catalog catalog) throws IOException {
 		List<Item> itemList = new ArrayList<Item>();
 		ReadCSV readItems = new ReadCSV("Catalog.csv");
 		try {
@@ -199,9 +198,9 @@ public class InitialData {
 				item.setItemName(i.next());
 				item.setPrice(Float.parseFloat(i.next()));
 				item.setLocation(i.next());
-				Integer quantity= Integer.parseInt(i.next());
+				item.setNumInInventory(Integer.parseInt(i.next()));
 				
-				inventory.setItemQuantity(item.getUPC(), quantity);
+				
 				catalog.setItem(item);
 				
 				itemList.add(item);
