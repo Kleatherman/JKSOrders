@@ -140,8 +140,7 @@ public class InitialData {
 		ReadCSV readOrders = new ReadCSV("Orders.csv");
 		ReadCSV readJunc= new ReadCSV("OrderItemJunction.csv");
 		Catalog catalog = new Catalog();
-		Inventory inven = new Inventory();
-		 getInitialCatalog(catalog,inven);
+		 getInitialCatalog(catalog);
 		try {
 			
 			while (true) {
