@@ -128,7 +128,7 @@ class DerbyDatabase /*implements Database*/ {
 					
 					stmt3 = conn.prepareStatement(
 							"create table customers (" +
-							"	curtomer_id varchar(5) primary key, " +
+							"	customer_id varchar(5) primary key, " +
 							"	first_name varchar(50)," +
 							"	last_name varchar(50)," +
 							"	email varchar(50)," +
@@ -146,7 +146,7 @@ class DerbyDatabase /*implements Database*/ {
 							"	first_name varchar(50)," +
 							"	last_name varchar(50)," +
 							"	email varchar(50)," +
-							"	phoneNumber integer" +
+							"	phoneNumber varchar(20)" +
 							")"
 					);
 					stmt4.executeUpdate();
@@ -208,7 +208,7 @@ class DerbyDatabase /*implements Database*/ {
 					stmt9 = conn.prepareStatement(
 							"create table orderItemJunction (" +
 							"	order_id varchar(5) constraint order_id references orders," +
-							"	item_id varchar(5) constraint item_id references catalog," +
+							"	item_id varchar(5)," +
 							"	quantity integer" +
 							")"
 					);
@@ -265,22 +265,11 @@ class DerbyDatabase /*implements Database*/ {
 				PreparedStatement insertNotificationRecipients	= null;
 				PreparedStatement insertOrderItemJunction		= null;
 				PreparedStatement insertCatalog					= null;
+				PreparedStatement testCall						= null;
 				
 				try {
 					// must completely populate Authors table before populating BookAuthors table because of primary keys
-					insertCar = conn.prepareStatement("insert into cars (cars_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
-					for (Car car : carsList) {
-//						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
-						insertCar.setString(1, car.getOwner());
-						insertCar.setString(2, car.getColor());
-						insertCar.setString(3, car.getBrand());
-						insertCar.setString(4, car.getType());
-						insertCar.setInt(5, car.getYear());
-						insertCar.addBatch();
-					}
-					insertCar.executeBatch();
 					
-					System.out.println("Cars table populated");
 					
 					// must completely populate Books table before populating BookAuthors table because of primary keys
 					insertCustomer = conn.prepareStatement("insert into customers (customer_id, first_name, last_name, email, phoneNumber, creditCard_id) values (?, ?, ?, ?, ?, ?)");
@@ -289,8 +278,8 @@ class DerbyDatabase /*implements Database*/ {
 						insertCustomer.setString(2, customer.getFirstName());
 						insertCustomer.setString(3, customer.getLastName());
 						insertCustomer.setString(4, customer.getEmail());
-						insertCustomer.setString(6, customer.getPhoneNumber());
-						insertCustomer.setString(7, customer.getCreditCard().getAccountNumber());
+						insertCustomer.setString(5, customer.getPhoneNumber());
+						insertCustomer.setString(6, customer.getCreditCard().getAccountNumber());
 						insertCustomer.addBatch();
 					}
 					insertCustomer.executeBatch();
@@ -305,12 +294,26 @@ class DerbyDatabase /*implements Database*/ {
 						insertEmployee.setString(2, employee.getFirstName());
 						insertEmployee.setString(3, employee.getLastName());
 						insertEmployee.setString(4, employee.getEmail());
-						insertEmployee.setString(6, employee.getPhoneNumber());
+						insertEmployee.setString(5, employee.getPhoneNumber());
 						insertEmployee.addBatch();
 					}
 					insertEmployee.executeBatch();	
 					
-					System.out.println("Employees table populated");					
+					System.out.println("Employees table populated");	
+					
+					insertCar = conn.prepareStatement("insert into cars (customer_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
+					for (Car car : carsList) {
+//						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
+						insertCar.setString(1, car.getOwner());
+						insertCar.setString(2, car.getColor());
+						insertCar.setString(3, car.getBrand());
+						insertCar.setString(4, car.getType());
+						insertCar.setInt(5, car.getYear());
+						insertCar.addBatch();
+					}
+					insertCar.executeBatch();
+					
+					System.out.println("Cars table populated");
 					
 					insertLoginInfo = conn.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
 					for (LoginInfo login : loginInfoList) {
@@ -368,6 +371,7 @@ class DerbyDatabase /*implements Database*/ {
 					insertOrderItemJunction.executeBatch();	
 					
 					System.out.println("OrderItemJunction table populated");
+					
 					/*
 					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?)");
 					Catalog catalog = new Catalog();
@@ -385,7 +389,8 @@ class DerbyDatabase /*implements Database*/ {
 					DBUtil.closeQuietly(insertOrder);
 					DBUtil.closeQuietly(insertNotificationRecipients);
 					DBUtil.closeQuietly(insertOrderItemJunction);
-					DBUtil.closeQuietly(insertCatalog);				
+					DBUtil.closeQuietly(insertCatalog);
+					DBUtil.closeQuietly(testCall);	
 				}
 			}
 		});
@@ -400,6 +405,6 @@ class DerbyDatabase /*implements Database*/ {
 		System.out.println("Loading initial data...");
 		db.loadInitialData();
 		
-		System.out.println("Library DB successfully initialized!");
+		System.out.println("JKSOrders DB successfully initialized!");
 	}
 }

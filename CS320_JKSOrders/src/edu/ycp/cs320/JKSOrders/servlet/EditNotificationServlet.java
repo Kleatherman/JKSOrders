@@ -29,7 +29,7 @@ public class EditNotificationServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("Edit Notification Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getParameter("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
