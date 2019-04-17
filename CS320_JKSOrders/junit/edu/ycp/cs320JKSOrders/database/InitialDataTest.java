@@ -11,7 +11,6 @@ import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
-import edu.ycp.cs320.JKSOrders.classes.Inventory;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
@@ -27,20 +26,19 @@ public class InitialDataTest {
 	List<Order>order;
 	List<Notification>note;
 	Catalog catalog;
-	Inventory inventory;
+	
 	
 	@Before
 	public void setUp() {
 		try {
 			catalog= new Catalog();
-			inventory= new Inventory();
 			car = InitialData.getInitialCars() ;
 			eaccount= InitialData.getInitialEmployeeAccounts();
 			caccount= InitialData.getInitialCustomerAccounts();
 			login=InitialData.getInitialLoginInfo();
 			order= InitialData.getInitialOrders();
 			note=InitialData.getInitialNotifications();
-			InitialData.getInitialCatalog(catalog, inventory);
+			InitialData.getInitialCatalog(catalog);
 			} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -107,14 +105,7 @@ public class InitialDataTest {
 		}
 	}
 	
-	@Test
-	public void testInventory() {
-		System.out.println(inventory.getItemQuantity("I0"));
-		if(inventory.getItemQuantity("I0").equals(5)) {
-			assert true;
-		}
-		
-	}
+
 
 	
 	
