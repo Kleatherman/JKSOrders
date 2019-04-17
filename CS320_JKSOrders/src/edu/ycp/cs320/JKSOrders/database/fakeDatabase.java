@@ -7,7 +7,6 @@ import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
-import edu.ycp.cs320.JKSOrders.classes.Inventory;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
@@ -18,7 +17,6 @@ public class fakeDatabase implements Database{
 	private ArrayList<LoginInfo> customerLogin;
 	private ArrayList<EmployeeAccount> employeeAccounts;
 	private ArrayList<LoginInfo> employeeLogin;
-	private Inventory inventory;
 	private ArrayList<Notification> notifications;
 	
 	public fakeDatabase() {
@@ -31,8 +29,7 @@ public class fakeDatabase implements Database{
 	@Override
 	public Catalog getCatalog() {
 		catalog = new Catalog();
-		inventory = new Inventory();
-		initilizeCatalogInventory(catalog, inventory);
+		initilizeCatalog(catalog);
 		return catalog;
 	}
 
@@ -79,13 +76,6 @@ public class fakeDatabase implements Database{
 	/* (non-Javadoc)
 	 * @see edu.ycp.cs320.JKSOrders.database.database#getInventory()
 	 */
-	@Override
-	public Inventory getInventory() {
-		catalog = new Catalog();
-		inventory = new Inventory();
-		initilizeCatalogInventory(catalog, inventory);
-		return inventory;
-	}
 
 	/* (non-Javadoc)
 	 * @see edu.ycp.cs320.JKSOrders.database.database#getNotifications()
@@ -166,7 +156,7 @@ public class fakeDatabase implements Database{
 		}
 	}
 	
-	private void initilizeCatalogInventory(Catalog catalog, Inventory inventory) {
+	private void initilizeCatalog(Catalog catalog){
 		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
 		for(int i = 0; i<itemNames.length; i++) {
 			Item item = new Item();
@@ -176,7 +166,7 @@ public class fakeDatabase implements Database{
 			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
 			item.setLocation("A"+i+"B"+(5-1));
 			catalog.setItemKey(item);
-			inventory.setItemQuantity(item.getUPC(), i);
+			item.setNumInInventory(i);
 		}
 		
 		this.setVisibility(2);
@@ -185,8 +175,8 @@ public class fakeDatabase implements Database{
 	@Override
 	public ArrayList<Item> getVisibleItems() {
 		catalog = new Catalog();
-		inventory = new Inventory();
-		initilizeCatalogInventory(catalog, inventory);
+	
+		initilizeCatalog(catalog);
 		ArrayList<Item> visibleItems = new ArrayList<Item>();
 		Iterator<String> i = catalog.getItemMap().keySet().iterator();
 		while(i.hasNext()) {
@@ -203,7 +193,7 @@ public class fakeDatabase implements Database{
 	public void setVisibility(int x) {
 		ArrayList<String> less = new ArrayList<String>();
 		ArrayList<String> more = new ArrayList<String>();
-		inventory.returnGreaterorLess(x, more, less);
+		catalog.returnGreaterorLess(x, more, less);
 		for(int i = 0; i<more.size(); i++) {
 			catalog.getItem(more.get(i)).setVisable(true);
 		}
