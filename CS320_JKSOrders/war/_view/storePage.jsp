@@ -12,7 +12,7 @@
       </h1>
 
     <c:forEach items="${items}" var="item">
-
+		
         <div class="row">
             <div class="col-md-7">
                 <a href="#">
@@ -23,32 +23,36 @@
                 <h3>${item.itemName}</h3>
                 <p>${item.description}</p>
                 <a class="btn btn-primary" href="#">AddToCart</a>
+                 ${item.price}
+          		<input name="${item.itemName}" type="number" />
+       			
+       			<p><br /><br /></p>
+       			
             </div>
 
-            <td>${item.price}</td>
-            <td>
-                <input name="${item.itemName}" type="number" />
-            </td>
-           
-            </tr>
+        
+       		</div>
+  
     </c:forEach>
-    </hr>
+ 	
+	
     
     <ul class="pagination justify-content-center">
  
-            <div>
+       
+				
             	<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name="checkOut" > CheckOut! </button>
+            	&nbsp;&nbsp;&nbsp;&nbsp;
             	<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name="profilePage"> Profile Page! </button>
+            	&nbsp;&nbsp;&nbsp;&nbsp;
                 <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name="logOut"> LogOut </button>
-           		<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name="logOut"> LogOut </button>
-                <input name="cart" type="submit" value="My Cart" />
+                &nbsp;&nbsp;&nbsp;&nbsp;
+           		<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name="cart"> My Cart! </button>
+           
                 <input name="accountNumber" type="hidden" value="${accountNumber}" />
 
                 
-        </li>
-    </ul>
 
-    </div>
     <!-- /.container -->
 
     </html>
