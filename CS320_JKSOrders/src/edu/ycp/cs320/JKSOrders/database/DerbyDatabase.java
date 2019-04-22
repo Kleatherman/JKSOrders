@@ -449,10 +449,10 @@ class DerbyDatabase implements Database {
 					
 					// check if any authors were found
 					if (!found) {
-						System.out.println("No employees were found in the database");
+						System.out.println("No customers were found in the database");
 					}
 					else
-						System.out.println("We got all employees");
+						System.out.println("We got all customers");
 					return result;
 				} finally {
 					DBUtil.closeQuietly(resultSet);
@@ -464,8 +464,50 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<CustomerAccount> getCustomerAccounts() {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ArrayList<CustomerAccount>>() {
+			@Override
+			public ArrayList<CustomerAccount> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from employees " +
+							" order by last_name asc, first_name asc"
+					);
+					
+					ArrayList<CustomerAccount> result = new ArrayList<CustomerAccount>();
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						CustomerAccount customer = new CustomerAccount();
+						customer.setAccountNumber(resultSet.getString(1));
+						customer.setFirstName(resultSet.getString(2));
+						customer.setLastName(resultSet.getString(3));
+						customer.setEmail(resultSet.getString(4));
+						customer.setPhoneNumber(resultSet.getString(5));
+						customer.getCreditCard().setCVC(resultSet.getString(6));
+						result.add(customer);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No employees were found in the database");
+					}
+					else
+						System.out.println("We got all employees");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
