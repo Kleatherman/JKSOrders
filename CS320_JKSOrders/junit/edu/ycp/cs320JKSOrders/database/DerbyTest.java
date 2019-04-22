@@ -8,13 +8,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
+import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDerbyDatabase;
 
 public class DerbyTest {
 	Database db;
-	ArrayList list;
+	ArrayList<EmployeeAccount> Elist;
+	ArrayList<CustomerAccount> Clist;
+	ArrayList<LoginInfo> Llist;
+	ArrayList<Notification> Nlist;
 	
 	@Before
 	public void setUp() {
@@ -23,24 +29,32 @@ public class DerbyTest {
 	}
 	@Test 
 	public void testGetEmployeeAccounts() {
-		list= db.getEmployeeAccounts();
-		assertTrue(list.size()==3);
-		assertTrue(((Account) list.get(0)).getAccountNumber().equals("M0"));
+		Elist= db.getEmployeeAccounts();
+		assertTrue(Elist.size()==3);
+		assertTrue( Elist.get(0).getAccountNumber().equals("M0"));
 	}
 	@Test 
 	public void testGetCustomersAccounts() {
-		list= db.getCustomerAccounts();
-		assertTrue(list.size()==3);
-		assertTrue(((Account) list.get(0)).getAccountNumber().equals("C0"));
+		Clist= db.getCustomerAccounts();
+		assertTrue(Clist.size()==3);
+		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
 	}
 	@Test
 	public void testGetCustomerLogin() {
-		list= db.getCustomerLoginInfo();
-		assertTrue(list.size()==3);
-		assertTrue(list.get(0).);
+		Llist= db.getCustomerLoginInfo();
+		assertTrue(Llist.size()==3);
+		assertTrue( Llist.get(0).getPassword().equals("password"));
 	}
 	@Test
 	public void testGetEmployeeLogin() {
-		
+		Llist= db.getEmployeeLoginInfo();
+		assertTrue(Llist.size()==3);
+		assertTrue( Llist.get(0).getPassword().equals("password"));
+	}
+	@Test
+	public void testGetNotifications() {
+		Nlist = db.getNotifications();
+		assertTrue(Nlist.size()==4);
+		assertTrue(Nlist.get(0).getNotificationID().equals("U0"));
 	}
 }
