@@ -33,7 +33,6 @@ public class SystemController {
 		initializeCustomerAccountArrayList(customerAccounts);
 		initializeEmployeeLoginArrayList(employeeLogin);
 		initializeCustomerLoginArrayList(customerLogin);
-		initilizeCatalog(catalog);
 	}
 	
 	/**
@@ -173,18 +172,6 @@ public class SystemController {
 		}
 	}
 	
-	public ArrayList<Item> getVisibleItems() {
-		ArrayList<Item> visibleItems = new ArrayList<Item>();
-		Iterator<String> i = catalog.getItemMap().keySet().iterator();
-		while(i.hasNext()) {
-			Item item = catalog.getItem(i.next());
-			if(item.isVisable()) {
-				visibleItems.add(item);
-			}
-		}
-		return visibleItems;
-	}
-	
 	public String getPasswordForCustomerAccount(Account account) {
 		for(Account cAccount : customerAccounts ) {
 			if(cAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
@@ -203,23 +190,7 @@ public class SystemController {
 		
 		return "Account was not found";
 	}
-	
-	private void initilizeCatalog(Catalog catalog) {
-		String[] itemNames = {"Tomatoes", "Apples", "Oranges", "Pecans", "Pumkins"};
-		for(int i = 0; i<itemNames.length; i++) {
-			Item item = new Item();
-			item.setItemName(itemNames[i]);
-			item.setUPC(itemNames[i]+i);
-			item.setPrice(11.1*i);
-			item.setDescription(itemNames[i]+" are one of many delicious options we offer. They are only $"+item.getPrice()+".");
-			item.setLocation("A"+i+"B"+(5-1));
-			catalog.setItemKey(item);
-			item.setNumInInventory(i);
-		}
 		
-		this.setVisability(2);
-	}
-	
 	public Account getEmployeeAccount(String name) {
 		Iterator<Account> i = employeeAccounts.iterator();
 		while(i.hasNext()) {
