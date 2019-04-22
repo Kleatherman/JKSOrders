@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
@@ -17,8 +18,9 @@ import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.classes.Order;
+import edu.ycp.cs320.JKSOrders.classes.Pair;
 
-class DerbyDatabase /*implements Database*/ {
+class DerbyDatabase implements Database {
 	static {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -412,5 +414,384 @@ class DerbyDatabase /*implements Database*/ {
 		db.loadInitialData();
 		
 		System.out.println("JKSOrders DB successfully initialized!");
+	}
+
+	@Override
+	public ArrayList<EmployeeAccount> getEmployeeAccounts() {
+		return executeTransaction(new Transaction<ArrayList<EmployeeAccount>>() {
+			@Override
+			public ArrayList<EmployeeAccount> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from employees " +
+							" order by last_name asc, first_name asc"
+					);
+					
+					ArrayList<EmployeeAccount> result = new ArrayList<EmployeeAccount>();
+					ArrayList<LoginInfo> logins = getEmployeeLoginInfo();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						EmployeeAccount employee = new EmployeeAccount();
+						employee.setAccountNumber(resultSet.getString(1));
+						employee.setFirstName(resultSet.getString(2));
+						employee.setLastName(resultSet.getString(3));
+						employee.setEmail(resultSet.getString(4));
+						employee.setPhoneNumber(resultSet.getString(5));
+						
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(employee.getAccountNumber())) {
+								employee.setLogin(login);
+							}
+						}
+						result.add(employee);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No customers were found in the database");
+					}
+					else
+						System.out.println("We got all customers");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<CustomerAccount> getCustomerAccounts() {
+		return executeTransaction(new Transaction<ArrayList<CustomerAccount>>() {
+			@Override
+			public ArrayList<CustomerAccount> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from customers " +
+							" order by last_name asc, first_name asc"
+					);
+					
+					ArrayList<CustomerAccount> result = new ArrayList<CustomerAccount>();
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					ArrayList<LoginInfo> logins = getCustomerLoginInfo();
+					while (resultSet.next()) {
+						found = true;
+						CustomerAccount customer = new CustomerAccount();
+						customer.setAccountNumber(resultSet.getString(1));
+						customer.setFirstName(resultSet.getString(2));
+						customer.setLastName(resultSet.getString(3));
+						customer.setEmail(resultSet.getString(4));
+						customer.setPhoneNumber(resultSet.getString(5));
+						customer.getCreditCard().setCVC(resultSet.getString(6));
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(customer.getAccountNumber())) {
+								customer.setLogin(login);
+							}
+						}
+						result.add(customer);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No employees were found in the database");
+					}
+					else
+						System.out.println("We got all employees");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<LoginInfo> getEmployeeLoginInfo() {
+		return executeTransaction(new Transaction<ArrayList<LoginInfo>>() {
+			@Override
+			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from login " +
+							" order by user_id asc"
+					);
+					
+					ArrayList<LoginInfo> result = new ArrayList<LoginInfo>();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						LoginInfo login = new LoginInfo();
+						login.setOwnerAccount(resultSet.getString(1));
+						login.setUserName(resultSet.getString(2));
+						login.setPassword(resultSet.getString(3));
+						char[] user_id = login.getOwnerAccount().toCharArray();
+						if(user_id[0]=='C') {
+						}
+						else
+							result.add(login);
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No employee LoginInfo were found in the database");
+					}
+					else
+						System.out.println("We got all employee LoginInfo");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<LoginInfo> getCustomerLoginInfo() {
+		return executeTransaction(new Transaction<ArrayList<LoginInfo>>() {
+			@Override
+			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from login " +
+							" order by user_id asc"
+					);
+					
+					ArrayList<LoginInfo> customer = new ArrayList<LoginInfo>();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						LoginInfo login = new LoginInfo();
+						login.setOwnerAccount(resultSet.getString(1));
+						login.setUserName(resultSet.getString(2));
+						login.setPassword(resultSet.getString(3));
+						char[] user_id = login.getOwnerAccount().toCharArray();
+						if(user_id[0]=='C') {
+							customer.add(login);
+						}
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No customer LoginInfo were found in the database");
+					}
+					else
+						System.out.println("We got all customer LoginInfo");
+					return customer;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public Catalog getCatalog() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Notification> getNotifications() {
+		return executeTransaction(new Transaction<ArrayList<Notification>>() {
+			@Override
+			public ArrayList<Notification> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				PreparedStatement stmt2 = null;
+				ResultSet resultSet2 = null;
+				try {
+					stmt = conn.prepareStatement(
+							"select * from notifications " +
+							" order by notification_id"
+					);
+					
+					ArrayList<Notification> result = new ArrayList<Notification>();
+					resultSet = stmt.executeQuery();
+					
+					stmt2 = conn.prepareStatement(
+							"select * from notificationRecipients " +
+							" order by notification_id"
+					);
+					
+					resultSet2 = stmt2.executeQuery();
+					// for testing that a result was returned
+					Boolean found = false;
+					ArrayList<Pair<String, String>> junction = new ArrayList<Pair<String, String>>();
+					while (resultSet2.next()) {
+						Pair<String, String> pair = new Pair<String, String>();
+						pair.setLeft(resultSet.getString(1));
+						pair.setRight(resultSet.getString(2));
+						junction.add(pair);
+					}
+					
+					while (resultSet.next()) {
+						found = true;
+						Notification notify = new Notification();
+						notify.setNotificationID(resultSet.getString(1));
+						notify.setSourceAccountNumber(resultSet.getString(2));
+						notify.setMessage(resultSet.getString(3));
+						for(Pair<String, String> pair : junction) {
+							if(notify.getNotificationID().equals(pair.getLeft())) {
+								notify.addDestinationName(pair.getRight());
+							}
+						}
+						result.add(notify);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No Notifications were found in the database");
+					}
+					else
+						System.out.println("We got all Notification");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet2);
+					DBUtil.closeQuietly(stmt2);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<Item> getVisibleItems() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setVisibility(int x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addNotification(Notification notify) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Notification> getNotifications(String accountNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Notification getNotification(String notificationID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Notification> getSourceNotifications(String accountNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPasswordForCustomerAccount(Account account) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPasswordForEmployeeAccount(Account account) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EmployeeAccount getEmployeeAccount(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerAccount getCustomerAccount(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addEmployeeAccount(EmployeeAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addCustomerAccount(CustomerAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Account getAccount(String accountNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLastCustomerAccountNumber() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLastEmployeeAccountNumber() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteNotification(String notification_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<String> AllEmployeeNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateNotification(Notification notify) {
+		// TODO Auto-generated method stub
+		
 	}
 }
