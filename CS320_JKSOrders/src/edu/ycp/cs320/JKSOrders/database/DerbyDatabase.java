@@ -641,7 +641,7 @@ class DerbyDatabase implements Database {
 					resultSet = stmt.executeQuery();
 					
 					stmt2 = conn.prepareStatement(
-							"select * from notificationsRecipients " +
+							"select * from notificationRecipients " +
 							" order by notification_id"
 					);
 					
@@ -672,10 +672,10 @@ class DerbyDatabase implements Database {
 					
 					// check if any authors were found
 					if (!found) {
-						System.out.println("No customers were found in the database");
+						System.out.println("No Notifications were found in the database");
 					}
 					else
-						System.out.println("We got all customers");
+						System.out.println("We got all Notification");
 					return result;
 				} finally {
 					DBUtil.closeQuietly(resultSet);
