@@ -18,6 +18,7 @@ import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.classes.Order;
+import edu.ycp.cs320.JKSOrders.classes.Pair;
 
 class DerbyDatabase implements Database {
 	static {
@@ -622,8 +623,68 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<Notification> getNotifications() {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ArrayList<Notification>>() {
+			@Override
+			public ArrayList<Notification> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				PreparedStatement stmt2 = null;
+				ResultSet resultSet2 = null;
+				try {
+					stmt = conn.prepareStatement(
+							"select * from notifications " +
+							" order by notification_id"
+					);
+					
+					ArrayList<Notification> result = new ArrayList<Notification>();
+					resultSet = stmt.executeQuery();
+					
+					stmt2 = conn.prepareStatement(
+							"select * from notificationsRecipients " +
+							" order by notification_id"
+					);
+					
+					resultSet2 = stmt2.executeQuery();
+					// for testing that a result was returned
+					Boolean found = false;
+					ArrayList<Pair<String, String>> junction = new ArrayList<Pair<String, String>>();
+					while (resultSet2.next()) {
+						Pair<String, String> pair = new Pair<String, String>();
+						pair.setLeft(resultSet.getString(1));
+						pair.setRight(resultSet.getString(2));
+						junction.add(pair);
+					}
+					
+					while (resultSet.next()) {
+						found = true;
+						Notification notify = new Notification();
+						notify.setNotificationID(resultSet.getString(1));
+						notify.setSourceAccountNumber(resultSet.getString(2));
+						notify.setMessage(resultSet.getString(3));
+						for(Pair<String, String> pair : junction) {
+							if(notify.getNotificationID().equals(pair.getLeft())) {
+								notify.addDestinationName(pair.getRight());
+							}
+						}
+						result.add(notify);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No customers were found in the database");
+					}
+					else
+						System.out.println("We got all customers");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet2);
+					DBUtil.closeQuietly(stmt2);
+				}
+			}
+		});
 	}
 
 	@Override
