@@ -430,7 +430,7 @@ class DerbyDatabase implements Database {
 					);
 					
 					ArrayList<EmployeeAccount> result = new ArrayList<EmployeeAccount>();
-					
+					ArrayList<LoginInfo> logins = getEmployeeLoginInfo();
 					resultSet = stmt.executeQuery();
 					
 					// for testing that a result was returned
@@ -444,6 +444,12 @@ class DerbyDatabase implements Database {
 						employee.setLastName(resultSet.getString(3));
 						employee.setEmail(resultSet.getString(4));
 						employee.setPhoneNumber(resultSet.getString(5));
+						
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(employee.getAccountNumber())) {
+								employee.setLogin(login);
+							}
+						}
 						result.add(employee);
 					}
 					
@@ -482,7 +488,7 @@ class DerbyDatabase implements Database {
 					
 					// for testing that a result was returned
 					Boolean found = false;
-					
+					ArrayList<LoginInfo> logins = getCustomerLoginInfo();
 					while (resultSet.next()) {
 						found = true;
 						CustomerAccount customer = new CustomerAccount();
@@ -492,6 +498,11 @@ class DerbyDatabase implements Database {
 						customer.setEmail(resultSet.getString(4));
 						customer.setPhoneNumber(resultSet.getString(5));
 						customer.getCreditCard().setCVC(resultSet.getString(6));
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(customer.getAccountNumber())) {
+								customer.setLogin(login);
+							}
+						}
 						result.add(customer);
 					}
 					
