@@ -24,7 +24,7 @@
                 <p>${item.description}</p>
                 <a class="btn btn-primary" type="submit" name="logOut" href="#">Add To Cart</a>
                  ${item.price}
-          		<input name="${item.itemName}" type="number" min="0" max="300" />
+          		<input name="${item.itemName}" type="number" min="0" max="${item.numInInventory}" />
        			
        			<p><br /><br /></p>
        			
