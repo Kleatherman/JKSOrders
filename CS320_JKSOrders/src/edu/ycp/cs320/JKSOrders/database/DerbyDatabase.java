@@ -243,7 +243,8 @@ class DerbyDatabase /*implements Database*/ {
 				List<LoginInfo> loginInfoList;
 				List<Notification> notificationsList;
 				List<Order> ordersList;
-				
+				List<Item> itemsList;
+				Catalog catalog = new Catalog();
 				try {
 /*1*/				carsList			= InitialData.getInitialCars();
 /*2*/				customersList		= InitialData.getInitialCustomerAccounts();
@@ -251,6 +252,8 @@ class DerbyDatabase /*implements Database*/ {
 /*4*/				loginInfoList 		= InitialData.getInitialLoginInfo();
 /*5*/				notificationsList 	= InitialData.getInitialNotifications();
 /*6*/				ordersList			= InitialData.getInitialOrders();
+					InitialData.getInitialCatalog(catalog);
+					itemsList			= catalog.returnItemList();
 
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
@@ -265,7 +268,6 @@ class DerbyDatabase /*implements Database*/ {
 				PreparedStatement insertNotificationRecipients	= null;
 				PreparedStatement insertOrderItemJunction		= null;
 				PreparedStatement insertCatalog					= null;
-				PreparedStatement testCall						= null;
 				
 				try {
 					// must completely populate Authors table before populating BookAuthors table because of primary keys
@@ -372,13 +374,18 @@ class DerbyDatabase /*implements Database*/ {
 					
 					System.out.println("OrderItemJunction table populated");
 					
-					/*
+					
 					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?)");
-					Catalog catalog = new Catalog();
-					Inventory inventory = new Inventory();
-					edu.ycp.cs320.JKSOrders.database.InitialData.getInitialCatalog(catalog, inventory);
-					for(Item item : )
-					*/
+					for(Item item : itemsList) {
+						insertCatalog.setString(1, item.getUPC());
+						insertCatalog.setString(2, item.getItemName());
+						insertCatalog.setFloat(3, (float)item.getPrice());
+						insertCatalog.setString(4, item.getLocation());
+						insertCatalog.setInt(5, item.getNumInInventory());
+						insertCatalog.setBoolean(6, item.isVisable());
+					}
+
+					System.out.println("Catalog table populated");
 					return true;
 				} finally {
 					DBUtil.closeQuietly(insertCar);
@@ -390,7 +397,6 @@ class DerbyDatabase /*implements Database*/ {
 					DBUtil.closeQuietly(insertNotificationRecipients);
 					DBUtil.closeQuietly(insertOrderItemJunction);
 					DBUtil.closeQuietly(insertCatalog);
-					DBUtil.closeQuietly(testCall);	
 				}
 			}
 		});
