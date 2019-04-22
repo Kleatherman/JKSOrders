@@ -55,6 +55,6 @@ public class DerbyTest {
 	public void testGetNotifications() {
 		Nlist = db.getNotifications();
 		assertTrue(Nlist.size()==4);
-		assertTrue(Nlist.get(0).getNotificationID().equals("U0"));
+		assertTrue(Nlist.get(0).getNotificationID().equals("N0"));
 	}
 }
