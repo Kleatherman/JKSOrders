@@ -472,7 +472,7 @@ class DerbyDatabase implements Database {
 				
 				try {
 					stmt = conn.prepareStatement(
-							"select * from employees " +
+							"select * from customers " +
 							" order by last_name asc, first_name asc"
 					);
 					
@@ -512,7 +512,6 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<LoginInfo> getEmployeeLoginInfo() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
