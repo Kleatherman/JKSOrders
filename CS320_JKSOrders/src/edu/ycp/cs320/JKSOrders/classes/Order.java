@@ -8,7 +8,6 @@ public class Order {
 	private ArrayList<Item> Itemlist;
 	private double totalPrice;
 	private Map<String, Integer> QuantityMap;
-	private boolean pickupOrder;
 	private Account account;
 	private String orderType;
 	private String accountNum;
@@ -54,18 +53,7 @@ public class Order {
 	public void setQuantityMap(Map<String, Integer> quantityMap) {
 		QuantityMap = quantityMap;
 	}
-	/**
-	 * @return whether the order is a pickup order or an inventory order t/f
-	 */
-	public boolean isPickupOrder() {
-		return pickupOrder;
-	}
-	/**
-	 * @param pickupOrder sets whether item is a pickup order or inventory order
-	 */
-	public void setPickupOrder(boolean pickupOrder) {
-		this.pickupOrder = pickupOrder;
-	}
+	
 	/**
 	 * @return returns pickup info for order
 	 */
@@ -91,6 +79,9 @@ public class Order {
 	public void setAccountNum(String accountNum) {
 		this.accountNum = accountNum;
 	}
-	
+	public void addItem(Item item, int quantity) {
+		Itemlist.add(item);
+		QuantityMap.put(item.getUPC(), quantity);
+	}
 	
 }

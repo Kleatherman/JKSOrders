@@ -351,7 +351,7 @@ public class fakeDatabase implements Database{
 		customerAccounts = new ArrayList<CustomerAccount>();
 		initializeCustomerAccountArrayList(customerAccounts);
 		
-		return customerAccounts.get(customerAccounts.size()-1).getAccountNumber() ;
+		return customerAccounts.get(customerAccounts.size()-1).getAccountNumber();
 		
 		
 	}
@@ -361,7 +361,7 @@ public class fakeDatabase implements Database{
 		
 		employeeAccounts = new ArrayList<EmployeeAccount>();
 		initializeEmployeeAccountArrayList(employeeAccounts);
-		return employeeAccounts.get(employeeAccounts.size()-1).getAccountNumber() ;
+	return employeeAccounts.get(employeeAccounts.size()-1).getAccountNumber() ;
 		
 	}
 	
