@@ -85,7 +85,7 @@ public class CustomerLoginServlet extends HttpServlet {
 			}
 			else if (req.getParameter("submit")!=null) {
 				CustomerAccount account = (CustomerAccount) db.getAccount(model.getUserName());
-				ArrayList<Item> items = system.getVisibleItems();
+				ArrayList<Item> items = db.getVisibleItems();
 				req.setAttribute("accountNumber", account.getAccountNumber());
 				System.out.println("StorePage: "+ items.get(0).getDescription());
 				req.setAttribute("items", items);

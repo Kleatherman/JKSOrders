@@ -198,7 +198,11 @@ public class InitialData {
 				item.setPrice(Float.parseFloat(i.next()));
 				item.setLocation(i.next());
 				item.setNumInInventory(Integer.parseInt(i.next()));
-				
+				if(Integer.parseInt(i.next())==1) {
+					item.setVisable(true);
+				}
+				else
+					item.setVisable(false);
 				
 				catalog.setItem(item);
 				

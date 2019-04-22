@@ -61,7 +61,14 @@ public class Catalog {
 			else
 				greater.add(item.getUPC());
 		}
-
-}
+	}
+	
+	public ArrayList<Item> returnItemList(){
+		ArrayList<Item> itemList = new ArrayList<Item>();
+		for(String item : ItemMap.keySet()) {
+			itemList.add(ItemMap.get(item));
+		}
+		return itemList;
+	}
 
 }
