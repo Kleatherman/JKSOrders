@@ -13,62 +13,113 @@ import edu.ycp.cs320.JKSOrders.classes.Notification;
 public interface Database {
 
 	/**
-	 * @return
+	 * @return All Employee Accounts
 	 */
 	public ArrayList<EmployeeAccount> getEmployeeAccounts();
 	
 	/**
-	 * @return
+	 * @return All customer accounts
 	 */
 	public ArrayList<CustomerAccount> getCustomerAccounts();
 	
 	/**
-	 * @return
+	 * @return All Employee Login Info
 	 */
 	public ArrayList<LoginInfo> getEmployeeLoginInfo();
 	
 	/**
-	 * @return
+	 * @return All Customer Login Info
 	 */
 	public ArrayList<LoginInfo> getCustomerLoginInfo();
 	
-	/**
-	 * @return
-	 */
-
 	
 	/**
-	 * @return
+	 * @return The Catalog
 	 */
 	public Catalog getCatalog();
 	
 	/**
-	 * @return
+	 * @return All notifications in the system currently
 	 */
 	public ArrayList<Notification> getNotifications();
 	
+	/**
+	 * 
+	 * @return All items that are visible
+	 */
 	public ArrayList<Item> getVisibleItems();
 	
+	/**
+	 * 
+	 * @param x - Go through the catalog and set all items under x to notVisible
+	 */
 	public void setVisibility(int x);
 	
+	/**
+	 * 
+	 * @param notify - Add this notification to the system
+	 */
 	public void addNotification(Notification notify);
 	
+	/**
+	 * 
+	 * @param accountNumber
+	 * @return - All notifications that has this account as a destination
+	 */
 	public ArrayList<Notification> getNotifications(String accountNumber);
 	
+	/**
+	 * 
+	 * @param notificationID
+	 * @return the notification that has this notificationID
+	 */
 	public Notification getNotification(String notificationID);
 
+	/**
+	 * 
+	 * @param accountNumber
+	 * @return All notifications that were created by this account
+	 */
 	public ArrayList<Notification> getSourceNotifications(String accountNumber);
 	
+	/**
+	 * 
+	 * @param account
+	 * @return return the password for the customer account
+	 */
 	public String getPasswordForCustomerAccount(Account account);
 
+	/**
+	 * 
+	 * @param account
+	 * @return return the password for the employee account
+	 */
 	public String getPasswordForEmployeeAccount(Account account);
 
+	/**
+	 * 
+	 * @param name - Either AccountID, userName or Name
+	 * @return the account that has that string associated with it
+	 */
 	public EmployeeAccount getEmployeeAccount(String name);
 	
+	/**
+	 * 
+	 * @param name - Either AccountID, userName or Name
+	 * @return the account that has that string associated with it
+	 */
 	public CustomerAccount getCustomerAccount(String name);
 	
+	/**
+	 * 
+	 * @param account - add the following account to the list of employeeAccounts
+	 */
 	public void addEmployeeAccount(EmployeeAccount account);
 	
+	/**
+	 * 
+	 * @param account
+	 */
 	public void addCustomerAccount(CustomerAccount account);
 	
 	public Account getAccount(String accountNumber);

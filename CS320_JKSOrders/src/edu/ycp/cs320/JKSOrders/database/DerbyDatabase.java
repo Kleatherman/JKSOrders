@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
@@ -18,7 +19,7 @@ import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.classes.Order;
 
-class DerbyDatabase /*implements Database*/ {
+class DerbyDatabase implements Database {
 	static {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -412,5 +413,190 @@ class DerbyDatabase /*implements Database*/ {
 		db.loadInitialData();
 		
 		System.out.println("JKSOrders DB successfully initialized!");
+	}
+
+	@Override
+	public ArrayList<EmployeeAccount> getEmployeeAccounts() {
+		return executeTransaction(new Transaction<ArrayList<EmployeeAccount>>() {
+			@Override
+			public ArrayList<EmployeeAccount> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from employees " +
+							" order by last_name asc, first_name asc"
+					);
+					
+					ArrayList<EmployeeAccount> result = new ArrayList<EmployeeAccount>();
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						EmployeeAccount employee = new EmployeeAccount();
+						employee.setAccountNumber(resultSet.getString(1));
+						employee.setFirstName(resultSet.getString(2));
+						employee.setLastName(resultSet.getString(3));
+						employee.setEmail(resultSet.getString(4));
+						employee.setPhoneNumber(resultSet.getString(5));
+						result.add(employee);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No employees were found in the database");
+					}
+					else
+						System.out.println("We got all employees");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<CustomerAccount> getCustomerAccounts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<LoginInfo> getEmployeeLoginInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<LoginInfo> getCustomerLoginInfo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Catalog getCatalog() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Notification> getNotifications() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Item> getVisibleItems() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setVisibility(int x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addNotification(Notification notify) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Notification> getNotifications(String accountNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Notification getNotification(String notificationID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<Notification> getSourceNotifications(String accountNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPasswordForCustomerAccount(Account account) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getPasswordForEmployeeAccount(Account account) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public EmployeeAccount getEmployeeAccount(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public CustomerAccount getCustomerAccount(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addEmployeeAccount(EmployeeAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addCustomerAccount(CustomerAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Account getAccount(String accountNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLastCustomerAccountNumber() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getLastEmployeeAccountNumber() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteNotification(String notification_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<String> AllEmployeeNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void updateNotification(Notification notify) {
+		// TODO Auto-generated method stub
+		
 	}
 }

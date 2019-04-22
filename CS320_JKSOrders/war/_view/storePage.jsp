@@ -22,10 +22,9 @@
             <div class="col-md-5">
                 <h3>${item.itemName}</h3>
                 <p>${item.description}</p>
-                <a class="btn btn-primary" type="submit" name="logOut" href="#">Add To Cart</a>
                  ${item.price}
-          		<input name="${item.itemName}" type="number" min="0" max="${item.numInInventory}" />
-       			
+          		<input name="${item.itemName}Quantity" type="number" min="0" max="${item.numInInventory}" /><p><br /></p>
+       			<button class="btn btn-lg btn-primary btn-block" style="width: 300px;" style="height: 2px;" type="submit" name="${item.itemName}">Add ${item.itemName} To Cart</button>
        			<p><br /><br /></p>
        			
             </div>
