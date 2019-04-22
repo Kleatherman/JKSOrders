@@ -430,7 +430,7 @@ class DerbyDatabase implements Database {
 					);
 					
 					ArrayList<EmployeeAccount> result = new ArrayList<EmployeeAccount>();
-					
+					ArrayList<LoginInfo> logins = getEmployeeLoginInfo();
 					resultSet = stmt.executeQuery();
 					
 					// for testing that a result was returned
@@ -444,6 +444,12 @@ class DerbyDatabase implements Database {
 						employee.setLastName(resultSet.getString(3));
 						employee.setEmail(resultSet.getString(4));
 						employee.setPhoneNumber(resultSet.getString(5));
+						
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(employee.getAccountNumber())) {
+								employee.setLogin(login);
+							}
+						}
 						result.add(employee);
 					}
 					
@@ -482,7 +488,7 @@ class DerbyDatabase implements Database {
 					
 					// for testing that a result was returned
 					Boolean found = false;
-					
+					ArrayList<LoginInfo> logins = getCustomerLoginInfo();
 					while (resultSet.next()) {
 						found = true;
 						CustomerAccount customer = new CustomerAccount();
@@ -492,6 +498,11 @@ class DerbyDatabase implements Database {
 						customer.setEmail(resultSet.getString(4));
 						customer.setPhoneNumber(resultSet.getString(5));
 						customer.getCreditCard().setCVC(resultSet.getString(6));
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(customer.getAccountNumber())) {
+								customer.setLogin(login);
+							}
+						}
 						result.add(customer);
 					}
 					
@@ -512,13 +523,95 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<LoginInfo> getEmployeeLoginInfo() {
-		return null;
+		return executeTransaction(new Transaction<ArrayList<LoginInfo>>() {
+			@Override
+			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from login " +
+							" order by user_id asc"
+					);
+					
+					ArrayList<LoginInfo> result = new ArrayList<LoginInfo>();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						LoginInfo login = new LoginInfo();
+						login.setOwnerAccount(resultSet.getString(1));
+						login.setUserName(resultSet.getString(2));
+						login.setPassword(resultSet.getString(3));
+						char[] user_id = login.getOwnerAccount().toCharArray();
+						if(user_id[0]=='C') {
+						}
+						else
+							result.add(login);
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No employee LoginInfo were found in the database");
+					}
+					else
+						System.out.println("We got all employee LoginInfo");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
 	public ArrayList<LoginInfo> getCustomerLoginInfo() {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ArrayList<LoginInfo>>() {
+			@Override
+			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from login " +
+							" order by user_id asc"
+					);
+					
+					ArrayList<LoginInfo> customer = new ArrayList<LoginInfo>();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						LoginInfo login = new LoginInfo();
+						login.setOwnerAccount(resultSet.getString(1));
+						login.setUserName(resultSet.getString(2));
+						login.setPassword(resultSet.getString(3));
+						char[] user_id = login.getOwnerAccount().toCharArray();
+						if(user_id[0]=='C') {
+							customer.add(login);
+						}
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No customer LoginInfo were found in the database");
+					}
+					else
+						System.out.println("We got all customer LoginInfo");
+					return customer;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
