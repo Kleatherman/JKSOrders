@@ -852,15 +852,31 @@ class DerbyDatabase implements Database {
 	}
 
 	@Override
-	public String getPasswordForCustomerAccount(Account account) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getPasswordForCustomerAccount(Account inputAccount) {
+		String result=null;
+		
+		ArrayList<CustomerAccount> full= this.getCustomerAccounts();
+	 for(Account account : full) {
+		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			 result= account.getLogin().getPassword();
+		 }
+	 }
+		
+		return result;
 	}
 
 	@Override
-	public String getPasswordForEmployeeAccount(Account account) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getPasswordForEmployeeAccount(Account inputAccount) {
+		String result=null;
+		
+		ArrayList<EmployeeAccount> full= this.getEmployeeAccounts();
+	 for(Account account : full) {
+		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			 result= account.getLogin().getPassword();
+		 }
+	 }
+		
+		return result;
 	}
 
 	@Override
