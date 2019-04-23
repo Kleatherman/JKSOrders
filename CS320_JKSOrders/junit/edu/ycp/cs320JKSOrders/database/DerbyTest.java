@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
@@ -62,5 +63,29 @@ public class DerbyTest {
 		for(Item item : Ilist) {
 			assertTrue(item.isVisable());
 		}
+	}
+	
+	@Test
+	public void testGetCatalog() {
+		ArrayList<String> greater = new ArrayList<String>();
+		ArrayList<String> less = new ArrayList<String>();
+		Catalog catalog = db.getCatalog();
+		assertTrue(!catalog.getItemMap().isEmpty());
+		assertTrue(catalog.getItemMap().get("I0").getNumInInventory()==5);
+		assertTrue(catalog.getItemMap().get("I1").getNumInInventory()==7);
+		catalog.returnGreaterorLess(6, greater, less);
+		assertTrue(greater.get(0).equals("I1"));
+		assertTrue(less.get(0).equals("I0"));
+	}
+	
+	@Test
+	public void testGetNotifications() {
+		ArrayList<Notification> notifications = db.getNotifications("M0");
+		assertTrue(notifications.size()==1);
+		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
+		notifications = db.getNotifications("M2");
+		assertTrue(notifications.size()==2);
+		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
+		assertTrue(notifications.get(1).getNotificationID().equals("U1"));
 	}
 }
