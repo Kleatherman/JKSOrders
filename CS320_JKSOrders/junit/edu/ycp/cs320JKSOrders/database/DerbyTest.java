@@ -57,6 +57,7 @@ public class DerbyTest {
 	@Test
 	public void testGetVisibleItems() {
 		Ilist = db.getVisibleItems();
+		System.out.println(Ilist.size());
 		assertTrue(Ilist.size()==2);
 		for(Item item : Ilist) {
 			assertTrue(item.isVisable());
