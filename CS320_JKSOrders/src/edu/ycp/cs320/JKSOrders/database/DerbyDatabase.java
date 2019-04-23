@@ -118,6 +118,7 @@ class DerbyDatabase implements Database {
 							"create table catalog (" +
 							"	item_id varchar(5) primary key, " +
 							"	item_name varchar(70)," +
+							"   item_description varchar(300), " +
 							"	price float(10)," +
 							"   location char(4)," +
 							"	quantity integer," +
@@ -381,18 +382,19 @@ class DerbyDatabase implements Database {
 					System.out.println("OrderItemJunction table populated");
 					
 					
-					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?)");
+					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, item_description, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?, ?)");
 					for(Item item : itemsList) {
 						insertCatalog.setString(1, item.getUPC());
 						insertCatalog.setString(2, item.getItemName());
-						insertCatalog.setFloat(3, (float)item.getPrice());
-						insertCatalog.setString(4, item.getLocation());
-						insertCatalog.setInt(5, item.getNumInInventory());
+						insertCatalog.setString(3,  item.getDescription());
+						insertCatalog.setFloat(4, (float)item.getPrice());
+						insertCatalog.setString(5, item.getLocation());
+						insertCatalog.setInt(6, item.getNumInInventory());
 						if(item.isVisable()) {
-							insertCatalog.setInt(6, 1);
+							insertCatalog.setInt(7, 1);
 						}
 						else{
-							insertCatalog.setInt(6, 0);
+							insertCatalog.setInt(7, 0);
 						}
 						insertCatalog.addBatch();
 					}
@@ -651,10 +653,11 @@ class DerbyDatabase implements Database {
 						Item item= new Item();
 						item.setUPC(resultSet.getString(1));
 						item.setItemName(resultSet.getString(2));
-						item.setPrice(resultSet.getFloat(3));
-						item.setLocation(resultSet.getString(4));
-						item.setNumInInventory(resultSet.getInt(5));
-						if(resultSet.getInt(6)==1) {
+						item.setDescription(resultSet.getString(3));
+						item.setPrice(resultSet.getFloat(4));
+						item.setLocation(resultSet.getString(5));
+						item.setNumInInventory(resultSet.getInt(6));
+						if(resultSet.getInt(7)==1) {
 							item.setVisable(true);
 						}
 						else {
@@ -768,13 +771,14 @@ class DerbyDatabase implements Database {
 					boolean found= false;
 					while (resultSet.next()) {
 						found = true;
-						if(resultSet.getInt(6)==1) {
+						if(resultSet.getInt(7)==1) {
 							Item item= new Item();
 							item.setUPC(resultSet.getString(1));
 							item.setItemName(resultSet.getString(2));
-							item.setPrice(resultSet.getFloat(3));
-							item.setLocation(resultSet.getString(4));
-							item.setNumInInventory(resultSet.getInt(5));
+							item.setDescription(resultSet.getString(3));
+							item.setPrice(resultSet.getFloat(4));
+							item.setLocation(resultSet.getString(5));
+							item.setNumInInventory(resultSet.getInt(6));
 							item.setVisable(true);
 							result.add(item);
 						}
