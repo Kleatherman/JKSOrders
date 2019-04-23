@@ -245,7 +245,7 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				String id=i.next();
 				for(int j=0; j<pokeList.size(); j++) {
-					if(pokeList.get(j).getNotificationID()==id) {
+					if(pokeList.get(j).getNotificationID().equals(id)) {
 						while(i.hasNext()) {
 							pokeList.get(j).addDestinationName(i.next()); 
 						}

@@ -199,7 +199,7 @@ class DerbyDatabase implements Database {
 					
 					stmt8 = conn.prepareStatement(
 							"create table notificationRecipients (" +
-							"	notification_id varchar(5) constraint notification_id references notifications," +
+							"	notification_id varchar(5)," +
 							"	employee_id varchar(5)" +
 							")"
 					);
@@ -247,6 +247,7 @@ class DerbyDatabase implements Database {
 				List<Order> ordersList;
 				List<Item> itemsList;
 				Catalog catalog = new Catalog();
+				List<Notification> allNotifications;
 				try {
 /*1*/				carsList			= InitialData.getInitialCars();
 /*2*/				customersList		= InitialData.getInitialCustomerAccounts();
@@ -256,6 +257,7 @@ class DerbyDatabase implements Database {
 /*6*/				ordersList			= InitialData.getInitialOrders();
 					InitialData.getInitialCatalog(catalog);
 					itemsList			= catalog.returnItemList();
+					allNotifications = InitialData.getInitialNotifications();
 
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
@@ -342,8 +344,10 @@ class DerbyDatabase implements Database {
 					System.out.println("Notifications table populated");
 					
 					insertNotificationRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
-					for (Notification notify : notificationsList) {
+					for (Notification notify : allNotifications) {
+						System.out.println("We are in the outer forEach loop in the load Data method");
 						for(String employeeID : notify.getDestination()) {
+							System.out.println("We are adding to the recipient junctions");
 							insertNotificationRecipients.setString(1, notify.getNotificationID());
 							insertNotificationRecipients.setString(2, employeeID);
 							insertNotificationRecipients.addBatch();
@@ -384,9 +388,15 @@ class DerbyDatabase implements Database {
 						insertCatalog.setFloat(3, (float)item.getPrice());
 						insertCatalog.setString(4, item.getLocation());
 						insertCatalog.setInt(5, item.getNumInInventory());
-						insertCatalog.setBoolean(6, item.isVisable());
+						if(item.isVisable()) {
+							insertCatalog.setInt(6, 1);
+						}
+						else{
+							insertCatalog.setInt(6, 0);
+						}
+						insertCatalog.addBatch();
 					}
-
+					insertCatalog.executeBatch();
 					System.out.println("Catalog table populated");
 					return true;
 				} finally {
@@ -617,8 +627,55 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public Catalog getCatalog() {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<Catalog>() {
+			@Override
+			public Catalog execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from catalog " +
+							" order by item_id"
+					);
+					
+					Catalog result = new Catalog();
+					resultSet = stmt.executeQuery();
+					
+					
+					
+					boolean found= false;
+					while (resultSet.next()) {
+						found = true;
+						
+						Item item= new Item();
+						item.setUPC(resultSet.getString(1));
+						item.setItemName(resultSet.getString(2));
+						item.setPrice(resultSet.getFloat(3));
+						item.setLocation(resultSet.getString(4));
+						item.setNumInInventory(resultSet.getInt(5));
+						if(resultSet.getInt(6)==1) {
+							item.setVisable(true);
+						}
+						else {
+							item.setVisable(false);
+						}
+						result.setItem(item);
+						
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No catalog items were found in the database");
+					}
+					else
+						System.out.println("We got all catalog items");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -650,13 +707,15 @@ class DerbyDatabase implements Database {
 					Boolean found = false;
 					ArrayList<Pair<String, String>> junction = new ArrayList<Pair<String, String>>();
 					while (resultSet2.next()) {
+						System.out.println("We are in the first While loop");
 						Pair<String, String> pair = new Pair<String, String>();
-						pair.setLeft(resultSet.getString(1));
-						pair.setRight(resultSet.getString(2));
+						pair.setLeft(resultSet2.getString(1));
+						pair.setRight(resultSet2.getString(2));
 						junction.add(pair);
 					}
 					
 					while (resultSet.next()) {
+
 						found = true;
 						Notification notify = new Notification();
 						notify.setNotificationID(resultSet.getString(1));
@@ -689,8 +748,50 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<Item> getVisibleItems() {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ArrayList<Item>>() {
+			@Override
+			public ArrayList<Item> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from catalog " +
+							" order by item_id"
+					);
+					
+					ArrayList<Item> result = new ArrayList<Item>();
+					resultSet = stmt.executeQuery();
+					
+					
+					
+					boolean found= false;
+					while (resultSet.next()) {
+						found = true;
+						if(resultSet.getInt(6)==1) {
+							Item item= new Item();
+							item.setUPC(resultSet.getString(1));
+							item.setItemName(resultSet.getString(2));
+							item.setPrice(resultSet.getFloat(3));
+							item.setLocation(resultSet.getString(4));
+							item.setNumInInventory(resultSet.getInt(5));
+							item.setVisable(true);
+							result.add(item);
+						}
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No visible items were found in the database");
+					}
+					else
+						System.out.println("We got all visible items");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -706,33 +807,76 @@ class DerbyDatabase implements Database {
 	}
 
 	@Override
-	public ArrayList<Notification> getNotifications(String accountNumber) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Notification> getNotifications(String destAccountNumber) {
+		ArrayList<Notification> result= new ArrayList<Notification>();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			for(int j=0; j<full.get(i).getDestination().size(); j++) {
+				if(full.get(i).getDestination().get(j).equals(destAccountNumber)) {
+					result.add(full.get(i));
+				}
+			}
+			
+		}
+		
+		
+		return result;
 	}
 
 	@Override
 	public Notification getNotification(String notificationID) {
-		// TODO Auto-generated method stub
-		return null;
+		Notification result= new Notification();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			if(full.get(i).getNotificationID().equals(notificationID)) {
+				result = full.get(i);
+				
+			}
+			
+		}
+		return result;
 	}
 
 	@Override
-	public ArrayList<Notification> getSourceNotifications(String accountNumber) {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Notification> getSourceNotifications(String ownerAccountNumber) {
+		ArrayList<Notification> result= new ArrayList<Notification>();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			if(full.get(i).getSourceAccountNumber().equals(ownerAccountNumber)) {
+				result.add(full.get(i));
+				
+			}
+			
+		}
+		return result;
 	}
 
 	@Override
-	public String getPasswordForCustomerAccount(Account account) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getPasswordForCustomerAccount(Account inputAccount) {
+		String result=null;
+		
+		ArrayList<CustomerAccount> full= this.getCustomerAccounts();
+	 for(Account account : full) {
+		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			 result= account.getLogin().getPassword();
+		 }
+	 }
+		
+		return result;
 	}
 
 	@Override
-	public String getPasswordForEmployeeAccount(Account account) {
-		// TODO Auto-generated method stub
-		return null;
+	public String getPasswordForEmployeeAccount(Account inputAccount) {
+		String result=null;
+		
+		ArrayList<EmployeeAccount> full= this.getEmployeeAccounts();
+	 for(Account account : full) {
+		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			 result= account.getLogin().getPassword();
+		 }
+	 }
+		
+		return result;
 	}
 
 	@Override
