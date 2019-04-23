@@ -802,19 +802,39 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void setVisibility(int x) {
-	Catalog catalog = new Catalog();
-	
-	catalog = getCatalog();
-	
-	for(Item item: catalog.getItemMap().values()) {
-		if ( item.getNumInInventory()< x ) {
-			item.setVisable(false);
-		}
-		else 
-			item.setVisable(true);
-		}
 		
-	}
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement UpdateItemVisability_1= null;
+				PreparedStatement UpdateItemVisability_0= null;
+				
+				try {	
+						UpdateItemVisability_1 = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ?; ");
+						UpdateItemVisability_0 = conn.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ?; ");
+						
+						UpdateItemVisability_1.setInt(1,x);
+						UpdateItemVisability_1.executeUpdate();
+						
+						UpdateItemVisability_0.setInt(1,x);
+						UpdateItemVisability_0.executeUpdate();
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(UpdateItemVisability_1);
+				DBUtil.closeQuietly(UpdateItemVisability_0);
+	
+				}
+				return null;
+			
+		}
+	});
+		
+	
+}
 	//
 	@Override
 	public void addNotification(Notification notify) {
