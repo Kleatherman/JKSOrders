@@ -809,16 +809,10 @@ class DerbyDatabase implements Database {
 	@Override
 	public ArrayList<Notification> getNotifications(String destAccountNumber) {
 		ArrayList<Notification> result= new ArrayList<Notification>();
-		
 		ArrayList<Notification> full = this.getNotifications();
-		System.out.println(full.size()+" this is inside Derby");
 		for(int i=0; i<full.size(); i++) {
-			System.out.println("Made it here!!!");
-			System.out.println(full.get(i).getDestination().size());
 			for(int j=0; j<full.get(i).getDestination().size(); j++) {
-				System.out.println(full.get(i).getDestination().get(j)+":"+destAccountNumber);
 				if(full.get(i).getDestination().get(j).equals(destAccountNumber)) {
-					
 					result.add(full.get(i));
 				}
 			}
@@ -831,8 +825,16 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public Notification getNotification(String notificationID) {
-		// TODO Auto-generated method stub
-		return null;
+		Notification result= new Notification();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			if(full.get(i).getNotificationID().equals(notificationID)) {
+				result = full.get(i);
+				
+			}
+			
+		}
+		return result;
 	}
 
 	@Override
