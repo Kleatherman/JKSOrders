@@ -881,13 +881,23 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public EmployeeAccount getEmployeeAccount(String name) {
-		// TODO Auto-generated method stub
+		ArrayList<EmployeeAccount> accounts = this.getEmployeeAccounts();
+		for(EmployeeAccount account : accounts) {
+			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+				return account;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public CustomerAccount getCustomerAccount(String name) {
-		// TODO Auto-generated method stub
+		ArrayList<CustomerAccount> accounts = this.getCustomerAccounts();
+		for(CustomerAccount account : accounts) {
+			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+				return account;
+			}
+		}
 		return null;
 	}
 
