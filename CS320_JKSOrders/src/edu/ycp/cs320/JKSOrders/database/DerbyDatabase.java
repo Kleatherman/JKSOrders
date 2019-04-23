@@ -623,8 +623,55 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public Catalog getCatalog() {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<Catalog>() {
+			@Override
+			public Catalog execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from catalog " +
+							" order by item_id"
+					);
+					
+					Catalog result = new Catalog();
+					resultSet = stmt.executeQuery();
+					
+					
+					
+					boolean found= false;
+					while (resultSet.next()) {
+						found = true;
+						
+						Item item= new Item();
+						item.setUPC(resultSet.getString(1));
+						item.setItemName(resultSet.getString(2));
+						item.setPrice(resultSet.getFloat(3));
+						item.setLocation(resultSet.getString(4));
+						item.setNumInInventory(resultSet.getInt(5));
+						if(resultSet.getInt(6)==1) {
+							item.setVisable(true);
+						}
+						else {
+							item.setVisable(false);
+						}
+						result.setItem(item);
+						
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No catalog items were found in the database");
+					}
+					else
+						System.out.println("We got all catalog items");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
