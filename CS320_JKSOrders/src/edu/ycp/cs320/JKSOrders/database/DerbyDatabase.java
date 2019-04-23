@@ -839,8 +839,16 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<Notification> getSourceNotifications(String ownerAccountNumber) {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Notification> result= new ArrayList<Notification>();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			if(full.get(i).getNotificationID().equals(ownerAccountNumber)) {
+				result.add(full.get(i));
+				
+			}
+			
+		}
+		return result;
 	}
 
 	@Override
