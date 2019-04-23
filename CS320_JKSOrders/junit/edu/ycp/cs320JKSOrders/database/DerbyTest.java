@@ -88,7 +88,6 @@ public class DerbyTest {
 	@Test
 	public void testGetNotifications() {
 		ArrayList<Notification> notifications = db.getNotifications("M0");
-		System.out.println(notifications.size());
 		assertTrue(notifications.size()==1);
 		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
 		notifications = db.getNotifications("M2");
@@ -96,6 +95,7 @@ public class DerbyTest {
 		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
 		assertTrue(notifications.get(1).getNotificationID().equals("U1"));
 	}
+
 	@Test
 	public void testGetEmployeeAccountFromName() {
 		EmployeeAccount eaccount= db.getEmployeeAccount("M0");
@@ -132,4 +132,48 @@ public class DerbyTest {
 		assertTrue(names.get(2).equals("Josiah Sam"));
 	}
 	
+
+	
+	@Test
+	public void testGetNotification() {
+		Notification notify = db.getNotification("N0");
+		assertTrue(notify.getDestination().size()==3);
+		assertTrue(notify.getMessage().equals("HELLO World"));
+		notify = db.getNotification("U0");
+		assertTrue(notify.getDestination().size()==1);
+		assertTrue(notify.getSourceAccountNumber().equals("M0"));
+	}
+	
+	@Test
+	public void testGetSourceNotifications() {
+		ArrayList<Notification> notifications = db.getSourceNotifications("M0");
+		assertTrue(notifications.size()==1);
+		assertTrue(notifications.get(0).getDestination().size()==1);
+		assertTrue(notifications.get(0).getNotificationID().equals("U0"));
+		notifications = db.getSourceNotifications("M2");
+		assertTrue(notifications.size()==2);
+		assertTrue(notifications.get(0).getNotificationID().equals("N0"));
+		assertTrue(notifications.get(1).getNotificationID().equals("U2"));
+	}
+	
+	@Test
+	public void testGetPasswordForEmployeeAccount() {
+		Account account = db.getEmployeeAccounts().get(0);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
+		account = db.getEmployeeAccounts().get(1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
+		account = db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
+	}
+	
+	@Test
+	public void testGetPasswordForCustomerAccount() {
+		Account account = db.getCustomerAccounts().get(0);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
+		account = db.getCustomerAccounts().get(1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
+		account = db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
+	}
+
 }
