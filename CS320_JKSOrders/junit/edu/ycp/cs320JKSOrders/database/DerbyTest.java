@@ -96,4 +96,40 @@ public class DerbyTest {
 		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
 		assertTrue(notifications.get(1).getNotificationID().equals("U1"));
 	}
+	@Test
+	public void testGetEmployeeAccountFromName() {
+		EmployeeAccount eaccount= db.getEmployeeAccount("M0");
+		assertTrue(Elist.get(0).equals(eaccount));
+		eaccount = db.getEmployeeAccount("Samuel");
+		assertTrue(Elist.get(0).equals(eaccount));
+		eaccount= db.getEmployeeAccount("kleatherman");
+		assertTrue(Elist.get(1).equals(eaccount));
+		
+	}
+	@Test
+	public void testGetCustomerAccountFromName() {
+		CustomerAccount eaccount= db.getCustomerAccount("C0");
+		assertTrue(Clist.get(0).equals(eaccount));
+		eaccount = db.getCustomerAccount("Samuel");
+		assertTrue(Clist.get(0).equals(eaccount));
+		eaccount= db.getCustomerAccount("kleatherman");
+		assertTrue(Clist.get(1).equals(eaccount));
+	}
+	@Test
+	public void testGetAccount() {
+		Account account= db.getAccount("C0");
+		assertTrue(Clist.get(0).equals(account));
+		account = db.getCustomerAccount("M0");
+		assertTrue(Elist.get(0).equals(account));
+		account= db.getCustomerAccount("C2");
+		assertTrue(Clist.get(2).equals(account));
+	}
+	@Test
+	public void testGetAllEmployeeName() {
+		ArrayList<String> names= db.AllEmployeeNames();
+		assertTrue(names.get(0).equals("Samuel Cesario"));
+		assertTrue(names.get(1).equals("Kyle Leatherman"));
+		assertTrue(names.get(2).equals("Josiah Sam"));
+	}
+	
 }
