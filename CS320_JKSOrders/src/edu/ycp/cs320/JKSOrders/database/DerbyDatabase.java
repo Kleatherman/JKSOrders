@@ -811,8 +811,8 @@ class DerbyDatabase implements Database {
 				PreparedStatement UpdateItemVisability_0= null;
 				
 				try {	
-						UpdateItemVisability_1 = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ?; ");
-						UpdateItemVisability_0 = conn.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ?; ");
+						UpdateItemVisability_1 = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ? ");
+						UpdateItemVisability_0 = conn.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ? ");
 						
 						UpdateItemVisability_1.setInt(1,x);
 						UpdateItemVisability_1.executeUpdate();
@@ -828,7 +828,7 @@ class DerbyDatabase implements Database {
 				DBUtil.closeQuietly(UpdateItemVisability_0);
 	
 				}
-				return null;
+				return true;
 			
 		}
 	});
