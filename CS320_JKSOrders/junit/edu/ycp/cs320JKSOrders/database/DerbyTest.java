@@ -10,6 +10,7 @@ import org.junit.Test;
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.database.Database;
@@ -21,6 +22,7 @@ public class DerbyTest {
 	ArrayList<CustomerAccount> Clist;
 	ArrayList<LoginInfo> Llist;
 	ArrayList<Notification> Nlist;
+	ArrayList<Item> Ilist;
 	
 	@Before
 	public void setUp() {
@@ -51,10 +53,13 @@ public class DerbyTest {
 		assertTrue(Llist.size()==3);
 		assertTrue( Llist.get(0).getPassword().equals("password"));
 	}
+	
 	@Test
-	public void testGetNotifications() {
-		Nlist = db.getNotifications();
-		assertTrue(Nlist.size()==4);
-		assertTrue(Nlist.get(0).getNotificationID().equals("N0"));
+	public void testGetVisibleItems() {
+		Ilist = db.getVisibleItems();
+		assertTrue(Ilist.size()==2);
+		for(Item item : Ilist) {
+			assertTrue(item.isVisable());
+		}
 	}
 }
