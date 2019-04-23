@@ -12,6 +12,7 @@ import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.controller.StorePageController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
@@ -50,8 +51,23 @@ public class StorePageServlet extends HttpServlet {
 		controller.setModel(model);
 		boolean isCustomer= false;
 		boolean isEmployee= false;
-
-		
+		ArrayList<Item> items = db.getVisibleItems();
+		Order order = new Order();
+		boolean addedItemToCart = false;
+		for(Item item : items) {
+			if(req.getParameter(item.getItemName())!=null){
+				addedItemToCart = true;
+				System.out.println(item.getItemName()+"We made it in!!!");
+				String itemQuantity = req.getParameter(item.getItemName()+"Quantity");
+				System.out.println(itemQuantity);
+				
+				order.addItem(item, Integer.parseInt(itemQuantity));
+				order.setAccountNum(accountNumber);
+				//I need to find a way to determine if this order is a new order or one that is being worked on. I'm thinking this might be able to be done in sessionInfo. What
+				//could work is that the order number is loaded into sessionInfo and then unloaded once checkOut is completed. Up above I can use an if statement to determine 
+				//if the order is complete.
+			}
+		}
 		if(accountNumber != null) {
 			Account account =  db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
@@ -59,6 +75,13 @@ public class StorePageServlet extends HttpServlet {
 		}
 		if (req.getParameter("checkOut") != null) {
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
+		}
+		else if(addedItemToCart) {
+			CustomerAccount account = (CustomerAccount) db.getAccount(accountNumber);
+			ArrayList<Item> item = db.getVisibleItems();
+			req.setAttribute("accountNumber", account.getAccountNumber());
+			req.setAttribute("items", item);
+			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("profilePage") != null) {
 			if(accountNumber!=null) {

@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
@@ -17,8 +18,9 @@ import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.classes.Order;
+import edu.ycp.cs320.JKSOrders.classes.Pair;
 
-class DerbyDatabase /*implements Database*/ {
+class DerbyDatabase implements Database {
 	static {
 		try {
 			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -116,6 +118,7 @@ class DerbyDatabase /*implements Database*/ {
 							"create table catalog (" +
 							"	item_id varchar(5) primary key, " +
 							"	item_name varchar(70)," +
+							"   item_description varchar(300), " +
 							"	price float(10)," +
 							"   location char(4)," +
 							"	quantity integer," +
@@ -197,7 +200,7 @@ class DerbyDatabase /*implements Database*/ {
 					
 					stmt8 = conn.prepareStatement(
 							"create table notificationRecipients (" +
-							"	notification_id varchar(5) constraint notification_id references notifications," +
+							"	notification_id varchar(5)," +
 							"	employee_id varchar(5)" +
 							")"
 					);
@@ -243,7 +246,9 @@ class DerbyDatabase /*implements Database*/ {
 				List<LoginInfo> loginInfoList;
 				List<Notification> notificationsList;
 				List<Order> ordersList;
-				
+				List<Item> itemsList;
+				Catalog catalog = new Catalog();
+				List<Notification> allNotifications;
 				try {
 /*1*/				carsList			= InitialData.getInitialCars();
 /*2*/				customersList		= InitialData.getInitialCustomerAccounts();
@@ -251,6 +256,9 @@ class DerbyDatabase /*implements Database*/ {
 /*4*/				loginInfoList 		= InitialData.getInitialLoginInfo();
 /*5*/				notificationsList 	= InitialData.getInitialNotifications();
 /*6*/				ordersList			= InitialData.getInitialOrders();
+					InitialData.getInitialCatalog(catalog);
+					itemsList			= catalog.returnItemList();
+					allNotifications = InitialData.getInitialNotifications();
 
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
@@ -265,7 +273,6 @@ class DerbyDatabase /*implements Database*/ {
 				PreparedStatement insertNotificationRecipients	= null;
 				PreparedStatement insertOrderItemJunction		= null;
 				PreparedStatement insertCatalog					= null;
-				PreparedStatement testCall						= null;
 				
 				try {
 					// must completely populate Authors table before populating BookAuthors table because of primary keys
@@ -338,8 +345,10 @@ class DerbyDatabase /*implements Database*/ {
 					System.out.println("Notifications table populated");
 					
 					insertNotificationRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
-					for (Notification notify : notificationsList) {
+					for (Notification notify : allNotifications) {
+						System.out.println("We are in the outer forEach loop in the load Data method");
 						for(String employeeID : notify.getDestination()) {
+							System.out.println("We are adding to the recipient junctions");
 							insertNotificationRecipients.setString(1, notify.getNotificationID());
 							insertNotificationRecipients.setString(2, employeeID);
 							insertNotificationRecipients.addBatch();
@@ -372,13 +381,25 @@ class DerbyDatabase /*implements Database*/ {
 					
 					System.out.println("OrderItemJunction table populated");
 					
-					/*
-					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?)");
-					Catalog catalog = new Catalog();
-					Inventory inventory = new Inventory();
-					edu.ycp.cs320.JKSOrders.database.InitialData.getInitialCatalog(catalog, inventory);
-					for(Item item : )
-					*/
+					
+					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, item_description, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?, ?)");
+					for(Item item : itemsList) {
+						insertCatalog.setString(1, item.getUPC());
+						insertCatalog.setString(2, item.getItemName());
+						insertCatalog.setString(3,  item.getDescription());
+						insertCatalog.setFloat(4, (float)item.getPrice());
+						insertCatalog.setString(5, item.getLocation());
+						insertCatalog.setInt(6, item.getNumInInventory());
+						if(item.isVisable()) {
+							insertCatalog.setInt(7, 1);
+						}
+						else{
+							insertCatalog.setInt(7, 0);
+						}
+						insertCatalog.addBatch();
+					}
+					insertCatalog.executeBatch();
+					System.out.println("Catalog table populated");
 					return true;
 				} finally {
 					DBUtil.closeQuietly(insertCar);
@@ -390,7 +411,6 @@ class DerbyDatabase /*implements Database*/ {
 					DBUtil.closeQuietly(insertNotificationRecipients);
 					DBUtil.closeQuietly(insertOrderItemJunction);
 					DBUtil.closeQuietly(insertCatalog);
-					DBUtil.closeQuietly(testCall);	
 				}
 			}
 		});
@@ -406,5 +426,551 @@ class DerbyDatabase /*implements Database*/ {
 		db.loadInitialData();
 		
 		System.out.println("JKSOrders DB successfully initialized!");
+	}
+
+	@Override
+	public ArrayList<EmployeeAccount> getEmployeeAccounts() {
+		return executeTransaction(new Transaction<ArrayList<EmployeeAccount>>() {
+			@Override
+			public ArrayList<EmployeeAccount> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from employees " +
+							" order by last_name asc, first_name asc"
+					);
+					
+					ArrayList<EmployeeAccount> result = new ArrayList<EmployeeAccount>();
+					ArrayList<LoginInfo> logins = getEmployeeLoginInfo();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						EmployeeAccount employee = new EmployeeAccount();
+						employee.setAccountNumber(resultSet.getString(1));
+						employee.setFirstName(resultSet.getString(2));
+						employee.setLastName(resultSet.getString(3));
+						employee.setEmail(resultSet.getString(4));
+						employee.setPhoneNumber(resultSet.getString(5));
+						
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(employee.getAccountNumber())) {
+								employee.setLogin(login);
+							}
+						}
+						result.add(employee);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No customers were found in the database");
+					}
+					else
+						System.out.println("We got all customers");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<CustomerAccount> getCustomerAccounts() {
+		return executeTransaction(new Transaction<ArrayList<CustomerAccount>>() {
+			@Override
+			public ArrayList<CustomerAccount> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from customers " +
+							" order by last_name asc, first_name asc"
+					);
+					
+					ArrayList<CustomerAccount> result = new ArrayList<CustomerAccount>();
+					
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					ArrayList<LoginInfo> logins = getCustomerLoginInfo();
+					while (resultSet.next()) {
+						found = true;
+						CustomerAccount customer = new CustomerAccount();
+						customer.setAccountNumber(resultSet.getString(1));
+						customer.setFirstName(resultSet.getString(2));
+						customer.setLastName(resultSet.getString(3));
+						customer.setEmail(resultSet.getString(4));
+						customer.setPhoneNumber(resultSet.getString(5));
+						customer.getCreditCard().setCVC(resultSet.getString(6));
+						for(LoginInfo login : logins) {
+							if(login.getOwnerAccount().equals(customer.getAccountNumber())) {
+								customer.setLogin(login);
+							}
+						}
+						result.add(customer);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No employees were found in the database");
+					}
+					else
+						System.out.println("We got all employees");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<LoginInfo> getEmployeeLoginInfo() {
+		return executeTransaction(new Transaction<ArrayList<LoginInfo>>() {
+			@Override
+			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from login " +
+							" order by user_id asc"
+					);
+					
+					ArrayList<LoginInfo> result = new ArrayList<LoginInfo>();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						LoginInfo login = new LoginInfo();
+						login.setOwnerAccount(resultSet.getString(1));
+						login.setUserName(resultSet.getString(2));
+						login.setPassword(resultSet.getString(3));
+						char[] user_id = login.getOwnerAccount().toCharArray();
+						if(user_id[0]=='C') {
+						}
+						else
+							result.add(login);
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No employee LoginInfo were found in the database");
+					}
+					else
+						System.out.println("We got all employee LoginInfo");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<LoginInfo> getCustomerLoginInfo() {
+		return executeTransaction(new Transaction<ArrayList<LoginInfo>>() {
+			@Override
+			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from login " +
+							" order by user_id asc"
+					);
+					
+					ArrayList<LoginInfo> customer = new ArrayList<LoginInfo>();
+					resultSet = stmt.executeQuery();
+					
+					// for testing that a result was returned
+					Boolean found = false;
+					
+					while (resultSet.next()) {
+						found = true;
+						LoginInfo login = new LoginInfo();
+						login.setOwnerAccount(resultSet.getString(1));
+						login.setUserName(resultSet.getString(2));
+						login.setPassword(resultSet.getString(3));
+						char[] user_id = login.getOwnerAccount().toCharArray();
+						if(user_id[0]=='C') {
+							customer.add(login);
+						}
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No customer LoginInfo were found in the database");
+					}
+					else
+						System.out.println("We got all customer LoginInfo");
+					return customer;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public Catalog getCatalog() {
+		return executeTransaction(new Transaction<Catalog>() {
+			@Override
+			public Catalog execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from catalog " +
+							" order by item_id"
+					);
+					
+					Catalog result = new Catalog();
+					resultSet = stmt.executeQuery();
+					
+					
+					
+					boolean found= false;
+					while (resultSet.next()) {
+						found = true;
+						
+						Item item= new Item();
+						item.setUPC(resultSet.getString(1));
+						item.setItemName(resultSet.getString(2));
+						item.setDescription(resultSet.getString(3));
+						item.setPrice(resultSet.getFloat(4));
+						item.setLocation(resultSet.getString(5));
+						item.setNumInInventory(resultSet.getInt(6));
+						if(resultSet.getInt(7)==1) {
+							item.setVisable(true);
+						}
+						else {
+							item.setVisable(false);
+						}
+						result.setItem(item);
+						
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No catalog items were found in the database");
+					}
+					else
+						System.out.println("We got all catalog items");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<Notification> getNotifications() {
+		return executeTransaction(new Transaction<ArrayList<Notification>>() {
+			@Override
+			public ArrayList<Notification> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				PreparedStatement stmt2 = null;
+				ResultSet resultSet2 = null;
+				try {
+					stmt = conn.prepareStatement(
+							"select * from notifications " +
+							" order by notification_id"
+					);
+					
+					ArrayList<Notification> result = new ArrayList<Notification>();
+					resultSet = stmt.executeQuery();
+					
+					stmt2 = conn.prepareStatement(
+							"select * from notificationRecipients " +
+							" order by notification_id"
+					);
+					
+					resultSet2 = stmt2.executeQuery();
+					// for testing that a result was returned
+					Boolean found = false;
+					ArrayList<Pair<String, String>> junction = new ArrayList<Pair<String, String>>();
+					while (resultSet2.next()) {
+						System.out.println("We are in the first While loop");
+						Pair<String, String> pair = new Pair<String, String>();
+						pair.setLeft(resultSet2.getString(1));
+						pair.setRight(resultSet2.getString(2));
+						junction.add(pair);
+					}
+					
+					while (resultSet.next()) {
+
+						found = true;
+						Notification notify = new Notification();
+						notify.setNotificationID(resultSet.getString(1));
+						notify.setSourceAccountNumber(resultSet.getString(2));
+						notify.setMessage(resultSet.getString(3));
+						for(Pair<String, String> pair : junction) {
+							if(notify.getNotificationID().equals(pair.getLeft())) {
+								notify.addDestinationName(pair.getRight());
+							}
+						}
+						result.add(notify);
+					}
+					
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No Notifications were found in the database");
+					}
+					else
+						System.out.println("We got all Notification");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(resultSet2);
+					DBUtil.closeQuietly(stmt2);
+				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<Item> getVisibleItems() {
+		return executeTransaction(new Transaction<ArrayList<Item>>() {
+			@Override
+			public ArrayList<Item> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from catalog " +
+							" order by item_id"
+					);
+					
+					ArrayList<Item> result = new ArrayList<Item>();
+					resultSet = stmt.executeQuery();
+					
+					
+					
+					boolean found= false;
+					while (resultSet.next()) {
+						found = true;
+						if(resultSet.getInt(7)==1) {
+							Item item= new Item();
+							item.setUPC(resultSet.getString(1));
+							item.setItemName(resultSet.getString(2));
+							item.setDescription(resultSet.getString(3));
+							item.setPrice(resultSet.getFloat(4));
+							item.setLocation(resultSet.getString(5));
+							item.setNumInInventory(resultSet.getInt(6));
+							item.setVisable(true);
+							result.add(item);
+						}
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No visible items were found in the database");
+					}
+					else
+						System.out.println("We got all visible items");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
+	}
+
+	@Override
+	public void setVisibility(int x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addNotification(Notification notify) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Notification> getNotifications(String destAccountNumber) {
+		ArrayList<Notification> result= new ArrayList<Notification>();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			for(int j=0; j<full.get(i).getDestination().size(); j++) {
+				if(full.get(i).getDestination().get(j).equals(destAccountNumber)) {
+					result.add(full.get(i));
+				}
+			}
+			
+		}
+		
+		
+		return result;
+	}
+
+	@Override
+	public Notification getNotification(String notificationID) {
+		Notification result= new Notification();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			if(full.get(i).getNotificationID().equals(notificationID)) {
+				result = full.get(i);
+				
+			}
+			
+		}
+		return result;
+	}
+
+	@Override
+	public ArrayList<Notification> getSourceNotifications(String ownerAccountNumber) {
+		ArrayList<Notification> result= new ArrayList<Notification>();
+		ArrayList<Notification> full = this.getNotifications();
+		for(int i=0; i<full.size(); i++) {
+			if(full.get(i).getSourceAccountNumber().equals(ownerAccountNumber)) {
+				result.add(full.get(i));
+				
+			}
+			
+		}
+		return result;
+	}
+
+	@Override
+	public String getPasswordForCustomerAccount(Account inputAccount) {
+		String result=null;
+		
+		ArrayList<CustomerAccount> full= this.getCustomerAccounts();
+	 for(Account account : full) {
+		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			 result= account.getLogin().getPassword();
+		 }
+	 }
+		
+		return result;
+	}
+
+	@Override
+	public String getPasswordForEmployeeAccount(Account inputAccount) {
+		String result=null;
+		
+		ArrayList<EmployeeAccount> full= this.getEmployeeAccounts();
+	 for(Account account : full) {
+		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			 result= account.getLogin().getPassword();
+		 }
+	 }
+		
+		return result;
+	}
+
+	@Override
+	public EmployeeAccount getEmployeeAccount(String name) {
+		ArrayList<EmployeeAccount> accounts = this.getEmployeeAccounts();
+		for(EmployeeAccount account : accounts) {
+			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+				return account;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public CustomerAccount getCustomerAccount(String name) {
+		ArrayList<CustomerAccount> accounts = this.getCustomerAccounts();
+		for(CustomerAccount account : accounts) {
+			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+				return account;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void addEmployeeAccount(EmployeeAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addCustomerAccount(CustomerAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Account getAccount(String accountNumber) {
+		ArrayList<EmployeeAccount> employees = this.getEmployeeAccounts();
+		ArrayList<CustomerAccount> customers = this.getCustomerAccounts();
+		for(Account employee : employees) {
+			if(employee.getAccountNumber().equals(accountNumber)) {
+				return employee;
+			}
+		}
+		for(Account customer : customers) {
+			if(customer.getAccountNumber().equals(accountNumber)) {
+				return customer;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public String getLastCustomerAccountNumber() {
+		String result= null;
+		ArrayList<CustomerAccount> full = this.getCustomerAccounts();
+		result= full.get(full.size()-1).getAccountNumber();
+		
+		return result;
+	}
+
+	@Override
+	public String getLastEmployeeAccountNumber() {
+		String result= null;
+		ArrayList<EmployeeAccount> full = this.getEmployeeAccounts();
+		result= full.get(full.size()-1).getAccountNumber();
+		
+		return result;
+	}
+
+	@Override
+	public void deleteNotification(String notification_id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<String> AllEmployeeNames() {
+		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<EmployeeAccount> employees = this.getEmployeeAccounts();
+		for(EmployeeAccount employee : employees) {
+			names.add(employee.getFirstName()+" "+employee.getLastName());
+		}
+		return names;
+	}
+
+	@Override
+	public void updateNotification(Notification notify) {
+		// TODO Auto-generated method stub
+		
 	}
 }

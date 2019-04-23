@@ -195,10 +195,15 @@ public class InitialData {
 				Item item = new Item();
 				item.setUPC(i.next());
 				item.setItemName(i.next());
+				item.setDescription(i.next());
 				item.setPrice(Float.parseFloat(i.next()));
 				item.setLocation(i.next());
 				item.setNumInInventory(Integer.parseInt(i.next()));
-				
+				if(Integer.parseInt(i.next())==1) {
+					item.setVisable(true);
+				}
+				else
+					item.setVisable(false);
 				
 				catalog.setItem(item);
 				
@@ -241,7 +246,7 @@ public class InitialData {
 				Iterator<String> i = tuple.iterator();
 				String id=i.next();
 				for(int j=0; j<pokeList.size(); j++) {
-					if(pokeList.get(j).getNotificationID()==id) {
+					if(pokeList.get(j).getNotificationID().equals(id)) {
 						while(i.hasNext()) {
 							pokeList.get(j).addDestinationName(i.next()); 
 						}

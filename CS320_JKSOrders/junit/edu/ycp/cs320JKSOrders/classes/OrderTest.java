@@ -34,10 +34,5 @@ public class OrderTest {
 		assertEquals(quantityMap,order.getQuantityMap());
 	}
 	
-	@Test
-	public void testSetPickupOrder() {
-		order.setPickupOrder(true);
-		assertTrue(order.isPickupOrder());
-	}
 	
 }
