@@ -121,7 +121,7 @@ class DerbyDatabase implements Database {
 							"	price float(10)," +
 							"   location char(4)," +
 							"	quantity integer," +
-							"	visible integer" +
+							"	visible boolean" +
 							")"
 					);
 					stmt2.executeUpdate();
@@ -689,8 +689,49 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<Item> getVisibleItems() {
-		// TODO Auto-generated method stub
-		return null;
+		return executeTransaction(new Transaction<ArrayList<Item>>() {
+			@Override
+			public ArrayList<Item> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+				
+				try {
+					stmt = conn.prepareStatement(
+							"select * from catalog " +
+							" order by item_id"
+					);
+					
+					ArrayList<Item> result = new ArrayList<Item>();
+					resultSet = stmt.executeQuery();
+					
+					
+					
+					boolean found= false;
+					while (resultSet.next()) {
+						found = true;
+						if(resultSet.getBoolean(6)) {
+							Item item= new Item();
+							item.setUPC(resultSet.getString(1));
+							item.setItemName(resultSet.getString(2));
+							item.setPrice(resultSet.getFloat(3));
+							item.setLocation(resultSet.getString(4));
+							item.setNumInInventory(resultSet.getInt(5));
+							result.add(item);
+						}
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No visible items were found in the database");
+					}
+					else
+						System.out.println("We got all visible items");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
