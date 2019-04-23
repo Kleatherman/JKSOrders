@@ -117,4 +117,24 @@ public class DerbyTest {
 		assertTrue(notifications.get(0).getNotificationID().equals("N0"));
 		assertTrue(notifications.get(1).getNotificationID().equals("U2"));
 	}
+	
+	@Test
+	public void testGetPasswordForEmployeeAccount() {
+		Account account = db.getEmployeeAccounts().get(0);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
+		account = db.getEmployeeAccounts().get(1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
+		account = db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
+	}
+	
+	@Test
+	public void testGetPasswordForCustomerAccount() {
+		Account account = db.getCustomerAccounts().get(0);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
+		account = db.getCustomerAccounts().get(1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
+		account = db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1);
+		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
+	}
 }
