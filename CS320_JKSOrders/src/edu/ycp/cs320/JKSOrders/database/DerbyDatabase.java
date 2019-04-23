@@ -390,9 +390,9 @@ class DerbyDatabase implements Database {
 						else{
 							insertCatalog.setInt(6, 0);
 						}
-						
+						insertCatalog.addBatch();
 					}
-
+					insertCatalog.executeBatch();
 					System.out.println("Catalog table populated");
 					return true;
 				} finally {
