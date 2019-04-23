@@ -69,7 +69,7 @@ public class DerbyTest {
 		Nlist = db.getNotifications();
 		assertTrue(Nlist.size()==4);
 		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
-		assertTrue(Nlist.get(0).getDestination().size()==1);
+		assertTrue(Nlist.get(0).getDestination().size()==3);
 	}
 	
 	@Test

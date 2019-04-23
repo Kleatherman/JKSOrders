@@ -50,6 +50,9 @@ public class InitialDataTest {
 		if(car.get(0).getBrand().equals("Ford")) {
 			assert true;
 		}
+		else {
+			assert false;
+		}
 	}
 	
 	@Test
@@ -57,6 +60,9 @@ public class InitialDataTest {
 		System.out.println(eaccount.get(0).getFirstName());
 		if(eaccount.get(0).getFirstName().equals("Samuel")) {
 			assert true;
+		}
+		else {
+			assert false;
 		}
 	}
 	
@@ -66,13 +72,19 @@ public class InitialDataTest {
 		if(caccount.get(0).getFirstName().equals("Samuel")) {
 			assert true;
 		}
+		else {
+			assert false;
+		}
 	}
 	
 	@Test
 	public void testLogin() {
 		System.out.println(login.get(0).getUserName());
-		if(eaccount.get(0).getFirstName().equals("scesario")) {
+		if(login.get(0).getUserName().equals("scesario")) {
 			assert true;
+		}
+		else {
+			assert false;
 		}
 	}
 	@Test
@@ -110,6 +122,9 @@ public class InitialDataTest {
 		System.out.println(catalog.getItem("I0").getUPC());
 		if(catalog.getItem("I0").getUPC().equals("I0")) {
 			assert true;
+		}
+		else {
+			assert false;
 		}
 	}
 	
