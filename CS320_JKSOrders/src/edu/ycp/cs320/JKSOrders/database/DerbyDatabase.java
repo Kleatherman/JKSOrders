@@ -199,7 +199,7 @@ class DerbyDatabase implements Database {
 					
 					stmt8 = conn.prepareStatement(
 							"create table notificationRecipients (" +
-							"	notification_id varchar(5) constraint notification_id references notifications," +
+							"	notification_id varchar(5)," +
 							"	employee_id varchar(5)" +
 							")"
 					);
@@ -247,6 +247,7 @@ class DerbyDatabase implements Database {
 				List<Order> ordersList;
 				List<Item> itemsList;
 				Catalog catalog = new Catalog();
+				List<Notification> allNotifications;
 				try {
 /*1*/				carsList			= InitialData.getInitialCars();
 /*2*/				customersList		= InitialData.getInitialCustomerAccounts();
@@ -256,6 +257,7 @@ class DerbyDatabase implements Database {
 /*6*/				ordersList			= InitialData.getInitialOrders();
 					InitialData.getInitialCatalog(catalog);
 					itemsList			= catalog.returnItemList();
+					allNotifications = InitialData.getInitialNotifications();
 
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
@@ -342,8 +344,10 @@ class DerbyDatabase implements Database {
 					System.out.println("Notifications table populated");
 					
 					insertNotificationRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
-					for (Notification notify : notificationsList) {
+					for (Notification notify : allNotifications) {
+						System.out.println("We are in the outer forEach loop in the load Data method");
 						for(String employeeID : notify.getDestination()) {
+							System.out.println("We are adding to the recipient junctions");
 							insertNotificationRecipients.setString(1, notify.getNotificationID());
 							insertNotificationRecipients.setString(2, employeeID);
 							insertNotificationRecipients.addBatch();
@@ -703,21 +707,27 @@ class DerbyDatabase implements Database {
 					Boolean found = false;
 					ArrayList<Pair<String, String>> junction = new ArrayList<Pair<String, String>>();
 					while (resultSet2.next()) {
+						System.out.println("We are in the first While loop");
 						Pair<String, String> pair = new Pair<String, String>();
 						pair.setLeft(resultSet.getString(1));
 						pair.setRight(resultSet.getString(2));
 						junction.add(pair);
+						System.out.println(junction.size());
 					}
 					
 					while (resultSet.next()) {
+
+						System.out.println("We are in the Second While loop");
 						found = true;
 						Notification notify = new Notification();
 						notify.setNotificationID(resultSet.getString(1));
 						notify.setSourceAccountNumber(resultSet.getString(2));
 						notify.setMessage(resultSet.getString(3));
 						for(Pair<String, String> pair : junction) {
+							System.out.println("We made it inside the for loop");
 							if(notify.getNotificationID().equals(pair.getLeft())) {
 								notify.addDestinationName(pair.getRight());
+								System.out.println(notify.getDestination().size());
 							}
 						}
 						result.add(notify);
@@ -805,10 +815,14 @@ class DerbyDatabase implements Database {
 		ArrayList<Notification> result= new ArrayList<Notification>();
 		
 		ArrayList<Notification> full = this.getNotifications();
-		
+		System.out.println(full.size()+" this is inside Derby");
 		for(int i=0; i<full.size(); i++) {
+			System.out.println("Made it here!!!");
+			System.out.println(full.get(i).getDestination().size());
 			for(int j=0; j<full.get(i).getDestination().size(); j++) {
+				System.out.println(full.get(i).getDestination().get(j)+":"+destAccountNumber);
 				if(full.get(i).getDestination().get(j).equals(destAccountNumber)) {
+					
 					result.add(full.get(i));
 				}
 			}

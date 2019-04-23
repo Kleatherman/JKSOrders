@@ -58,11 +58,18 @@ public class DerbyTest {
 	@Test
 	public void testGetVisibleItems() {
 		Ilist = db.getVisibleItems();
-		System.out.println(Ilist.size());
 		assertTrue(Ilist.size()==2);
 		for(Item item : Ilist) {
 			assertTrue(item.isVisable());
 		}
+	}
+	
+	@Test
+	public void testGetNotificationTest() {
+		Nlist = db.getNotifications();
+		assertTrue(Nlist.size()==4);
+		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(0).getDestination().size()==1);
 	}
 	
 	@Test
@@ -81,6 +88,7 @@ public class DerbyTest {
 	@Test
 	public void testGetNotifications() {
 		ArrayList<Notification> notifications = db.getNotifications("M0");
+		System.out.println(notifications.size());
 		assertTrue(notifications.size()==1);
 		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
 		notifications = db.getNotifications("M2");
