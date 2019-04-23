@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.javafx.collections.MappingChange.Map;
+
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
@@ -797,13 +799,23 @@ class DerbyDatabase implements Database {
 			}
 		});
 	}
-
+	//
 	@Override
 	public void setVisibility(int x) {
-		// TODO Auto-generated method stub
+	Catalog catalog = new Catalog();
+	
+	catalog = getCatalog();
+	
+	for(Item item: catalog.getItemMap().values()) {
+		if ( item.getNumInInventory()< x ) {
+			item.setVisable(false);
+		}
+		else 
+			item.setVisable(true);
+		}
 		
 	}
-
+	//
 	@Override
 	public void addNotification(Notification notify) {
 		// TODO Auto-generated method stub
@@ -904,13 +916,13 @@ class DerbyDatabase implements Database {
 		}
 		return null;
 	}
-
+	//
 	@Override
 	public void addEmployeeAccount(EmployeeAccount account) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	//
 	@Override
 	public void addCustomerAccount(CustomerAccount account) {
 		// TODO Auto-generated method stub
@@ -951,7 +963,7 @@ class DerbyDatabase implements Database {
 		
 		return result;
 	}
-
+	//
 	@Override
 	public void deleteNotification(String notification_id) {
 		// TODO Auto-generated method stub
@@ -967,7 +979,7 @@ class DerbyDatabase implements Database {
 		}
 		return names;
 	}
-
+	//
 	@Override
 	public void updateNotification(Notification notify) {
 		// TODO Auto-generated method stub
