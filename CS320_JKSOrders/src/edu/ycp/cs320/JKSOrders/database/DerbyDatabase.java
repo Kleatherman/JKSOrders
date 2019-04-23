@@ -932,14 +932,20 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public String getLastCustomerAccountNumber() {
-		// TODO Auto-generated method stub
-		return null;
+		String result= null;
+		ArrayList<CustomerAccount> full = this.getCustomerAccounts();
+		result= full.get(full.size()-1).getAccountNumber();
+		
+		return result;
 	}
 
 	@Override
 	public String getLastEmployeeAccountNumber() {
-		// TODO Auto-generated method stub
-		return null;
+		String result= null;
+		ArrayList<EmployeeAccount> full = this.getEmployeeAccounts();
+		result= full.get(full.size()-1).getAccountNumber();
+		
+		return result;
 	}
 
 	@Override
