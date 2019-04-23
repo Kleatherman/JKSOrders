@@ -89,12 +89,20 @@ public class InitialDataTest {
 			assert false;
 		}
 	}
+	
 	@Test
 	public void testNotification() {
 		System.out.println(note.get(0).getNotificationID());
-		if(note.get(0).getNotificationID().equals("U0")) {
-			assert true;
+		System.out.println(note.get(0).getDestination().size());
+		if(note.get(0).getNotificationID().equals("U0")){
+			if(note.get(0).getDestination().size()==1) {
+				assert true;
+			}
+			else
+				assert false;
 		}
+		else
+			assert false;
 	}
 	
 	@Test
