@@ -709,25 +709,21 @@ class DerbyDatabase implements Database {
 					while (resultSet2.next()) {
 						System.out.println("We are in the first While loop");
 						Pair<String, String> pair = new Pair<String, String>();
-						pair.setLeft(resultSet.getString(1));
-						pair.setRight(resultSet.getString(2));
+						pair.setLeft(resultSet2.getString(1));
+						pair.setRight(resultSet2.getString(2));
 						junction.add(pair);
-						System.out.println(junction.size());
 					}
 					
 					while (resultSet.next()) {
 
-						System.out.println("We are in the Second While loop");
 						found = true;
 						Notification notify = new Notification();
 						notify.setNotificationID(resultSet.getString(1));
 						notify.setSourceAccountNumber(resultSet.getString(2));
 						notify.setMessage(resultSet.getString(3));
 						for(Pair<String, String> pair : junction) {
-							System.out.println("We made it inside the for loop");
 							if(notify.getNotificationID().equals(pair.getLeft())) {
 								notify.addDestinationName(pair.getRight());
-								System.out.println(notify.getDestination().size());
 							}
 						}
 						result.add(notify);
