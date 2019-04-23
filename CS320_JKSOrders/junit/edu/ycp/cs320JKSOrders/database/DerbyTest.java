@@ -186,5 +186,44 @@ public class DerbyTest {
 		String lastAccountNum = db.getLastEmployeeAccountNumber();
 		assertTrue(lastAccountNum.equals(db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1).getAccountNumber()));
 	}
+	@Test
+	public void testSetVisible() {
+		assertTrue(Ilist.size()==2);
+		db.setVisibility(99);
+		Ilist = db.getVisibleItems();
+		assertTrue(Ilist.size()==0);
+		db.setVisibility(6);
+		Ilist= db.getVisibleItems();
+		assertTrue(Ilist.size()==1);
+	}
+	@Test
+	public void testAddNotification() {
+		assertTrue(Nlist.size()==4);
+		Notification notify = new Notification();
+		ArrayList<String> dest = new ArrayList<String>();
+		dest.add("M0");
+		dest.add("M2");
+		notify.setDestination(dest);
+		notify.setMessage("I'm dummy thicc");
+		notify.setUrgency(true);
+		notify.setSourceAccountNumber("M1");
+		notify.setNotificationID(null);
+		db.addNotification(notify);
+		Nlist= db.getNotifications();
+		assertTrue(Nlist.size()==5);
+		assertTrue(Nlist.get(0).getMessage().equals("HELLO world"));
+		assertTrue(Nlist.get(4).getMessage().equals("I'm dummy thicc"));
+		assertTrue(Nlist.get(4).getUrgency().equals(true));
+		assertTrue(Nlist.get(4).getSourceAccountNumber().equals("M1"));
+		assertTrue(Nlist.get(4).getDestination().get(0).equals("M0"));
+		assertTrue(Nlist.get(4).getNotificationID()!=null);
+	}
+	@Test
+	public void testAddEmployeeAccount() {
+		assertTrue(Elist.size()==3);
+		EmployeeAccount eaccount = new EmployeeAccount();
+		eaccount.setEmail("Yadda@gmail.com");
+	}
+	
 
 }
