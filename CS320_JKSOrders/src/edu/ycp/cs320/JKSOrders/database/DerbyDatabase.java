@@ -121,7 +121,7 @@ class DerbyDatabase implements Database {
 							"	price float(10)," +
 							"   location char(4)," +
 							"	quantity integer," +
-							"	visible boolean" +
+							"	visible integer" +
 							")"
 					);
 					stmt2.executeUpdate();
@@ -384,7 +384,13 @@ class DerbyDatabase implements Database {
 						insertCatalog.setFloat(3, (float)item.getPrice());
 						insertCatalog.setString(4, item.getLocation());
 						insertCatalog.setInt(5, item.getNumInInventory());
-						insertCatalog.setBoolean(6, item.isVisable());
+						if(item.isVisable()) {
+							insertCatalog.setInt(6, 1);
+						}
+						else{
+							insertCatalog.setInt(6, 0);
+						}
+						
 					}
 
 					System.out.println("Catalog table populated");
@@ -709,13 +715,14 @@ class DerbyDatabase implements Database {
 					boolean found= false;
 					while (resultSet.next()) {
 						found = true;
-						if(resultSet.getBoolean(6)) {
+						if(resultSet.getInt(6)==1) {
 							Item item= new Item();
 							item.setUPC(resultSet.getString(1));
 							item.setItemName(resultSet.getString(2));
 							item.setPrice(resultSet.getFloat(3));
 							item.setLocation(resultSet.getString(4));
 							item.setNumInInventory(resultSet.getInt(5));
+							item.setVisable(true);
 							result.add(item);
 						}
 					}
