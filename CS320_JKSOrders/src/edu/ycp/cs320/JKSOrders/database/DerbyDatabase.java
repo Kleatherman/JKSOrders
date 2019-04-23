@@ -519,7 +519,7 @@ class DerbyDatabase implements Database {
 						result.add(customer);
 					}
 					
-					// check if any authors were found
+					// check if any employees were found
 					if (!found) {
 						System.out.println("No employees were found in the database");
 					}

@@ -11,6 +11,7 @@ public abstract class Account {
 	private ArrayList<Order> orders;
 	private String phoneNumber;
 	private String email;
+	
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
