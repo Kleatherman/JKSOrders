@@ -811,8 +811,8 @@ class DerbyDatabase implements Database {
 				PreparedStatement UpdateItemVisability_0= null;
 				
 				try {	
-						UpdateItemVisability_1 = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ?; ");
-						UpdateItemVisability_0 = conn.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ?; ");
+						UpdateItemVisability_1 = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ? ");
+						UpdateItemVisability_0 = conn.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ? ");
 						
 						UpdateItemVisability_1.setInt(1,x);
 						UpdateItemVisability_1.executeUpdate();
@@ -828,7 +828,7 @@ class DerbyDatabase implements Database {
 				DBUtil.closeQuietly(UpdateItemVisability_0);
 	
 				}
-				return null;
+				return true;
 			
 		}
 	});
@@ -844,26 +844,64 @@ class DerbyDatabase implements Database {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 				
-				PreparedStatement addNotification= null;
+				PreparedStatement insertNotificationIntoNotifications = null;
+				
+
+				PreparedStatement insertNotificationIntoNotificationsRecipients = null;
 			
 				
 				try {	
-						addNotification = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ?; ");
+						ArrayList<Notification> notifications = new ArrayList<Notification>();
+						
+						notifications = getNotifications();
+						
+						int urgents = 0;
+						String notification_id=null;
+						
+						for (Notification notification : notifications) 
+						{ 
+						   if (notification.getUrgency()) {
+							   urgents++;
+						   }
+						   
+						}
+						
+						if(notify.getUrgency()) {
+							notification_id = "U"+ urgents;
+						}
+						else 
+							notification_id = "U"+ (notifications.size() - urgents);
+						
+						insertNotificationIntoNotifications = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
+					
 						
 						
-						UpdateItemVisability_1.setInt(1,x);
-						UpdateItemVisability_1.executeUpdate();
+						insertNotificationIntoNotifications.setString(1, notification_id);
+						insertNotificationIntoNotifications.setString(2, notify.getSourceAccountNumber());
+						insertNotificationIntoNotifications.setString(3, notify.getMessage());
+						insertNotificationIntoNotifications.execute();
+							
 						
-						UpdateItemVisability_0.setInt(1,x);
-						UpdateItemVisability_0.executeUpdate();
+						insertNotificationIntoNotificationsRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
+		
+							for(String employeeID : notify.getDestination()) {
+								System.out.println("We are adding to the recipient junctions");
+								insertNotificationIntoNotificationsRecipients.setString(1, notify.getNotificationID());
+								insertNotificationIntoNotificationsRecipients.setString(2, employeeID);
+								insertNotificationIntoNotificationsRecipients.addBatch();
+							}
+							
+							insertNotificationIntoNotificationsRecipients.executeBatch();
+						
+					
 						
 				}
 				
 				
 				finally {
-				DBUtil.closeQuietly(addNotification);
-				DBUtil.closeQuietly(UpdateItemVisability_0);
-	
+				DBUtil.closeQuietly(insertNotificationIntoNotificationsRecipients);
+				DBUtil.closeQuietly(insertNotificationIntoNotifications);
+				
 				}
 				return true;
 			
