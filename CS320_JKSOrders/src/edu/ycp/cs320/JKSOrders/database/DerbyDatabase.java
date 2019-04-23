@@ -838,7 +838,37 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void addNotification(Notification notify) {
-		// TODO Auto-generated method stub
+		
+		
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement addNotification= null;
+			
+				
+				try {	
+						addNotification = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ?; ");
+						
+						
+						UpdateItemVisability_1.setInt(1,x);
+						UpdateItemVisability_1.executeUpdate();
+						
+						UpdateItemVisability_0.setInt(1,x);
+						UpdateItemVisability_0.executeUpdate();
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(addNotification);
+				DBUtil.closeQuietly(UpdateItemVisability_0);
+	
+				}
+				return true;
+			
+		}
+	});
 		
 	}
 
