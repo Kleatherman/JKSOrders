@@ -842,7 +842,7 @@ class DerbyDatabase implements Database {
 		ArrayList<Notification> result= new ArrayList<Notification>();
 		ArrayList<Notification> full = this.getNotifications();
 		for(int i=0; i<full.size(); i++) {
-			if(full.get(i).getNotificationID().equals(ownerAccountNumber)) {
+			if(full.get(i).getSourceAccountNumber().equals(ownerAccountNumber)) {
 				result.add(full.get(i));
 				
 			}
