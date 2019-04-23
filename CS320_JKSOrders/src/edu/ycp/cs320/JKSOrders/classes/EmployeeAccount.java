@@ -12,7 +12,12 @@ public class EmployeeAccount extends Account{
 	 * @return true if the employee is a manager
 	 */
 	public boolean isManager() {
-		return manager;
+		char[] number = this.getAccountNumber().toCharArray();
+		if(number[0]=='M') {
+			return true;
+		}
+		else
+			return false;
 	}
 
 	/**
