@@ -96,4 +96,14 @@ public class DerbyTest {
 		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
 		assertTrue(notifications.get(1).getNotificationID().equals("U1"));
 	}
+	
+	@Test
+	public void testGetNotification() {
+		Notification notify = db.getNotification("N0");
+		assertTrue(notify.getDestination().size()==3);
+		assertTrue(notify.getMessage().equals("HELLO world"));
+		notify = db.getNotification("U0");
+		assertTrue(notify.getDestination().size()==1);
+		assertTrue(notify.getSourceAccountNumber().equals("M0"));
+	}
 }
