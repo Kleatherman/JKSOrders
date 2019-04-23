@@ -84,7 +84,7 @@ public class CustomerLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
-				CustomerAccount account = (CustomerAccount) db.getAccount(model.getUserName());
+				CustomerAccount account = (CustomerAccount) db.getCustomerAccount(model.getUserName());
 				ArrayList<Item> items = db.getVisibleItems();
 				req.setAttribute("accountNumber", account.getAccountNumber());
 				System.out.println("StorePage: "+ items.get(0).getDescription());

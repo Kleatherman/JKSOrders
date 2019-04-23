@@ -195,6 +195,7 @@ public class InitialData {
 				Item item = new Item();
 				item.setUPC(i.next());
 				item.setItemName(i.next());
+				item.setDescription(i.next());
 				item.setPrice(Float.parseFloat(i.next()));
 				item.setLocation(i.next());
 				item.setNumInInventory(Integer.parseInt(i.next()));
