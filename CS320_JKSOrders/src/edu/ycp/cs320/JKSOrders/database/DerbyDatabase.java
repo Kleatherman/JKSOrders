@@ -870,7 +870,7 @@ class DerbyDatabase implements Database {
 							notification_id = "U"+ urgents;
 						}
 						else 
-							notification_id = "U"+ (notifications.size() - urgents);
+							notification_id = "n"+ (notifications.size() - urgents);
 						
 						insertNotificationIntoNotifications = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
 					
