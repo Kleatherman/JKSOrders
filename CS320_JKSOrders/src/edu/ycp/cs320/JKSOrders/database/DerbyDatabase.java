@@ -838,7 +838,75 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void addNotification(Notification notify) {
-		// TODO Auto-generated method stub
+		
+		
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement insertNotificationIntoNotifications = null;
+				
+
+				PreparedStatement insertNotificationIntoNotificationsRecipients = null;
+			
+				
+				try {	
+						ArrayList<Notification> notifications = new ArrayList<Notification>();
+						
+						notifications = getNotifications();
+						
+						int urgents = 0;
+						String notification_id=null;
+						
+						for (Notification notification : notifications) 
+						{ 
+						   if (notification.getUrgency()) {
+							   urgents++;
+						   }
+						   
+						}
+						
+						if(notify.getUrgency()) {
+							notification_id = "U"+ urgents;
+						}
+						else 
+							notification_id = "n"+ (notifications.size() - urgents);
+						
+						insertNotificationIntoNotifications = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
+					
+						
+						
+						insertNotificationIntoNotifications.setString(1, notification_id);
+						insertNotificationIntoNotifications.setString(2, notify.getSourceAccountNumber());
+						insertNotificationIntoNotifications.setString(3, notify.getMessage());
+						insertNotificationIntoNotifications.execute();
+							
+						
+						insertNotificationIntoNotificationsRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
+		
+							for(String employeeID : notify.getDestination()) {
+								System.out.println("We are adding to the recipient junctions");
+								insertNotificationIntoNotificationsRecipients.setString(1, notify.getNotificationID());
+								insertNotificationIntoNotificationsRecipients.setString(2, employeeID);
+								insertNotificationIntoNotificationsRecipients.addBatch();
+							}
+							
+							insertNotificationIntoNotificationsRecipients.executeBatch();
+						
+					
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(insertNotificationIntoNotificationsRecipients);
+				DBUtil.closeQuietly(insertNotificationIntoNotifications);
+				
+				}
+				return true;
+			
+		}
+	});
 		
 	}
 
