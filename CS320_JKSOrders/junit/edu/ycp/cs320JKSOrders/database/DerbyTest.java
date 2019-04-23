@@ -88,7 +88,6 @@ public class DerbyTest {
 	@Test
 	public void testGetNotifications() {
 		ArrayList<Notification> notifications = db.getNotifications("M0");
-		System.out.println(notifications.size());
 		assertTrue(notifications.size()==1);
 		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
 		notifications = db.getNotifications("M2");
@@ -101,9 +100,21 @@ public class DerbyTest {
 	public void testGetNotification() {
 		Notification notify = db.getNotification("N0");
 		assertTrue(notify.getDestination().size()==3);
-		assertTrue(notify.getMessage().equals("HELLO world"));
+		assertTrue(notify.getMessage().equals("HELLO World"));
 		notify = db.getNotification("U0");
 		assertTrue(notify.getDestination().size()==1);
 		assertTrue(notify.getSourceAccountNumber().equals("M0"));
+	}
+	
+	@Test
+	public void testGetSourceNotifications() {
+		ArrayList<Notification> notifications = db.getSourceNotifications("M0");
+		assertTrue(notifications.size()==1);
+		assertTrue(notifications.get(0).getDestination().size()==1);
+		assertTrue(notifications.get(0).getNotificationID().equals("U0"));
+		notifications = db.getSourceNotifications("M2");
+		assertTrue(notifications.size()==2);
+		assertTrue(notifications.get(0).getNotificationID().equals("N0"));
+		assertTrue(notifications.get(1).getNotificationID().equals("U2"));
 	}
 }
