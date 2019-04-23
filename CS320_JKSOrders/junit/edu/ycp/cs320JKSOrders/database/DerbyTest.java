@@ -174,5 +174,17 @@ public class DerbyTest {
 		account = db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1);
 		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
 	}
+	
+	@Test
+	public void testGetLastCustomerAccountNumber() {
+		String lastAccountNum = db.getLastCustomerAccountNumber();
+		assertTrue(lastAccountNum.equals(db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1).getAccountNumber()));
+	}
+	
+	@Test
+	public void testGetLastEmployeeAccountNumber() {
+		String lastAccountNum = db.getLastEmployeeAccountNumber();
+		assertTrue(lastAccountNum.equals(db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1).getAccountNumber()));
+	}
 
 }
