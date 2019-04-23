@@ -28,17 +28,17 @@ public class DerbyTest {
 	@Before
 	public void setUp() {
 		db = new InitDerbyDatabase().init();
-		
+		Clist= db.getCustomerAccounts();
+		Elist= db.getEmployeeAccounts();
+		Ilist = db.getVisibleItems();
 	}
 	@Test 
 	public void testGetEmployeeAccounts() {
-		Elist= db.getEmployeeAccounts();
 		assertTrue(Elist.size()==3);
 		assertTrue( Elist.get(0).getAccountNumber().equals("M0"));
 	}
 	@Test 
 	public void testGetCustomersAccounts() {
-		Clist= db.getCustomerAccounts();
 		assertTrue(Clist.size()==3);
 		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
 	}
@@ -57,7 +57,6 @@ public class DerbyTest {
 	
 	@Test
 	public void testGetVisibleItems() {
-		Ilist = db.getVisibleItems();
 		assertTrue(Ilist.size()==2);
 		for(Item item : Ilist) {
 			assertTrue(item.isVisable());
@@ -99,30 +98,30 @@ public class DerbyTest {
 	@Test
 	public void testGetEmployeeAccountFromName() {
 		EmployeeAccount eaccount= db.getEmployeeAccount("M0");
-		assertTrue(Elist.get(0).equals(eaccount));
+		assertTrue(Elist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
 		eaccount = db.getEmployeeAccount("Samuel");
-		assertTrue(Elist.get(0).equals(eaccount));
+		assertTrue(Elist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
 		eaccount= db.getEmployeeAccount("kleatherman");
-		assertTrue(Elist.get(1).equals(eaccount));
+		assertTrue(Elist.get(1).getAccountNumber().equals(eaccount.getAccountNumber()));
 		
 	}
 	@Test
 	public void testGetCustomerAccountFromName() {
 		CustomerAccount eaccount= db.getCustomerAccount("C0");
-		assertTrue(Clist.get(0).equals(eaccount));
+		assertTrue(Clist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
 		eaccount = db.getCustomerAccount("Samuel");
-		assertTrue(Clist.get(0).equals(eaccount));
+		assertTrue(Clist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
 		eaccount= db.getCustomerAccount("kleatherman");
-		assertTrue(Clist.get(1).equals(eaccount));
+		assertTrue(Clist.get(1).getAccountNumber().equals(eaccount.getAccountNumber()));
 	}
 	@Test
 	public void testGetAccount() {
 		Account account= db.getAccount("C0");
-		assertTrue(Clist.get(0).equals(account));
-		account = db.getCustomerAccount("M0");
-		assertTrue(Elist.get(0).equals(account));
-		account= db.getCustomerAccount("C2");
-		assertTrue(Clist.get(2).equals(account));
+		assertTrue(Clist.get(0).getAccountNumber().equals(account.getAccountNumber()));
+		account = db.getAccount("M0");
+		assertTrue(Elist.get(0).getAccountNumber().equals(account.getAccountNumber()));
+		account= db.getAccount("C2");
+		assertTrue(Clist.get(2).getAccountNumber().equals(account.getAccountNumber()));
 	}
 	@Test
 	public void testGetAllEmployeeName() {
