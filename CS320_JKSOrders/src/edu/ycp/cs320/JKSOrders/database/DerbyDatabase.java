@@ -881,13 +881,23 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public EmployeeAccount getEmployeeAccount(String name) {
-		// TODO Auto-generated method stub
+		ArrayList<EmployeeAccount> accounts = this.getEmployeeAccounts();
+		for(EmployeeAccount account : accounts) {
+			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+				return account;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public CustomerAccount getCustomerAccount(String name) {
-		// TODO Auto-generated method stub
+		ArrayList<CustomerAccount> accounts = this.getCustomerAccounts();
+		for(CustomerAccount account : accounts) {
+			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+				return account;
+			}
+		}
 		return null;
 	}
 
@@ -905,7 +915,18 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public Account getAccount(String accountNumber) {
-		// TODO Auto-generated method stub
+		ArrayList<EmployeeAccount> employees = this.getEmployeeAccounts();
+		ArrayList<CustomerAccount> customers = this.getCustomerAccounts();
+		for(Account employee : employees) {
+			if(employee.getAccountNumber().equals(accountNumber)) {
+				return employee;
+			}
+		}
+		for(Account customer : customers) {
+			if(customer.getAccountNumber().equals(accountNumber)) {
+				return customer;
+			}
+		}
 		return null;
 	}
 
@@ -929,8 +950,12 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<String> AllEmployeeNames() {
-		// TODO Auto-generated method stub
-		return null;
+		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<EmployeeAccount> employees = this.getEmployeeAccounts();
+		for(EmployeeAccount employee : employees) {
+			names.add(employee.getFirstName()+" "+employee.getLastName());
+		}
+		return names;
 	}
 
 	@Override
