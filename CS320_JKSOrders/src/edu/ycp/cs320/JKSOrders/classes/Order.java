@@ -84,4 +84,10 @@ public class Order {
 		QuantityMap.put(item.getUPC(), quantity);
 	}
 	
+	public void setTotalPrice() {
+		totalPrice = 0.0;
+		for(Item item : Itemlist) {
+			totalPrice += (item.getPrice()*QuantityMap.get(item.getUPC()));
+		}
+	}
 }

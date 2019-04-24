@@ -6,14 +6,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.database.InitFakeDatabase;
 
-public class databaseTest {
+public class FakeDatabaseTest {
 	Database db;
 	@Before
 	public void setUp() {
-		db = InitDatabase.init();
+		db = InitFakeDatabase.init();
 	}
 	@Test
 	public void deleteNotificationTest() {
@@ -21,5 +23,8 @@ public class databaseTest {
 		db.deleteNotification(notify.getNotificationID());
 		assertTrue(db.getNotification(notify.getNotificationID())==null);
 	}
+	
+	
+	
 
 }
