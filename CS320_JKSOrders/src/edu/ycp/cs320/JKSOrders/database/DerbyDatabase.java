@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.javafx.collections.MappingChange.Map;
+
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
@@ -519,7 +521,7 @@ class DerbyDatabase implements Database {
 						result.add(customer);
 					}
 					
-					// check if any authors were found
+					// check if any employees were found
 					if (!found) {
 						System.out.println("No employees were found in the database");
 					}
@@ -797,16 +799,114 @@ class DerbyDatabase implements Database {
 			}
 		});
 	}
-
+	//
 	@Override
 	public void setVisibility(int x) {
-		// TODO Auto-generated method stub
 		
-	}
-
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement UpdateItemVisability_1= null;
+				PreparedStatement UpdateItemVisability_0= null;
+				
+				try {	
+						UpdateItemVisability_1 = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ? ");
+						UpdateItemVisability_0 = conn.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ? ");
+						
+						UpdateItemVisability_1.setInt(1,x);
+						UpdateItemVisability_1.executeUpdate();
+						
+						UpdateItemVisability_0.setInt(1,x);
+						UpdateItemVisability_0.executeUpdate();
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(UpdateItemVisability_1);
+				DBUtil.closeQuietly(UpdateItemVisability_0);
+	
+				}
+				return true;
+			
+		}
+	});
+		
+	
+}
+	//
 	@Override
 	public void addNotification(Notification notify) {
-		// TODO Auto-generated method stub
+		
+		
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement insertNotificationIntoNotifications = null;
+				
+
+				PreparedStatement insertNotificationIntoNotificationsRecipients = null;
+			
+				
+				try {	
+						ArrayList<Notification> notifications = new ArrayList<Notification>();
+						
+						notifications = getNotifications();
+						
+						int urgents = 0;
+						String notification_id=null;
+						
+						for (Notification notification : notifications) 
+						{ 
+						   if (notification.getUrgency()) {
+							   urgents++;
+						   }
+						   
+						}
+						
+						if(notify.getUrgency()) {
+							notification_id = "U"+ urgents;
+						}
+						else 
+							notification_id = "n"+ (notifications.size() - urgents);
+						
+						insertNotificationIntoNotifications = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
+					
+						
+						
+						insertNotificationIntoNotifications.setString(1, notification_id);
+						insertNotificationIntoNotifications.setString(2, notify.getSourceAccountNumber());
+						insertNotificationIntoNotifications.setString(3, notify.getMessage());
+						insertNotificationIntoNotifications.execute();
+							
+						
+						insertNotificationIntoNotificationsRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
+		
+							for(String employeeID : notify.getDestination()) {
+								System.out.println("We are adding to the recipient junctions");
+								insertNotificationIntoNotificationsRecipients.setString(1, notify.getNotificationID());
+								insertNotificationIntoNotificationsRecipients.setString(2, employeeID);
+								insertNotificationIntoNotificationsRecipients.addBatch();
+							}
+							
+							insertNotificationIntoNotificationsRecipients.executeBatch();
+						
+					
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(insertNotificationIntoNotificationsRecipients);
+				DBUtil.closeQuietly(insertNotificationIntoNotifications);
+				
+				}
+				return true;
+			
+		}
+	});
 		
 	}
 
@@ -904,13 +1004,13 @@ class DerbyDatabase implements Database {
 		}
 		return null;
 	}
-
+	//
 	@Override
 	public void addEmployeeAccount(EmployeeAccount account) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	//
 	@Override
 	public void addCustomerAccount(CustomerAccount account) {
 		// TODO Auto-generated method stub
@@ -951,7 +1051,7 @@ class DerbyDatabase implements Database {
 		
 		return result;
 	}
-
+	//
 	@Override
 	public void deleteNotification(String notification_id) {
 		// TODO Auto-generated method stub
@@ -967,7 +1067,7 @@ class DerbyDatabase implements Database {
 		}
 		return names;
 	}
-
+	//
 	@Override
 	public void updateNotification(Notification notify) {
 		// TODO Auto-generated method stub
