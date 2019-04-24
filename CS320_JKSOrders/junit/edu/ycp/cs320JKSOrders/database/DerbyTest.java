@@ -292,8 +292,9 @@ public class DerbyTest {
 	
 	@Test
 	public void testDeleteNotifications() {
-		assertTrue(Clist.size()==5);
-		
+		Nlist= db.getNotifications();
+		assertTrue(Nlist.size()==5);
+		db.deleteNotification("U0");
 	}
 	
 
