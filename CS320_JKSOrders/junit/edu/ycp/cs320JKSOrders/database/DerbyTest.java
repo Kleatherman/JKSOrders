@@ -216,7 +216,7 @@ public class DerbyTest {
 		db.addNotification(notify);
 		Nlist= db.getNotifications();
 		assertTrue(Nlist.size()==5);
-		assertTrue(Nlist.get(0).getMessage().equals("HELLO world"));
+		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(4).getMessage().equals("I'm dummy thicc"));
 		assertTrue(Nlist.get(4).getUrgency().equals(true));
 		assertTrue(Nlist.get(4).getSourceAccountNumber().equals("M1"));
@@ -287,6 +287,12 @@ public class DerbyTest {
 		assertTrue(Clist.get(3).getCreditCard().getNameOnCard().equals("Bob"));
 		assertTrue(Clist.get(3).getPickUpInfo().getCar().getOwner()!= null);
 		assertTrue(Clist.get(3).getPickUpInfo().getCar().getBrand().equals("Ford"));
+		
+	}
+	
+	@Test
+	public void testDeleteNotifications() {
+		assertTrue(Clist.size()==5);
 		
 	}
 	
