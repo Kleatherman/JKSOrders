@@ -41,6 +41,7 @@ public class ThankYouServlet extends HttpServlet {
 			Account account =  db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
 		}
+		req.getSession().setAttribute("orderNumber", null);
 		if(req.getParameter("storePage")!= null) {
 			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
