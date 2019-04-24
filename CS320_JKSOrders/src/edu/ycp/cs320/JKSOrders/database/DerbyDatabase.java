@@ -785,7 +785,7 @@ class DerbyDatabase implements Database {
 							result.add(item);
 						}
 					}
-					// check if any authors were found
+					
 					if (!found) {
 						System.out.println("No visible items were found in the database");
 					}
@@ -872,7 +872,7 @@ class DerbyDatabase implements Database {
 							notification_id = "U"+ urgents;
 						}
 						else 
-							notification_id = "n"+ (notifications.size() - urgents);
+							notification_id = "N"+ (notifications.size() - urgents);
 						
 						insertNotificationIntoNotifications = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
 					
@@ -1074,5 +1074,29 @@ class DerbyDatabase implements Database {
 	public void updateNotification(Notification notify) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public String getLastOrderNumber() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addOrder(Order order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateOrder(Order order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Order getOrder(String orderNumber) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

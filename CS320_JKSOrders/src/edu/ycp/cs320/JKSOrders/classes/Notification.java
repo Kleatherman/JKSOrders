@@ -66,8 +66,8 @@ public class Notification {
 		}
 		else
 			return false;
-	}
 		}
+	}
 
 	/**
 	 * @param urgency urgency to set
