@@ -244,5 +244,12 @@ public class SystemController {
 		}
 		return false;
 	}
+	
+	public String generateNextOrderNumber(Database db, char firstCharacter) {
+		String lastOrderNumber = (String) db.getLastOrderNumber();
+		Integer lastDigit = Integer.parseInt(lastOrderNumber.substring(1, lastOrderNumber.length()));
+		lastDigit++;
+		return firstCharacter+lastDigit.toString();
+	}
 
 }
