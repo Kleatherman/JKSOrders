@@ -855,6 +855,8 @@ class DerbyDatabase implements Database {
 						
 						notifications = getNotifications();
 						
+						System.out.println("test" + notifications.size());
+						
 						int urgents = 0;
 						String notification_id=null;
 						

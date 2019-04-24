@@ -216,6 +216,7 @@ public class DerbyTest {
 		db.addNotification(notify);
 		Nlist= db.getNotifications();
 		assertTrue(Nlist.size()==5);
+		System.out.printf(Nlist.get(0).getMessage());
 		assertTrue(Nlist.get(0).getMessage().equals("HELLO world"));
 		assertTrue(Nlist.get(4).getMessage().equals("I'm dummy thicc"));
 		assertTrue(Nlist.get(4).getUrgency().equals(true));
