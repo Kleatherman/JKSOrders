@@ -9,6 +9,7 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 
 public interface Database {
 
@@ -133,4 +134,12 @@ public interface Database {
 	public ArrayList<String> AllEmployeeNames();
 
 	public void updateNotification(Notification notify);
+	
+	public String getLastOrderNumber();
+	
+	public void addOrder(Order order);
+	
+	public void updateOrder(Order order);
+	
+	public Order getOrder(String orderNumber);
 }
