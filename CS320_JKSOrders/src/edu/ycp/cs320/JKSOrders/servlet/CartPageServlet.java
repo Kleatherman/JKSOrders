@@ -56,6 +56,14 @@ public class CartPageServlet  extends HttpServlet{
 		else if(req.getParameter("checkOut")!=null) {
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}
+		else if(req.getParameter("cancelOrder")!=null) {
+			req.getSession().setAttribute("orderNumber", null);
+			ArrayList<Item> items = new ArrayList<Item>();
+			items = db.getVisibleItems();
+			System.out.println("StorePage: "+ items.get(0).getDescription());
+			req.setAttribute("items", items);
+			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}
