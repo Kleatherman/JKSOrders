@@ -886,7 +886,9 @@ class DerbyDatabase implements Database {
 							
 						
 						insertNotificationIntoNotificationsRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
-		
+						
+		// This line is needed because the batch executes in reverse order
+						
 						Collections.reverse(notify.getDestination());
 						
 							for(String employeeID : notify.getDestination()) {
