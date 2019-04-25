@@ -34,6 +34,8 @@
 							<input type="Submit" name="thankYou" value="Submit Order">
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
+						
+  					  <div style="color: red">${errorMessage}</div><br />
 					</form>
 				</div>
 				<div class="col-sm-4" style="background-color:lavender;">space</div>

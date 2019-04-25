@@ -134,15 +134,29 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {
-			//Order cartOrder = db.getOrder(currentOrderNumber);
-			Order cartOrder = db.getOrder("P0");
+			boolean itemsAreHere = false;
+			Order cartOrder = db.getOrder(currentOrderNumber);
+			//Order cartOrder = db.getOrder("P0");
 			CartModel cartModel = new CartModel();
 			cartModel.setAccount(db.getCustomerAccount(accountNumber));
-			cartOrder.setItemQuantities();
+			if(cartOrder!=null) {
+				cartOrder.setItemQuantities();
+				itemsAreHere = true;
+			}
+			
 			cartModel.setOrder(cartOrder);
 			req.setAttribute("cartModel", cartModel);
 			req.setAttribute("accountNumber", accountNumber);
-			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			if(itemsAreHere) {
+				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			}
+			else if(!itemsAreHere){
+				ArrayList<Item> itemList = db.getVisibleItems();
+				req.setAttribute("items", itemList);
+				req.setAttribute("model", model);
+				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+			}
 		}
 		else {
 			throw new ServletException("Unknown command");
