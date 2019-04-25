@@ -888,7 +888,7 @@ class DerbyDatabase implements Database {
 		
 							for(String employeeID : notify.getDestination()) {
 								System.out.println("We are adding to the recipient junctions");
-								insertNotificationIntoNotificationsRecipients.setString(1, notify.getNotificationID());
+								insertNotificationIntoNotificationsRecipients.setString(1, notification_id);
 								insertNotificationIntoNotificationsRecipients.setString(2, employeeID);
 								insertNotificationIntoNotificationsRecipients.addBatch();
 							}
