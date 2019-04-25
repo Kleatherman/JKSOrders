@@ -1014,13 +1014,64 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void addEmployeeAccount(EmployeeAccount account) {
-		// TODO Auto-generated method stub
+
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+
+				PreparedStatement stmt1 = null;
+			
+				
+				try {	
+						
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(stmt);
+				DBUtil.closeQuietly(stmt1);
+				
+				}
+				return true;
+			
+		}
+	});
 		
 	}
+
 	//
 	@Override
 	public void addCustomerAccount(CustomerAccount account) {
-		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+
+				PreparedStatement stmt1 = null;
+			
+				
+				try {	
+						
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(stmt);
+				DBUtil.closeQuietly(stmt1);
+				
+				}
+				return true;
+			
+		}
+	});
+		
 		
 	}
 
@@ -1077,7 +1128,32 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void updateNotification(Notification notify) {
-		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+
+				PreparedStatement stmt1 = null;
+			
+				
+				try {	
+						
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(stmt);
+				DBUtil.closeQuietly(stmt1);
+				
+				}
+				return true;
+			
+		}
+	});
+		
 		
 	}
 
@@ -1089,13 +1165,63 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public void addOrder(Order order) {
-		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+
+				PreparedStatement stmt1 = null;
+			
+				
+				try {	
+						
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(stmt);
+				DBUtil.closeQuietly(stmt1);
+				
+				}
+				return true;
+			
+		}
+	});
+		
 		
 	}
 
 	@Override
 	public void updateOrder(Order order) {
-		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				
+				PreparedStatement stmt = null;
+				
+
+				PreparedStatement stmt1 = null;
+			
+				
+				try {	
+						
+						
+				}
+				
+				
+				finally {
+				DBUtil.closeQuietly(stmt);
+				DBUtil.closeQuietly(stmt1);
+				
+				}
+				return true;
+			
+		}
+	});
+		
 		
 	}
 
