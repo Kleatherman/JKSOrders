@@ -856,7 +856,6 @@ class DerbyDatabase implements Database {
 						
 						notifications = getNotifications();
 						
-						System.out.println("test" + notifications.size());
 						
 						int urgents = 0;
 						String notification_id=null;
@@ -1019,18 +1018,49 @@ class DerbyDatabase implements Database {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 				
-				PreparedStatement insertEmployeeaccount = null;
+				PreparedStatement insertEmployee = null;
 				
-				
+				PreparedStatement insertLoginInfo = null;
+			
 				try {	
 						
+					int Managers = 0;
+					String Account_id=null;
+					
+					
+					
+					if(account.isManager()) {
+						Account_id = "M"+ Managers;
+					}
+					else 
+						Account_id = "N"+ (account() - Managers);
+					
+					
+					insertEmployee = conn.prepareStatement("insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
+		
+						insertEmployee.setString(1, Account_id);
+						insertEmployee.setString(2, account.getFirstName());
+						insertEmployee.setString(3, account.getLastName());
+						insertEmployee.setString(4, account.getEmail());
+						insertEmployee.setString(5, account.getPhoneNumber());
+						insertEmployee.execute();
+					
+					
+					
+					insertLoginInfo = conn.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
+						insertLoginInfo.setString(1, account.getLogin().getOwnerAccount());
+						insertLoginInfo.setString(2, account.getLogin().getUserName());
+						insertLoginInfo.setString(3, account.getLogin().getPassword());
+					
+						insertLoginInfo.execute();	
 						
 				}
 				
 				
 				finally {
 					
-				DBUtil.closeQuietly(insertEmployeeaccount);
+				DBUtil.closeQuietly(insertEmployee);
+				DBUtil.closeQuietly(insertLoginInfo);
 				
 				
 				}
@@ -1048,25 +1078,41 @@ class DerbyDatabase implements Database {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 				
-				PreparedStatement stmt = null;
+				PreparedStatement insertCustomeraccount = null;
+				
+				PreparedStatement insertLoginInfo = null;
 				
 
-				PreparedStatement stmt1 = null;
-			
+				PreparedStatement insertCreditCard = null;
+				
+				PreparedStatement insertCar = null;
 				
 				try {	
 						
+					
+					
+					
+					
+					insertLoginInfo = conn.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
+						insertLoginInfo.setString(1, account.getLogin().getOwnerAccount());
+						insertLoginInfo.setString(2, account.getLogin().getUserName());
+						insertLoginInfo.setString(3, account.getLogin().getPassword());
+					
+						insertLoginInfo.execute();	
 						
 				}
 				
 				
 				finally {
-				DBUtil.closeQuietly(stmt);
-				DBUtil.closeQuietly(stmt1);
+					
+				DBUtil.closeQuietly(insertCustomeraccount);
+				DBUtil.closeQuietly(insertLoginInfo);
+				DBUtil.closeQuietly(insertCreditCard);
+				DBUtil.closeQuietly(insertCar);
+				
 				
 				}
 				return true;
-			
 		}
 	});
 		
