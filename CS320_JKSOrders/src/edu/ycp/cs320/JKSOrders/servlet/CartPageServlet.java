@@ -8,17 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.ycp.cs320.JKSOrders.classes.Account;
-import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
-import edu.ycp.cs320.JKSOrders.classes.Notification;
-import edu.ycp.cs320.JKSOrders.controller.EditNotificationController;
-import edu.ycp.cs320.JKSOrders.controller.SystemController;
-import edu.ycp.cs320.JKSOrders.controller.WorkPageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
-import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
-import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
 
@@ -40,7 +32,7 @@ public class CartPageServlet  extends HttpServlet{
 	}
 	
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		Database db = InitDatabase.init();
 		String accountNumber = (String)req.getParameter("accountNumber");
@@ -52,22 +44,17 @@ public class CartPageServlet  extends HttpServlet{
 			System.out.println("StorePage: "+ items.get(0).getDescription());
 			req.setAttribute("items", items);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
-		}
-		else if(req.getParameter("checkOut")!=null) {
+		}else if(req.getParameter("checkOut")!=null) {
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
-		}
-		else if(req.getParameter("cancelOrder")!=null) {
+		}else if(req.getParameter("cancelOrder")!=null) {
 			req.getSession().setAttribute("orderNumber", null);
 			ArrayList<Item> items = new ArrayList<Item>();
 			items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
 			req.setAttribute("items", items);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
-		}
-		else {
+		}else {
 			throw new ServletException("Unknown command");
 		}
-		
 	}
-
 }

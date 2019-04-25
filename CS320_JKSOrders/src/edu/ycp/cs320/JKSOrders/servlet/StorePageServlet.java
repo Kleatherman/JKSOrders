@@ -14,10 +14,12 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.classes.Pair;
+import edu.ycp.cs320.JKSOrders.controller.CartController;
 import edu.ycp.cs320.JKSOrders.controller.StorePageController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.CartModel;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -132,6 +134,13 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {
+			//Order cartOrder = db.getOrder(currentOrderNumber);
+			Order cartOrder = db.getOrder("P0");
+			CartModel cartModel = new CartModel();
+			cartModel.setAccount(db.getCustomerAccount(accountNumber));
+			cartOrder.setItemQuantities();
+			cartModel.setOrder(cartOrder);
+			req.setAttribute("cartModel", cartModel);
 			req.setAttribute("accountNumber", accountNumber);
 			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
 		}

@@ -7,10 +7,8 @@ import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Order;
 
 public class CartModel {
-	private ArrayList<Item> items;
-	private float price;
-	CustomerAccount account;
-	Order order;
+	private CustomerAccount account;
+	private Order order;
 	
 	public Order getOrder() {
 		return order;
@@ -20,30 +18,8 @@ public class CartModel {
 		this.order = order;
 	}
 
-	public CartModel(ArrayList<Item> items, float price) {
-		this.items = items;
-		this.price = price;
-	}
-
-	public CartModel() {
-		items = new ArrayList<Item>();
-		price = 0;
-	}
-	
-	public ArrayList<Item> getItems() {
-		return items;
-	}
-
-	public void setItems(ArrayList<Item> items) {
-		this.items = items;
-	}
-
 	public float getPrice() {
-		return price;
-	}
-
-	public void setPrice(float price) {
-		this.price = price;
+		return (float)order.getTotalPrice();
 	}
 
 	public CustomerAccount getAccount() {
@@ -53,10 +29,9 @@ public class CartModel {
 	public void setAccount(CustomerAccount account) {
 		this.account = account;
 	}
-
-	public Item getItem(int i) {
-		return items.get(i);
-	}
 	
+	public ArrayList<Item> getItemArrayList() {
+		return order.getItemlist();
+	}
 	
 }

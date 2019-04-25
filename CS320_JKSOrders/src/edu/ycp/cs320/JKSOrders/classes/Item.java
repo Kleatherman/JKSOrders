@@ -2,6 +2,7 @@ package edu.ycp.cs320.JKSOrders.classes;
 
 public class Item {
 	private String itemName;
+	private Integer numInOrder;
 	private Integer numInInventory;
 	private String UPC;
 	private double price;
@@ -10,6 +11,13 @@ public class Item {
 	private String Photo;
 	private boolean visable;
 	
+	
+	public Integer getNumInOrder() {
+		return numInOrder;
+	}
+	public void setNumInOrder(Integer numInOrder) {
+		this.numInOrder = numInOrder;
+	}
 	/**
 	 * @return name of item
 	 */
