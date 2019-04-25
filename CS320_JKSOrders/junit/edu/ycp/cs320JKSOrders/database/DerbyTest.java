@@ -145,6 +145,7 @@ public class DerbyTest {
 		assertTrue(notify.getMessage().equals("HELLO World"));
 		notify = db.getNotification("U0");
 		assertTrue(notify.getDestination().size()==1);
+		assertTrue(notify.getDestination().get(0).equals("M1"));
 		assertTrue(notify.getSourceAccountNumber().equals("M0"));
 		
 	}
