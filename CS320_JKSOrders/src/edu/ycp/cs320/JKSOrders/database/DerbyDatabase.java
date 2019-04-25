@@ -1019,11 +1019,8 @@ class DerbyDatabase implements Database {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 				
-				PreparedStatement stmt = null;
+				PreparedStatement insertEmployeeaccount = null;
 				
-
-				PreparedStatement stmt1 = null;
-			
 				
 				try {	
 						
@@ -1032,8 +1029,9 @@ class DerbyDatabase implements Database {
 				
 				
 				finally {
-				DBUtil.closeQuietly(stmt);
-				DBUtil.closeQuietly(stmt1);
+					
+				DBUtil.closeQuietly(insertEmployeeaccount);
+				
 				
 				}
 				return true;
