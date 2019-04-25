@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.sun.javafx.collections.MappingChange.Map;
@@ -886,6 +887,8 @@ class DerbyDatabase implements Database {
 						
 						insertNotificationIntoNotificationsRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
 		
+						Collections.reverse(notify.getDestination());
+						
 							for(String employeeID : notify.getDestination()) {
 								System.out.println("We are adding to the recipient junctions");
 								insertNotificationIntoNotificationsRecipients.setString(1, notification_id);
