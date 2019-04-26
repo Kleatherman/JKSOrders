@@ -54,7 +54,19 @@ public class Notification {
 	 * @return urgency of the notification
 	 */
 	public Boolean getUrgency() {
+		if (urgency != null) {
 		return urgency;
+		
+		}
+		
+		else {
+		char[] number = this.getNotificationID().toCharArray();
+		if(number[0]=='U') {
+			return true;
+		}
+		else
+			return false;
+		}
 	}
 
 	/**

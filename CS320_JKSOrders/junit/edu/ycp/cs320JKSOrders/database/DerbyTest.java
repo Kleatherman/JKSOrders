@@ -45,6 +45,7 @@ public class DerbyTest {
 	public void testGetCustomersAccounts() {
 		assertTrue(Clist.size()==3);
 		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
+		assertTrue(Clist.get(0).getPickUpInfo().getCar().getOwner()!= null);
 	}
 	@Test
 	public void testGetCustomerLogin() {
@@ -57,6 +58,7 @@ public class DerbyTest {
 		Llist= db.getEmployeeLoginInfo();
 		assertTrue(Llist.size()==3);
 		assertTrue( Llist.get(0).getPassword().equals("password"));
+		assertTrue(Llist.get(0).getOwnerAccount().equals("M0"));
 	}
 	
 	@Test
@@ -145,7 +147,9 @@ public class DerbyTest {
 		assertTrue(notify.getMessage().equals("HELLO World"));
 		notify = db.getNotification("U0");
 		assertTrue(notify.getDestination().size()==1);
+		assertTrue(notify.getDestination().get(0).equals("M1"));
 		assertTrue(notify.getSourceAccountNumber().equals("M0"));
+		
 	}
 	
 	@Test
@@ -241,12 +245,13 @@ public class DerbyTest {
 		assertTrue(Elist.size()==4);
 		assertTrue(Elist.get(0).getAccountNumber().equals("M0"));
 		assertTrue(Elist.get(3).getAccountNumber()!=null);
-		assertTrue(Elist.get(3).getFirstName().equals("Bob"));
-		assertTrue(Elist.get(3).getLastName().equals("McJoe"));
-		assertTrue(Elist.get(3).getEmail().equals("Yadda@gmail.com"));
-		assertTrue(Elist.get(3).getPhoneNumber().equals("7175559848"));
-		assertTrue(Elist.get(3).getLogin().getOwnerAccount()!= null);
-		assertTrue(Elist.get(3).getLogin().getPassword().equals("password"));
+		System.out.println("\\n\\n\\n\\n\\n\\n\\n"+ Elist.get(3).getFirstName());
+		assertTrue(Elist.get(2).getFirstName().equals("Bob"));
+		assertTrue(Elist.get(2).getLastName().equals("McJoe"));
+		assertTrue(Elist.get(2).getEmail().equals("Yadda@gmail.com"));
+		assertTrue(Elist.get(2).getPhoneNumber().equals("7175559848"));
+		assertTrue(Elist.get(2).getLogin().getOwnerAccount()!= null);
+		assertTrue(Elist.get(2).getLogin().getPassword().equals("password"));
 	}
 	@Test
 	public void testAddCustomerAccount() {
@@ -270,23 +275,25 @@ public class DerbyTest {
 		eaccount.setFirstName("Bob");
 		eaccount.setLastName("McJoe");
 		eaccount.setPhoneNumber("7175559848");
+		eaccount.setPickUpInfo(PUI);
 		eaccount.setCreditCard(card);
 		eaccount.setLogin(login);
 		db.addCustomerAccount(eaccount);
 		Clist= db.getCustomerAccounts();
 		assertTrue(Clist.size()==4);
 		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
-		assertTrue(Clist.get(3).getAccountNumber()!=null);
-		assertTrue(Clist.get(3).getFirstName().equals("Bob"));
-		assertTrue(Clist.get(3).getLastName().equals("McJoe"));
-		assertTrue(Clist.get(3).getEmail().equals("Yadda@gmail.com"));
-		assertTrue(Clist.get(3).getPhoneNumber().equals("7175559848"));
-		assertTrue(Clist.get(3).getLogin().getOwnerAccount()!= null);
-		assertTrue(Clist.get(3).getLogin().getPassword().equals("password"));
-		assertTrue(Clist.get(3).getCreditCard().getAccountNumber()!=null);
-		assertTrue(Clist.get(3).getCreditCard().getNameOnCard().equals("Bob"));
-		assertTrue(Clist.get(3).getPickUpInfo().getCar().getOwner()!= null);
-		assertTrue(Clist.get(3).getPickUpInfo().getCar().getBrand().equals("Ford"));
+		assertTrue(Clist.get(2).getAccountNumber()!=null);
+		assertTrue(Clist.get(2).getFirstName().equals("Bob"));
+		assertTrue(Clist.get(2).getLastName().equals("McJoe"));
+		assertTrue(Clist.get(2).getEmail().equals("Yadda@gmail.com"));
+		assertTrue(Clist.get(2).getPhoneNumber().equals("7175559848"));
+		assertTrue(Clist.get(2).getLogin().getOwnerAccount()!= null);
+		assertTrue(Clist.get(2).getLogin().getPassword().equals("password"));
+		assertTrue(Clist.get(0).getPickUpInfo().getCar().getOwner()!= null);
+		assertTrue(Clist.get(2).getCreditCard().getAccountNumber()!=null);
+		assertTrue(Clist.get(2).getCreditCard().getNameOnCard().equals("Bob"));
+		assertTrue(Clist.get(2).getPickUpInfo().getCar().getOwner()!= null);
+		assertTrue(Clist.get(2).getPickUpInfo().getCar().getBrand().equals("Ford"));
 		
 	}
 	

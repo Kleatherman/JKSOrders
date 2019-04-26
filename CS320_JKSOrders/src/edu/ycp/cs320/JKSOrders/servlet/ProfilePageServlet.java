@@ -16,6 +16,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.ProfilePage;
+import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
 public class ProfilePageServlet extends HttpServlet{
@@ -64,7 +65,10 @@ public class ProfilePageServlet extends HttpServlet{
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("workPage") != null) {
+			WorkPage workModel = new WorkPage();
+			workModel.setOrders(db.getOrders());
 			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
+			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		

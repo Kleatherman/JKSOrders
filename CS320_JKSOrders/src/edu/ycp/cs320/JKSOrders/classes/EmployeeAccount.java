@@ -1,7 +1,7 @@
 package edu.ycp.cs320.JKSOrders.classes;
 
 public class EmployeeAccount extends Account{
-	private boolean manager;
+	private Boolean manager;
 	private Stats stats;
 	
 	public EmployeeAccount() {
@@ -11,13 +11,20 @@ public class EmployeeAccount extends Account{
 	/**
 	 * @return true if the employee is a manager
 	 */
-	public boolean isManager() {
+	public Boolean isManager() {
+		if (manager != null) {
+			return manager;
+			
+			}
+			
+		else {
 		char[] number = this.getAccountNumber().toCharArray();
 		if(number[0]=='M') {
 			return true;
 		}
 		else
 			return false;
+	}
 	}
 
 	/**
