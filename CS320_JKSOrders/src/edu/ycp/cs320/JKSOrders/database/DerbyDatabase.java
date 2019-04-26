@@ -1173,7 +1173,7 @@ class DerbyDatabase implements Database {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-
+				System.out.println(".........................................We are adding a new order with this ID: "+order.getOrderType()+" and this many items: "+order.getItemlist().size());
 				PreparedStatement insertOrder = null;
 
 				PreparedStatement insertOrderItemJunction = null;
@@ -1255,6 +1255,7 @@ class DerbyDatabase implements Database {
 
 		for(Order order : getOrders()) {
 			if (order.getOrderType().equals(orderNumber)) {
+				order.setTotalPrice();
 				return order;
 			}
 				
