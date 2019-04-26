@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.sun.javafx.collections.MappingChange.Map;
 
@@ -1306,7 +1307,6 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public ArrayList<Order> getOrders() {
-
 		return executeTransaction(new Transaction<ArrayList<Order>>() {
 			@Override
 			public ArrayList<Order> execute(Connection conn) throws SQLException {
@@ -1316,42 +1316,41 @@ class DerbyDatabase implements Database {
 				PreparedStatement getOrdersfromOrderItemJunction = null;
 				ResultSet orderItemResults = null;
 				try {
+					ArrayList<Pair<String, String>> orderItem = new ArrayList<Pair<String, String>>();
+					TreeMap<String, Integer> itemQuantityMap = new TreeMap<String, Integer>();
 					getOrdersfromOrders = conn.prepareStatement("select * from orders " + " order by order_id");
-
 					ArrayList<Order> Orders = new ArrayList<Order>();
 					ordersResults = getOrdersfromOrders.executeQuery();
-
 					getOrdersfromOrderItemJunction = conn.prepareStatement(
-							"select * from orders " + " order by order_id");
-
+							"select * from orderItemJunction " + " order by order_id");
 					orderItemResults = getOrdersfromOrderItemJunction.executeQuery();
 					// for testing that a result was returned
-					Boolean found = false;
-					
+					Boolean found = false;		
 					while (orderItemResults.next()) {
-						
+						Pair<String, String> pair = new Pair<String, String>();
+						pair.setLeft(orderItemResults.getString(1));
+						pair.setRight(orderItemResults.getString(2));
+						itemQuantityMap.put(orderItemResults.getString(2), orderItemResults.getInt(3));
+						orderItem.add(pair);
 					}
 
 					while (ordersResults.next()) {
-
+						Catalog catalog = getCatalog();
 						found = true;
 						Order order = new Order();
 						order.setOrderType(ordersResults.getString(1));
 						order.setAccountNum(ordersResults.getString(2));
+						order.setQuantityMap(itemQuantityMap);
 						
+						for(Pair<String, String> pair : orderItem) {
+							if(order.getOrderType().equals(pair.getLeft())) {
+								order.addItem(catalog.getItem(pair.getRight()), itemQuantityMap.get(pair.getRight()));
+							}
+						}
+						order.setItemQuantities();
 						Orders.add(order);
 						
 					}
-						
-						while (orderItemResults.next()) {
-							for(Order order:Orders) {
-		
-							if(order.getOrderType().equals(orderItemResults.getString(1))){
-								
-								order.addItem(getCatalog().getItem(orderItemResults.getString(2)), orderItemResults.getInt(3));
-							}
-							}
-						}
 
 					// check if any authors were found
 					if (!found) {
