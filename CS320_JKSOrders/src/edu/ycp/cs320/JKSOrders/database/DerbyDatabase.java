@@ -1154,8 +1154,8 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public String getLastOrderNumber() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		 return getOrders().get(getOrders().size()-1).getOrderType();
 	}
 
 	@Override
@@ -1202,28 +1202,15 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public void updateOrder(Order order) {
-		executeTransaction(new Transaction<Boolean>() {
-			@Override
-			public Boolean execute(Connection conn) throws SQLException {
+		
+		deleteOrder(order);
+		addOrder(order);
 
-				PreparedStatement stmt = null;
+	}
 
-				PreparedStatement stmt1 = null;
-
-				try {
-
-				}
-
-				finally {
-					DBUtil.closeQuietly(stmt);
-					DBUtil.closeQuietly(stmt1);
-
-				}
-				return true;
-
-			}
-		});
-
+	private void deleteOrder(Order order) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
