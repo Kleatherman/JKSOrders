@@ -1255,8 +1255,8 @@ class DerbyDatabase implements Database {
 	@Override
 	
 	public Order getOrder(String orderNumber) {
-
-		for(Order order : getOrders()) {
+		ArrayList<Order> orders = getOrders();
+		for(Order order : orders) {
 			if (order.getOrderType().equals(orderNumber)) {
 				order.setItemQuantities();
 				order.setTotalPrice();
