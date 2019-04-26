@@ -58,7 +58,7 @@ public class DerbyInitialDataTest {
 	public void testGetCustomerLogin() {
 		assertTrue(InitLC.size()==3);
 		assertTrue( InitLC.get(0).getPassword().equals("password"));
-		assertTrue( InitLC.get(0).getUserName().equals("email1@gmail.com"));
+		assertTrue( InitLC.get(0).getUserName().equals("scesario"));
 	}
 	@Test
 	public void testGetEmployeeLogin() {
@@ -76,8 +76,8 @@ public class DerbyInitialDataTest {
 	public void testGetOrders() {
 		assertTrue(InitO.size()==2);
 		assertTrue(InitO.get(0).getAccountNum().equals("C0"));
-		assertTrue(InitO.get(0).getItemlist().get(0).getUPC().equals("IO"));
-		assertTrue(InitO.get(1).getItemlist().get(0).getUPC().equals("IO"));
+		assertTrue(InitO.get(0).getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(InitO.get(1).getItemlist().get(0).getUPC().equals("I0"));
 	}
 	
 	
@@ -206,5 +206,15 @@ public class DerbyInitialDataTest {
 		for(Item item : InitI) {
 			assertTrue(item.isVisable());
 		}
+	}
+	@Test
+	public void testGetCars() {
+		System.out.println(InitV.size());
+		assertTrue(InitV.size()==3);
+		assertTrue(InitV.get(0).getOwner().equals("C0"));
+		assertTrue(InitV.get(0).getBrand().equals("Ford"));
+		assertTrue(InitV.get(0).getColor().equals("Blue"));
+		assertTrue(InitV.get(0).getYear()== 2016);
+		assertTrue(InitV.get(0).getType().equals("Escape"));
 	}
 }
