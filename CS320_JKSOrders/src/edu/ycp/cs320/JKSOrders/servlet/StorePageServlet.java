@@ -14,10 +14,12 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.classes.Pair;
+import edu.ycp.cs320.JKSOrders.controller.CartController;
 import edu.ycp.cs320.JKSOrders.controller.StorePageController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.CartModel;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -63,12 +65,13 @@ public class StorePageServlet extends HttpServlet {
 			//3: add the item to the order
 			//4: calculate the total price
 			//5: submit the order to be added
-		ArrayList<Pair<Item, String>> itemsToBeAdded = new ArrayList<Pair<Item,String>>();
+		ArrayList<Pair<Item, Integer>> itemsToBeAdded = new ArrayList<Pair<Item,Integer>>();
 		for(Item item : items) {
 			if(req.getParameter(item.getItemName())!=null){
 				addedItemToCart = true;
-				String itemQuantity = req.getParameter(item.getItemName()+"Quantity");
-				itemsToBeAdded.add(new Pair<Item, String>(item, itemQuantity));
+				Integer itemQuantity = getIntegerFromParameter(req.getParameter(item.getItemName()+"Quantity"));
+				if(itemQuantity!=null)
+					itemsToBeAdded.add(new Pair<Item, Integer>(item, itemQuantity));
 			}
 		}
 		if(currentOrderNumber==null&& addedItemToCart==true) {
@@ -76,8 +79,9 @@ public class StorePageServlet extends HttpServlet {
 			req.getSession().setAttribute("orderNumber", currentOrderNumber);
 			order.setAccountNum(accountNumber);
 			order.setOrderType(currentOrderNumber);
-			for(Pair<Item, String> pair : itemsToBeAdded) {
-				order.addItem(pair.getLeft(), Integer.parseInt(pair.getRight()));
+			for(Pair<Item, Integer> pair : itemsToBeAdded) {
+				System.out.println(pair.getLeft()+" : "+pair.getRight());
+				order.addItem(pair.getLeft(), pair.getRight());
 			}
 			order.setTotalPrice();
 			db.addOrder(order);
@@ -90,8 +94,9 @@ public class StorePageServlet extends HttpServlet {
 			//4: submit that order to be updated
 		else if(currentOrderNumber!=null && addedItemToCart==true){ 
 			order = db.getOrder(currentOrderNumber);
-			for(Pair<Item, String> pair : itemsToBeAdded) {
-				order.addItem(pair.getLeft(), Integer.parseInt(pair.getRight()));
+			for(Pair<Item, Integer> pair : itemsToBeAdded) {
+				System.out.println(pair.getLeft()+" : "+pair.getRight());
+				order.addItem(pair.getLeft(), pair.getRight());
 			}
 			order.setTotalPrice();
 			db.updateOrder(order);
@@ -132,8 +137,29 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {
+			boolean itemsAreHere = false;
+			Order cartOrder = db.getOrder(currentOrderNumber);
+			//Order cartOrder = db.getOrder("P0");
+			CartModel cartModel = new CartModel();
+			cartModel.setAccount(db.getCustomerAccount(accountNumber));
+			if(cartOrder!=null) {
+				cartOrder.setItemQuantities();
+				itemsAreHere = true;
+			}
+			
+			cartModel.setOrder(cartOrder);
+			req.setAttribute("cartModel", cartModel);
 			req.setAttribute("accountNumber", accountNumber);
-			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			if(itemsAreHere) {
+				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			}
+			else if(!itemsAreHere){
+				ArrayList<Item> itemList = db.getVisibleItems();
+				req.setAttribute("items", itemList);
+				req.setAttribute("model", model);
+				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+			}
 		}
 		else {
 			throw new ServletException("Unknown command");
@@ -141,4 +167,13 @@ public class StorePageServlet extends HttpServlet {
 
 		
 	}
+	private Integer getIntegerFromParameter(String s) {
+		if (s == null || s.equals("")) {
+			return null;
+		} else {
+			return Integer.parseInt(s);
+		}
+	}
 }
+
+

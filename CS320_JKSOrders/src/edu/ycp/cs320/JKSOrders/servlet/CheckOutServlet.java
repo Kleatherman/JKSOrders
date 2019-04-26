@@ -12,10 +12,12 @@ import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.controller.CheckOutController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.CartModel;
 import edu.ycp.cs320.JKSOrders.model.CheckOut;
 
 public class CheckOutServlet extends HttpServlet {
@@ -66,12 +68,29 @@ public class CheckOutServlet extends HttpServlet {
 			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: " + items.get(0).getDescription());
 			req.setAttribute("items", items);
-			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			req.setAttribute("model", model);
+			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("cart") != null) {
-			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			Order cartOrder = db.getOrder((String)req.getSession().getAttribute("orderNumber"));
+			//Order cartOrder = db.getOrder("P0");
+			boolean itemsAreHere = false;
+			CartModel cartModel = new CartModel();
+			cartModel.setAccount(db.getCustomerAccount(accountNumber));
+			if(cartOrder!=null) {
+				itemsAreHere = true;
+				cartOrder.setItemQuantities();
+			}
+			cartModel.setOrder(cartOrder);
+			req.setAttribute("cartModel", cartModel);
+			req.setAttribute("accountNumber", accountNumber);
+			if(itemsAreHere) {
+				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			}
+			else if(!itemsAreHere) {
+				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
+			}
 		}
-		
 	}
 }

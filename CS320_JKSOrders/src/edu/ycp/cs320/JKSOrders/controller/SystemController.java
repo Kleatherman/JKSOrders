@@ -247,9 +247,13 @@ public class SystemController {
 	
 	public String generateNextOrderNumber(Database db, char firstCharacter) {
 		String lastOrderNumber = (String) db.getLastOrderNumber();
-		Integer lastDigit = Integer.parseInt(lastOrderNumber.substring(1, lastOrderNumber.length()));
-		lastDigit++;
-		return firstCharacter+lastDigit.toString();
+		if(lastOrderNumber != null) {
+			System.out.println(lastOrderNumber.substring(1));
+			Integer lastDigit = Integer.parseInt(lastOrderNumber.substring(1, lastOrderNumber.length()));
+			lastDigit++;
+			return firstCharacter+lastDigit.toString();
+		}
+		return "FakeOrderNumber1";
 	}
 
 }
