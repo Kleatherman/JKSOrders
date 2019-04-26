@@ -492,6 +492,12 @@ public class fakeDatabase implements Database{
 	public ArrayList<Order> getOrders() {
 		return orders;
 	}
+
+	@Override
+	public Order getCars() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

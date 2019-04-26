@@ -1164,17 +1164,32 @@ class DerbyDatabase implements Database {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 
-				PreparedStatement stmt = null;
+				PreparedStatement insertOrder = null;
 
-				PreparedStatement stmt1 = null;
+				PreparedStatement insertOrderItemJunction = null;
 
 				try {
-
-				}
+					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
+					
+						insertOrder.setString(1, order.getOrderType());
+						insertOrder.setString(2, order.getAccountNum());
+						insertOrder.execute();
+				
+					
+					insertOrderItemJunction = conn.prepareStatement(
+							"insert into orderItemJunction (order_id, item_id, quantity) values (?, ?, ?)");
+				
+						for (Item item : order.getItemlist()) {
+							insertOrderItemJunction.setString(1, order.getOrderType());
+							insertOrderItemJunction.setString(2, item.getUPC());
+							insertOrderItemJunction.setInt(3, order.getQuantityMap().get(item.getUPC()));
+							insertOrderItemJunction.addBatch();
+						}
+					}
 
 				finally {
-					DBUtil.closeQuietly(stmt);
-					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(insertOrder);
+					DBUtil.closeQuietly(insertOrderItemJunction);
 
 				}
 				return true;
@@ -1226,7 +1241,9 @@ class DerbyDatabase implements Database {
 	@Override
 	
 	public ArrayList<Order> getOrders() {
-		// TODO Auto-generated method stub
+		
+		
+		
 		return null;
 	}
 }
