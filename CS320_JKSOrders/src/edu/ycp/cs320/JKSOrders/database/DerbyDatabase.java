@@ -1011,6 +1011,7 @@ class DerbyDatabase implements Database {
 				try {
 					String customer_id = ("C" +getCustomerAccounts().size());
 					
+					account.getPickUpInfo().getCar().setOwner(customer_id);
 					insertCustomer = conn.prepareStatement(
 							"insert into customers (customer_id, first_name, last_name, email, phoneNumber, creditCard_id) values (?, ?, ?, ?, ?, ?)");
 						insertCustomer.setString(1, customer_id);
@@ -1025,7 +1026,7 @@ class DerbyDatabase implements Database {
 					insertCar = conn.prepareStatement(
 							"insert into cars (customer_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
 					
-						insertCar.setString(1, customer_id);
+						insertCar.setString(1, account.getPickUpInfo().getCar().getOwner());
 						insertCar.setString(2, account.getPickUpInfo().getCar().getColor());
 						insertCar.setString(3, account.getPickUpInfo().getCar().getBrand());
 						insertCar.setString(4, account.getPickUpInfo().getCar().getType());
