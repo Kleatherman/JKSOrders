@@ -295,6 +295,13 @@ public class DerbyTest {
 		Nlist= db.getNotifications();
 		assertTrue(Nlist.size()==5);
 		db.deleteNotification("U0");
+		Nlist= db.getNotifications();
+		assertTrue(Nlist.size()==4);
+		assertTrue(Nlist.get(0).getNotificationID().equals("U1"));
+		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(1).getNotificationID().equals("U2"));
+		assertTrue(Nlist.get(2).getNotificationID().equals("U3"));
+		assertTrue(Nlist.get(3).getNotificationID().equals("U4"));
 	}
 	
 
