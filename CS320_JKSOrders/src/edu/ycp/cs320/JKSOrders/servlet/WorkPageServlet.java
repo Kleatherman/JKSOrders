@@ -67,6 +67,9 @@ public class WorkPageServlet  extends HttpServlet{
 			req.setAttribute("employeeNames", db.AllEmployeeNames());
 		}
 		if(req.getParameter("notify")!=null) {
+			WorkPage workModel = new WorkPage();
+			workModel.setOrders(db.getOrders());
+			req.setAttribute("model", workModel);
 			notify = new Notification();
 			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			notify.setSourceAccountNumber(accountNumber);
