@@ -142,4 +142,6 @@ public interface Database {
 	public void updateOrder(Order order);
 	
 	public Order getOrder(String orderNumber);
+
+	public ArrayList<Order> getOrders();
 }
