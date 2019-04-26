@@ -787,8 +787,6 @@ class DerbyDatabase implements Database {
 
 					notifications = getNotifications();
 
-					System.out.println("test" + notifications.size());
-
 					int urgents = 0;
 					String notification_id = null;
 
@@ -1099,7 +1097,40 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void deleteNotification(String notification_id) {
-		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+
+				PreparedStatement deleteNotificationFromNotificatons = null;
+
+				PreparedStatement deleteNotificationFromNotificationsRecipients = null;
+
+				try {
+					
+
+								
+					deleteNotificationFromNotificatons = conn.prepareStatement(
+							"DELETE FROM notifications WHERE notification_id = ? ;");
+
+					deleteNotificationFromNotificatons.setString(1, notification_id);
+					deleteNotificationFromNotificatons.execute();
+
+					deleteNotificationFromNotificationsRecipients = conn.prepareStatement(
+							"DELETE FROM notificationrecipients WHERE cnotification_id = ?");
+					deleteNotificationFromNotificationsRecipients.setString(1, notification_id);
+					deleteNotificationFromNotificationsRecipients.execute();
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteNotificationFromNotificatons);
+					DBUtil.closeQuietly(deleteNotificationFromNotificationsRecipients);
+
+				}
+				return true;
+
+			}
+		});
 
 	}
 
