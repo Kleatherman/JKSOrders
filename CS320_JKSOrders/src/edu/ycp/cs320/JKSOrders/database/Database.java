@@ -3,6 +3,7 @@ package edu.ycp.cs320.JKSOrders.database;
 import java.util.ArrayList;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
@@ -142,4 +143,8 @@ public interface Database {
 	public void updateOrder(Order order);
 	
 	public Order getOrder(String orderNumber);
+
+	public ArrayList<Order> getOrders();
+
+	public ArrayList<Car> getCars();
 }
