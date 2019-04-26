@@ -1118,7 +1118,7 @@ class DerbyDatabase implements Database {
 
 								
 					deleteNotificationFromNotificatons = conn.prepareStatement(
-							"DELETE FROM notifications WHERE notification_id = ? ;");
+							"DELETE FROM notifications WHERE notification_id = ? ");
 
 					deleteNotificationFromNotificatons.setString(1, notification_id);
 					deleteNotificationFromNotificatons.execute();
@@ -1162,7 +1162,6 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public String getLastOrderNumber() {
-		
 		 return getOrders().get(getOrders().size()-1).getOrderType();
 	}
 
@@ -1217,9 +1216,34 @@ class DerbyDatabase implements Database {
 	}
 
 	public void deleteOrder(Order order) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement deleteOrderFromOrders = null;
+				PreparedStatement deleteOrderFromOrderItemJunction = null;
+	
+				try {			
+					deleteOrderFromOrders = conn.prepareStatement(
+							"DELETE FROM orders WHERE order_id = ? ");
+					deleteOrderFromOrders.setString(1, order.getOrderType());
+					deleteOrderFromOrders.execute();
+	
+					deleteOrderFromOrderItemJunction = conn.prepareStatement(
+							"DELETE FROM orderItemJunction WHERE order_id = ?");
+					deleteOrderFromOrderItemJunction.setString(1, order.getOrderType());
+					deleteOrderFromOrderItemJunction.execute();
 		
-		// TODO Auto-generated method stub
-		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteOrderFromOrders);
+					DBUtil.closeQuietly(deleteOrderFromOrderItemJunction);
+	
+				}
+				return true;
+	
+			}
+		});
 	}
 
 	@Override
