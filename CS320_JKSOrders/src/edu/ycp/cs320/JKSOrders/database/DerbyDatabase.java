@@ -1237,8 +1237,45 @@ class DerbyDatabase implements Database {
 	@Override
 	
 	public ArrayList<Car> getCars() {
-		
-		return null;
+		return executeTransaction(new Transaction<ArrayList<Car>>() {
+			@Override
+			public ArrayList<Car> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					stmt = conn
+							.prepareStatement("select * from cars " + " order by customer_id");
+
+					ArrayList<Car> result = new ArrayList<Car>();
+					resultSet = stmt.executeQuery();
+					Car car;
+					// for testing that a result was returned
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;
+						car = new Car();
+						car.setOwner(resultSet.getString(1));
+						car.setColor(resultSet.getString(2));
+						car.setBrand(resultSet.getString(3));
+						car.setType(resultSet.getString(4));
+						car.setYear(resultSet.getInt(5));
+						result.add(car);
+					}
+
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No cars were found in the database");
+					} else
+						System.out.println("We got all cars");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
