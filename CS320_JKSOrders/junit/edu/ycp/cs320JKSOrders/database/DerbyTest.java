@@ -244,10 +244,10 @@ public class DerbyTest {
 		db.addOrder(order);
 		Olist= db.getOrders();
 		assertTrue(Olist.size()==count+1);
-		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
-		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I1"));
 		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-5);
-		assertTrue(db.getVisibleItems().get(0).getNumInOrder()==5);
+		assertTrue(db.getOrder("P12").getItemlist().get(0).getNumInOrder()==5);
+		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
 	}
 
 }
