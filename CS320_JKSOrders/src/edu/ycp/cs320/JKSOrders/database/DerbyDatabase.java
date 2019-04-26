@@ -462,7 +462,8 @@ class DerbyDatabase implements Database {
 							.prepareStatement("select * from customers " + " order by last_name asc, first_name asc");
 
 					ArrayList<CustomerAccount> result = new ArrayList<CustomerAccount>();
-
+					ArrayList<Car> cars = new ArrayList<Car>();
+					cars = getCars();
 					resultSet = stmt.executeQuery();
 
 					// for testing that a result was returned
@@ -477,6 +478,11 @@ class DerbyDatabase implements Database {
 						customer.setEmail(resultSet.getString(4));
 						customer.setPhoneNumber(resultSet.getString(5));
 						customer.getCreditCard().setCVC(resultSet.getString(6));
+						for(Car car : cars) {
+							if(customer.getAccountNumber().equals(car.getOwner())) {
+								customer.getPickUpInfo().setCar(car);
+							}
+						}
 						for (LoginInfo login : logins) {
 							if (login.getOwnerAccount().equals(customer.getAccountNumber())) {
 								customer.setLogin(login);
@@ -1097,7 +1103,6 @@ class DerbyDatabase implements Database {
 		return result;
 	}
 
-	//
 	@Override
 	public void deleteNotification(String notification_id) {
 		executeTransaction(new Transaction<Boolean>() {
@@ -1147,7 +1152,6 @@ class DerbyDatabase implements Database {
 		return names;
 	}
 
-	//
 	@Override
 	public void updateNotification(Notification notify) {
 
@@ -1233,16 +1237,50 @@ class DerbyDatabase implements Database {
 		return null;
 	}
 	
-
 	@Override
-	
 	public ArrayList<Car> getCars() {
-		
-		return null;
+		return executeTransaction(new Transaction<ArrayList<Car>>() {
+			@Override
+			public ArrayList<Car> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					stmt = conn
+							.prepareStatement("select * from cars " + " order by customer_id");
+
+					ArrayList<Car> result = new ArrayList<Car>();
+					resultSet = stmt.executeQuery();
+					Car car;
+					// for testing that a result was returned
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;
+						car = new Car();
+						car.setOwner(resultSet.getString(1));
+						car.setColor(resultSet.getString(2));
+						car.setBrand(resultSet.getString(3));
+						car.setType(resultSet.getString(4));
+						car.setYear(resultSet.getInt(5));
+						result.add(car);
+					}
+
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No cars were found in the database");
+					} else
+						System.out.println("We got all cars");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 
 	@Override
-	
 	public ArrayList<Order> getOrders() {
 
 		return executeTransaction(new Transaction<ArrayList<Order>>() {
