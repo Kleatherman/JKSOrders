@@ -245,12 +245,12 @@ public class DerbyTest {
 		assertTrue(Elist.get(0).getAccountNumber().equals("M0"));
 		assertTrue(Elist.get(3).getAccountNumber()!=null);
 		System.out.println("\\n\\n\\n\\n\\n\\n\\n"+ Elist.get(3).getFirstName());
-		assertTrue(Elist.get(3).getFirstName().equals("Bob"));
-		assertTrue(Elist.get(3).getLastName().equals("McJoe"));
-		assertTrue(Elist.get(3).getEmail().equals("Yadda@gmail.com"));
-		assertTrue(Elist.get(3).getPhoneNumber().equals("7175559848"));
-		assertTrue(Elist.get(3).getLogin().getOwnerAccount()!= null);
-		assertTrue(Elist.get(3).getLogin().getPassword().equals("password"));
+		assertTrue(Elist.get(2).getFirstName().equals("Bob"));
+		assertTrue(Elist.get(2).getLastName().equals("McJoe"));
+		assertTrue(Elist.get(2).getEmail().equals("Yadda@gmail.com"));
+		assertTrue(Elist.get(2).getPhoneNumber().equals("7175559848"));
+		assertTrue(Elist.get(2).getLogin().getOwnerAccount()!= null);
+		assertTrue(Elist.get(2).getLogin().getPassword().equals("password"));
 	}
 	@Test
 	public void testAddCustomerAccount() {
