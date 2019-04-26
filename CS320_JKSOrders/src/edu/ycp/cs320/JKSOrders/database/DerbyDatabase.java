@@ -1116,7 +1116,7 @@ class DerbyDatabase implements Database {
 					deleteNotificationFromNotificatons.execute();
 
 					deleteNotificationFromNotificationsRecipients = conn.prepareStatement(
-							"DELETE FROM notificationrecipients WHERE cnotification_id = ?");
+							"DELETE FROM notificationrecipients WHERE notification_id = ?");
 					deleteNotificationFromNotificationsRecipients.setString(1, notification_id);
 					deleteNotificationFromNotificationsRecipients.execute();
 		
@@ -1212,6 +1212,13 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public Order getOrder(String orderNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	
+	public ArrayList<Order> getOrders() {
 		// TODO Auto-generated method stub
 		return null;
 	}
