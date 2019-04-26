@@ -1218,6 +1218,13 @@ class DerbyDatabase implements Database {
 
 	@Override
 	
+	public Order getCars() {
+		
+		return null;
+	}
+
+	@Override
+	
 	public ArrayList<Order> getOrders() {
 		// TODO Auto-generated method stub
 		return null;

@@ -144,4 +144,6 @@ public interface Database {
 	public Order getOrder(String orderNumber);
 
 	public ArrayList<Order> getOrders();
+
+	Order getCars();
 }

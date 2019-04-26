@@ -45,6 +45,7 @@ public class DerbyTest {
 	public void testGetCustomersAccounts() {
 		assertTrue(Clist.size()==3);
 		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
+		assertTrue(Clist.get(0).getPickUpInfo().getCar().getOwner()!= null);
 	}
 	@Test
 	public void testGetCustomerLogin() {
@@ -288,11 +289,11 @@ public class DerbyTest {
 		assertTrue(Clist.get(2).getPhoneNumber().equals("7175559848"));
 		assertTrue(Clist.get(2).getLogin().getOwnerAccount()!= null);
 		assertTrue(Clist.get(2).getLogin().getPassword().equals("password"));
-	//	assertTrue(Clist.get(0).getPickUpInfo().getCar().getOwner()!= null);
-	//	assertTrue(Clist.get(2).getCreditCard().getAccountNumber()!=null);
-	// assertTrue(Clist.get(2).getCreditCard().getNameOnCard().equals("Bob"));
-	//	assertTrue(Clist.get(2).getPickUpInfo().getCar().getOwner()!= null);
-	//	assertTrue(Clist.get(2).getPickUpInfo().getCar().getBrand().equals("Ford"));
+		assertTrue(Clist.get(0).getPickUpInfo().getCar().getOwner()!= null);
+		assertTrue(Clist.get(2).getCreditCard().getAccountNumber()!=null);
+		assertTrue(Clist.get(2).getCreditCard().getNameOnCard().equals("Bob"));
+		assertTrue(Clist.get(2).getPickUpInfo().getCar().getOwner()!= null);
+		assertTrue(Clist.get(2).getPickUpInfo().getCar().getBrand().equals("Ford"));
 		
 	}
 	
