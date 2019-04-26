@@ -31,31 +31,33 @@ class DerbyDatabase implements Database {
 			throw new IllegalStateException("Could not load Derby driver");
 		}
 	}
-	
+
 	private interface Transaction<ResultType> {
 		public ResultType execute(Connection conn) throws SQLException;
 	}
 
 	private static final int MAX_ATTEMPTS = 10;
 
-	// wrapper SQL transaction function that calls actual transaction function (which has retries)
-	public<ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
+	// wrapper SQL transaction function that calls actual transaction function
+	// (which has retries)
+	public <ResultType> ResultType executeTransaction(Transaction<ResultType> txn) {
 		try {
 			return doExecuteTransaction(txn);
 		} catch (SQLException e) {
 			throw new PersistenceException("Transaction failed", e);
 		}
 	}
-	
-	// SQL transaction function which retries the transaction MAX_ATTEMPTS times before failing
-	public<ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException {
+
+	// SQL transaction function which retries the transaction MAX_ATTEMPTS times
+	// before failing
+	public <ResultType> ResultType doExecuteTransaction(Transaction<ResultType> txn) throws SQLException {
 		Connection conn = connect();
-		
+
 		try {
 			int numAttempts = 0;
 			boolean success = false;
 			ResultType result = null;
-			
+
 			while (!success && numAttempts < MAX_ATTEMPTS) {
 				try {
 					result = txn.execute(conn);
@@ -71,11 +73,11 @@ class DerbyDatabase implements Database {
 					}
 				}
 			}
-			
+
 			if (!success) {
 				throw new SQLException("Transaction failed (too many retries)");
 			}
-			
+
 			// Success!
 			return result;
 		} finally {
@@ -83,20 +85,23 @@ class DerbyDatabase implements Database {
 		}
 	}
 
-	// TODO: Here is where you name and specify the location of your Derby SQL database
-	// TODO: Change it here and in SQLDemo.java under CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
-	// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause conflicts later w/Git
+	// TODO: Here is where you name and specify the location of your Derby SQL
+	// database
+	// TODO: Change it here and in SQLDemo.java under
+	// CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
+	// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause
+	// conflicts later w/Git
 	private Connection connect() throws SQLException {
-		Connection conn = DriverManager.getConnection("jdbc:derby:C:/JKSOrders-2019-LibraryExample-DB/library.db;create=true");		
-		
+		Connection conn = DriverManager
+				.getConnection("jdbc:derby:C:/JKSOrders-2019-LibraryExample-DB/library.db;create=true");
+
 		// Set autocommit() to false to allow the execution of
 		// multiple queries/statements as part of the same transaction.
 		conn.setAutoCommit(false);
-		
+
 		return conn;
 	}
-	
-	
+
 	public void createTables() {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
@@ -104,124 +109,79 @@ class DerbyDatabase implements Database {
 				System.out.println("Creating Prepared Statements");
 				PreparedStatement stmt1 = null;
 				PreparedStatement stmt2 = null;
-				PreparedStatement stmt3 = null;	
+				PreparedStatement stmt3 = null;
 				PreparedStatement stmt4 = null;
 				PreparedStatement stmt5 = null;
-				PreparedStatement stmt6 = null;	
+				PreparedStatement stmt6 = null;
 				PreparedStatement stmt7 = null;
 				PreparedStatement stmt8 = null;
-				PreparedStatement stmt9 = null;	
-			
+				PreparedStatement stmt9 = null;
+
 				try {
 
 					System.out.println("Beginning to create tables");
-					
-					
-					stmt2 = conn.prepareStatement(
-							"create table catalog (" +
-							"	item_id varchar(5) primary key, " +
-							"	item_name varchar(70)," +
-							"   item_description varchar(300), " +
-							"	price float(10)," +
-							"   location char(4)," +
-							"	quantity integer," +
-							"	visible integer" +
-							")"
-					);
+
+					stmt2 = conn.prepareStatement("create table catalog (" + "	item_id varchar(5) primary key, "
+							+ "	item_name varchar(70)," + "   item_description varchar(300), " + "	price float(10),"
+							+ "   location char(4)," + "	quantity integer," + "	visible integer" + ")");
 					stmt2.executeUpdate();
-					
-					System.out.println("Catalog table created");		
-					
-					stmt3 = conn.prepareStatement(
-							"create table customers (" +
-							"	customer_id varchar(5) primary key, " +
-							"	first_name varchar(50)," +
-							"	last_name varchar(50)," +
-							"	email varchar(50)," +
-							"	phoneNumber varchar(12)," +
-							"	creditCard_id varchar(20)" +
-							")"
-					);
+
+					System.out.println("Catalog table created");
+
+					stmt3 = conn
+							.prepareStatement("create table customers (" + "	customer_id varchar(5) primary key, "
+									+ "	first_name varchar(50)," + "	last_name varchar(50)," + "	email varchar(50),"
+									+ "	phoneNumber varchar(12)," + "	creditCard_id varchar(20)" + ")");
 					stmt3.executeUpdate();
-					
+
 					System.out.println("Customers table created");
-					
-					stmt4 = conn.prepareStatement(
-							"create table employees (" +
-							"	employee_id varchar(5) primary key, " +
-							"	first_name varchar(50)," +
-							"	last_name varchar(50)," +
-							"	email varchar(50)," +
-							"	phoneNumber varchar(20)" +
-							")"
-					);
+
+					stmt4 = conn.prepareStatement("create table employees ("
+							+ "	employee_id varchar(5) primary key, " + "	first_name varchar(50),"
+							+ "	last_name varchar(50)," + "	email varchar(50)," + "	phoneNumber varchar(20)" + ")");
 					stmt4.executeUpdate();
-					
+
 					System.out.println("Employees table created");
-					
-					stmt1 = conn.prepareStatement(
-							"create table cars (" +
-							"	customer_id varchar(5) constraint customer_id references customers,"	+						
-							"	color varchar(40)," +
-							"	brand varchar(40)," +
-							"	make varchar(40), built integer)"
-						);	
-						stmt1.executeUpdate();
-					
+
+					stmt1 = conn.prepareStatement("create table cars ("
+							+ "	customer_id varchar(5) constraint customer_id references customers,"
+							+ "	color varchar(40)," + "	brand varchar(40)," + "	make varchar(40), built integer)");
+					stmt1.executeUpdate();
+
 					System.out.println("cars table created");
-					
-					stmt5 = conn.prepareStatement(
-							"create table login (" +
-							"	user_id varchar(5), " +
-							"	username varchar(50)," +
-							"	password varchar(50))"
-					);
+
+					stmt5 = conn.prepareStatement("create table login (" + "	user_id varchar(5), "
+							+ "	username varchar(50)," + "	password varchar(50))");
 					stmt5.executeUpdate();
-					
+
 					System.out.println("login table created");
-					
+
 					stmt6 = conn.prepareStatement(
-							"create table notifications (" +
-							"	notification_id varchar(5) primary key, " +
-							"	employee_id varchar(50)," +
-							"	message varchar(1000)" +
-							")"
-					);
+							"create table notifications (" + "	notification_id varchar(5) primary key, "
+									+ "	employee_id varchar(50)," + "	message varchar(1000)" + ")");
 					stmt6.executeUpdate();
-					
+
 					System.out.println("notifications table created");
-					
-					stmt7 = conn.prepareStatement(
-							"create table orders (" +
-							"	order_id varchar(5) primary key, " +
-							"	user_id varchar(5)" +
-							")"
-					);
+
+					stmt7 = conn.prepareStatement("create table orders (" + "	order_id varchar(5) primary key, "
+							+ "	user_id varchar(5)" + ")");
 					stmt7.executeUpdate();
-					
+
 					System.out.println("Order table created");
-					
-					stmt8 = conn.prepareStatement(
-							"create table notificationRecipients (" +
-							"	notification_id varchar(5)," +
-							"	employee_id varchar(5)" +
-							")"
-					);
+
+					stmt8 = conn.prepareStatement("create table notificationRecipients ("
+							+ "	notification_id varchar(5)," + "	employee_id varchar(5)" + ")");
 					stmt8.executeUpdate();
-					
+
 					System.out.println("notificationRecipients table created");
-					
-					stmt9 = conn.prepareStatement(
-							"create table orderItemJunction (" +
-							"	order_id varchar(5) constraint order_id references orders," +
-							"	item_id varchar(5)," +
-							"	quantity integer" +
-							")"
-					);
+
+					stmt9 = conn.prepareStatement("create table orderItemJunction ("
+							+ "	order_id varchar(5) constraint order_id references orders," + "	item_id varchar(5),"
+							+ "	quantity integer" + ")");
 					stmt9.executeUpdate();
-					
-					System.out.println("orderItemJunction table created");			
-										
+
+					System.out.println("orderItemJunction table created");
+
 					return true;
 				} finally {
 					DBUtil.closeQuietly(stmt1);
@@ -237,7 +197,7 @@ class DerbyDatabase implements Database {
 			}
 		});
 	}
-	
+
 	// loads data retrieved from CSV files into DB tables in batch mode
 	public void loadInitialData() {
 		executeTransaction(new Transaction<Boolean>() {
@@ -253,36 +213,38 @@ class DerbyDatabase implements Database {
 				Catalog catalog = new Catalog();
 				List<Notification> allNotifications;
 				try {
-/*1*/				carsList			= InitialData.getInitialCars();
-/*2*/				customersList		= InitialData.getInitialCustomerAccounts();
-/*3*/				employeesList		= InitialData.getInitialEmployeeAccounts();
-/*4*/				loginInfoList 		= InitialData.getInitialLoginInfo();
-/*5*/				notificationsList 	= InitialData.getInitialNotifications();
-/*6*/				ordersList			= InitialData.getInitialOrders();
+					/* 1 */ carsList = InitialData.getInitialCars();
+					/* 2 */ customersList = InitialData.getInitialCustomerAccounts();
+					/* 3 */ employeesList = InitialData.getInitialEmployeeAccounts();
+					/* 4 */ loginInfoList = InitialData.getInitialLoginInfo();
+					/* 5 */ notificationsList = InitialData.getInitialNotifications();
+					/* 6 */ ordersList = InitialData.getInitialOrders();
 					InitialData.getInitialCatalog(catalog);
-					itemsList			= catalog.returnItemList();
+					itemsList = catalog.returnItemList();
 					allNotifications = InitialData.getInitialNotifications();
 
 				} catch (IOException e) {
 					throw new SQLException("Couldn't read initial data", e);
 				}
 
-				PreparedStatement insertCar     				= null;
-				PreparedStatement insertCustomer				= null;
-				PreparedStatement insertEmployee 				= null;
-				PreparedStatement insertLoginInfo				= null;
-				PreparedStatement insertNotification			= null;
-				PreparedStatement insertOrder					= null;
-				PreparedStatement insertNotificationRecipients	= null;
-				PreparedStatement insertOrderItemJunction		= null;
-				PreparedStatement insertCatalog					= null;
-				
+				PreparedStatement insertCar = null;
+				PreparedStatement insertCustomer = null;
+				PreparedStatement insertEmployee = null;
+				PreparedStatement insertLoginInfo = null;
+				PreparedStatement insertNotification = null;
+				PreparedStatement insertOrder = null;
+				PreparedStatement insertNotificationRecipients = null;
+				PreparedStatement insertOrderItemJunction = null;
+				PreparedStatement insertCatalog = null;
+
 				try {
-					// must completely populate Authors table before populating BookAuthors table because of primary keys
-					
-					
-					// must completely populate Books table before populating BookAuthors table because of primary keys
-					insertCustomer = conn.prepareStatement("insert into customers (customer_id, first_name, last_name, email, phoneNumber, creditCard_id) values (?, ?, ?, ?, ?, ?)");
+					// must completely populate Authors table before populating BookAuthors table
+					// because of primary keys
+
+					// must completely populate Books table before populating BookAuthors table
+					// because of primary keys
+					insertCustomer = conn.prepareStatement(
+							"insert into customers (customer_id, first_name, last_name, email, phoneNumber, creditCard_id) values (?, ?, ?, ?, ?, ?)");
 					for (CustomerAccount customer : customersList) {
 						insertCustomer.setString(1, customer.getAccountNumber());
 						insertCustomer.setString(2, customer.getFirstName());
@@ -293,12 +255,14 @@ class DerbyDatabase implements Database {
 						insertCustomer.addBatch();
 					}
 					insertCustomer.executeBatch();
-					
-					System.out.println("Customers table populated");					
-					
-					// must wait until all Books and all Authors are inserted into tables before creating BookAuthor table
+
+					System.out.println("Customers table populated");
+
+					// must wait until all Books and all Authors are inserted into tables before
+					// creating BookAuthor table
 					// since this table consists entirely of foreign keys, with constraints applied
-					insertEmployee = conn.prepareStatement("insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
+					insertEmployee = conn.prepareStatement(
+							"insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
 					for (EmployeeAccount employee : employeesList) {
 						insertEmployee.setString(1, employee.getAccountNumber());
 						insertEmployee.setString(2, employee.getFirstName());
@@ -307,11 +271,12 @@ class DerbyDatabase implements Database {
 						insertEmployee.setString(5, employee.getPhoneNumber());
 						insertEmployee.addBatch();
 					}
-					insertEmployee.executeBatch();	
-					
-					System.out.println("Employees table populated");	
-					
-					insertCar = conn.prepareStatement("insert into cars (customer_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
+					insertEmployee.executeBatch();
+
+					System.out.println("Employees table populated");
+
+					insertCar = conn.prepareStatement(
+							"insert into cars (customer_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
 					for (Car car : carsList) {
 //						insertAuthor.setInt(1, author.getAuthorId());	// auto-generated primary key, don't insert this
 						insertCar.setString(1, car.getOwner());
@@ -322,81 +287,84 @@ class DerbyDatabase implements Database {
 						insertCar.addBatch();
 					}
 					insertCar.executeBatch();
-					
+
 					System.out.println("Cars table populated");
-					
-					insertLoginInfo = conn.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
+
+					insertLoginInfo = conn
+							.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
 					for (LoginInfo login : loginInfoList) {
 						insertLoginInfo.setString(1, login.getOwnerAccount());
 						insertLoginInfo.setString(2, login.getUserName());
 						insertLoginInfo.setString(3, login.getPassword());
 						insertLoginInfo.addBatch();
 					}
-					insertLoginInfo.executeBatch();	
-					
+					insertLoginInfo.executeBatch();
+
 					System.out.println("LoginInfo table populated");
-					
-					insertNotification = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
+
+					insertNotification = conn.prepareStatement(
+							"insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
 					for (Notification notify : notificationsList) {
 						insertNotification.setString(1, notify.getNotificationID());
 						insertNotification.setString(2, notify.getSourceAccountNumber());
 						insertNotification.setString(3, notify.getMessage());
 						insertNotification.addBatch();
 					}
-					insertNotification.executeBatch();	
-					
+					insertNotification.executeBatch();
+
 					System.out.println("Notifications table populated");
-					
-					insertNotificationRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
+
+					insertNotificationRecipients = conn.prepareStatement(
+							"insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
 					for (Notification notify : allNotifications) {
 						System.out.println("We are in the outer forEach loop in the load Data method");
-						for(String employeeID : notify.getDestination()) {
+						for (String employeeID : notify.getDestination()) {
 							System.out.println("We are adding to the recipient junctions");
 							insertNotificationRecipients.setString(1, notify.getNotificationID());
 							insertNotificationRecipients.setString(2, employeeID);
 							insertNotificationRecipients.addBatch();
 						}
 					}
-					insertNotificationRecipients.executeBatch();	
-					
+					insertNotificationRecipients.executeBatch();
+
 					System.out.println("notificationRecipients table populated");
-					
+
 					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
 					for (Order order : ordersList) {
 						insertOrder.setString(1, order.getOrderType());
 						insertOrder.setString(2, order.getAccountNum());
 						insertOrder.addBatch();
 					}
-					insertOrder.executeBatch();	
-					
+					insertOrder.executeBatch();
+
 					System.out.println("Orders table populated");
-					
-					insertOrderItemJunction = conn.prepareStatement("insert into orderItemJunction (order_id, item_id, quantity) values (?, ?, ?)");
+
+					insertOrderItemJunction = conn.prepareStatement(
+							"insert into orderItemJunction (order_id, item_id, quantity) values (?, ?, ?)");
 					for (Order order : ordersList) {
-						for(Item item : order.getItemlist()) {
+						for (Item item : order.getItemlist()) {
 							insertOrderItemJunction.setString(1, order.getOrderType());
 							insertOrderItemJunction.setString(2, item.getUPC());
 							insertOrderItemJunction.setInt(3, order.getQuantityMap().get(item.getUPC()));
 							insertOrderItemJunction.addBatch();
 						}
 					}
-					insertOrderItemJunction.executeBatch();	
-					
+					insertOrderItemJunction.executeBatch();
+
 					System.out.println("OrderItemJunction table populated");
-					
-					
-					insertCatalog = conn.prepareStatement("insert into catalog(item_id, item_name, item_description, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?, ?)");
-					for(Item item : itemsList) {
+
+					insertCatalog = conn.prepareStatement(
+							"insert into catalog(item_id, item_name, item_description, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?, ?)");
+					for (Item item : itemsList) {
 						insertCatalog.setString(1, item.getUPC());
 						insertCatalog.setString(2, item.getItemName());
-						insertCatalog.setString(3,  item.getDescription());
-						insertCatalog.setFloat(4, (float)item.getPrice());
+						insertCatalog.setString(3, item.getDescription());
+						insertCatalog.setFloat(4, (float) item.getPrice());
 						insertCatalog.setString(5, item.getLocation());
 						insertCatalog.setInt(6, item.getNumInInventory());
-						if(item.isVisable()) {
+						if (item.isVisable()) {
 							insertCatalog.setInt(7, 1);
-						}
-						else{
+						} else {
 							insertCatalog.setInt(7, 0);
 						}
 						insertCatalog.addBatch();
@@ -407,7 +375,7 @@ class DerbyDatabase implements Database {
 				} finally {
 					DBUtil.closeQuietly(insertCar);
 					DBUtil.closeQuietly(insertCustomer);
-					DBUtil.closeQuietly(insertEmployee);	
+					DBUtil.closeQuietly(insertEmployee);
 					DBUtil.closeQuietly(insertLoginInfo);
 					DBUtil.closeQuietly(insertNotification);
 					DBUtil.closeQuietly(insertOrder);
@@ -418,16 +386,16 @@ class DerbyDatabase implements Database {
 			}
 		});
 	}
-	
+
 	// The main method creates the database tables and loads the initial data.
 	public static void main(String[] args) throws IOException {
 		System.out.println("Creating tables...");
 		DerbyDatabase db = new DerbyDatabase();
 		db.createTables();
-		
+
 		System.out.println("Loading initial data...");
 		db.loadInitialData();
-		
+
 		System.out.println("JKSOrders DB successfully initialized!");
 	}
 
@@ -438,20 +406,18 @@ class DerbyDatabase implements Database {
 			public ArrayList<EmployeeAccount> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+
 				try {
-					stmt = conn.prepareStatement(
-							"select * from employees " +
-							" order by last_name asc, first_name asc"
-					);
-					
+					stmt = conn
+							.prepareStatement("select * from employees " + " order by last_name asc, first_name asc");
+
 					ArrayList<EmployeeAccount> result = new ArrayList<EmployeeAccount>();
 					ArrayList<LoginInfo> logins = getEmployeeLoginInfo();
 					resultSet = stmt.executeQuery();
-					
+
 					// for testing that a result was returned
 					Boolean found = false;
-					
+
 					while (resultSet.next()) {
 						found = true;
 						EmployeeAccount employee = new EmployeeAccount();
@@ -460,20 +426,19 @@ class DerbyDatabase implements Database {
 						employee.setLastName(resultSet.getString(3));
 						employee.setEmail(resultSet.getString(4));
 						employee.setPhoneNumber(resultSet.getString(5));
-						
-						for(LoginInfo login : logins) {
-							if(login.getOwnerAccount().equals(employee.getAccountNumber())) {
+
+						for (LoginInfo login : logins) {
+							if (login.getOwnerAccount().equals(employee.getAccountNumber())) {
 								employee.setLogin(login);
 							}
 						}
 						result.add(employee);
 					}
-					
+
 					// check if any authors were found
 					if (!found) {
 						System.out.println("No customers were found in the database");
-					}
-					else
+					} else
 						System.out.println("We got all customers");
 					return result;
 				} finally {
@@ -491,17 +456,15 @@ class DerbyDatabase implements Database {
 			public ArrayList<CustomerAccount> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+
 				try {
-					stmt = conn.prepareStatement(
-							"select * from customers " +
-							" order by last_name asc, first_name asc"
-					);
-					
+					stmt = conn
+							.prepareStatement("select * from customers " + " order by last_name asc, first_name asc");
+
 					ArrayList<CustomerAccount> result = new ArrayList<CustomerAccount>();
-					
+
 					resultSet = stmt.executeQuery();
-					
+
 					// for testing that a result was returned
 					Boolean found = false;
 					ArrayList<LoginInfo> logins = getCustomerLoginInfo();
@@ -514,19 +477,18 @@ class DerbyDatabase implements Database {
 						customer.setEmail(resultSet.getString(4));
 						customer.setPhoneNumber(resultSet.getString(5));
 						customer.getCreditCard().setCVC(resultSet.getString(6));
-						for(LoginInfo login : logins) {
-							if(login.getOwnerAccount().equals(customer.getAccountNumber())) {
+						for (LoginInfo login : logins) {
+							if (login.getOwnerAccount().equals(customer.getAccountNumber())) {
 								customer.setLogin(login);
 							}
 						}
 						result.add(customer);
 					}
-					
+
 					// check if any employees were found
 					if (!found) {
 						System.out.println("No employees were found in the database");
-					}
-					else
+					} else
 						System.out.println("We got all employees");
 					return result;
 				} finally {
@@ -544,19 +506,16 @@ class DerbyDatabase implements Database {
 			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+
 				try {
-					stmt = conn.prepareStatement(
-							"select * from login " +
-							" order by user_id asc"
-					);
-					
+					stmt = conn.prepareStatement("select * from login " + " order by user_id asc");
+
 					ArrayList<LoginInfo> result = new ArrayList<LoginInfo>();
 					resultSet = stmt.executeQuery();
-					
+
 					// for testing that a result was returned
 					Boolean found = false;
-					
+
 					while (resultSet.next()) {
 						found = true;
 						LoginInfo login = new LoginInfo();
@@ -564,16 +523,14 @@ class DerbyDatabase implements Database {
 						login.setUserName(resultSet.getString(2));
 						login.setPassword(resultSet.getString(3));
 						char[] user_id = login.getOwnerAccount().toCharArray();
-						if(user_id[0]=='C') {
-						}
-						else
+						if (user_id[0] == 'C') {
+						} else
 							result.add(login);
 					}
-					// check if any authors were found
+					// check if any employees were found
 					if (!found) {
 						System.out.println("No employee LoginInfo were found in the database");
-					}
-					else
+					} else
 						System.out.println("We got all employee LoginInfo");
 					return result;
 				} finally {
@@ -591,19 +548,16 @@ class DerbyDatabase implements Database {
 			public ArrayList<LoginInfo> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+
 				try {
-					stmt = conn.prepareStatement(
-							"select * from login " +
-							" order by user_id asc"
-					);
-					
+					stmt = conn.prepareStatement("select * from login " + " order by user_id asc");
+
 					ArrayList<LoginInfo> customer = new ArrayList<LoginInfo>();
 					resultSet = stmt.executeQuery();
-					
+
 					// for testing that a result was returned
 					Boolean found = false;
-					
+
 					while (resultSet.next()) {
 						found = true;
 						LoginInfo login = new LoginInfo();
@@ -611,15 +565,14 @@ class DerbyDatabase implements Database {
 						login.setUserName(resultSet.getString(2));
 						login.setPassword(resultSet.getString(3));
 						char[] user_id = login.getOwnerAccount().toCharArray();
-						if(user_id[0]=='C') {
+						if (user_id[0] == 'C') {
 							customer.add(login);
 						}
 					}
 					// check if any authors were found
 					if (!found) {
 						System.out.println("No customer LoginInfo were found in the database");
-					}
-					else
+					} else
 						System.out.println("We got all customer LoginInfo");
 					return customer;
 				} finally {
@@ -637,43 +590,36 @@ class DerbyDatabase implements Database {
 			public Catalog execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+
 				try {
-					stmt = conn.prepareStatement(
-							"select * from catalog " +
-							" order by item_id"
-					);
-					
+					stmt = conn.prepareStatement("select * from catalog " + " order by item_id");
+
 					Catalog result = new Catalog();
 					resultSet = stmt.executeQuery();
-					
-					
-					
-					boolean found= false;
+
+					boolean found = false;
 					while (resultSet.next()) {
 						found = true;
-						
-						Item item= new Item();
+
+						Item item = new Item();
 						item.setUPC(resultSet.getString(1));
 						item.setItemName(resultSet.getString(2));
 						item.setDescription(resultSet.getString(3));
 						item.setPrice(resultSet.getFloat(4));
 						item.setLocation(resultSet.getString(5));
 						item.setNumInInventory(resultSet.getInt(6));
-						if(resultSet.getInt(7)==1) {
+						if (resultSet.getInt(7) == 1) {
 							item.setVisable(true);
-						}
-						else {
+						} else {
 							item.setVisable(false);
 						}
 						result.setItem(item);
-						
+
 					}
 					// check if any authors were found
 					if (!found) {
 						System.out.println("No catalog items were found in the database");
-					}
-					else
+					} else
 						System.out.println("We got all catalog items");
 					return result;
 				} finally {
@@ -695,19 +641,14 @@ class DerbyDatabase implements Database {
 				PreparedStatement stmt2 = null;
 				ResultSet resultSet2 = null;
 				try {
-					stmt = conn.prepareStatement(
-							"select * from notifications " +
-							" order by notification_id"
-					);
-					
+					stmt = conn.prepareStatement("select * from notifications " + " order by notification_id");
+
 					ArrayList<Notification> result = new ArrayList<Notification>();
 					resultSet = stmt.executeQuery();
-					
+
 					stmt2 = conn.prepareStatement(
-							"select * from notificationRecipients " +
-							" order by notification_id"
-					);
-					
+							"select * from notificationRecipients " + " order by notification_id, employee_id");
+
 					resultSet2 = stmt2.executeQuery();
 					// for testing that a result was returned
 					Boolean found = false;
@@ -719,7 +660,7 @@ class DerbyDatabase implements Database {
 						pair.setRight(resultSet2.getString(2));
 						junction.add(pair);
 					}
-					
+
 					while (resultSet.next()) {
 
 						found = true;
@@ -727,19 +668,18 @@ class DerbyDatabase implements Database {
 						notify.setNotificationID(resultSet.getString(1));
 						notify.setSourceAccountNumber(resultSet.getString(2));
 						notify.setMessage(resultSet.getString(3));
-						for(Pair<String, String> pair : junction) {
-							if(notify.getNotificationID().equals(pair.getLeft())) {
+						for (Pair<String, String> pair : junction) {
+							if (notify.getNotificationID().equals(pair.getLeft())) {
 								notify.addDestinationName(pair.getRight());
 							}
 						}
 						result.add(notify);
 					}
-					
+
 					// check if any authors were found
 					if (!found) {
 						System.out.println("No Notifications were found in the database");
-					}
-					else
+					} else
 						System.out.println("We got all Notification");
 					return result;
 				} finally {
@@ -759,23 +699,18 @@ class DerbyDatabase implements Database {
 			public ArrayList<Item> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
 				ResultSet resultSet = null;
-				
+
 				try {
-					stmt = conn.prepareStatement(
-							"select * from catalog " +
-							" order by item_id"
-					);
-					
+					stmt = conn.prepareStatement("select * from catalog " + " order by item_id");
+
 					ArrayList<Item> result = new ArrayList<Item>();
 					resultSet = stmt.executeQuery();
-					
-					
-					
-					boolean found= false;
+
+					boolean found = false;
 					while (resultSet.next()) {
 						found = true;
-						if(resultSet.getInt(7)==1) {
-							Item item= new Item();
+						if (resultSet.getInt(7) == 1) {
+							Item item = new Item();
 							item.setUPC(resultSet.getString(1));
 							item.setItemName(resultSet.getString(2));
 							item.setDescription(resultSet.getString(3));
@@ -786,11 +721,10 @@ class DerbyDatabase implements Database {
 							result.add(item);
 						}
 					}
-					
+
 					if (!found) {
 						System.out.println("No visible items were found in the database");
-					}
-					else
+					} else
 						System.out.println("We got all visible items");
 					return result;
 				} finally {
@@ -800,200 +734,188 @@ class DerbyDatabase implements Database {
 			}
 		});
 	}
-	//
+
 	@Override
 	public void setVisibility(int x) {
-		
+
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				
-				PreparedStatement UpdateItemVisability_1= null;
-				PreparedStatement UpdateItemVisability_0= null;
-				
-				try {	
-						UpdateItemVisability_1 = conn.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ? ");
-						UpdateItemVisability_0 = conn.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ? ");
-						
-						UpdateItemVisability_1.setInt(1,x);
-						UpdateItemVisability_1.executeUpdate();
-						
-						UpdateItemVisability_0.setInt(1,x);
-						UpdateItemVisability_0.executeUpdate();
-						
+
+				PreparedStatement UpdateItemVisability_1 = null;
+				PreparedStatement UpdateItemVisability_0 = null;
+
+				try {
+					UpdateItemVisability_1 = conn
+							.prepareStatement("UPDATE Catalog SET  visible = 1 WHERE quantity > ? ");
+					UpdateItemVisability_0 = conn
+							.prepareStatement("UPDATE Catalog SET  visible = 0 WHERE quantity < ? ");
+
+					UpdateItemVisability_1.setInt(1, x);
+					UpdateItemVisability_1.executeUpdate();
+
+					UpdateItemVisability_0.setInt(1, x);
+					UpdateItemVisability_0.executeUpdate();
+
 				}
-				
-				
+
 				finally {
-				DBUtil.closeQuietly(UpdateItemVisability_1);
-				DBUtil.closeQuietly(UpdateItemVisability_0);
-	
+					DBUtil.closeQuietly(UpdateItemVisability_1);
+					DBUtil.closeQuietly(UpdateItemVisability_0);
+
 				}
 				return true;
-			
-		}
-	});
-		
-	
-}
-	//
+
+			}
+		});
+
+	}
+
 	@Override
 	public void addNotification(Notification notify) {
-		
-		
+
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				
+
 				PreparedStatement insertNotificationIntoNotifications = null;
-				
 
 				PreparedStatement insertNotificationIntoNotificationsRecipients = null;
-			
-				
-				try {	
-						ArrayList<Notification> notifications = new ArrayList<Notification>();
-						
-						notifications = getNotifications();
-						
-						
-						int urgents = 0;
-						String notification_id=null;
-						
-						for (Notification notification : notifications) 
-						{ 
-						   if (notification.getUrgency()) {
-							   urgents++;
-						   }
-						   
+
+				try {
+					ArrayList<Notification> notifications = new ArrayList<Notification>();
+
+					notifications = getNotifications();
+
+					System.out.println("test" + notifications.size());
+
+					int urgents = 0;
+					String notification_id = null;
+
+					for (Notification notification : notifications) {
+						if (notification.getUrgency()) {
+							urgents++;
 						}
-						
-						if(notify.getUrgency()) {
-							notification_id = "U"+ urgents;
-						}
-						else 
-							notification_id = "N"+ (notifications.size() - urgents);
-						
-						insertNotificationIntoNotifications = conn.prepareStatement("insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
-					
-						
-						
-						insertNotificationIntoNotifications.setString(1, notification_id);
-						insertNotificationIntoNotifications.setString(2, notify.getSourceAccountNumber());
-						insertNotificationIntoNotifications.setString(3, notify.getMessage());
-						insertNotificationIntoNotifications.execute();
-							
-						
-						insertNotificationIntoNotificationsRecipients = conn.prepareStatement("insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
-						
-		// This line is needed because the batch executes in reverse order
-						
-						Collections.reverse(notify.getDestination());
-						
-							for(String employeeID : notify.getDestination()) {
-								System.out.println("We are adding to the recipient junctions");
-								insertNotificationIntoNotificationsRecipients.setString(1, notification_id);
-								insertNotificationIntoNotificationsRecipients.setString(2, employeeID);
-								insertNotificationIntoNotificationsRecipients.addBatch();
-							}
-							
-							insertNotificationIntoNotificationsRecipients.executeBatch();
-						
-					
-						
+
+					}
+
+					if (notify.getUrgency()) {
+						notification_id = "U" + urgents;
+					} else
+						notification_id = "N" + (notifications.size() - urgents);
+
+					insertNotificationIntoNotifications = conn.prepareStatement(
+							"insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
+
+					insertNotificationIntoNotifications.setString(1, notification_id);
+					insertNotificationIntoNotifications.setString(2, notify.getSourceAccountNumber());
+					insertNotificationIntoNotifications.setString(3, notify.getMessage());
+					insertNotificationIntoNotifications.execute();
+
+					insertNotificationIntoNotificationsRecipients = conn.prepareStatement(
+							"insert into notificationRecipients (notification_id, employee_id) values (?, ?)");
+
+					for (String employeeID : notify.getDestination()) {
+						System.out.println("We are adding to the recipient junctions");
+						insertNotificationIntoNotificationsRecipients.setString(1, notification_id);
+						insertNotificationIntoNotificationsRecipients.setString(2, employeeID);
+						insertNotificationIntoNotificationsRecipients.addBatch();
+					}
+
+					insertNotificationIntoNotificationsRecipients.executeBatch();
+
 				}
-				
-				
+
 				finally {
-				DBUtil.closeQuietly(insertNotificationIntoNotificationsRecipients);
-				DBUtil.closeQuietly(insertNotificationIntoNotifications);
-				
+					DBUtil.closeQuietly(insertNotificationIntoNotificationsRecipients);
+					DBUtil.closeQuietly(insertNotificationIntoNotifications);
+
 				}
 				return true;
-			
-		}
-	});
-		
+
+			}
+		});
+
 	}
 
 	@Override
 	public ArrayList<Notification> getNotifications(String destAccountNumber) {
-		ArrayList<Notification> result= new ArrayList<Notification>();
+		ArrayList<Notification> result = new ArrayList<Notification>();
 		ArrayList<Notification> full = this.getNotifications();
-		for(int i=0; i<full.size(); i++) {
-			for(int j=0; j<full.get(i).getDestination().size(); j++) {
-				if(full.get(i).getDestination().get(j).equals(destAccountNumber)) {
+		for (int i = 0; i < full.size(); i++) {
+			for (int j = 0; j < full.get(i).getDestination().size(); j++) {
+				if (full.get(i).getDestination().get(j).equals(destAccountNumber)) {
 					result.add(full.get(i));
 				}
 			}
-			
+
 		}
-		
-		
+
 		return result;
 	}
 
 	@Override
 	public Notification getNotification(String notificationID) {
-		Notification result= new Notification();
+		Notification result = new Notification();
 		ArrayList<Notification> full = this.getNotifications();
-		for(int i=0; i<full.size(); i++) {
-			if(full.get(i).getNotificationID().equals(notificationID)) {
+		for (int i = 0; i < full.size(); i++) {
+			if (full.get(i).getNotificationID().equals(notificationID)) {
 				result = full.get(i);
-				
+
 			}
-			
+
 		}
 		return result;
 	}
 
 	@Override
 	public ArrayList<Notification> getSourceNotifications(String ownerAccountNumber) {
-		ArrayList<Notification> result= new ArrayList<Notification>();
+		ArrayList<Notification> result = new ArrayList<Notification>();
 		ArrayList<Notification> full = this.getNotifications();
-		for(int i=0; i<full.size(); i++) {
-			if(full.get(i).getSourceAccountNumber().equals(ownerAccountNumber)) {
+		for (int i = 0; i < full.size(); i++) {
+			if (full.get(i).getSourceAccountNumber().equals(ownerAccountNumber)) {
 				result.add(full.get(i));
-				
+
 			}
-			
+
 		}
 		return result;
 	}
 
 	@Override
 	public String getPasswordForCustomerAccount(Account inputAccount) {
-		String result=null;
-		
-		ArrayList<CustomerAccount> full= this.getCustomerAccounts();
-	 for(Account account : full) {
-		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
-			 result= account.getLogin().getPassword();
-		 }
-	 }
-		
+		String result = null;
+
+		ArrayList<CustomerAccount> full = this.getCustomerAccounts();
+		for (Account account : full) {
+			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+				result = account.getLogin().getPassword();
+			}
+		}
+
 		return result;
 	}
 
 	@Override
 	public String getPasswordForEmployeeAccount(Account inputAccount) {
-		String result=null;
-		
-		ArrayList<EmployeeAccount> full= this.getEmployeeAccounts();
-	 for(Account account : full) {
-		 if(inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
-			 result= account.getLogin().getPassword();
-		 }
-	 }
-		
+		String result = null;
+
+		ArrayList<EmployeeAccount> full = this.getEmployeeAccounts();
+		for (Account account : full) {
+			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+				result = account.getLogin().getPassword();
+			}
+		}
+
 		return result;
 	}
 
 	@Override
 	public EmployeeAccount getEmployeeAccount(String name) {
 		ArrayList<EmployeeAccount> accounts = this.getEmployeeAccounts();
-		for(EmployeeAccount account : accounts) {
-			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+		for (EmployeeAccount account : accounts) {
+			if (account.getAccountNumber().equals(name) || account.getLogin().getUserName().equals(name)
+					|| account.getFirstName().equals(name) || account.getLastName().equals(name)) {
 				return account;
 			}
 		}
@@ -1003,133 +925,115 @@ class DerbyDatabase implements Database {
 	@Override
 	public CustomerAccount getCustomerAccount(String name) {
 		ArrayList<CustomerAccount> accounts = this.getCustomerAccounts();
-		for(CustomerAccount account : accounts) {
-			if(account.getAccountNumber().equals(name)||account.getLogin().getUserName().equals(name)||account.getFirstName().equals(name)||account.getLastName().equals(name)) {
+		for (CustomerAccount account : accounts) {
+			if (account.getAccountNumber().equals(name) || account.getLogin().getUserName().equals(name)
+					|| account.getFirstName().equals(name) || account.getLastName().equals(name)) {
 				return account;
 			}
 		}
 		return null;
 	}
-	//
+
 	@Override
 	public void addEmployeeAccount(EmployeeAccount account) {
 
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				
+
 				PreparedStatement insertEmployee = null;
-				
-				PreparedStatement insertLoginInfo = null;
-			
-				try {	
-						
-					int Managers = 0;
-					String Account_id=null;
-					
-					
-					
-					if(account.isManager()) {
-						Account_id = "M"+ Managers;
+				PreparedStatement insertEmployeeLoginInfo = null;
+
+				try {
+					ArrayList<EmployeeAccount> employees = new ArrayList<EmployeeAccount>();
+
+					employees = getEmployeeAccounts();
+
+					int managers = 0;
+					String employee_id = null;
+
+					for (EmployeeAccount employee : employees) {
+						if (employee.isManager()) {
+							managers++;
+						}
+
 					}
-					else 
-						Account_id = "N"+ (account() - Managers);
-					
-					
-					insertEmployee = conn.prepareStatement("insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
-		
-						insertEmployee.setString(1, Account_id);
-						insertEmployee.setString(2, account.getFirstName());
-						insertEmployee.setString(3, account.getLastName());
-						insertEmployee.setString(4, account.getEmail());
-						insertEmployee.setString(5, account.getPhoneNumber());
-						insertEmployee.execute();
-					
-					
-					
-					insertLoginInfo = conn.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
-						insertLoginInfo.setString(1, account.getLogin().getOwnerAccount());
-						insertLoginInfo.setString(2, account.getLogin().getUserName());
-						insertLoginInfo.setString(3, account.getLogin().getPassword());
-					
-						insertLoginInfo.execute();	
-						
+
+					if (account.isManager()) {
+						employee_id = "M" + managers;
+					} else
+						employee_id = "E" + (employees.size() - managers);
+
+					insertEmployee = conn.prepareStatement(
+							"insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
+
+					insertEmployee.setString(1, employee_id);
+					insertEmployee.setString(2, account.getFirstName());
+					insertEmployee.setString(3, account.getLastName());
+					insertEmployee.setString(4, account.getEmail());
+					insertEmployee.setString(5, account.getPhoneNumber());
+					insertEmployee.execute();
+
+					insertEmployeeLoginInfo = conn
+							.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
+
+					insertEmployeeLoginInfo.setString(1, employee_id);
+					insertEmployeeLoginInfo.setString(2, account.getLogin().getUserName());
+					insertEmployeeLoginInfo.setString(3, account.getLogin().getPassword());
+
+					insertEmployeeLoginInfo.execute();
+
 				}
-				
-				
+
 				finally {
-					
-				DBUtil.closeQuietly(insertEmployee);
-				DBUtil.closeQuietly(insertLoginInfo);
-				
-				
+
+					DBUtil.closeQuietly(insertEmployee);
+
 				}
 				return true;
-			
-		}
-	});
-		
+
+			}
+		});
+
 	}
 
-	//
 	@Override
 	public void addCustomerAccount(CustomerAccount account) {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				
-				PreparedStatement insertCustomeraccount = null;
-				
-				PreparedStatement insertLoginInfo = null;
-				
 
-				PreparedStatement insertCreditCard = null;
-				
-				PreparedStatement insertCar = null;
-				
-				try {	
-						
-					
-					
-					
-					
-					insertLoginInfo = conn.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
-						insertLoginInfo.setString(1, account.getLogin().getOwnerAccount());
-						insertLoginInfo.setString(2, account.getLogin().getUserName());
-						insertLoginInfo.setString(3, account.getLogin().getPassword());
-					
-						insertLoginInfo.execute();	
-						
+				PreparedStatement stmt = null;
+
+				PreparedStatement stmt1 = null;
+
+				try {
+
 				}
-				
-				
+
 				finally {
-					
-				DBUtil.closeQuietly(insertCustomeraccount);
-				DBUtil.closeQuietly(insertLoginInfo);
-				DBUtil.closeQuietly(insertCreditCard);
-				DBUtil.closeQuietly(insertCar);
-				
-				
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+
 				}
 				return true;
-		}
-	});
-		
-		
+
+			}
+		});
+
 	}
 
 	@Override
 	public Account getAccount(String accountNumber) {
 		ArrayList<EmployeeAccount> employees = this.getEmployeeAccounts();
 		ArrayList<CustomerAccount> customers = this.getCustomerAccounts();
-		for(Account employee : employees) {
-			if(employee.getAccountNumber().equals(accountNumber)) {
+		for (Account employee : employees) {
+			if (employee.getAccountNumber().equals(accountNumber)) {
 				return employee;
 			}
 		}
-		for(Account customer : customers) {
-			if(customer.getAccountNumber().equals(accountNumber)) {
+		for (Account customer : customers) {
+			if (customer.getAccountNumber().equals(accountNumber)) {
 				return customer;
 			}
 		}
@@ -1138,67 +1042,64 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public String getLastCustomerAccountNumber() {
-		String result= null;
+		String result = null;
 		ArrayList<CustomerAccount> full = this.getCustomerAccounts();
-		result= full.get(full.size()-1).getAccountNumber();
-		
+		result = full.get(full.size() - 1).getAccountNumber();
+
 		return result;
 	}
 
 	@Override
 	public String getLastEmployeeAccountNumber() {
-		String result= null;
+		String result = null;
 		ArrayList<EmployeeAccount> full = this.getEmployeeAccounts();
-		result= full.get(full.size()-1).getAccountNumber();
-		
+		result = full.get(full.size() - 1).getAccountNumber();
+
 		return result;
 	}
+
 	//
 	@Override
 	public void deleteNotification(String notification_id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public ArrayList<String> AllEmployeeNames() {
 		ArrayList<String> names = new ArrayList<String>();
 		ArrayList<EmployeeAccount> employees = this.getEmployeeAccounts();
-		for(EmployeeAccount employee : employees) {
-			names.add(employee.getFirstName()+" "+employee.getLastName());
+		for (EmployeeAccount employee : employees) {
+			names.add(employee.getFirstName() + " " + employee.getLastName());
 		}
 		return names;
 	}
+
 	//
 	@Override
 	public void updateNotification(Notification notify) {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				
+
 				PreparedStatement stmt = null;
-				
 
 				PreparedStatement stmt1 = null;
-			
-				
-				try {	
-						
-						
+
+				try {
+
 				}
-				
-				
+
 				finally {
-				DBUtil.closeQuietly(stmt);
-				DBUtil.closeQuietly(stmt1);
-				
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+
 				}
 				return true;
-			
-		}
-	});
-		
-		
+
+			}
+		});
+
 	}
 
 	@Override
@@ -1212,30 +1113,25 @@ class DerbyDatabase implements Database {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				
+
 				PreparedStatement stmt = null;
-				
 
 				PreparedStatement stmt1 = null;
-			
-				
-				try {	
-						
-						
+
+				try {
+
 				}
-				
-				
+
 				finally {
-				DBUtil.closeQuietly(stmt);
-				DBUtil.closeQuietly(stmt1);
-				
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+
 				}
 				return true;
-			
-		}
-	});
-		
-		
+
+			}
+		});
+
 	}
 
 	@Override
@@ -1243,30 +1139,25 @@ class DerbyDatabase implements Database {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				
+
 				PreparedStatement stmt = null;
-				
 
 				PreparedStatement stmt1 = null;
-			
-				
-				try {	
-						
-						
+
+				try {
+
 				}
-				
-				
+
 				finally {
-				DBUtil.closeQuietly(stmt);
-				DBUtil.closeQuietly(stmt1);
-				
+					DBUtil.closeQuietly(stmt);
+					DBUtil.closeQuietly(stmt1);
+
 				}
 				return true;
-			
-		}
-	});
-		
-		
+
+			}
+		});
+
 	}
 
 	@Override

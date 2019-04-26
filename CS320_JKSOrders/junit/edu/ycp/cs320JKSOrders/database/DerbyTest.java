@@ -57,6 +57,7 @@ public class DerbyTest {
 		Llist= db.getEmployeeLoginInfo();
 		assertTrue(Llist.size()==3);
 		assertTrue( Llist.get(0).getPassword().equals("password"));
+		assertTrue(Llist.get(0).getOwnerAccount().equals("M0"));
 	}
 	
 	@Test
@@ -243,6 +244,7 @@ public class DerbyTest {
 		assertTrue(Elist.size()==4);
 		assertTrue(Elist.get(0).getAccountNumber().equals("M0"));
 		assertTrue(Elist.get(3).getAccountNumber()!=null);
+		System.out.println("\\n\\n\\n\\n\\n\\n\\n"+ Elist.get(3).getFirstName());
 		assertTrue(Elist.get(3).getFirstName().equals("Bob"));
 		assertTrue(Elist.get(3).getLastName().equals("McJoe"));
 		assertTrue(Elist.get(3).getEmail().equals("Yadda@gmail.com"));
