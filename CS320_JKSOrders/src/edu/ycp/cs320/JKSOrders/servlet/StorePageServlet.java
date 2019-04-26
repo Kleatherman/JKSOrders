@@ -65,12 +65,13 @@ public class StorePageServlet extends HttpServlet {
 			//3: add the item to the order
 			//4: calculate the total price
 			//5: submit the order to be added
-		ArrayList<Pair<Item, String>> itemsToBeAdded = new ArrayList<Pair<Item,String>>();
+		ArrayList<Pair<Item, Integer>> itemsToBeAdded = new ArrayList<Pair<Item,Integer>>();
 		for(Item item : items) {
 			if(req.getParameter(item.getItemName())!=null){
 				addedItemToCart = true;
-				String itemQuantity = req.getParameter(item.getItemName()+"Quantity");
-				itemsToBeAdded.add(new Pair<Item, String>(item, itemQuantity));
+				Integer itemQuantity = getIntegerFromParameter(req.getParameter(item.getItemName()+"Quantity"));
+				if(itemQuantity!=null)
+					itemsToBeAdded.add(new Pair<Item, Integer>(item, itemQuantity));
 			}
 		}
 		if(currentOrderNumber==null&& addedItemToCart==true) {
@@ -78,8 +79,9 @@ public class StorePageServlet extends HttpServlet {
 			req.getSession().setAttribute("orderNumber", currentOrderNumber);
 			order.setAccountNum(accountNumber);
 			order.setOrderType(currentOrderNumber);
-			for(Pair<Item, String> pair : itemsToBeAdded) {
-				order.addItem(pair.getLeft(), Integer.parseInt(pair.getRight()));
+			for(Pair<Item, Integer> pair : itemsToBeAdded) {
+				System.out.println(pair.getLeft()+" : "+pair.getRight());
+				order.addItem(pair.getLeft(), pair.getRight());
 			}
 			order.setTotalPrice();
 			db.addOrder(order);
@@ -92,8 +94,9 @@ public class StorePageServlet extends HttpServlet {
 			//4: submit that order to be updated
 		else if(currentOrderNumber!=null && addedItemToCart==true){ 
 			order = db.getOrder(currentOrderNumber);
-			for(Pair<Item, String> pair : itemsToBeAdded) {
-				order.addItem(pair.getLeft(), Integer.parseInt(pair.getRight()));
+			for(Pair<Item, Integer> pair : itemsToBeAdded) {
+				System.out.println(pair.getLeft()+" : "+pair.getRight());
+				order.addItem(pair.getLeft(), pair.getRight());
 			}
 			order.setTotalPrice();
 			db.updateOrder(order);
@@ -164,4 +167,13 @@ public class StorePageServlet extends HttpServlet {
 
 		
 	}
+	private Integer getIntegerFromParameter(String s) {
+		if (s == null || s.equals("")) {
+			return null;
+		} else {
+			return Integer.parseInt(s);
+		}
+	}
 }
+
+
