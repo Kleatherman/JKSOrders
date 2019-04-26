@@ -16,6 +16,7 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDerbyDatabase;
@@ -24,180 +25,51 @@ public class DerbyTest {
 	Database db;
 	ArrayList<EmployeeAccount> Elist;
 	ArrayList<CustomerAccount> Clist;
-	ArrayList<LoginInfo> Llist;
+	ArrayList<LoginInfo> LClist;
+	ArrayList<LoginInfo> LElist;
 	ArrayList<Notification> Nlist;
 	ArrayList<Item> Ilist;
+	ArrayList<Car> Cars;
+	ArrayList<Order> Olist;
 	
+	ArrayList<EmployeeAccount> InitE;
+	ArrayList<CustomerAccount> InitC;
+	ArrayList<LoginInfo> InitLC;
+	ArrayList<LoginInfo> InitLE;
+	ArrayList<Notification> InitN;
+	ArrayList<Item> InitI;
+	ArrayList<Car> InitV;
+	ArrayList<Order> InitO;
+	
+	// The init lists are made to represent the initial tables-- do not use add delete or edit methods on them 
 	@Before
 	public void setUp() {
 		db = new InitDerbyDatabase().init();
 		Clist= db.getCustomerAccounts();
+		InitC= db.getCustomerAccounts();
 		Elist= db.getEmployeeAccounts();
+		InitE= db.getEmployeeAccounts();
 		Ilist = db.getVisibleItems();
-		Nlist = db.getNotifications();
-	}
-	@Test 
-	public void testGetEmployeeAccounts() {
-		assertTrue(Elist.size()==3);
-		assertTrue( Elist.get(0).getAccountNumber().equals("M0"));
-	}
-	@Test 
-	public void testGetCustomersAccounts() {
-		assertTrue(Clist.size()==3);
-		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
-		assertTrue(Clist.get(0).getPickUpInfo().getCar().getOwner()!= null);
-	}
-	@Test
-	public void testGetCustomerLogin() {
-		Llist= db.getCustomerLoginInfo();
-		assertTrue(Llist.size()==3);
-		assertTrue( Llist.get(0).getPassword().equals("password"));
-	}
-	@Test
-	public void testGetEmployeeLogin() {
-		Llist= db.getEmployeeLoginInfo();
-		assertTrue(Llist.size()==3);
-		assertTrue( Llist.get(0).getPassword().equals("password"));
-		assertTrue(Llist.get(0).getOwnerAccount().equals("M0"));
+		InitI= db.getVisibleItems();
+		Nlist = new ArrayList<Notification>();
+		InitN= db.getNotifications();
+		System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"+ InitN.size());
+		Cars = db.getCars();
+		InitV= db.getCars();
+		Olist= db.getOrders();
+		InitO= db.getOrders();
+		LClist= db.getCustomerLoginInfo();
+		InitLC= db.getCustomerLoginInfo();
+		LElist= db.getEmployeeLoginInfo();
+		InitLE= db.getEmployeeLoginInfo();
 	}
 	
-	@Test
-	public void testGetVisibleItems() {
-		db.setVisibility(0);
-		Ilist= db.getVisibleItems();
-		assertTrue(Ilist.size()==2);
-		for(Item item : Ilist) {
-			assertTrue(item.isVisable());
-		}
-	}
 	
-	@Test
-	public void testGetNotificationTest() {
-		assertTrue(Nlist.size()==4);
-		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
-		assertTrue(Nlist.get(0).getDestination().size()==3);
-	}
-	
-	@Test
-	public void testGetCatalog() {
-		ArrayList<String> greater = new ArrayList<String>();
-		ArrayList<String> less = new ArrayList<String>();
-		Catalog catalog = db.getCatalog();
-		assertTrue(!catalog.getItemMap().isEmpty());
-		assertTrue(catalog.getItemMap().get("I0").getNumInInventory()==5);
-		assertTrue(catalog.getItemMap().get("I1").getNumInInventory()==7);
-		catalog.returnGreaterorLess(6, greater, less);
-		assertTrue(greater.get(0).equals("I1"));
-		assertTrue(less.get(0).equals("I0"));
-	}
-	
-	@Test
-	public void testGetNotifications() {
-		ArrayList<Notification> notifications = db.getNotifications("M0");
-		assertTrue(notifications.size()==1);
-		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
-		notifications = db.getNotifications("M2");
-		assertTrue(notifications.size()==2);
-		assertTrue(notifications.get(0).getSourceAccountNumber().equals("M2"));
-		assertTrue(notifications.get(1).getNotificationID().equals("U1"));
-	}
-
-	@Test
-	public void testGetEmployeeAccountFromName() {
-		EmployeeAccount eaccount= db.getEmployeeAccount("M0");
-		assertTrue(Elist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
-		eaccount = db.getEmployeeAccount("Samuel");
-		assertTrue(Elist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
-		eaccount= db.getEmployeeAccount("kleatherman");
-		assertTrue(Elist.get(1).getAccountNumber().equals(eaccount.getAccountNumber()));
-		
-	}
-	@Test
-	public void testGetCustomerAccountFromName() {
-		CustomerAccount eaccount= db.getCustomerAccount("C0");
-		assertTrue(Clist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
-		eaccount = db.getCustomerAccount("Samuel");
-		assertTrue(Clist.get(0).getAccountNumber().equals(eaccount.getAccountNumber()));
-		eaccount= db.getCustomerAccount("kleatherman");
-		assertTrue(Clist.get(1).getAccountNumber().equals(eaccount.getAccountNumber()));
-	}
-	@Test
-	public void testGetAccount() {
-		Account account= db.getAccount("C0");
-		assertTrue(Clist.get(0).getAccountNumber().equals(account.getAccountNumber()));
-		account = db.getAccount("M0");
-		assertTrue(Elist.get(0).getAccountNumber().equals(account.getAccountNumber()));
-		account= db.getAccount("C2");
-		assertTrue(Clist.get(2).getAccountNumber().equals(account.getAccountNumber()));
-	}
-	@Test
-	public void testGetAllEmployeeName() {
-		ArrayList<String> names= db.AllEmployeeNames();
-		assertTrue(names.get(0).equals("Samuel Cesario"));
-		assertTrue(names.get(1).equals("Kyle Leatherman"));
-		assertTrue(names.get(2).equals("Josiah Sam"));
-	}
-	
-
-	
-	@Test
-	public void testGetNotification() {
-		Notification notify = db.getNotification("N0");
-		assertTrue(notify.getDestination().size()==3);
-		assertTrue(notify.getMessage().equals("HELLO World"));
-		notify = db.getNotification("U0");
-		assertTrue(notify.getDestination().size()==1);
-		assertTrue(notify.getDestination().get(0).equals("M1"));
-		assertTrue(notify.getSourceAccountNumber().equals("M0"));
-		
-	}
-	
-	@Test
-	public void testGetSourceNotifications() {
-		ArrayList<Notification> notifications = db.getSourceNotifications("M0");
-		assertTrue(notifications.size()==1);
-		assertTrue(notifications.get(0).getDestination().size()==1);
-		assertTrue(notifications.get(0).getNotificationID().equals("U0"));
-		notifications = db.getSourceNotifications("M2");
-		assertTrue(notifications.size()==2);
-		assertTrue(notifications.get(0).getNotificationID().equals("N0"));
-		assertTrue(notifications.get(1).getNotificationID().equals("U2"));
-	}
-	
-	@Test
-	public void testGetPasswordForEmployeeAccount() {
-		Account account = db.getEmployeeAccounts().get(0);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
-		account = db.getEmployeeAccounts().get(1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
-		account = db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
-	}
-	
-	@Test
-	public void testGetPasswordForCustomerAccount() {
-		Account account = db.getCustomerAccounts().get(0);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
-		account = db.getCustomerAccounts().get(1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
-		account = db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
-	}
-	
-	@Test
-	public void testGetLastCustomerAccountNumber() {
-		String lastAccountNum = db.getLastCustomerAccountNumber();
-		assertTrue(lastAccountNum.equals(db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1).getAccountNumber()));
-	}
-	
-	@Test
-	public void testGetLastEmployeeAccountNumber() {
-		String lastAccountNum = db.getLastEmployeeAccountNumber();
-		assertTrue(lastAccountNum.equals(db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1).getAccountNumber()));
-	}
 	@Test
 	public void testSetVisible() {
-		assertTrue(Ilist.size()==2);
+		db.setVisibility(0);
+		Ilist = db.getVisibleItems();
+		assertTrue(InitI.size()==2);
 		db.setVisibility(99);
 		Ilist = db.getVisibleItems();
 		assertTrue(Ilist.size()==0);
@@ -207,7 +79,8 @@ public class DerbyTest {
 	}
 	@Test
 	public void testAddNotification() {
-		assertTrue(Nlist.size()==4);
+		Nlist = db.getNotifications();
+		int count= Nlist.size();
 		Notification notify = new Notification();
 		ArrayList<String> dest = new ArrayList<String>();
 		dest.add("M0");
@@ -219,7 +92,7 @@ public class DerbyTest {
 		notify.setNotificationID(null);
 		db.addNotification(notify);
 		Nlist= db.getNotifications();
-		assertTrue(Nlist.size()==5);
+		assertTrue(Nlist.size()==count+1);
 		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(4).getMessage().equals("I'm dummy thicc"));
 		assertTrue(Nlist.get(4).getUrgency().equals(true));
@@ -229,7 +102,7 @@ public class DerbyTest {
 	}
 	@Test
 	public void testAddEmployeeAccount() {
-		assertTrue(Elist.size()==3);
+		int count = Elist.size();
 		LoginInfo login = new LoginInfo();
 		login.setPassword("password");
 		login.setUserName("BOB");
@@ -242,7 +115,7 @@ public class DerbyTest {
 		eaccount.setLogin(login);
 		db.addEmployeeAccount(eaccount);
 		Elist= db.getEmployeeAccounts();
-		assertTrue(Elist.size()==4);
+		assertTrue(Elist.size()==count+1);
 		assertTrue(Elist.get(0).getAccountNumber().equals("M0"));
 		assertTrue(Elist.get(3).getAccountNumber()!=null);
 		System.out.println("\\n\\n\\n\\n\\n\\n\\n"+ Elist.get(3).getFirstName());
@@ -255,7 +128,7 @@ public class DerbyTest {
 	}
 	@Test
 	public void testAddCustomerAccount() {
-		assertTrue(Clist.size()==3);
+		int count = Clist.size();
 		CreditCard card= new CreditCard();
 		card.setNameOnCard("Bob");
 		card.setCVC("563");
@@ -280,7 +153,7 @@ public class DerbyTest {
 		eaccount.setLogin(login);
 		db.addCustomerAccount(eaccount);
 		Clist= db.getCustomerAccounts();
-		assertTrue(Clist.size()==4);
+		assertTrue(Clist.size()==count+1);
 		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
 		assertTrue(Clist.get(2).getAccountNumber()!=null);
 		assertTrue(Clist.get(2).getFirstName().equals("Bob"));
@@ -299,9 +172,57 @@ public class DerbyTest {
 	
 	@Test
 	public void testDeleteNotifications() {
-		assertTrue(Clist.size()==5);
-		
+		Nlist= db.getNotifications();
+		int count = Nlist.size();
+		db.deleteNotification("U0");
+		Nlist= db.getNotifications();
+		assertTrue(Nlist.size()==count-1);
+		assertTrue(Nlist.get(0).getNotificationID().equals("N0"));
+		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(1).getNotificationID().equals("U1"));
+		assertTrue(Nlist.get(1).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(2).getNotificationID().equals("U2"));
+		assertTrue(Nlist.get(2).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(3).getNotificationID().equals("U3"));
+		assertTrue(Nlist.get(3).getMessage().equals("I'm dummy thicc"));
 	}
 	
+	
+	
+	@Test
+	public void testDeleteOrders() {
+		Olist= db.getOrders();
+		int count = Olist.size();
+		db.deleteOrder(db.getOrder("P0"));
+		Olist= db.getOrders();
+		assertTrue(Olist.size()==count-1);
+		assertTrue(db.getOrder("P0")==null);
+		assertTrue(db.getOrder("S0").getItemlist().size()==2);
+		assertTrue(db.getOrder("S0").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("S0").getItemlist().get(1).getUPC().equals("I1"));
+
+	}
+	/*
+	@Test
+	public void testDeleteAccount() {
+		Elist= db.getEmployeeAccounts();
+		Clist= db.getCustomerAccounts();
+		int Ecount = Elist.size();
+		int Ccount = Clist.size();
+		db.deleteAccount("C0");
+		Elist= db.getEmployeeAccounts();
+		Clist= db.getCustomerAccounts();
+		assertTrue(Clist.size()==Ccount-1);
+		assertTrue(Elist.size()==Ecount);
+		assertTrue(!Clist.get(0).getAccountNumber().equals("C0"));
+		db.deleteAccount("M0");
+		Elist= db.getEmployeeAccounts();
+		Clist= db.getCustomerAccounts();
+		assertTrue(Elist.size()==Ecount-1);
+		assertTrue(Clist.size()==Ccount-1);
+		assertTrue(!Elist.get(0).getAccountNumber().equals("M0"));
+	
+	}
+*/
 
 }

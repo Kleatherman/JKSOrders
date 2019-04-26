@@ -149,4 +149,6 @@ public interface Database {
 	public ArrayList<Car> getCars();
 	
 	public void deleteAccount(String accountNumber);
+
+	public void deleteOrder(Order order);
 }
