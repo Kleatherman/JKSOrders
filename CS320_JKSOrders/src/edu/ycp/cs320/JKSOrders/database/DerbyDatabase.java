@@ -1173,7 +1173,7 @@ class DerbyDatabase implements Database {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
-				System.out.println(".........................................We are adding a new order with this ID: "+order.getOrderType()+" and this many items: "+order.getItemlist().size());
+				System.out.println(".........................................We are adding a new order with this ID: "+order.getOrderType()+" and this many items: "+order.getQuantityMap().get("I1"));
 				PreparedStatement insertOrder = null;
 
 				PreparedStatement insertOrderItemJunction = null;
@@ -1194,8 +1194,11 @@ class DerbyDatabase implements Database {
 							insertOrderItemJunction.setString(1, order.getOrderType());
 							insertOrderItemJunction.setString(2, item.getUPC());
 							insertOrderItemJunction.setInt(3, order.getQuantityMap().get(item.getUPC()));
+							item.setNumInInventory(item.getNumInInventory()-order.getQuantityMap().get(item.getUPC()));
+							updateItem(item);
 							insertOrderItemJunction.addBatch();
 						}
+						insertOrderItemJunction.executeBatch();
 					}
 
 				finally {
@@ -1252,9 +1255,10 @@ class DerbyDatabase implements Database {
 	@Override
 	
 	public Order getOrder(String orderNumber) {
-
-		for(Order order : getOrders()) {
+		ArrayList<Order> orders = getOrders();
+		for(Order order : orders) {
 			if (order.getOrderType().equals(orderNumber)) {
+				order.setItemQuantities();
 				order.setTotalPrice();
 				return order;
 			}
@@ -1329,11 +1333,12 @@ class DerbyDatabase implements Database {
 					orderItemResults = getOrdersfromOrderItemJunction.executeQuery();
 					// for testing that a result was returned
 					Boolean found = false;		
-					while (orderItemResults.next()) {
+					/*while (orderItemResults.next()) {
 						Pair<String, String> pair = new Pair<String, String>();
 						pair.setLeft(orderItemResults.getString(1));
 						pair.setRight(orderItemResults.getString(2));
-						itemQuantityMap.put(orderItemResults.getString(2), orderItemResults.getInt(3));
+						itemQuantityMap.put(pair.getRight(), orderItemResults.getInt(3));
+						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + itemQuantityMap.get(orderItemResults.getString(2))+ "With order "+orderItemResults.getString(1));
 						orderItem.add(pair);
 					}
 
@@ -1343,18 +1348,36 @@ class DerbyDatabase implements Database {
 						Order order = new Order();
 						order.setOrderType(ordersResults.getString(1));
 						order.setAccountNum(ordersResults.getString(2));
-						order.setQuantityMap(itemQuantityMap);
+						//order.setQuantityMap(itemQuantityMap);
 						
 						for(Pair<String, String> pair : orderItem) {
 							if(order.getOrderType().equals(pair.getLeft())) {
+								System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" + itemQuantityMap.get(pair.getRight())+ "With order "+pair.getLeft());
 								order.addItem(catalog.getItem(pair.getRight()), itemQuantityMap.get(pair.getRight()));
 							}
 						}
 						order.setItemQuantities();
 						Orders.add(order);
 						
-					}
+					}*/
 
+					Catalog catalog = getCatalog();
+					while (ordersResults.next()) {
+						found = true;
+						Order order = new Order();
+						order.setOrderType(ordersResults.getString(1));
+						order.setAccountNum(ordersResults.getString(2));
+						Orders.add(order);
+					}
+					while (orderItemResults.next()) {
+						String orderNumber = orderItemResults.getString(1);
+						for(Order order : Orders) {
+							if(orderNumber.equals(order.getOrderType())) {
+								order.addItem(catalog.getItem(orderItemResults.getString(2)), orderItemResults.getInt(3));
+							}
+						}
+						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + itemQuantityMap.get(orderItemResults.getString(2))+ "With order "+orderItemResults.getString(1));
+					}
 					// check if any authors were found
 					if (!found) {
 						System.out.println("No Orders were found");
@@ -1404,6 +1427,81 @@ class DerbyDatabase implements Database {
 				
 				finally {
 					DBUtil.closeQuietly(deleteAccount);
+	
+				}
+				return true;
+	
+			}
+		});
+		
+	}
+
+	@Override
+	public void updateItem(Item item) {
+		this.deleteItem(item.getUPC());
+		this.addItem(item);
+		
+	}
+
+	@Override
+	public void addItem(Item item) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				System.out.println(".........................................We are adding a new Item with this ID: "+item.getUPC());
+				PreparedStatement insertItem = null;
+
+
+				try {
+					insertItem = conn.prepareStatement("insert into catalog (item_id, item_name, item_description, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?, ? )");
+					
+						insertItem.setString(1, item.getUPC());
+						insertItem.setString(2, item.getItemName());
+						insertItem.setString(3, item.getDescription());
+						insertItem.setFloat(4,(float) item.getPrice());
+						insertItem.setString(5, item.getLocation());
+						insertItem.setInt(6, item.getNumInInventory());
+						insertItem.setBoolean(7, item.isVisable());
+						insertItem.execute();
+				
+					
+						
+					
+					}
+
+				finally {
+					DBUtil.closeQuietly(insertItem);
+					
+
+				}
+				return true;
+
+			}
+		});
+		
+	}
+
+	@Override
+	public void deleteItem(String item) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement deleteItemFromCatalog = null;
+
+	
+				try {			
+					deleteItemFromCatalog  = conn.prepareStatement(
+							"DELETE FROM catalog WHERE item_id = ? ");
+					deleteItemFromCatalog .setString(1, item);
+					deleteItemFromCatalog .execute();
+	
+					
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteItemFromCatalog );
+				
 	
 				}
 				return true;

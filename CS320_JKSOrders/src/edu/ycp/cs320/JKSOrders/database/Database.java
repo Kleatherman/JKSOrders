@@ -151,4 +151,10 @@ public interface Database {
 	public void deleteAccount(String accountNumber);
 
 	public void deleteOrder(Order order);
+	
+	public void updateItem(Item item);
+	
+	public void addItem(Item item);
+	
+	public void deleteItem(String item);
 }
