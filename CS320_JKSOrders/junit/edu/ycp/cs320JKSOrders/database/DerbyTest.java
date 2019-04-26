@@ -16,6 +16,7 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDerbyDatabase;
@@ -27,6 +28,9 @@ public class DerbyTest {
 	ArrayList<LoginInfo> Llist;
 	ArrayList<Notification> Nlist;
 	ArrayList<Item> Ilist;
+	ArrayList<Car> Cars;
+	ArrayList<Order> Olist;
+	
 	
 	@Before
 	public void setUp() {
@@ -35,7 +39,10 @@ public class DerbyTest {
 		Elist= db.getEmployeeAccounts();
 		Ilist = db.getVisibleItems();
 		Nlist = db.getNotifications();
+		Cars = db.getCars();
+		Olist= db.getOrders();
 	}
+	
 	@Test 
 	public void testGetEmployeeAccounts() {
 		assertTrue(Elist.size()==3);
@@ -77,6 +84,14 @@ public class DerbyTest {
 		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(0).getDestination().size()==3);
 	}
+	@Test
+	public void testGetOrders() {
+		assertTrue(Olist.size()==2);
+		assertTrue(Olist.get(0).getAccountNum().equals("C0"));
+		assertTrue(Olist.get(0).getItemlist().get(0).getUPC().equals("IO"));
+		assertTrue(Olist.get(1).getItemlist().get(0).getUPC().equals("IO"));
+	}
+	
 	
 	@Test
 	public void testGetCatalog() {
@@ -307,9 +322,27 @@ public class DerbyTest {
 		assertTrue(Nlist.get(0).getNotificationID().equals("U1"));
 		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(1).getNotificationID().equals("U2"));
+		assertTrue(Nlist.get(1).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(2).getNotificationID().equals("U3"));
+		assertTrue(Nlist.get(2).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(3).getNotificationID().equals("U4"));
+		assertTrue(Nlist.get(3).getMessage().equals("I'm dummy thicc"));
 	}
 	
+	@Test
+	public void testGetCars() {
+		System.out.println(Cars.size());
+		assertTrue(Cars.size()==3);
+		assertTrue(Cars.get(0).getOwner().equals("C0"));
+		assertTrue(Cars.get(0).getBrand().equals("Ford"));
+		assertTrue(Cars.get(0).getColor().equals("Blue"));
+		assertTrue(Cars.get(0).getYear()== 2016);
+		assertTrue(Cars.get(0).getType().equals("Escape"));
+	}
+	
+	@Test
+	public void testDeleteOrders() {
+		
+	}
 
 }
