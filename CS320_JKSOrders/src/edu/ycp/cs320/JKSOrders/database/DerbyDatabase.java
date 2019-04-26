@@ -1147,27 +1147,8 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void updateNotification(Notification notify) {
-		executeTransaction(new Transaction<Boolean>() {
-			@Override
-			public Boolean execute(Connection conn) throws SQLException {
-
-				PreparedStatement stmt = null;
-
-				PreparedStatement stmt1 = null;
-
-				try {
-
-				}
-
-				finally {
-					DBUtil.closeQuietly(stmt);
-					DBUtil.closeQuietly(stmt1);
-
-				}
-				return true;
-
-			}
-		});
+		deleteNotification(notify.getNotificationID());
+		addNotification(notify);
 
 	}
 
