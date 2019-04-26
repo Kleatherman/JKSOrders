@@ -1370,4 +1370,45 @@ class DerbyDatabase implements Database {
 		});
 	
 	}
+
+	@Override
+	public void deleteAccount(String accountNumber) {
+		
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement deleteAccount = null;
+	
+				try {			
+					char[] accountNumberChar = accountNumber.toCharArray();
+					String table;
+					String id;
+					if(accountNumberChar[0]=='C') {
+						table = "customerAccounts";
+						id="customer_id";
+					}
+					else {
+						table = "employeeAccounts";
+						id = "employee_id";
+					}
+					deleteAccount = conn.prepareStatement(
+							"DELETE FROM ? WHERE ? = ? ");
+					deleteAccount.setString(1, table);
+					deleteAccount.setString(2, id);
+					deleteAccount.setString(3, accountNumber);
+					deleteAccount.execute();
+	
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteAccount);
+	
+				}
+				return true;
+	
+			}
+		});
+		
+	}
 }

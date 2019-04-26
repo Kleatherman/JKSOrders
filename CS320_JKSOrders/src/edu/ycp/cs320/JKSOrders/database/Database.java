@@ -147,4 +147,6 @@ public interface Database {
 	public ArrayList<Order> getOrders();
 
 	public ArrayList<Car> getCars();
+	
+	public void deleteAccount(String accountNumber);
 }

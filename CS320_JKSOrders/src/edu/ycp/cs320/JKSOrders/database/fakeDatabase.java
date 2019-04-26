@@ -500,6 +500,12 @@ public class fakeDatabase implements Database{
 		return null;
 	}
 
+	@Override
+	public void deleteAccount(String accountNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	
