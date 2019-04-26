@@ -10,6 +10,7 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 
 public class fakeDatabase implements Database{
 	private Catalog catalog;
@@ -18,11 +19,42 @@ public class fakeDatabase implements Database{
 	private ArrayList<EmployeeAccount> employeeAccounts;
 	private ArrayList<LoginInfo> employeeLogin;
 	private ArrayList<Notification> notifications;
+	private ArrayList<Order> orders;
 	
 	public fakeDatabase() {
 		initilizeNotificationArrayList();
+		catalog = new Catalog();
+		this.initilizeCatalog(catalog);
+		initilizeOrderArrayList();
 	}
 	
+	private void initilizeOrderArrayList() {
+		orders = new ArrayList<Order>();
+		for(int i = 0; i<2; i++) {
+			Order order = new Order();
+			if(i==0) {
+				order.setOrderType("P"+i);
+				order.setAccountNum(this.getLastCustomerAccountNumber());
+				order.addItem(catalog.returnItemList().get(0), 5);
+				order.addItem(catalog.returnItemList().get(catalog.returnItemList().size()-2), 8);
+				order.setTotalPrice();
+			}
+			else {
+				order.setOrderType("I"+i);
+				order.setAccountNum(this.getCustomerAccounts().get(0).getAccountNumber());
+				order.addItem(catalog.returnItemList().get(catalog.returnItemList().size()-2), 3);
+				order.addItem(catalog.returnItemList().get(0), 1);
+				order.setTotalPrice();
+			}
+			System.out.println("This is the total price of order: "+order.getOrderType()+". It has "+order.getQuantityMap().get(order.getItemlist().get(0).getUPC()) +
+					" of "+order.getItemlist().get(0).getItemName()+" which are priced "+order.getItemlist().get(0).getPrice()+". It also has "+
+					order.getQuantityMap().get(order.getItemlist().get(1).getUPC()) +
+					" of "+order.getItemlist().get(1).getItemName()+" which are priced "+order.getItemlist().get(1).getPrice()+
+					". So it's total price is "+order.getTotalPrice());
+			orders.add(order);
+		}
+	}
+
 	/* (non-Javadoc)
 	 * @see edu.ycp.cs320.JKSOrders.database.database#getCatalog()
 	 */
@@ -414,6 +446,51 @@ public class fakeDatabase implements Database{
 			}
 		}
 		System.out.println("Successfully deleted notification "+notification_id);
+	}
+
+	@Override
+	public String getLastOrderNumber() {
+		return orders.get(orders.size()-1).getOrderType();
+	}
+
+	@Override
+	public void addOrder(Order order) {
+		orders.add(order);
+		Order newOrder = orders.get(orders.size()-1);
+		System.out.println("A new order has been created!! Order number: "+newOrder.getOrderType()+" with this price: "+newOrder.getTotalPrice()+" And the owner account "+newOrder.getAccountNum()+"And the following items: ");
+		for(Item item : newOrder.getItemlist()) {
+			System.out.println(item.getItemName()+" : "+ item.getUPC()+" : "+item.getPrice()+" : "+newOrder.getQuantityMap().get(item.getUPC()));
+		}
+	}
+
+	@Override
+	public void updateOrder(Order updateOrder) {
+		for(Order order : orders) {
+			if(order.getOrderType().equals(updateOrder)) {
+				orders.remove(order);
+				orders.add(updateOrder);
+			}
+		}
+		Order newOrder = orders.get(orders.size()-1);
+		System.out.println("An order has been Updated!! Order number: "+newOrder.getOrderType()+" with this price: "+newOrder.getTotalPrice()+" And the owner account "+newOrder.getAccountNum()+"And the following items: ");
+		for(Item item : newOrder.getItemlist()) {
+			System.out.println(item.getItemName()+" : "+ item.getUPC()+" : "+item.getPrice()+" : "+newOrder.getQuantityMap().get(item.getUPC()));
+		}
+	}
+
+	@Override
+	public Order getOrder(String orderNumber) {
+		for(Order order : orders) {
+			if(order.getOrderType().equals(orderNumber)) {
+				return order;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public ArrayList<Order> getOrders() {
+		return orders;
 	}
 	
 	

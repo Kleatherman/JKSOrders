@@ -18,9 +18,4 @@ public class CartController {
 		this.model = model;
 	}
 	
-	public void setTotalPrice() {
-		for(Item item : model.getItems()) {
-			model.setPrice((float) (model.getPrice()+(item.getPrice()*model.getOrder().getQuantityMap().get(item.getUPC()))));
-		}
-	}
 }

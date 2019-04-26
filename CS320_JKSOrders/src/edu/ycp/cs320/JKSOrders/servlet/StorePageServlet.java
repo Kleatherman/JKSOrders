@@ -13,10 +13,13 @@ import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Order;
+import edu.ycp.cs320.JKSOrders.classes.Pair;
+import edu.ycp.cs320.JKSOrders.controller.CartController;
 import edu.ycp.cs320.JKSOrders.controller.StorePageController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.CartModel;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -45,6 +48,7 @@ public class StorePageServlet extends HttpServlet {
 
 		System.out.println("StorePage Servlet: doPost");
 		Database db = InitDatabase.init();
+		SystemController system = new SystemController();
 		String accountNumber = req.getParameter("accountNumber");
 		StorePageController controller= new StorePageController();
 		StorePage model= new StorePage();
@@ -53,21 +57,51 @@ public class StorePageServlet extends HttpServlet {
 		boolean isEmployee= false;
 		ArrayList<Item> items = db.getVisibleItems();
 		Order order = new Order();
+		String currentOrderNumber = (String) req.getSession().getAttribute("orderNumber");
 		boolean addedItemToCart = false;
+		//If there is no orderNumber for this session, this is a brand new order being created so we need to
+			//1: Get a new order number for the order
+			//2: set the account number
+			//3: add the item to the order
+			//4: calculate the total price
+			//5: submit the order to be added
+		ArrayList<Pair<Item, Integer>> itemsToBeAdded = new ArrayList<Pair<Item,Integer>>();
 		for(Item item : items) {
 			if(req.getParameter(item.getItemName())!=null){
 				addedItemToCart = true;
-				System.out.println(item.getItemName()+"We made it in!!!");
-				String itemQuantity = req.getParameter(item.getItemName()+"Quantity");
-				System.out.println(itemQuantity);
-				
-				order.addItem(item, Integer.parseInt(itemQuantity));
-				order.setAccountNum(accountNumber);
-				//I need to find a way to determine if this order is a new order or one that is being worked on. I'm thinking this might be able to be done in sessionInfo. What
-				//could work is that the order number is loaded into sessionInfo and then unloaded once checkOut is completed. Up above I can use an if statement to determine 
-				//if the order is complete.
+				Integer itemQuantity = getIntegerFromParameter(req.getParameter(item.getItemName()+"Quantity"));
+				if(itemQuantity!=null)
+					itemsToBeAdded.add(new Pair<Item, Integer>(item, itemQuantity));
 			}
 		}
+		if(currentOrderNumber==null&& addedItemToCart==true) {
+			currentOrderNumber = system.generateNextOrderNumber(db, 'P');
+			req.getSession().setAttribute("orderNumber", currentOrderNumber);
+			order.setAccountNum(accountNumber);
+			order.setOrderType(currentOrderNumber);
+			for(Pair<Item, Integer> pair : itemsToBeAdded) {
+				System.out.println(pair.getLeft()+" : "+pair.getRight());
+				order.addItem(pair.getLeft(), pair.getRight());
+			}
+			order.setTotalPrice();
+			db.addOrder(order);
+		}
+		
+		//Else it is an order that has already been created so we need to
+			//1: pull that order from db
+			//2: add the item to that order
+			//3: Calculate total price
+			//4: submit that order to be updated
+		else if(currentOrderNumber!=null && addedItemToCart==true){ 
+			order = db.getOrder(currentOrderNumber);
+			for(Pair<Item, Integer> pair : itemsToBeAdded) {
+				System.out.println(pair.getLeft()+" : "+pair.getRight());
+				order.addItem(pair.getLeft(), pair.getRight());
+			}
+			order.setTotalPrice();
+			db.updateOrder(order);
+		}
+		
 		if(accountNumber != null) {
 			Account account =  db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
@@ -99,11 +133,33 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {
+			req.getSession().setAttribute("orderNumber", null);
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {
+			boolean itemsAreHere = false;
+			Order cartOrder = db.getOrder(currentOrderNumber);
+			//Order cartOrder = db.getOrder("P0");
+			CartModel cartModel = new CartModel();
+			cartModel.setAccount(db.getCustomerAccount(accountNumber));
+			if(cartOrder!=null) {
+				cartOrder.setItemQuantities();
+				itemsAreHere = true;
+			}
+			
+			cartModel.setOrder(cartOrder);
+			req.setAttribute("cartModel", cartModel);
 			req.setAttribute("accountNumber", accountNumber);
-			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			if(itemsAreHere) {
+				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			}
+			else if(!itemsAreHere){
+				ArrayList<Item> itemList = db.getVisibleItems();
+				req.setAttribute("items", itemList);
+				req.setAttribute("model", model);
+				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+			}
 		}
 		else {
 			throw new ServletException("Unknown command");
@@ -111,4 +167,13 @@ public class StorePageServlet extends HttpServlet {
 
 		
 	}
+	private Integer getIntegerFromParameter(String s) {
+		if (s == null || s.equals("")) {
+			return null;
+		} else {
+			return Integer.parseInt(s);
+		}
+	}
 }
+
+

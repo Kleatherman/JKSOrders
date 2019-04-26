@@ -84,4 +84,18 @@ public class Order {
 		QuantityMap.put(item.getUPC(), quantity);
 	}
 	
+	public void setTotalPrice() {
+		totalPrice = 0.0;
+		for(Item item : Itemlist) {
+			totalPrice += (item.getPrice()*QuantityMap.get(item.getUPC()));
+		}
+	}
+	
+	//This method is for setting the internal quantity integer of all the items prior to sending to cart page or check out page
+	public void setItemQuantities() {
+		for(Item item : Itemlist) {
+				item.setNumInOrder(QuantityMap.get(item.getUPC()));
+		}
+		
+	}
 }

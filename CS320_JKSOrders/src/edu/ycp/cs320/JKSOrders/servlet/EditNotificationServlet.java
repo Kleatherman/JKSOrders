@@ -48,6 +48,9 @@ public class EditNotificationServlet  extends HttpServlet{
 		req.setAttribute("accountNumber", accountNumber);
 		boolean isManager = false;
 		if(req.getParameter("workPage")!=null) {
+			WorkPage workModel = new WorkPage();
+			workModel.setOrders(db.getOrders());
+			req.setAttribute("model", workModel);
 			String name = db.getAccount(accountNumber).getFirstName();
 			if(db.getNotifications(accountNumber).size()!=0) {
 				req.setAttribute("notification", db.getNotifications(accountNumber));
@@ -108,6 +111,9 @@ public class EditNotificationServlet  extends HttpServlet{
 				req.setAttribute("notification", db.getNotifications(accountNumber));
 			}
 			isManager = db.getEmployeeAccount(accountNumber).isManager();
+			WorkPage workModel = new WorkPage();
+			workModel.setOrders(db.getOrders());
+			req.setAttribute("model", workModel);
 			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.setAttribute("isManager", isManager);
 			req.setAttribute("employeeNames", db.AllEmployeeNames());

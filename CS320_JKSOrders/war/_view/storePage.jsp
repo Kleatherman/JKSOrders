@@ -34,10 +34,10 @@
     </c:forEach>
  	
 	
-    
+    <div style="color: red">${errorMessage}</div><br />
     <ul class="pagination justify-content-center">
  
-	<p><br /><br /></p>
+	<p><br /><br /><br /></p>
 			
             	<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 3px;" type="submit" name="checkOut"> Check Out </button>
             	&nbsp;&nbsp;&nbsp;&nbsp;
@@ -48,8 +48,9 @@
            		<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="cart"> My Cart </button>
            
                 <input name="accountNumber" type="hidden" value="${accountNumber}" />
-
- 		            
+				
+				
+ 		   	         
 
     <!-- /.container -->
 
