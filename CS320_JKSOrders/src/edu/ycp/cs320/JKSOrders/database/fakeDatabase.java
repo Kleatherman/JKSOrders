@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
@@ -494,10 +495,12 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-	public Order getCars() {
+	public ArrayList<Car> getCars() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	
 	
 	
 }

@@ -796,8 +796,11 @@ class DerbyDatabase implements Database {
 						}
 
 					}
+					if(notify.getNotificationID()!=null) {
+						notification_id = notify.getNotificationID();
+					}
 
-					if (notify.getUrgency()) {
+					else if (notify.getUrgency()) {
 						notification_id = "U" + urgents;
 					} else
 						notification_id = "N" + (notifications.size() - urgents);
@@ -1147,6 +1150,7 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void updateNotification(Notification notify) {
+
 		deleteNotification(notify.getNotificationID());
 		addNotification(notify);
 
@@ -1208,7 +1212,8 @@ class DerbyDatabase implements Database {
 
 	}
 
-	private void deleteOrder(Order order) {
+	public void deleteOrder(Order order) {
+		
 		// TODO Auto-generated method stub
 		
 	}
@@ -1231,7 +1236,7 @@ class DerbyDatabase implements Database {
 
 	@Override
 	
-	public Order getCars() {
+	public ArrayList<Car> getCars() {
 		
 		return null;
 	}
