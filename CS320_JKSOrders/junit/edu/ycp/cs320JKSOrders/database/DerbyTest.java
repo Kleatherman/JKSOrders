@@ -274,6 +274,7 @@ public class DerbyTest {
 		eaccount.setFirstName("Bob");
 		eaccount.setLastName("McJoe");
 		eaccount.setPhoneNumber("7175559848");
+		eaccount.setPickUpInfo(PUI);
 		eaccount.setCreditCard(card);
 		eaccount.setLogin(login);
 		db.addCustomerAccount(eaccount);
