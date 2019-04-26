@@ -1025,7 +1025,7 @@ class DerbyDatabase implements Database {
 					insertCar = conn.prepareStatement(
 							"insert into cars (customer_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
 					
-						insertCar.setString(1, account.getPickUpInfo().getCar().getOwner());
+						insertCar.setString(1, customer_id);
 						insertCar.setString(2, account.getPickUpInfo().getCar().getColor());
 						insertCar.setString(3, account.getPickUpInfo().getCar().getBrand());
 						insertCar.setString(4, account.getPickUpInfo().getCar().getType());
