@@ -177,7 +177,7 @@ class DerbyDatabase implements Database {
 					System.out.println("notificationRecipients table created");
 
 					stmt9 = conn.prepareStatement("create table orderItemJunction ("
-							+ "	order_id varchar(5) constraint order_id references orders," + "	item_id varchar(5),"
+							+ "	order_id varchar(5)," + "	item_id varchar(5),"
 							+ "	quantity integer" + ")");
 					stmt9.executeUpdate();
 
@@ -479,6 +479,8 @@ class DerbyDatabase implements Database {
 						customer.setEmail(resultSet.getString(4));
 						customer.setPhoneNumber(resultSet.getString(5));
 						customer.getCreditCard().setCVC(resultSet.getString(6));
+						customer.getCreditCard().setAccountNumber(customer.getAccountNumber());
+						customer.getCreditCard().setNameOnCard(customer.getFirstName());
 						for(Car car : cars) {
 							if(customer.getAccountNumber().equals(car.getOwner())) {
 								customer.getPickUpInfo().setCar(car);
@@ -1215,7 +1217,7 @@ class DerbyDatabase implements Database {
 		addOrder(order);
 
 	}
-
+	@Override
 	public void deleteOrder(Order order) {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
@@ -1322,7 +1324,7 @@ class DerbyDatabase implements Database {
 					ArrayList<Order> Orders = new ArrayList<Order>();
 					ordersResults = getOrdersfromOrders.executeQuery();
 					getOrdersfromOrderItemJunction = conn.prepareStatement(
-							"select * from orderItemJunction " + " order by order_id");
+							"select * from orderItemJunction " + " order by order_id, item_id");
 					orderItemResults = getOrdersfromOrderItemJunction.executeQuery();
 					// for testing that a result was returned
 					Boolean found = false;		
@@ -1384,18 +1386,16 @@ class DerbyDatabase implements Database {
 					String table;
 					String id;
 					if(accountNumberChar[0]=='C') {
-						table = "customerAccounts";
-						id="customer_id";
+						deleteAccount = conn.prepareStatement(
+								"DELETE FROM customers WHERE customer_id = ? ");
 					}
 					else {
-						table = "employeeAccounts";
-						id = "employee_id";
+						deleteAccount = conn.prepareStatement(
+								"DELETE FROM employees WHERE employee_id = ? ");
+						
 					}
-					deleteAccount = conn.prepareStatement(
-							"DELETE FROM ? WHERE ? = ? ");
-					deleteAccount.setString(1, table);
-					deleteAccount.setString(2, id);
-					deleteAccount.setString(3, accountNumber);
+					
+					deleteAccount.setString(1, accountNumber);
 					deleteAccount.execute();
 	
 		
