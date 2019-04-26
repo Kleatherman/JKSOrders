@@ -12,6 +12,12 @@ public abstract class Account {
 	private String phoneNumber;
 	private String email;
 	
+	public Account() {
+		login = new LoginInfo();
+		pickUpInfo = new PickUpInfo();
+		orders = new ArrayList<Order>();
+	}
+	
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -32,11 +38,6 @@ public abstract class Account {
 	}
 
 
-	public Account() {
-	
-	}
-	
-	
 	public ArrayList<Order> getOrders() {
 		return orders;
 	}
