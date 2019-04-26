@@ -1228,8 +1228,14 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public Order getOrder(String orderNumber) {
+		for(Order order : getOrders()) {
+			if (order.getOrderType().equals(orderNumber)) {
+				return order;
+			}
+				
+			
+		}
 
-		// TODO Auto-generated method stub
 		return null;
 	}
 
