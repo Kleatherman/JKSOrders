@@ -1003,18 +1003,55 @@ class DerbyDatabase implements Database {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
 
-				PreparedStatement stmt = null;
-
-				PreparedStatement stmt1 = null;
+				
+				PreparedStatement insertCustomer = null;
+				PreparedStatement insertCar = null;
+				PreparedStatement insertLoginInfo = null;
 
 				try {
+					String customer_id = ("C" +getCustomerAccounts().size());
+					
+					insertCustomer = conn.prepareStatement(
+							"insert into customers (customer_id, first_name, last_name, email, phoneNumber, creditCard_id) values (?, ?, ?, ?, ?, ?)");
+						insertCustomer.setString(1, customer_id);
+						insertCustomer.setString(2, account.getFirstName());
+						insertCustomer.setString(3, account.getLastName());
+						insertCustomer.setString(4, account.getEmail());
+						insertCustomer.setString(5, account.getPhoneNumber());
+						insertCustomer.setString(6, account.getCreditCard().getAccountNumber());
+						insertCustomer.addBatch();
+				
 
+					insertCar = conn.prepareStatement(
+							"insert into cars (customer_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
+					
+						insertCar.setString(1, account.getPickUpInfo().getCar().getOwner());
+						insertCar.setString(2, account.getPickUpInfo().getCar().getColor());
+						insertCar.setString(3, account.getPickUpInfo().getCar().getBrand());
+						insertCar.setString(4, account.getPickUpInfo().getCar().getType());
+						insertCar.setInt(5, account.getPickUpInfo().getCar().getYear());
+						
+					insertCar.execute();
+
+
+					insertLoginInfo = conn
+							.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
+			
+						insertLoginInfo.setString(1, account.getLogin().getOwnerAccount());
+						insertLoginInfo.setString(2, account.getLogin().getUserName());
+						insertLoginInfo.setString(3, account.getLogin().getPassword());
+						insertLoginInfo.addBatch();
+	
+					insertLoginInfo.execute();
+
+					
+					
 				}
 
 				finally {
-					DBUtil.closeQuietly(stmt);
-					DBUtil.closeQuietly(stmt1);
-
+					DBUtil.closeQuietly(insertCustomer);
+					DBUtil.closeQuietly(insertCar);
+					DBUtil.closeQuietly(insertLoginInfo);
 				}
 				return true;
 
