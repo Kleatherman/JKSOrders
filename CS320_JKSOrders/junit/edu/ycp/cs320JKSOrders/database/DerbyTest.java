@@ -3,6 +3,7 @@ package edu.ycp.cs320JKSOrders.database;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -224,5 +225,29 @@ public class DerbyTest {
 	
 	}
 */
+	@Test
+	public void testAddOrders() {
+		TreeMap<String, Integer> Map= new TreeMap<String,Integer>();
+		ArrayList<Item> itemlist= new ArrayList<Item>();
+		int itemcount= db.getVisibleItems().get(0).getNumInInventory();
+		itemlist.add(db.getVisibleItems().get(0));
+		Map.put(itemlist.get(0).getUPC(), 5);
+		Order order = new Order();
+		order.setAccountNum("C2");
+		order.setItemlist(itemlist);
+		order.setQuantityMap(Map);
+		order.setItemQuantities();
+		order.setOrderType("P12");
+		order.setTotalPrice();
+		Olist= db.getOrders();
+		int count = Olist.size();
+		db.addOrder(order);
+		Olist= db.getOrders();
+		assertTrue(Olist.size()==count+1);
+		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
+		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-5);
+		assertTrue(db.getVisibleItems().get(0).getNumInOrder()==5);
+	}
 
 }
