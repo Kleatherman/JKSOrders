@@ -787,8 +787,6 @@ class DerbyDatabase implements Database {
 
 					notifications = getNotifications();
 
-					System.out.println("test" + notifications.size());
-
 					int urgents = 0;
 					String notification_id = null;
 
@@ -1011,7 +1009,7 @@ class DerbyDatabase implements Database {
 				try {
 					String customer_id = ("C" +getCustomerAccounts().size());
 					
-					account.getPickUpInfo().getCar().setOwner(customer_id);
+					
 					insertCustomer = conn.prepareStatement(
 							"insert into customers (customer_id, first_name, last_name, email, phoneNumber, creditCard_id) values (?, ?, ?, ?, ?, ?)");
 						insertCustomer.setString(1, customer_id);
@@ -1020,13 +1018,13 @@ class DerbyDatabase implements Database {
 						insertCustomer.setString(4, account.getEmail());
 						insertCustomer.setString(5, account.getPhoneNumber());
 						insertCustomer.setString(6, account.getCreditCard().getAccountNumber());
-						insertCustomer.addBatch();
+						insertCustomer.execute();
 				
 
 					insertCar = conn.prepareStatement(
 							"insert into cars (customer_id, color, brand, make, built) values (?, ?, ?, ?, ?)");
 					
-						insertCar.setString(1, account.getPickUpInfo().getCar().getOwner());
+						insertCar.setString(1,customer_id);
 						insertCar.setString(2, account.getPickUpInfo().getCar().getColor());
 						insertCar.setString(3, account.getPickUpInfo().getCar().getBrand());
 						insertCar.setString(4, account.getPickUpInfo().getCar().getType());
@@ -1038,10 +1036,10 @@ class DerbyDatabase implements Database {
 					insertLoginInfo = conn
 							.prepareStatement("insert into login (user_id, username, password) values (?, ?, ?)");
 			
-						insertLoginInfo.setString(1, account.getLogin().getOwnerAccount());
+						insertLoginInfo.setString(1, customer_id);
 						insertLoginInfo.setString(2, account.getLogin().getUserName());
 						insertLoginInfo.setString(3, account.getLogin().getPassword());
-						insertLoginInfo.addBatch();
+						
 	
 					insertLoginInfo.execute();
 
@@ -1099,7 +1097,40 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void deleteNotification(String notification_id) {
-		// TODO Auto-generated method stub
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+
+				PreparedStatement deleteNotificationFromNotificatons = null;
+
+				PreparedStatement deleteNotificationFromNotificationsRecipients = null;
+
+				try {
+					
+
+								
+					deleteNotificationFromNotificatons = conn.prepareStatement(
+							"DELETE FROM notifications WHERE notification_id = ? ;");
+
+					deleteNotificationFromNotificatons.setString(1, notification_id);
+					deleteNotificationFromNotificatons.execute();
+
+					deleteNotificationFromNotificationsRecipients = conn.prepareStatement(
+							"DELETE FROM notificationrecipients WHERE notification_id = ?");
+					deleteNotificationFromNotificationsRecipients.setString(1, notification_id);
+					deleteNotificationFromNotificationsRecipients.execute();
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteNotificationFromNotificatons);
+					DBUtil.closeQuietly(deleteNotificationFromNotificationsRecipients);
+
+				}
+				return true;
+
+			}
+		});
 
 	}
 
@@ -1116,27 +1147,8 @@ class DerbyDatabase implements Database {
 	//
 	@Override
 	public void updateNotification(Notification notify) {
-		executeTransaction(new Transaction<Boolean>() {
-			@Override
-			public Boolean execute(Connection conn) throws SQLException {
-
-				PreparedStatement stmt = null;
-
-				PreparedStatement stmt1 = null;
-
-				try {
-
-				}
-
-				finally {
-					DBUtil.closeQuietly(stmt);
-					DBUtil.closeQuietly(stmt1);
-
-				}
-				return true;
-
-			}
-		});
+		deleteNotification(notify.getNotificationID());
+		addNotification(notify);
 
 	}
 
@@ -1200,6 +1212,20 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public Order getOrder(String orderNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	
+	public Order getCars() {
+		
+		return null;
+	}
+
+	@Override
+	
+	public ArrayList<Order> getOrders() {
 		// TODO Auto-generated method stub
 		return null;
 	}

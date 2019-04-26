@@ -7,7 +7,7 @@ public class PickUpInfo {
 	
 	
 	public PickUpInfo(){
-		
+		car = new Car();
 	}
 
 	/**
