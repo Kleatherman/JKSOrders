@@ -87,7 +87,6 @@ public class CustomerLoginServlet extends HttpServlet {
 				CustomerAccount account = (CustomerAccount) db.getCustomerAccount(model.getUserName());
 				ArrayList<Item> items = db.getVisibleItems();
 				req.setAttribute("accountNumber", account.getAccountNumber());
-				System.out.println("StorePage: "+ items.get(0).getDescription());
 				req.setAttribute("items", items);
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}

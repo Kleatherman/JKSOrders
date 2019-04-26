@@ -14,6 +14,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.Login;
+import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
 public class EmployeeLoginServlet extends HttpServlet {
@@ -72,18 +73,22 @@ public class EmployeeLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
+				WorkPage workModel = new WorkPage();
 				String accountNumber = db.getEmployeeAccount(model.getUserName()).getAccountNumber();
 				EmployeeAccount account = db.getEmployeeAccount(accountNumber);
 				String name = account.getFirstName();
+				
 				if(db.getNotifications(accountNumber).size()!=0) {
 					req.setAttribute("notification", db.getNotifications(accountNumber));
 				}
 				boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
+				workModel.setOrders(db.getOrders());
 				req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 				req.setAttribute("isManager", isManager);
 				req.setAttribute("employeeNames", db.AllEmployeeNames());
 				req.setAttribute("name", name);
 				req.setAttribute("accountNumber", accountNumber);
+				req.setAttribute("model", workModel);
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 

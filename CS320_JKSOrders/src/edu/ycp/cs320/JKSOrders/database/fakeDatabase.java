@@ -487,6 +487,11 @@ public class fakeDatabase implements Database{
 		}
 		return null;
 	}
+
+	@Override
+	public ArrayList<Order> getOrders() {
+		return orders;
+	}
 	
 	
 }
