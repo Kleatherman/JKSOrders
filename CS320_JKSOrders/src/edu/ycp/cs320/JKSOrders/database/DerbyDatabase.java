@@ -889,7 +889,7 @@ class DerbyDatabase implements Database {
 
 		ArrayList<CustomerAccount> full = this.getCustomerAccounts();
 		for (Account account : full) {
-			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			if (inputAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				result = account.getLogin().getPassword();
 			}
 		}
@@ -903,7 +903,7 @@ class DerbyDatabase implements Database {
 
 		ArrayList<EmployeeAccount> full = this.getEmployeeAccounts();
 		for (Account account : full) {
-			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			if (inputAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				result = account.getLogin().getPassword();
 			}
 		}
