@@ -58,6 +58,14 @@ public class StorePageServlet extends HttpServlet {
 		ArrayList<Item> items = db.getVisibleItems();
 		Order order = new Order();
 		String currentOrderNumber = (String) req.getSession().getAttribute("orderNumber");
+		if(currentOrderNumber == null) {
+			currentOrderNumber = system.generateNextOrderNumber(db, 'P');
+			order.setAccountNum(accountNumber);
+			order.setOrderType(currentOrderNumber);
+		}
+		else {
+			order = db.getOrder(currentOrderNumber);
+		}
 		boolean addedItemToCart = false;
 		//If there is no orderNumber for this session, this is a brand new order being created so we need to
 			//1: Get a new order number for the order
@@ -74,11 +82,8 @@ public class StorePageServlet extends HttpServlet {
 					itemsToBeAdded.add(new Pair<Item, Integer>(item, itemQuantity));
 			}
 		}
-		if(currentOrderNumber==null&& addedItemToCart==true) {
-			currentOrderNumber = system.generateNextOrderNumber(db, 'P');
+		if(currentOrderNumber!=null&& addedItemToCart==true) {
 			req.getSession().setAttribute("orderNumber", currentOrderNumber);
-			order.setAccountNum(accountNumber);
-			order.setOrderType(currentOrderNumber);
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
 				System.out.println(pair.getLeft()+" : "+pair.getRight());
 				order.addItem(pair.getLeft(), pair.getRight());
@@ -93,7 +98,6 @@ public class StorePageServlet extends HttpServlet {
 			//3: Calculate total price
 			//4: submit that order to be updated
 		else if(currentOrderNumber!=null && addedItemToCart==true){ 
-			order = db.getOrder(currentOrderNumber);
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
 				System.out.println(pair.getLeft()+" : "+pair.getRight());
 				order.addItem(pair.getLeft(), pair.getRight());
