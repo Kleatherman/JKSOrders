@@ -1375,6 +1375,8 @@ class DerbyDatabase implements Database {
 							if(orderNumber.equals(order.getOrderType())) {
 								order.addItem(catalog.getItem(orderItemResults.getString(2)), orderItemResults.getInt(3));
 							}
+							order.setItemQuantities();
+							order.setTotalPrice();
 						}
 						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + itemQuantityMap.get(orderItemResults.getString(2))+ "With order "+orderItemResults.getString(1));
 					}

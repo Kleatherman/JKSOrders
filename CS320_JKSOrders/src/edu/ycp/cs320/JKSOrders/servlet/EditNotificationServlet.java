@@ -69,7 +69,7 @@ public class EditNotificationServlet  extends HttpServlet{
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();
 			for(EmployeeAccount account : db.getEmployeeAccounts()) {
-				if(req.getParameter(account.getFirstName())!=null) {
+				if(req.getParameter(account.getFirstName()+" "+account.getLastName())!=null) {
 					destNames.add(account.getAccountNumber());
 				}
 			}
@@ -88,6 +88,7 @@ public class EditNotificationServlet  extends HttpServlet{
 			String editNotifyID = req.getParameter("editNotification");
 			notify.setNotificationID(editNotifyID);
 			db.updateNotification(notify);
+			
 			EditNotificationController editController = new EditNotificationController();
 			EditNotificationModel editModel = new EditNotificationModel();
 			editController.setModel(editModel);
@@ -100,7 +101,7 @@ public class EditNotificationServlet  extends HttpServlet{
 				}
 			}
 			editController.setModelAllNames(db.AllEmployeeNames());
-			editController.setDestinationNames();
+			editController.setDestinationNames(db);
 			req.setAttribute("model", editModel);
 			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
 		}
