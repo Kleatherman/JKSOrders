@@ -244,10 +244,34 @@ public class DerbyTest {
 		db.addOrder(order);
 		Olist= db.getOrders();
 		assertTrue(Olist.size()==count+1);
-		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I1"));
+		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I0"));
 		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-5);
 		assertTrue(db.getOrder("P12").getItemlist().get(0).getNumInOrder()==5);
 		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
+	}
+	@Test
+	public void testAddItems() {
+		db.setVisibility(0);
+		Ilist= db.getVisibleItems();
+		int count = Ilist.size();
+		Item item= new Item();
+		item.setDescription("Used to belong to Prof Ponytail");
+		item.setItemName("Tesla Parts");
+		item.setLocation("A4ST");
+		item.setNumInInventory(35);
+		item.setPrice(44.0);
+		item.setUPC("I56");
+		db.addItem(item);
+		db.setVisibility(0);
+		Ilist= db.getVisibleItems();
+		assertTrue(Ilist.size()==count+1);
+		assertTrue(db.getCatalog().getItem("I56").getDescription().equals("Used to belong to Prof Ponytail"));
+		assertTrue(db.getCatalog().getItem("I56").getItemName().equals("Tesla Parts"));
+		assertTrue(db.getCatalog().getItem("I56").getLocation().equals("A4ST"));
+		assertTrue(db.getCatalog().getItem("I56").getNumInInventory()==35);
+		assertTrue(db.getCatalog().getItem("I56").getPrice()==44.0);
+		
+		
 	}
 
 }
