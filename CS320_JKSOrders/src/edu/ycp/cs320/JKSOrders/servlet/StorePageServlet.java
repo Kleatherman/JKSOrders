@@ -60,6 +60,8 @@ public class StorePageServlet extends HttpServlet {
 		String currentOrderNumber = (String) req.getSession().getAttribute("orderNumber");
 		if(currentOrderNumber == null) {
 			currentOrderNumber = system.generateNextOrderNumber(db, 'P');
+			req.getSession().setAttribute("orderNumber", currentOrderNumber);
+			System.out.println("This is in STORE PAGE-------NEW ORDER____ORDER#: "+currentOrderNumber);
 			order.setAccountNum(accountNumber);
 			order.setOrderType(currentOrderNumber);
 		}
@@ -67,37 +69,27 @@ public class StorePageServlet extends HttpServlet {
 			order = db.getOrder(currentOrderNumber);
 		}
 		boolean addedItemToCart = false;
-		//If there is no orderNumber for this session, this is a brand new order being created so we need to
-			//1: Get a new order number for the order
-			//2: set the account number
-			//3: add the item to the order
-			//4: calculate the total price
-			//5: submit the order to be added
 		ArrayList<Pair<Item, Integer>> itemsToBeAdded = new ArrayList<Pair<Item,Integer>>();
 		for(Item item : items) {
 			if(req.getParameter(item.getItemName())!=null){
+				System.out.println("------------------------We Are IN THE ADDITEMTOCAR FOR LOOP------------");
 				addedItemToCart = true;
 				Integer itemQuantity = getIntegerFromParameter(req.getParameter(item.getItemName()+"Quantity"));
+				System.out.println("We found this item: "+ item.getItemName() + ". There are "+ itemQuantity+" being added to the order");
 				if(itemQuantity!=null)
 					itemsToBeAdded.add(new Pair<Item, Integer>(item, itemQuantity));
 			}
 		}
-		if(currentOrderNumber!=null&& addedItemToCart==true) {
+		if(order==null&&addedItemToCart) {
 			req.getSession().setAttribute("orderNumber", currentOrderNumber);
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
 				System.out.println(pair.getLeft()+" : "+pair.getRight());
 				order.addItem(pair.getLeft(), pair.getRight());
 			}
 			order.setTotalPrice();
-			db.addOrder(order);
+			db.updateOrder(order);
 		}
-		
-		//Else it is an order that has already been created so we need to
-			//1: pull that order from db
-			//2: add the item to that order
-			//3: Calculate total price
-			//4: submit that order to be updated
-		else if(currentOrderNumber!=null && addedItemToCart==true){ 
+		else if(order!=null && addedItemToCart){ 
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
 				System.out.println(pair.getLeft()+" : "+pair.getRight());
 				order.addItem(pair.getLeft(), pair.getRight());

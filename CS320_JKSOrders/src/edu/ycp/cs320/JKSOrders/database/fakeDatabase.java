@@ -506,6 +506,30 @@ public class fakeDatabase implements Database{
 		
 	}
 
+	@Override
+	public void deleteOrder(Order order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateItem(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addItem(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteItem(String item) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	
