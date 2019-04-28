@@ -79,16 +79,16 @@ public class DerbyTest {
 	}
 	@Test
 	public void testGetCustomerLogin() {
-		Llist= db.getCustomerLoginInfo();
-		assertTrue(Llist.size()==4);
-		assertTrue( Llist.get(0).getPassword().equals("password"));
+		LClist= db.getCustomerLoginInfo();
+		assertTrue(LClist.size()==4);
+		assertTrue( LClist.get(0).getPassword().equals("password"));
 	}
 	@Test
 	public void testGetEmployeeLogin() {
-		Llist= db.getEmployeeLoginInfo();
-		assertTrue(Llist.size()==3);
-		assertTrue( Llist.get(0).getPassword().equals("password"));
-		assertTrue(Llist.get(0).getOwnerAccount().equals("M0"));
+		LElist= db.getEmployeeLoginInfo();
+		assertTrue(LElist.size()==3);
+		assertTrue( LElist.get(0).getPassword().equals("password"));
+		assertTrue(LElist.get(0).getOwnerAccount().equals("M0"));
 	}
 	
 	@Test
@@ -103,7 +103,7 @@ public class DerbyTest {
 	
 	@Test
 	public void testGetNotificationTest() {
-		assertTrue(Nlist.size()==4);
+		assertTrue(Nlist.size()==3);
 		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(0).getDestination().size()==3);
 	}
@@ -315,8 +315,8 @@ public class DerbyTest {
 		assertTrue(Nlist.get(1).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(2).getNotificationID().equals("U2"));
 		assertTrue(Nlist.get(2).getMessage().equals("HELLO World"));
-		assertTrue(Nlist.get(3).getNotificationID().equals("U3"));
-		assertTrue(Nlist.get(3).getMessage().equals("I'm dummy thicc"));
+		// assertTrue(Nlist.get(3).getNotificationID().equals("U3"));
+		// assertTrue(Nlist.get(3).getMessage().equals("I'm dummy thicc"));
 	}
 	
 	
