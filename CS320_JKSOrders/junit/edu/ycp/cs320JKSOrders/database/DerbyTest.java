@@ -3,6 +3,7 @@ package edu.ycp.cs320JKSOrders.database;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +17,7 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.classes.PickUpInfo;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDerbyDatabase;
@@ -24,18 +26,46 @@ public class DerbyTest {
 	Database db;
 	ArrayList<EmployeeAccount> Elist;
 	ArrayList<CustomerAccount> Clist;
-	ArrayList<LoginInfo> Llist;
+	ArrayList<LoginInfo> LClist;
+	ArrayList<LoginInfo> LElist;
 	ArrayList<Notification> Nlist;
 	ArrayList<Item> Ilist;
+	ArrayList<Car> Cars;
+	ArrayList<Order> Olist;
 	
+	ArrayList<EmployeeAccount> InitE;
+	ArrayList<CustomerAccount> InitC;
+	ArrayList<LoginInfo> InitLC;
+	ArrayList<LoginInfo> InitLE;
+	ArrayList<Notification> InitN;
+	ArrayList<Item> InitI;
+	ArrayList<Car> InitV;
+	ArrayList<Order> InitO;
+	
+	// The init lists are made to represent the initial tables-- do not use add delete or edit methods on them 
 	@Before
 	public void setUp() {
 		db = new InitDerbyDatabase().init();
 		Clist= db.getCustomerAccounts();
+		InitC= db.getCustomerAccounts();
 		Elist= db.getEmployeeAccounts();
+		InitE= db.getEmployeeAccounts();
 		Ilist = db.getVisibleItems();
 		Nlist = db.getNotifications();
+    InitI= db.getVisibleItems();
+		Nlist = new ArrayList<Notification>();
+		InitN= db.getNotifications();
+		System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"+ InitN.size());
+		Cars = db.getCars();
+		InitV= db.getCars();
+		Olist= db.getOrders();
+		InitO= db.getOrders();
+		LClist= db.getCustomerLoginInfo();
+		InitLC= db.getCustomerLoginInfo();
+		LElist= db.getEmployeeLoginInfo();
+		InitLE= db.getEmployeeLoginInfo();
 	}
+	
 	@Test 
 	public void testGetEmployeeAccounts() {
 		assertTrue(Elist.size()==3);
@@ -165,39 +195,10 @@ public class DerbyTest {
 	}
 	
 	@Test
-	public void testGetPasswordForEmployeeAccount() {
-		Account account = db.getEmployeeAccounts().get(0);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
-		account = db.getEmployeeAccounts().get(1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
-		account = db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForEmployeeAccount(account)));
-	}
-	
-	@Test
-	public void testGetPasswordForCustomerAccount() {
-		Account account = db.getCustomerAccounts().get(0);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
-		account = db.getCustomerAccounts().get(1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
-		account = db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1);
-		assertTrue(account.getLogin().getPassword().equals(db.getPasswordForCustomerAccount(account)));
-	}
-	
-	@Test
-	public void testGetLastCustomerAccountNumber() {
-		String lastAccountNum = db.getLastCustomerAccountNumber();
-		assertTrue(lastAccountNum.equals(db.getCustomerAccounts().get(db.getCustomerAccounts().size()-1).getAccountNumber()));
-	}
-	
-	@Test
-	public void testGetLastEmployeeAccountNumber() {
-		String lastAccountNum = db.getLastEmployeeAccountNumber();
-		assertTrue(lastAccountNum.equals(db.getEmployeeAccounts().get(db.getEmployeeAccounts().size()-1).getAccountNumber()));
-	}
-	@Test
 	public void testSetVisible() {
-		assertTrue(Ilist.size()==2);
+		db.setVisibility(0);
+		Ilist = db.getVisibleItems();
+		assertTrue(InitI.size()==2);
 		db.setVisibility(99);
 		Ilist = db.getVisibleItems();
 		assertTrue(Ilist.size()==0);
@@ -207,7 +208,8 @@ public class DerbyTest {
 	}
 	@Test
 	public void testAddNotification() {
-		assertTrue(Nlist.size()==4);
+		Nlist = db.getNotifications();
+		int count= Nlist.size();
 		Notification notify = new Notification();
 		ArrayList<String> dest = new ArrayList<String>();
 		dest.add("M0");
@@ -219,7 +221,7 @@ public class DerbyTest {
 		notify.setNotificationID(null);
 		db.addNotification(notify);
 		Nlist= db.getNotifications();
-		assertTrue(Nlist.size()==5);
+		assertTrue(Nlist.size()==count+1);
 		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
 		assertTrue(Nlist.get(4).getMessage().equals("I'm dummy thicc"));
 		assertTrue(Nlist.get(4).getUrgency().equals(true));
@@ -230,7 +232,7 @@ public class DerbyTest {
 	}
 	@Test
 	public void testAddEmployeeAccount() {
-		assertTrue(Elist.size()==3);
+		int count = Elist.size();
 		LoginInfo login = new LoginInfo();
 		login.setPassword("password");
 		login.setUserName("BOB");
@@ -243,7 +245,7 @@ public class DerbyTest {
 		eaccount.setLogin(login);
 		db.addEmployeeAccount(eaccount);
 		Elist= db.getEmployeeAccounts();
-		assertTrue(Elist.size()==4);
+		assertTrue(Elist.size()==count+1);
 		assertTrue(Elist.get(0).getAccountNumber().equals("M0"));
 		assertTrue(Elist.get(3).getAccountNumber()!=null);
 		System.out.println("\\n\\n\\n\\n\\n\\n\\n"+ Elist.get(3).getFirstName());
@@ -256,7 +258,7 @@ public class DerbyTest {
 	}
 	@Test
 	public void testAddCustomerAccount() {
-		assertTrue(Clist.size()==3);
+		int count = Clist.size();
 		CreditCard card= new CreditCard();
 		card.setNameOnCard("Bob");
 		card.setCVC("563");
@@ -281,7 +283,7 @@ public class DerbyTest {
 		eaccount.setLogin(login);
 		db.addCustomerAccount(eaccount);
 		Clist= db.getCustomerAccounts();
-		assertTrue(Clist.size()==4);
+		assertTrue(Clist.size()==count+1);
 		assertTrue(Clist.get(0).getAccountNumber().equals("C0"));
 		assertTrue(Clist.get(2).getAccountNumber()!=null);
 		assertTrue(Clist.get(2).getFirstName().equals("Bob"));
@@ -302,8 +304,104 @@ public class DerbyTest {
 	@Test
 	public void testDeleteNotifications() {
 		assertTrue(Clist.size()==4);
-		
+		Nlist= db.getNotifications();
+		int count = Nlist.size();
+		db.deleteNotification("U0");
+		Nlist= db.getNotifications();
+		assertTrue(Nlist.size()==count-1);
+		assertTrue(Nlist.get(0).getNotificationID().equals("N0"));
+		assertTrue(Nlist.get(0).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(1).getNotificationID().equals("U1"));
+		assertTrue(Nlist.get(1).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(2).getNotificationID().equals("U2"));
+		assertTrue(Nlist.get(2).getMessage().equals("HELLO World"));
+		assertTrue(Nlist.get(3).getNotificationID().equals("U3"));
+		assertTrue(Nlist.get(3).getMessage().equals("I'm dummy thicc"));
 	}
 	
+	
+	
+	@Test
+	public void testDeleteOrders() {
+		Olist= db.getOrders();
+		int count = Olist.size();
+		db.deleteOrder(db.getOrder("P0"));
+		Olist= db.getOrders();
+		assertTrue(Olist.size()==count-1);
+		assertTrue(db.getOrder("P0")==null);
+		assertTrue(db.getOrder("S0").getItemlist().size()==2);
+		assertTrue(db.getOrder("S0").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("S0").getItemlist().get(1).getUPC().equals("I1"));
+	}
+	/*
+	@Test
+	public void testDeleteAccount() {
+		Elist= db.getEmployeeAccounts();
+		Clist= db.getCustomerAccounts();
+		int Ecount = Elist.size();
+		int Ccount = Clist.size();
+		db.deleteAccount("C0");
+		Elist= db.getEmployeeAccounts();
+		Clist= db.getCustomerAccounts();
+		assertTrue(Clist.size()==Ccount-1);
+		assertTrue(Elist.size()==Ecount);
+		assertTrue(!Clist.get(0).getAccountNumber().equals("C0"));
+		db.deleteAccount("M0");
+		Elist= db.getEmployeeAccounts();
+		Clist= db.getCustomerAccounts();
+		assertTrue(Elist.size()==Ecount-1);
+		assertTrue(Clist.size()==Ccount-1);
+		assertTrue(!Elist.get(0).getAccountNumber().equals("M0"));
+	
+	}
+*/
+	@Test
+	public void testAddOrders() {
+		TreeMap<String, Integer> Map= new TreeMap<String,Integer>();
+		ArrayList<Item> itemlist= new ArrayList<Item>();
+		int itemcount= db.getVisibleItems().get(0).getNumInInventory();
+		itemlist.add(db.getVisibleItems().get(0));
+		Map.put(itemlist.get(0).getUPC(), 5);
+		Order order = new Order();
+		order.setAccountNum("C2");
+		order.setItemlist(itemlist);
+		order.setQuantityMap(Map);
+		order.setItemQuantities();
+		order.setOrderType("P12");
+		order.setTotalPrice();
+		Olist= db.getOrders();
+		int count = Olist.size();
+		db.addOrder(order);
+		Olist= db.getOrders();
+		assertTrue(Olist.size()==count+1);
+		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-5);
+		assertTrue(db.getOrder("P12").getItemlist().get(0).getNumInOrder()==5);
+		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
+	}
+	@Test
+	public void testAddItems() {
+		db.setVisibility(0);
+		Ilist= db.getVisibleItems();
+		int count = Ilist.size();
+		Item item= new Item();
+		item.setDescription("Used to belong to Prof Ponytail");
+		item.setItemName("Tesla Parts");
+		item.setLocation("A4ST");
+		item.setNumInInventory(35);
+		item.setPrice(44.0);
+		item.setUPC("I56");
+		db.addItem(item);
+		db.setVisibility(0);
+		Ilist= db.getVisibleItems();
+		assertTrue(Ilist.size()==count+1);
+		assertTrue(db.getCatalog().getItem("I56").getDescription().equals("Used to belong to Prof Ponytail"));
+		assertTrue(db.getCatalog().getItem("I56").getItemName().equals("Tesla Parts"));
+		assertTrue(db.getCatalog().getItem("I56").getLocation().equals("A4ST"));
+		assertTrue(db.getCatalog().getItem("I56").getNumInInventory()==35);
+		assertTrue(db.getCatalog().getItem("I56").getPrice()==44.0);
+		
+		
+	}
 
 }

@@ -2,6 +2,7 @@ package edu.ycp.cs320.JKSOrders.controller;
 
 import java.util.ArrayList;
 
+import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
@@ -18,11 +19,11 @@ public class EditNotificationController {
 		model.setNotification(notify);
 	}
 	
-	public void setDestinationNames() {
+	public void setDestinationNames(Database db) {
 		ArrayList<String> names = new ArrayList<String>();
-		Database db = InitDatabase.init();
 		for(String accountNumber : model.getNotify().getDestination()) {
-			names.add(db.getAccount(accountNumber).getFirstName());
+			Account account = db.getAccount(accountNumber);
+			names.add(account.getFirstName()+" "+account.getLastName());
 		}
 		model.setDestinationNames(names);
 	}
