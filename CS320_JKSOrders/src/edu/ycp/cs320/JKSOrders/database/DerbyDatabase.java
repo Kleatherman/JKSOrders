@@ -1119,7 +1119,7 @@ class DerbyDatabase implements Database {
 
 								
 					deleteNotificationFromNotificatons = conn.prepareStatement(
-							"DELETE FROM notifications WHERE notification_id = ? ;");
+							"DELETE FROM notifications WHERE notification_id = ? ");
 
 					deleteNotificationFromNotificatons.setString(1, notification_id);
 					deleteNotificationFromNotificatons.execute();
