@@ -33,6 +33,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
 		Database db = InitDatabase.init();
 		System.out.println("EmployeeLogin Servlet: doPost");
 		
@@ -109,7 +110,8 @@ public class EmployeeLoginServlet extends HttpServlet {
 		// Forward to view to render the result HTML document
 		
 
-
+		
+		System.out.println("We are still in the EmployeeLogin Servlet");
 
 	}
 }

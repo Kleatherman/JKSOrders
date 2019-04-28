@@ -949,6 +949,8 @@ class DerbyDatabase implements Database {
 					ArrayList<EmployeeAccount> employees = new ArrayList<EmployeeAccount>();
 
 					employees = getEmployeeAccounts();
+					
+					System.out.println("Do we get to derby");
 
 					int managers = 0;
 					String employee_id = null;
@@ -991,6 +993,8 @@ class DerbyDatabase implements Database {
 				finally {
 
 					DBUtil.closeQuietly(insertEmployee);
+					
+					System.out.println("Employee Account Added");
 
 				}
 				return true;

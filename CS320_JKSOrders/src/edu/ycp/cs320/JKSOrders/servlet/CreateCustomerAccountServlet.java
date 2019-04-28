@@ -19,6 +19,7 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 		System.out.println("Create Customer Account Servlet: doGet");
 
 	}

@@ -17,7 +17,8 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Create an Account</h5>
-            <form class="form-signin">
+            
+            <form action="${pageContext.servletContext.contextPath}/createECustomerAccount" method="post">
              
 
 
@@ -45,8 +46,8 @@
               
               
   
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" value="Create Account" >Create Account </button>
-               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "loginPage" formnovalidate value="Go Back" >Go Back</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit"  >Create Account </button>
+               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "loginPage" formnovalidate >Go Back</button>
               <hr class="my-4">
             </form>
           </div>
