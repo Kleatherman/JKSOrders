@@ -18,7 +18,7 @@
           <div class="card-body">
             <h5 class="card-title text-center">Create an Account</h5>
             
-            <form action="${pageContext.servletContext.contextPath}/createECustomerAccount" method="post">
+            <form action="${pageContext.servletContext.contextPath}/createCustomerAccount" method="post">
              
 
 
@@ -40,7 +40,7 @@
               </div>
               
 				<div class="form-label-group">
-                <input type="phoneNumber" id="inputphoneNumber" class="form-control" name = "phoneNumber" placeholder="Phone Number" required autofocus>
+                <input type="phoneNumber" id="inputphoneNumber" class="form-control" name = "number" placeholder="Phone Number" required autofocus>
                 <label for="inputphoneNumber">Phone Number</label>
               </div>
               
