@@ -969,6 +969,8 @@ class DerbyDatabase implements Database {
 							"insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
 
 					insertEmployee.setString(1, employee_id);
+					
+							
 					insertEmployee.setString(2, account.getFirstName());
 					insertEmployee.setString(3, account.getLastName());
 					insertEmployee.setString(4, account.getEmail());

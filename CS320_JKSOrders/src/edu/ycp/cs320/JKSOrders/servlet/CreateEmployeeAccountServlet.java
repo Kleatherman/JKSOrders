@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.controller.CreateEmployeeAccountController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CreateEmployeeAccount;
 
 
@@ -44,6 +46,8 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 
 		// assign model reference to controller so that controller can access model
 		controller.setModel(model);
+		
+		Database dbase = InitDatabase.init();
 
 		// call JSP to generate empty form
 		
@@ -53,6 +57,12 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		}
 		else {
 			req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
+			controller.setLogin(req.getParameter("password"), req.getParameter("username"));
+			controller.setAccountNumber(dbase);
+			controller.setName(req.getParameter("name"));
+			controller.setPhoneNumber(req.getParameter("number"));
+			controller.setNullValues();
+			controller.addAccount(dbase);
 		}
 		 req.setAttribute("model", model);
 

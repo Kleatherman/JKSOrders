@@ -48,7 +48,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 		controller.setModel(model);
 
 		
-		SystemController system = new SystemController();
+
 
 		// holds the error message text, if there is any
 		String errorMessage = null;
@@ -69,7 +69,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			else if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			else if(!system.verifyEmployeeLoginInfo(model.getLoginInfo(), db.getEmployeeLoginInfo())) {
+			else if(model.getLoginInfo().equals(db.getEmployeeLoginInfo())) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {

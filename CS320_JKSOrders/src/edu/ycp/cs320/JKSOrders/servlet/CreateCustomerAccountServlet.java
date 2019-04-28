@@ -50,6 +50,7 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 			
 			controller.setLogin(req.getParameter("password"), req.getParameter("username"));
 			controller.setAccountNumber(dbase);
+			controller.setNullValues();
 			controller.addAccount(dbase);
 		}
 		req.setAttribute("model", model);
