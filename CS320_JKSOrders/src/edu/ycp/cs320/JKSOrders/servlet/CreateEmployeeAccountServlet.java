@@ -61,13 +61,14 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 			
 			System.out.println("Do we get here");
 
-			req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
 			
 			controller.setLogin(req.getParameter("password"), req.getParameter("username"));
 			controller.setName(req.getParameter("name"));
 			controller.setPhoneNumber(req.getParameter("number"));
 			controller.setNullValues();
 			controller.addAccount(dbase);
+			
+			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			
 		}
 		 req.setAttribute("model", model);
