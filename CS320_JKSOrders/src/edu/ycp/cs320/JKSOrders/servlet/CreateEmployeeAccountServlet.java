@@ -6,8 +6,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.controller.CreateEmployeeAccountController;
+import edu.ycp.cs320.JKSOrders.database.Database;
+import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CreateEmployeeAccount;
 
 
@@ -21,7 +22,7 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 
 		System.out.println("Create Employee Account Servlet: doGet");	
 		
-		
+		System.out.println("Do we get here");
 		
 		// call JSP to generate empty form
 		req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
@@ -44,15 +45,31 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 
 		// assign model reference to controller so that controller can access model
 		controller.setModel(model);
+		
+		Database dbase = InitDatabase.init();
 
 		// call JSP to generate empty form
 		
 		
 		if(req.getParameter("loginPage")!=null) {
-			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+			
+			System.out.println("Do we get here post");
+			
+			 req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
-		else {
+		else if(req.getParameter("createAccount")!=null) {
+			
+			System.out.println("Do we get here");
+
 			req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
+			
+			controller.setLogin(req.getParameter("password"), req.getParameter("username"));
+			controller.setName(req.getParameter("name"));
+			controller.setPhoneNumber(req.getParameter("number"));
+			controller.setNullValues();
+			controller.addAccount(dbase);
+			
+			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		 req.setAttribute("model", model);
 
