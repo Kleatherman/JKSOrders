@@ -253,7 +253,7 @@ public class SystemController {
 			lastDigit++;
 			return firstCharacter+lastDigit.toString();
 		}
-		return "FakeOrderNumber1";
+		return "P0";
 	}
 
 }

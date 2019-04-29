@@ -898,7 +898,7 @@ class DerbyDatabase implements Database {
 
 		ArrayList<CustomerAccount> full = this.getCustomerAccounts();
 		for (Account account : full) {
-			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			if (inputAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				result = account.getLogin().getPassword();
 			}
 		}
@@ -912,7 +912,7 @@ class DerbyDatabase implements Database {
 
 		ArrayList<EmployeeAccount> full = this.getEmployeeAccounts();
 		for (Account account : full) {
-			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			if (inputAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				result = account.getLogin().getPassword();
 			}
 		}
@@ -958,6 +958,8 @@ class DerbyDatabase implements Database {
 					ArrayList<EmployeeAccount> employees = new ArrayList<EmployeeAccount>();
 
 					employees = getEmployeeAccounts();
+					
+					System.out.println("Do we get to derby");
 
 					int managers = 0;
 					String employee_id = null;
@@ -978,6 +980,8 @@ class DerbyDatabase implements Database {
 							"insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
 
 					insertEmployee.setString(1, employee_id);
+					
+							
 					insertEmployee.setString(2, account.getFirstName());
 					insertEmployee.setString(3, account.getLastName());
 					insertEmployee.setString(4, account.getEmail());
@@ -998,6 +1002,8 @@ class DerbyDatabase implements Database {
 				finally {
 
 					DBUtil.closeQuietly(insertEmployee);
+					
+					System.out.println("Employee Account Added");
 
 				}
 				return true;
@@ -1265,7 +1271,7 @@ class DerbyDatabase implements Database {
 				
 			
 		}
-
+		System.out.println("I'm in getOrder in derby......we couldn't find the order!!!!!!!!");
 		return null;
 	}
 	
