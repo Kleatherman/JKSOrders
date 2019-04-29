@@ -76,7 +76,7 @@ public class WorkPageServlet  extends HttpServlet{
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();
 			for(EmployeeAccount account : db.getEmployeeAccounts()) {
-				if(req.getParameter(account.getFirstName())!=null) {
+				if(req.getParameter(account.getFirstName()+' '+account.getLastName())!=null) {
 					destNames.add(account.getAccountNumber());
 				}
 			}
