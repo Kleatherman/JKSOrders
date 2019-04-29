@@ -19,6 +19,7 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+		req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 		System.out.println("Create Customer Account Servlet: doGet");
 
 	}
@@ -46,11 +47,16 @@ public class CreateCustomerAccountServlet extends HttpServlet {
 		if (req.getParameter("loginPage") != null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		} else {
-			req.getRequestDispatcher("/_view/createCustomerAccount.jsp").forward(req, resp);
 			
-			controller.setLogin(req.getParameter("password"), req.getParameter("username"));
-			controller.setAccountNumber(dbase);
+		
+			controller.setLogin(req.getParameter("password"), req.getParameter("email"));
+			controller.setName(req.getParameter("name"));
+			controller.setPhoneNumber(req.getParameter("number"));
+			controller.setNullValues();
 			controller.addAccount(dbase);
+			
+			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		
 		}
 		req.setAttribute("model", model);
 

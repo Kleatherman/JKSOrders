@@ -6,10 +6,10 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 
 public class EmployeeForgotLogin {
-	private EmployeeAccount account = new EmployeeAccount();
+	private EmployeeAccount account;
 	
 	public EmployeeForgotLogin() {
-		
+		account = new EmployeeAccount();
 	}
 	
 	public String getPassword() {

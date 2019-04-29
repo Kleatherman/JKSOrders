@@ -1,7 +1,9 @@
- 
+
 <!DOCTYPE html>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <html lag= "en">
 	<head>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -15,37 +17,41 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Create an Account</h5>
-            <form class="form-signin">
+            
              
 
-
+            
+	<form action="${pageContext.servletContext.contextPath}/createEmployeeAccount" method="post">
+	
  				<div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" value="${model.userName}" placeholder="UserName" required autofocus>
+                <input type="text" id="inputEmail" class="form-control"  name = "username" placeholder="UserName" required autofocus>
                 <label for="inputEmail">UserName</label>
               </div>
 
 				
               
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" value="${model.password}" placeholder="Password" required autofocus>
+                <input type="password" id="inputPassword" class="form-control"  name = "password" placeholder="Password" required autofocus>
                 <label for="inputPassword">Password</label>
               </div>
 
 				<div class="form-label-group">
-                <input type="name" id="inputname" class="form-control" value="${model.name}" placeholder="Name" required autofocus>
+                <input type="name" id="inputname" class="form-control" name = "name" placeholder="Name" required autofocus>
                 <label for="inputName">Name</label>
               </div>
               
 				<div class="form-label-group">
-                <input type="phoneNumber" id="inputphoneNumber" class="form-control" value="${model.phoneNumber}" placeholder="Phone Number" required autofocus>
+                <input type="phoneNumber" id="inputphoneNumber" class="form-control" name = "number" placeholder="Phone Number" required autofocus>
                 <label for="inputphoneNumber">Phone Number</label>
               </div>
               
               
   
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" value="Create Account" >Create Employee Account </button>
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "loginPage" formnovalidate value="Go Back" >Go Back</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name="createAccount"  >Create Employee Account </button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "loginPage" formnovalidate  >Go Back</button>
+              
               <hr class="my-4">
+            </form>
             </form>
           </div>
         </div>
