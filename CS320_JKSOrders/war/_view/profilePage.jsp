@@ -61,6 +61,12 @@
 						</table>
 						<div>
 							<c:if test="${isCustomer}">
+								<select name="sourceOrders">	
+										<c:forEach items="${sourceOrders}" var = "order">
+											<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
+										</c:forEach>
+									</select>
+								<input name = "sourceOrdersSubmit" type = "submit" value = "View Order" />
 								<input name="storePage" type="submit" value="Store Page!" />
 							</c:if>
 							<c:if test="${isEmployee}">
