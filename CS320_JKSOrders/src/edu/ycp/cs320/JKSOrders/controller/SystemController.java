@@ -246,7 +246,7 @@ public class SystemController {
 	}
 	
 	public String generateNextOrderNumber(Database db, char firstCharacter) {
-		String lastOrderNumber = (String) db.getLastOrderNumber();
+		String lastOrderNumber = (String) db.getLastPickUpOrderNumber();
 		if(lastOrderNumber != null) {
 			System.out.println(lastOrderNumber.substring(1));
 			Integer lastDigit = Integer.parseInt(lastOrderNumber.substring(1, lastOrderNumber.length()));

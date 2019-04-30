@@ -450,7 +450,7 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-	public String getLastOrderNumber() {
+	public String getLastPickUpOrderNumber() {
 		return orders.get(orders.size()-1).getOrderType();
 	}
 
