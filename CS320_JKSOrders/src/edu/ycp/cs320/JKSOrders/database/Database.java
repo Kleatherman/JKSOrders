@@ -136,7 +136,7 @@ public interface Database {
 
 	public void updateNotification(Notification notify);
 	
-	public String getLastOrderNumber();
+	public String getLastPickUpOrderNumber();
 	
 	public void addOrder(Order order);
 	
@@ -157,4 +157,8 @@ public interface Database {
 	public void addItem(Item item);
 	
 	public void deleteItem(String item);
+	
+	public void cancelOrder(String orderNumber);
+
+	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber);
 }
