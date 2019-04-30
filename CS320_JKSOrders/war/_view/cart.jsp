@@ -8,14 +8,15 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
-!-- Page Content -->
+<body style="background-color: #007bff;">
+
 <div class="container">
   <div class="card border-0 shadow my-5">
     <div class="card-body p-5">
   	<div class = "container-fluid">
 			<div class="row">
-				<div class="col-sm-4" style="background-color:blue;"></div>
-				<div class="col-sm-4" style="background-color:white;border-style:solid;border-color:blue; border-width:thick;">
+
+				
 				
 					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
 						<h1 style="text-align:center">Your Cart Page</h1><br/><br />
@@ -35,15 +36,13 @@
 									<td>${item.price}</td>
 								</tr>
 							</c:forEach>
-						</table>
 						<span style="color:blue; font-size:20px;">Your Order's Total Price: $${cartModel.price }</span>
 					</form>		
 					<span class = ErrorMessage>${model.errorMessage}</span>
-				</div>
+				
 				<div class="col-sm-4" style="background-color:clear;"></div>
 			</div>	
 		</div>
     </div>
-  </div>
-</div>
+
 </html>
