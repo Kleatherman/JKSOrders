@@ -10,19 +10,21 @@
 
 
 <div class="container">
-  <div class="card border-0 shadow my-5">
+  <div class="card border-0 shadow my-5"  style="background-color:#cccccc"; >
     <div class="card-body p-5">
-  	<div class = "container-fluid">
+  	<div class = "container-fluid" >
 			<div class="row">
-
+	
 				
 				
 					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
 						<h1 style="text-align:center">Your Cart Page</h1><br/><br />
-						<input name="store" type="Submit" value="Back to Store" />
-						<input name="checkOut" type="Submit" value="Checkout" />
-						<input name="cancelOrder" type="Submit" value="Cancel Order" />
 						<input name="accountNumber" type="Hidden" value="${accountNumber}"/>
+						
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "store" formnovalidate >Back to Store</button>
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "checkOut" formnovalidate >Checkout</button>
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cancelOrder" formnovalidate >Cancel Order</button>
+						
 						
 						<table>
 							<th>Item Name</th>
