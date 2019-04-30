@@ -48,7 +48,7 @@ public class CartPageServlet  extends HttpServlet{
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}else if(req.getParameter("cancelOrder")!=null) {
 			db.deleteOrder(db.getOrder(orderNumber));
-			req.getSession().setAttribute("orderNumber", null);
+			req.getSession().removeAttribute("orderNumber");
 			ArrayList<Item> items = new ArrayList<Item>();
 			items = db.getVisibleItems();
 			req.setAttribute("items", items);
