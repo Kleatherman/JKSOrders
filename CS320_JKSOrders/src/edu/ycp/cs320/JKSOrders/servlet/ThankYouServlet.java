@@ -35,13 +35,14 @@ public class ThankYouServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		Database db = InitDatabase.init();
+		req.getSession().removeAttribute("orderNumber");
+		System.out.println("HEYHEYHEYHEYHEYHEYHEYHEYHEYHEHYEHYEHEYHEYHRSJKBFKJDH"+"        "+req.getSession().getAttribute("orderNumber"));
 		System.out.println("ThankYou Servlet: doPost");
 		String accountNumber = req.getParameter("accountNumber");
 		if(accountNumber != null) {
 			Account account =  db.getAccount(accountNumber);
 			req.setAttribute("accountNumber", account.getAccountNumber());
 		}
-		req.getSession().setAttribute("orderNumber", null);
 		if(req.getParameter("storePage")!= null) {
 			ArrayList<Item> items = db.getVisibleItems();
 			System.out.println("StorePage: "+ items.get(0).getDescription());
