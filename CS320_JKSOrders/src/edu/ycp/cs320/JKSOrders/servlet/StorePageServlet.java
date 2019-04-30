@@ -57,8 +57,10 @@ public class StorePageServlet extends HttpServlet {
 		boolean isEmployee= false;
 		ArrayList<Item> items = db.getVisibleItems();
 		Order order = new Order();
+		boolean newOrder = false;
 		String currentOrderNumber = (String) req.getSession().getAttribute("orderNumber");
 		if(currentOrderNumber == null) {
+			newOrder = true;
 			currentOrderNumber = system.generateNextOrderNumber(db, 'P');
 			req.getSession().setAttribute("orderNumber", currentOrderNumber);
 			System.out.println("This is in STORE PAGE-------NEW ORDER____ORDER#: "+currentOrderNumber);
@@ -80,14 +82,14 @@ public class StorePageServlet extends HttpServlet {
 					itemsToBeAdded.add(new Pair<Item, Integer>(item, itemQuantity));
 			}
 		}
-		if(order==null&&addedItemToCart) {
-			req.getSession().setAttribute("orderNumber", currentOrderNumber);
+		if(newOrder&&addedItemToCart) {
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
 				System.out.println(pair.getLeft()+" : "+pair.getRight());
 				order.addItem(pair.getLeft(), pair.getRight());
 			}
 			order.setTotalPrice();
-			db.updateOrder(order);
+			System.out.println("We are adding this order...................................: "+order.getOrderType());
+			db.addOrder(order);
 		}
 		else if(order!=null && addedItemToCart){ 
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
@@ -129,7 +131,7 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {
-			req.getSession().setAttribute("orderNumber", null);
+			req.getSession().removeAttribute("orderNumber");
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {

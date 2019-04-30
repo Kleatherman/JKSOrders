@@ -1171,7 +1171,17 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public String getLastOrderNumber() {
-		 return getOrders().get(getOrders().size()-1).getOrderType();
+		int i = 1;
+		ArrayList<Order> orders = getOrders();
+		while(orders.size()>=i) {
+			Order nextOrder = orders.get(orders.size()-i);
+			if(nextOrder.getOrderType().substring(0).equals("P")) {
+				return nextOrder.getOrderType();
+			}
+			else
+				i++;
+		}
+		 return "P0";
 	}
 
 	@Override

@@ -13,6 +13,7 @@ public class Order {
 	private String accountNum;
 	
 	public Order(){
+		account = new CustomerAccount();
 		Itemlist= new ArrayList<Item>();
 		QuantityMap= new TreeMap<String, Integer>();
 	}
