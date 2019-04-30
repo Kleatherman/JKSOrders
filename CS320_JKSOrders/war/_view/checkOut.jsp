@@ -29,7 +29,7 @@
 					<h1> Hi Y'all </h1>
 					<form action="${pageContext.servletContext.contextPath}/checkOut" method="post">
 						<div>
-							<input type="Submit" name="cancel" value="Cancel Order">
+							<input type="Submit" name="cancel" value="Back to Store Page">
 							<input type="Submit" name="cart" value="My Cart">
 							<input type="Submit" name="thankYou" value="Submit Order">
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />

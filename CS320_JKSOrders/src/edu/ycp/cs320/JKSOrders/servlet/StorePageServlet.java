@@ -136,7 +136,7 @@ public class StorePageServlet extends HttpServlet {
 		}
 		else if(req.getParameter("logOut")!=null) {
 			if(req.getSession().getAttribute("orderNumber")!=null) {
-				db.deleteOrder(order);
+				db.cancelOrder(order.getOrderType());
 				req.getSession().removeAttribute("orderNumber");
 			}
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);

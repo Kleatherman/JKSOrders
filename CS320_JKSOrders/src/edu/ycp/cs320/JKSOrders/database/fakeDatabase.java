@@ -530,10 +530,14 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-
 	public void cancelOrder(String orderNumber) {
-		// TODO Auto-generated method stub
+		Order order = getOrder(orderNumber);
+		for(Item item : order.getItemlist()) {
+			updateItem(item);
+		}
+		deleteOrder(order);
 	}	
+	
 	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber) {
 		ArrayList<Order> sourceOrders = new ArrayList<Order>();
 		for(Order order : orders) {
