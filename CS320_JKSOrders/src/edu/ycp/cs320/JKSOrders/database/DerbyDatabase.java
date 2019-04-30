@@ -1170,12 +1170,12 @@ class DerbyDatabase implements Database {
 	}
 
 	@Override
-	public String getLastOrderNumber() {
+	public String getLastPickUpOrderNumber() {
 		int i = 1;
 		ArrayList<Order> orders = getOrders();
 		while(orders.size()>=i) {
 			Order nextOrder = orders.get(orders.size()-i);
-			if(nextOrder.getOrderType().substring(0).equals("P")) {
+			if(nextOrder.getOrderType().substring(0,1).equals("P")) {
 				return nextOrder.getOrderType();
 			}
 			else

@@ -136,7 +136,7 @@ public interface Database {
 
 	public void updateNotification(Notification notify);
 	
-	public String getLastOrderNumber();
+	public String getLastPickUpOrderNumber();
 	
 	public void addOrder(Order order);
 	

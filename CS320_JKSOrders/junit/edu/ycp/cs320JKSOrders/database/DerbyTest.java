@@ -235,7 +235,7 @@ public class DerbyTest {
 		ArrayList<Item> itemlist= new ArrayList<Item>();
 		int itemcount= db.getVisibleItems().get(0).getNumInInventory();
 		itemlist.add(db.getVisibleItems().get(0));
-		Map.put(itemlist.get(0).getUPC(), 5);
+		Map.put(itemlist.get(0).getUPC(), 2);
 		Order order = new Order();
 		order.setAccountNum("C2");
 		order.setItemlist(itemlist);
@@ -249,9 +249,15 @@ public class DerbyTest {
 		Olist= db.getOrders();
 		assertTrue(Olist.size()==count+1);
 		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I0"));
-		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-5);
-		assertTrue(db.getOrder("P12").getItemlist().get(0).getNumInOrder()==5);
+		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-2);
+		assertTrue(db.getOrder("P12").getItemlist().get(0).getNumInOrder()==2);
 		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
+		order.setOrderType("P13");
+		db.addOrder(order);
+		assertTrue(db.getOrder("P13").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-4);
+		assertTrue(db.getOrder("P13").getItemlist().get(0).getNumInOrder()==2);
+		assertTrue(db.getOrder("P13").getTotalPrice()!=0);
 	}
 	@Test
 	public void testAddItems() {
@@ -276,6 +282,41 @@ public class DerbyTest {
 		assertTrue(db.getCatalog().getItem("I56").getPrice()==44.0);
 		
 		
+	}
+	@Test
+	public void testGetLastPickupOrderNumber() {
+		String test= db.getLastPickUpOrderNumber();
+		int lastInt2 = Integer.parseInt(test.substring(1));
+		
+		
+		TreeMap<String, Integer> Map= new TreeMap<String,Integer>();
+		ArrayList<Item> itemlist= new ArrayList<Item>();
+		itemlist.add(db.getVisibleItems().get(0));
+		Map.put(itemlist.get(0).getUPC(), 1);
+		Order order = new Order();
+		order.setAccountNum("C2");
+		order.setItemlist(itemlist);
+		order.setQuantityMap(Map);
+		order.setItemQuantities();
+		order.setOrderType("P96");
+		order.setTotalPrice();
+		db.addOrder(order);
+		
+		test= db.getLastPickUpOrderNumber();
+		int lastInt = Integer.parseInt(test.substring(1));
+		System.out.println("This is LastInt "+lastInt);
+		assertTrue(96==lastInt);
+		
+		order.setAccountNum("C2");
+		order.setItemlist(itemlist);
+		order.setQuantityMap(Map);
+		order.setItemQuantities();
+		order.setOrderType("I675");
+		order.setTotalPrice();
+		
+		test= db.getLastPickUpOrderNumber();
+		lastInt = Integer.parseInt(test.substring(1));
+		assertTrue(96==lastInt);
 	}
 
 }
