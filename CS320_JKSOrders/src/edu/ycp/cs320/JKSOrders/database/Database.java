@@ -157,4 +157,8 @@ public interface Database {
 	public void addItem(Item item);
 	
 	public void deleteItem(String item);
+	
+	public void cancelOrder(String orderNumber);
+
+	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber);
 }

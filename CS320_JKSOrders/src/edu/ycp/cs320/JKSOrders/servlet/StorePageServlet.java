@@ -123,6 +123,7 @@ public class StorePageServlet extends HttpServlet {
 				}
 				if(model.getCustomerAccount()!=null) {
 					isCustomer= true;
+					req.setAttribute("sourceOrders", db.getSourceOrders(model.getCustomerAccount().getAccountNumber()));
 					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
 					req.setAttribute("Username", model.getCustomerAccount().getLogin().getUserName());
 					req.setAttribute("password", model.getCustomerAccount().getLogin().getPassword());
@@ -134,7 +135,10 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {
-			req.getSession().removeAttribute("orderNumber");
+			if(req.getSession().getAttribute("orderNumber")!=null) {
+				db.cancelOrder(order.getOrderType());
+				req.getSession().removeAttribute("orderNumber");
+			}
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {
