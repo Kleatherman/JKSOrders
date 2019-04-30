@@ -4,49 +4,17 @@
 
 <html lag= "en">
 	<head>
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	
-		<title>Cart Page</title>
-		<style type="text/css">
-		.TitleText2 {
-						font-size: 300%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		
-		.ErrorMessage {
-						font-size: 150%;
-						text-align: center;
-						color: red;		
-		}
-		table {
- 						 font-family: arial, sans-serif;
-						 border-collapse: collapse;
-						 width: 100%;
-		}
-		td, th {
-						 border: 1px solid #dddddd;
-						 text-align: left;
-						 padding: 8px;
-		}
-		tr:nth-child(even) {
- 						 background-color: #dddddd;
-		}
-		</style>
-	</head>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
-	<body style="background-color:gray; padding-top: 200px; ">
-	<div class = "container-fluid">
+!-- Page Content -->
+<div class="container">
+  <div class="card border-0 shadow my-5">
+    <div class="card-body p-5">
+  	<div class = "container-fluid">
 			<div class="row">
-				<div class="col-sm-4" style="background-color:clear;"></div>
+				<div class="col-sm-4" style="background-color:blue;"></div>
 				<div class="col-sm-4" style="background-color:white;border-style:solid;border-color:blue; border-width:thick;">
 				
 					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
@@ -75,5 +43,7 @@
 				<div class="col-sm-4" style="background-color:clear;"></div>
 			</div>	
 		</div>
-	</body>
+    </div>
+  </div>
+</div>
 </html>
