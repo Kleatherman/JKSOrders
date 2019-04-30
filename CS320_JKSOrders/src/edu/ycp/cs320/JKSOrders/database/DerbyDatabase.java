@@ -1527,6 +1527,17 @@ class DerbyDatabase implements Database {
 		
 	}
 
+	@Override
+	public void cancelOrder(String orderNumber) {
+		Catalog catalog = getCatalog();
+		Order order = getOrder(orderNumber);
+		order.setItemQuantities();
+		for(Item item : order.getItemlist()) {
+			item.setNumInInventory(catalog.getItem(item.getUPC()).getNumInInventory()+item.getNumInOrder());
+			updateItem(item);
+		}
+		deleteOrder(order);	
+	}
 	
 	//This method returns all of the orders owned by a particular customer
 	@Override
