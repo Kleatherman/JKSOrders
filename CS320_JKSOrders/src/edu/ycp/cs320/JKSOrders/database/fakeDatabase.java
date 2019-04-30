@@ -520,14 +520,24 @@ public class fakeDatabase implements Database{
 
 	@Override
 	public void addItem(Item item) {
-		// TODO Auto-generated method stub
-		
+		catalog.getItemMap().put(item.getUPC(), item);
 	}
 
 	@Override
 	public void deleteItem(String item) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber) {
+		ArrayList<Order> sourceOrders = new ArrayList<Order>();
+		for(Order order : orders) {
+			if(order.getAccountNum().equals(CustomerAccountNumber)) {
+				sourceOrders.add(order);
+			}
+		}
+		return sourceOrders;
 	}
 
 	
