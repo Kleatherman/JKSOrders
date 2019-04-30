@@ -118,6 +118,9 @@ public class StorePageServlet extends HttpServlet {
 		else if (req.getParameter("profilePage") != null) {
 			if(accountNumber!=null) {
 				controller.loadUpCustomerAccount(db, accountNumber);
+				if(db.getOrder(currentOrderNumber)==null) {
+					req.getSession().removeAttribute("orderNumber");
+				}
 				if(model.getCustomerAccount()!=null) {
 					isCustomer= true;
 					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
@@ -136,15 +139,19 @@ public class StorePageServlet extends HttpServlet {
 		}
 		else if(req.getParameter("cart")!=null) {
 			boolean itemsAreHere = false;
-			Order cartOrder = db.getOrder(currentOrderNumber);
+			Order cartOrder = new Order();
+			if(!newOrder) {
+				cartOrder = db.getOrder(currentOrderNumber);
+			}
 			//Order cartOrder = db.getOrder("P0");
 			CartModel cartModel = new CartModel();
 			cartModel.setAccount(db.getCustomerAccount(accountNumber));
 			if(cartOrder!=null) {
-				cartOrder.setItemQuantities();
-				itemsAreHere = true;
+				if(cartOrder.getItemlist().size()!=0) {
+					cartOrder.setItemQuantities();
+					itemsAreHere = true;
+				}
 			}
-			
 			cartModel.setOrder(cartOrder);
 			req.setAttribute("cartModel", cartModel);
 			req.setAttribute("accountNumber", accountNumber);
@@ -156,6 +163,7 @@ public class StorePageServlet extends HttpServlet {
 				req.setAttribute("items", itemList);
 				req.setAttribute("model", model);
 				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				req.getSession().removeAttribute("orderNumber");
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 		}
