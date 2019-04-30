@@ -57,43 +57,41 @@ public class StorePageServlet extends HttpServlet {
 		boolean isEmployee= false;
 		ArrayList<Item> items = db.getVisibleItems();
 		Order order = new Order();
+		boolean newOrder = false;
 		String currentOrderNumber = (String) req.getSession().getAttribute("orderNumber");
+		if(currentOrderNumber == null) {
+			newOrder = true;
+			currentOrderNumber = system.generateNextOrderNumber(db, 'P');
+			req.getSession().setAttribute("orderNumber", currentOrderNumber);
+			System.out.println("This is in STORE PAGE-------NEW ORDER____ORDER#: "+currentOrderNumber);
+			order.setAccountNum(accountNumber);
+			order.setOrderType(currentOrderNumber);
+		}
+		else {
+			order = db.getOrder(currentOrderNumber);
+		}
 		boolean addedItemToCart = false;
-		//If there is no orderNumber for this session, this is a brand new order being created so we need to
-			//1: Get a new order number for the order
-			//2: set the account number
-			//3: add the item to the order
-			//4: calculate the total price
-			//5: submit the order to be added
 		ArrayList<Pair<Item, Integer>> itemsToBeAdded = new ArrayList<Pair<Item,Integer>>();
 		for(Item item : items) {
 			if(req.getParameter(item.getItemName())!=null){
+				System.out.println("------------------------We Are IN THE ADDITEMTOCAR FOR LOOP------------");
 				addedItemToCart = true;
 				Integer itemQuantity = getIntegerFromParameter(req.getParameter(item.getItemName()+"Quantity"));
+				System.out.println("We found this item: "+ item.getItemName() + ". There are "+ itemQuantity+" being added to the order");
 				if(itemQuantity!=null)
 					itemsToBeAdded.add(new Pair<Item, Integer>(item, itemQuantity));
 			}
 		}
-		if(currentOrderNumber==null&& addedItemToCart==true) {
-			currentOrderNumber = system.generateNextOrderNumber(db, 'P');
-			req.getSession().setAttribute("orderNumber", currentOrderNumber);
-			order.setAccountNum(accountNumber);
-			order.setOrderType(currentOrderNumber);
+		if(newOrder&&addedItemToCart) {
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
 				System.out.println(pair.getLeft()+" : "+pair.getRight());
 				order.addItem(pair.getLeft(), pair.getRight());
 			}
 			order.setTotalPrice();
+			System.out.println("We are adding this order...................................: "+order.getOrderType());
 			db.addOrder(order);
 		}
-		
-		//Else it is an order that has already been created so we need to
-			//1: pull that order from db
-			//2: add the item to that order
-			//3: Calculate total price
-			//4: submit that order to be updated
-		else if(currentOrderNumber!=null && addedItemToCart==true){ 
-			order = db.getOrder(currentOrderNumber);
+		else if(order!=null && addedItemToCart){ 
 			for(Pair<Item, Integer> pair : itemsToBeAdded) {
 				System.out.println(pair.getLeft()+" : "+pair.getRight());
 				order.addItem(pair.getLeft(), pair.getRight());
@@ -120,6 +118,9 @@ public class StorePageServlet extends HttpServlet {
 		else if (req.getParameter("profilePage") != null) {
 			if(accountNumber!=null) {
 				controller.loadUpCustomerAccount(db, accountNumber);
+				if(db.getOrder(currentOrderNumber)==null) {
+					req.getSession().removeAttribute("orderNumber");
+				}
 				if(model.getCustomerAccount()!=null) {
 					isCustomer= true;
 					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
@@ -133,20 +134,24 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {
-			req.getSession().setAttribute("orderNumber", null);
+			req.getSession().removeAttribute("orderNumber");
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {
 			boolean itemsAreHere = false;
-			Order cartOrder = db.getOrder(currentOrderNumber);
+			Order cartOrder = new Order();
+			if(!newOrder) {
+				cartOrder = db.getOrder(currentOrderNumber);
+			}
 			//Order cartOrder = db.getOrder("P0");
 			CartModel cartModel = new CartModel();
 			cartModel.setAccount(db.getCustomerAccount(accountNumber));
 			if(cartOrder!=null) {
-				cartOrder.setItemQuantities();
-				itemsAreHere = true;
+				if(cartOrder.getItemlist().size()!=0) {
+					cartOrder.setItemQuantities();
+					itemsAreHere = true;
+				}
 			}
-			
 			cartModel.setOrder(cartOrder);
 			req.setAttribute("cartModel", cartModel);
 			req.setAttribute("accountNumber", accountNumber);
@@ -158,6 +163,7 @@ public class StorePageServlet extends HttpServlet {
 				req.setAttribute("items", itemList);
 				req.setAttribute("model", model);
 				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				req.getSession().removeAttribute("orderNumber");
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 		}

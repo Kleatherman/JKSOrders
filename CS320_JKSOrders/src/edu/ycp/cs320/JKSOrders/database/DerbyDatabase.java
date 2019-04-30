@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.TreeMap;
 
 import com.sun.javafx.collections.MappingChange.Map;
 
@@ -176,7 +177,7 @@ class DerbyDatabase implements Database {
 					System.out.println("notificationRecipients table created");
 
 					stmt9 = conn.prepareStatement("create table orderItemJunction ("
-							+ "	order_id varchar(5) constraint order_id references orders," + "	item_id varchar(5),"
+							+ "	order_id varchar(5)," + "	item_id varchar(5),"
 							+ "	quantity integer" + ")");
 					stmt9.executeUpdate();
 
@@ -462,7 +463,8 @@ class DerbyDatabase implements Database {
 							.prepareStatement("select * from customers " + " order by last_name asc, first_name asc");
 
 					ArrayList<CustomerAccount> result = new ArrayList<CustomerAccount>();
-
+					ArrayList<Car> cars = new ArrayList<Car>();
+					cars = getCars();
 					resultSet = stmt.executeQuery();
 
 					// for testing that a result was returned
@@ -477,6 +479,13 @@ class DerbyDatabase implements Database {
 						customer.setEmail(resultSet.getString(4));
 						customer.setPhoneNumber(resultSet.getString(5));
 						customer.getCreditCard().setCVC(resultSet.getString(6));
+						customer.getCreditCard().setAccountNumber(customer.getAccountNumber());
+						customer.getCreditCard().setNameOnCard(customer.getFirstName());
+						for(Car car : cars) {
+							if(customer.getAccountNumber().equals(car.getOwner())) {
+								customer.getPickUpInfo().setCar(car);
+							}
+						}
 						for (LoginInfo login : logins) {
 							if (login.getOwnerAccount().equals(customer.getAccountNumber())) {
 								customer.setLogin(login);
@@ -796,8 +805,11 @@ class DerbyDatabase implements Database {
 						}
 
 					}
+					if(notify.getNotificationID()!=null) {
+						notification_id = notify.getNotificationID();
+					}
 
-					if (notify.getUrgency()) {
+					else if (notify.getUrgency()) {
 						notification_id = "U" + urgents;
 					} else
 						notification_id = "N" + (notifications.size() - urgents);
@@ -886,7 +898,7 @@ class DerbyDatabase implements Database {
 
 		ArrayList<CustomerAccount> full = this.getCustomerAccounts();
 		for (Account account : full) {
-			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			if (inputAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				result = account.getLogin().getPassword();
 			}
 		}
@@ -900,7 +912,7 @@ class DerbyDatabase implements Database {
 
 		ArrayList<EmployeeAccount> full = this.getEmployeeAccounts();
 		for (Account account : full) {
-			if (inputAccount.getAccountNumber().equals(account.getAccountNumber())) {
+			if (inputAccount.getLogin().getUserName().equals(account.getLogin().getUserName())) {
 				result = account.getLogin().getPassword();
 			}
 		}
@@ -946,6 +958,8 @@ class DerbyDatabase implements Database {
 					ArrayList<EmployeeAccount> employees = new ArrayList<EmployeeAccount>();
 
 					employees = getEmployeeAccounts();
+					
+					System.out.println("Do we get to derby");
 
 					int managers = 0;
 					String employee_id = null;
@@ -966,6 +980,8 @@ class DerbyDatabase implements Database {
 							"insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
 
 					insertEmployee.setString(1, employee_id);
+					
+							
 					insertEmployee.setString(2, account.getFirstName());
 					insertEmployee.setString(3, account.getLastName());
 					insertEmployee.setString(4, account.getEmail());
@@ -986,6 +1002,8 @@ class DerbyDatabase implements Database {
 				finally {
 
 					DBUtil.closeQuietly(insertEmployee);
+					
+					System.out.println("Employee Account Added");
 
 				}
 				return true;
@@ -1094,7 +1112,6 @@ class DerbyDatabase implements Database {
 		return result;
 	}
 
-	//
 	@Override
 	public void deleteNotification(String notification_id) {
 		executeTransaction(new Transaction<Boolean>() {
@@ -1110,7 +1127,7 @@ class DerbyDatabase implements Database {
 
 								
 					deleteNotificationFromNotificatons = conn.prepareStatement(
-							"DELETE FROM notifications WHERE notification_id = ? ;");
+							"DELETE FROM notifications WHERE notification_id = ? ");
 
 					deleteNotificationFromNotificatons.setString(1, notification_id);
 					deleteNotificationFromNotificatons.execute();
@@ -1144,18 +1161,27 @@ class DerbyDatabase implements Database {
 		return names;
 	}
 
-	//
 	@Override
 	public void updateNotification(Notification notify) {
+
 		deleteNotification(notify.getNotificationID());
 		addNotification(notify);
 
 	}
 
 	@Override
-	public String getLastOrderNumber() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getLastPickUpOrderNumber() {
+		int i = 1;
+		ArrayList<Order> orders = getOrders();
+		while(orders.size()>=i) {
+			Order nextOrder = orders.get(orders.size()-i);
+			if(nextOrder.getOrderType().substring(0,1).equals("P")) {
+				return nextOrder.getOrderType();
+			}
+			else
+				i++;
+		}
+		 return "P0";
 	}
 
 	@Override
@@ -1163,18 +1189,37 @@ class DerbyDatabase implements Database {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
+				System.out.println(".........................................We are adding a new order with this ID: "+order.getOrderType()+" and this many items: "+order.getQuantityMap().get("I1"));
+				PreparedStatement insertOrder = null;
 
-				PreparedStatement stmt = null;
-
-				PreparedStatement stmt1 = null;
+				PreparedStatement insertOrderItemJunction = null;
 
 				try {
-
-				}
+					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
+					
+						insertOrder.setString(1, order.getOrderType());
+						insertOrder.setString(2, order.getAccountNum());
+						insertOrder.execute();
+				
+					
+						
+					insertOrderItemJunction = conn.prepareStatement(
+							"insert into orderItemJunction (order_id, item_id, quantity) values (?, ?, ?)");
+				
+						for (Item item : order.getItemlist()) {
+							insertOrderItemJunction.setString(1, order.getOrderType());
+							insertOrderItemJunction.setString(2, item.getUPC());
+							insertOrderItemJunction.setInt(3, order.getQuantityMap().get(item.getUPC()));
+							item.setNumInInventory(item.getNumInInventory()-order.getQuantityMap().get(item.getUPC()));
+							updateItem(item);
+							insertOrderItemJunction.addBatch();
+						}
+						insertOrderItemJunction.executeBatch();
+					}
 
 				finally {
-					DBUtil.closeQuietly(stmt);
-					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(insertOrder);
+					DBUtil.closeQuietly(insertOrderItemJunction);
 
 				}
 				return true;
@@ -1186,47 +1231,301 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public void updateOrder(Order order) {
+		
+		deleteOrder(order);
+		addOrder(order);
+
+	}
+	@Override
+	public void deleteOrder(Order order) {
 		executeTransaction(new Transaction<Boolean>() {
 			@Override
 			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement deleteOrderFromOrders = null;
+				PreparedStatement deleteOrderFromOrderItemJunction = null;
+	
+				try {			
+					deleteOrderFromOrders = conn.prepareStatement(
+							"DELETE FROM orders WHERE order_id = ? ");
+					deleteOrderFromOrders.setString(1, order.getOrderType());
+					deleteOrderFromOrders.execute();
+	
+					deleteOrderFromOrderItemJunction = conn.prepareStatement(
+							"DELETE FROM orderItemJunction WHERE order_id = ?");
+					deleteOrderFromOrderItemJunction.setString(1, order.getOrderType());
+					deleteOrderFromOrderItemJunction.execute();
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteOrderFromOrders);
+					DBUtil.closeQuietly(deleteOrderFromOrderItemJunction);
+	
+				}
+				return true;
+	
+			}
+		});
+	}
 
+	@Override
+	
+	public Order getOrder(String orderNumber) {
+		ArrayList<Order> orders = getOrders();
+		for(Order order : orders) {
+			if (order.getOrderType().equals(orderNumber)) {
+				order.setItemQuantities();
+				order.setTotalPrice();
+				return order;
+			}
+				
+			
+		}
+		System.out.println("I'm in getOrder in derby......we couldn't find the order!!!!!!!!");
+		return null;
+	}
+	
+	@Override
+	public ArrayList<Car> getCars() {
+		return executeTransaction(new Transaction<ArrayList<Car>>() {
+			@Override
+			public ArrayList<Car> execute(Connection conn) throws SQLException {
 				PreparedStatement stmt = null;
-
-				PreparedStatement stmt1 = null;
+				ResultSet resultSet = null;
 
 				try {
+					stmt = conn
+							.prepareStatement("select * from cars " + " order by customer_id");
 
+					ArrayList<Car> result = new ArrayList<Car>();
+					resultSet = stmt.executeQuery();
+					Car car;
+					// for testing that a result was returned
+					Boolean found = false;
+
+					while (resultSet.next()) {
+						found = true;
+						car = new Car();
+						car.setOwner(resultSet.getString(1));
+						car.setColor(resultSet.getString(2));
+						car.setBrand(resultSet.getString(3));
+						car.setType(resultSet.getString(4));
+						car.setYear(resultSet.getInt(5));
+						result.add(car);
+					}
+
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No cars were found in the database");
+					} else
+						System.out.println("We got all cars");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
 				}
+			}
+		});
+	}
+
+	@Override
+	public ArrayList<Order> getOrders() {
+		return executeTransaction(new Transaction<ArrayList<Order>>() {
+			@Override
+			public ArrayList<Order> execute(Connection conn) throws SQLException {
+				PreparedStatement getOrdersfromOrders = null;
+				ResultSet ordersResults = null;
+
+				PreparedStatement getOrdersfromOrderItemJunction = null;
+				ResultSet orderItemResults = null;
+				try {
+					ArrayList<Pair<String, String>> orderItem = new ArrayList<Pair<String, String>>();
+					TreeMap<String, Integer> itemQuantityMap = new TreeMap<String, Integer>();
+					getOrdersfromOrders = conn.prepareStatement("select * from orders " + " order by order_id");
+					ArrayList<Order> Orders = new ArrayList<Order>();
+					ordersResults = getOrdersfromOrders.executeQuery();
+					getOrdersfromOrderItemJunction = conn.prepareStatement(
+							"select * from orderItemJunction " + " order by order_id, item_id");
+					orderItemResults = getOrdersfromOrderItemJunction.executeQuery();
+					// for testing that a result was returned
+					Boolean found = false;		
+					/*while (orderItemResults.next()) {
+						Pair<String, String> pair = new Pair<String, String>();
+						pair.setLeft(orderItemResults.getString(1));
+						pair.setRight(orderItemResults.getString(2));
+						itemQuantityMap.put(pair.getRight(), orderItemResults.getInt(3));
+						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + itemQuantityMap.get(orderItemResults.getString(2))+ "With order "+orderItemResults.getString(1));
+						orderItem.add(pair);
+					}
+
+					while (ordersResults.next()) {
+						Catalog catalog = getCatalog();
+						found = true;
+						Order order = new Order();
+						order.setOrderType(ordersResults.getString(1));
+						order.setAccountNum(ordersResults.getString(2));
+						//order.setQuantityMap(itemQuantityMap);
+						
+						for(Pair<String, String> pair : orderItem) {
+							if(order.getOrderType().equals(pair.getLeft())) {
+								System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" + itemQuantityMap.get(pair.getRight())+ "With order "+pair.getLeft());
+								order.addItem(catalog.getItem(pair.getRight()), itemQuantityMap.get(pair.getRight()));
+							}
+						}
+						order.setItemQuantities();
+						Orders.add(order);
+						
+					}*/
+
+					Catalog catalog = getCatalog();
+					while (ordersResults.next()) {
+						found = true;
+						Order order = new Order();
+						order.setOrderType(ordersResults.getString(1));
+						order.setAccountNum(ordersResults.getString(2));
+						Orders.add(order);
+					}
+					while (orderItemResults.next()) {
+						String orderNumber = orderItemResults.getString(1);
+						for(Order order : Orders) {
+							if(orderNumber.equals(order.getOrderType())) {
+								order.addItem(catalog.getItem(orderItemResults.getString(2)), orderItemResults.getInt(3));
+							}
+							order.setItemQuantities();
+							order.setTotalPrice();
+						}
+						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + itemQuantityMap.get(orderItemResults.getString(2))+ "With order "+orderItemResults.getString(1));
+					}
+					// check if any authors were found
+					if (!found) {
+						System.out.println("No Orders were found");
+					} else
+						System.out.println("We got all Orders");
+					return Orders;
+					}
+					
+				finally {
+					DBUtil.closeQuietly(getOrdersfromOrders);
+					DBUtil.closeQuietly(ordersResults);
+					DBUtil.closeQuietly(getOrdersfromOrderItemJunction);
+					DBUtil.closeQuietly(orderItemResults);
+				}
+			}
+		});
+	
+	}
+
+	@Override
+	public void deleteAccount(String accountNumber) {
+		
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement deleteAccount = null;
+	
+				try {			
+					char[] accountNumberChar = accountNumber.toCharArray();
+					String table;
+					String id;
+					if(accountNumberChar[0]=='C') {
+						deleteAccount = conn.prepareStatement(
+								"DELETE FROM customers WHERE customer_id = ? ");
+					}
+					else {
+						deleteAccount = conn.prepareStatement(
+								"DELETE FROM employees WHERE employee_id = ? ");
+						
+					}
+					
+					deleteAccount.setString(1, accountNumber);
+					deleteAccount.execute();
+	
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteAccount);
+	
+				}
+				return true;
+	
+			}
+		});
+		
+	}
+
+	@Override
+	public void updateItem(Item item) {
+		this.deleteItem(item.getUPC());
+		this.addItem(item);
+		
+	}
+
+	@Override
+	public void addItem(Item item) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				System.out.println(".........................................We are adding a new Item with this ID: "+item.getUPC());
+				PreparedStatement insertItem = null;
+
+
+				try {
+					insertItem = conn.prepareStatement("insert into catalog (item_id, item_name, item_description, price, location, quantity, visible) values (?, ?, ?, ?, ?, ?, ? )");
+					
+						insertItem.setString(1, item.getUPC());
+						insertItem.setString(2, item.getItemName());
+						insertItem.setString(3, item.getDescription());
+						insertItem.setFloat(4,(float) item.getPrice());
+						insertItem.setString(5, item.getLocation());
+						insertItem.setInt(6, item.getNumInInventory());
+						insertItem.setBoolean(7, item.isVisable());
+						insertItem.execute();
+				
+					
+						
+					
+					}
 
 				finally {
-					DBUtil.closeQuietly(stmt);
-					DBUtil.closeQuietly(stmt1);
+					DBUtil.closeQuietly(insertItem);
+					
 
 				}
 				return true;
 
 			}
 		});
-
-	}
-
-	@Override
-	public Order getOrder(String orderNumber) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	
-	public Order getCars() {
 		
-		return null;
 	}
 
 	@Override
+	public void deleteItem(String item) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement deleteItemFromCatalog = null;
+
 	
-	public ArrayList<Order> getOrders() {
-		// TODO Auto-generated method stub
-		return null;
+				try {			
+					deleteItemFromCatalog  = conn.prepareStatement(
+							"DELETE FROM catalog WHERE item_id = ? ");
+					deleteItemFromCatalog .setString(1, item);
+					deleteItemFromCatalog .execute();
+	
+					
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteItemFromCatalog );
+				
+	
+				}
+				return true;
+	
+			}
+		});
+		
 	}
 }

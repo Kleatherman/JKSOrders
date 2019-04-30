@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.Car;
 import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
@@ -449,7 +450,7 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-	public String getLastOrderNumber() {
+	public String getLastPickUpOrderNumber() {
 		return orders.get(orders.size()-1).getOrderType();
 	}
 
@@ -492,6 +493,44 @@ public class fakeDatabase implements Database{
 	public ArrayList<Order> getOrders() {
 		return orders;
 	}
+
+	@Override
+	public ArrayList<Car> getCars() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteAccount(String accountNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteOrder(Order order) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateItem(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addItem(Item item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteItem(String item) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	
 	
 }

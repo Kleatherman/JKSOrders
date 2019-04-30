@@ -4,10 +4,10 @@ import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 
 public class CreateEmployeeAccount {
 	
-	private EmployeeAccount account= new EmployeeAccount();
+	private EmployeeAccount account;
 	
 	public CreateEmployeeAccount() {
-		
+		account= new EmployeeAccount();
 	}
 
 	public EmployeeAccount getAccount() {

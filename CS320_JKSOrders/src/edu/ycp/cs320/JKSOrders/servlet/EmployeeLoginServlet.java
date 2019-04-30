@@ -33,6 +33,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
 		Database db = InitDatabase.init();
 		System.out.println("EmployeeLogin Servlet: doPost");
 		
@@ -48,7 +49,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 		controller.setModel(model);
 
 		
-		SystemController system = new SystemController();
+
 
 		// holds the error message text, if there is any
 		String errorMessage = null;
@@ -69,7 +70,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			else if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			else if(!system.verifyEmployeeLoginInfo(model.getLoginInfo(), db.getEmployeeLoginInfo())) {
+			else if(model.getLoginInfo().equals(db.getEmployeeLoginInfo())) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
@@ -109,7 +110,8 @@ public class EmployeeLoginServlet extends HttpServlet {
 		// Forward to view to render the result HTML document
 		
 
-
+		
+		System.out.println("We are still in the EmployeeLogin Servlet");
 
 	}
 }

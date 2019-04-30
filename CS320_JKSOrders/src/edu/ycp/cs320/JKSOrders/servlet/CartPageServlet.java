@@ -37,7 +37,7 @@ public class CartPageServlet  extends HttpServlet{
 		Database db = InitDatabase.init();
 		String accountNumber = (String)req.getParameter("accountNumber");
 		req.setAttribute("accountNumber", accountNumber);
-		
+		String orderNumber = (String) req.getSession().getAttribute("orderNumber");
 		if(req.getParameter("store")!=null) {
 			ArrayList<Item> items = new ArrayList<Item>();
 			items = db.getVisibleItems();
@@ -47,10 +47,10 @@ public class CartPageServlet  extends HttpServlet{
 		}else if(req.getParameter("checkOut")!=null) {
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}else if(req.getParameter("cancelOrder")!=null) {
-			req.getSession().setAttribute("orderNumber", null);
+			db.deleteOrder(db.getOrder(orderNumber));
+			req.getSession().removeAttribute("orderNumber");
 			ArrayList<Item> items = new ArrayList<Item>();
 			items = db.getVisibleItems();
-			System.out.println("StorePage: "+ items.get(0).getDescription());
 			req.setAttribute("items", items);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}else {
