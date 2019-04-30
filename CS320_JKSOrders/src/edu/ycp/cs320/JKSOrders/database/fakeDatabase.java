@@ -530,6 +530,12 @@ public class fakeDatabase implements Database{
 		
 	}
 
+	@Override
+	public void cancelOrder(String orderNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	
