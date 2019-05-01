@@ -48,7 +48,7 @@
 											<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
 										</c:forEach>
 									</select>
-								<input name = "sourceOrdersSubmit" type = "submit" value = "View Order" />
+								<input name = "viewOrder" type = "submit" value = "View Order" />
 								<input name="storePage" type="submit" value="Store Page!" />
 							</c:if>
 							<c:if test="${isEmployee}">

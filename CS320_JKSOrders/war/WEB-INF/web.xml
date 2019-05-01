@@ -27,7 +27,15 @@
    <servlet>
     <servlet-name>CartPageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CartPageServlet</servlet-class>
-  </servlet>  
+  </servlet>
+  <servlet>
+    <servlet-name>FulfillOrderServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.FulfillOrderServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ViewOrderServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ViewOrderServlet</servlet-class>
+  </servlet>      
   <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ProfilePageServlet</servlet-class>
@@ -103,7 +111,15 @@
   <servlet-mapping> 
     <servlet-name>CartPageServlet</servlet-name>
     <url-pattern>/cart</url-pattern>
-  </servlet-mapping>     
+  </servlet-mapping>
+   <servlet-mapping> 
+    <servlet-name>FulfillOrderServlet</servlet-name>
+    <url-pattern>/fulfillOrder</url-pattern>
+  </servlet-mapping> 
+   <servlet-mapping> 
+    <servlet-name>ViewOrderServlet</servlet-name>
+    <url-pattern>/viewOrder</url-pattern>
+  </servlet-mapping>      
    <servlet-mapping> 
     <servlet-name>WorkPageServlet</servlet-name>
     <url-pattern>/workPage</url-pattern>
