@@ -33,6 +33,7 @@
 					<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
 						<div>
 							<input name="profilePage" type="submit" value="Profile Page!" />
+							<input name="fulfillOrder" type="submit" value="FulFill That Order Baby!" />
 							<input name="employeeLogin" type="submit" value="Log out!" />
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 							<c:if test="${isManager}">
