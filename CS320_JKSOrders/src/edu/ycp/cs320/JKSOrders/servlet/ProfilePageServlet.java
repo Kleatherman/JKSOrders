@@ -71,7 +71,10 @@ public class ProfilePageServlet extends HttpServlet{
 			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
-		
+		else if(req.getParameter("viewOrder") !=null) {
+
+			req.getRequestDispatcher("/_view/viewOrder.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}

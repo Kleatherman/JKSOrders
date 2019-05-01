@@ -118,8 +118,12 @@ public class StorePageServlet extends HttpServlet {
 		else if (req.getParameter("profilePage") != null) {
 			if(accountNumber!=null) {
 				controller.loadUpCustomerAccount(db, accountNumber);
+				if(db.getOrder(currentOrderNumber)==null) {
+					req.getSession().removeAttribute("orderNumber");
+				}
 				if(model.getCustomerAccount()!=null) {
 					isCustomer= true;
+					req.setAttribute("sourceOrders", db.getSourceOrders(model.getCustomerAccount().getAccountNumber()));
 					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
 					req.setAttribute("Username", model.getCustomerAccount().getLogin().getUserName());
 					req.setAttribute("password", model.getCustomerAccount().getLogin().getPassword());
@@ -131,20 +135,29 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {
-			req.getSession().removeAttribute("orderNumber");
+			if((req.getSession().getAttribute("orderNumber")!=null)) {
+				req.getSession().removeAttribute("orderNumber");
+			}
+			if(addedItemToCart) {
+					db.cancelOrder(order.getOrderType());
+			}
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("cart")!=null) {
 			boolean itemsAreHere = false;
-			Order cartOrder = db.getOrder(currentOrderNumber);
+			Order cartOrder = new Order();
+			if(!newOrder) {
+				cartOrder = db.getOrder(currentOrderNumber);
+			}
 			//Order cartOrder = db.getOrder("P0");
 			CartModel cartModel = new CartModel();
 			cartModel.setAccount(db.getCustomerAccount(accountNumber));
 			if(cartOrder!=null) {
-				cartOrder.setItemQuantities();
-				itemsAreHere = true;
+				if(cartOrder.getItemlist().size()!=0) {
+					cartOrder.setItemQuantities();
+					itemsAreHere = true;
+				}
 			}
-			
 			cartModel.setOrder(cartOrder);
 			req.setAttribute("cartModel", cartModel);
 			req.setAttribute("accountNumber", accountNumber);
@@ -156,6 +169,7 @@ public class StorePageServlet extends HttpServlet {
 				req.setAttribute("items", itemList);
 				req.setAttribute("model", model);
 				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				req.getSession().removeAttribute("orderNumber");
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 		}

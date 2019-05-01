@@ -1394,9 +1394,7 @@ class DerbyDatabase implements Database {
 							order.setItemQuantities();
 							order.setTotalPrice();
 						}
-						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + itemQuantityMap.get(orderItemResults.getString(2))+ "With order "+orderItemResults.getString(1));
 					}
-					// check if any authors were found
 					if (!found) {
 						System.out.println("No Orders were found");
 					} else
@@ -1527,5 +1525,31 @@ class DerbyDatabase implements Database {
 			}
 		});
 		
+	}
+
+	@Override
+	public void cancelOrder(String orderNumber) {
+		Catalog catalog = getCatalog();
+		Order order = getOrder(orderNumber);
+		order.setItemQuantities();
+		for(Item item : order.getItemlist()) {
+			item.setNumInInventory(catalog.getItem(item.getUPC()).getNumInInventory()+item.getNumInOrder());
+			updateItem(item);
+		}
+		deleteOrder(order);	
+	}
+	
+	//This method returns all of the orders owned by a particular customer
+	@Override
+	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber) {
+		ArrayList<Order> allOrders = getOrders();
+		ArrayList<Order> sourceOrders = new ArrayList<Order>();
+		for(Order order : allOrders) {
+			if(order.getAccountNum().equals(CustomerAccountNumber)) {
+				order.setTotalPrice();
+				sourceOrders.add(order);
+			}
+		}
+		return sourceOrders;
 	}
 }

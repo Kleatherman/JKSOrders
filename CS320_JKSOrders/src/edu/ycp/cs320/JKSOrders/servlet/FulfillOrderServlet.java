@@ -8,20 +8,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
 
-public class CartPageServlet  extends HttpServlet{
+public class FulfillOrderServlet  extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("Cart Servlet: doGet");	
+		System.out.println("Fulfill Order Servlet: doGet");	
 		if(req.getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
@@ -34,25 +36,29 @@ public class CartPageServlet  extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
+		
+		System.out.println("Fulfill Order Servlet: doPost");
 		Database db = InitDatabase.init();
 		String accountNumber = (String)req.getParameter("accountNumber");
 		req.setAttribute("accountNumber", accountNumber);
-		String orderNumber = (String) req.getSession().getAttribute("orderNumber");
-		if(req.getParameter("store")!=null) {
-			ArrayList<Item> items = new ArrayList<Item>();
-			items = db.getVisibleItems();
-			System.out.println("StorePage: "+ items.get(0).getDescription());
-			req.setAttribute("items", items);
-			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
-		}else if(req.getParameter("checkOut")!=null) {
-			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
-		}else if(req.getParameter("cancelOrder")!=null) {
-			db.cancelOrder(orderNumber);
-			req.getSession().removeAttribute("orderNumber");
-			ArrayList<Item> items = new ArrayList<Item>();
-			items = db.getVisibleItems();
-			req.setAttribute("items", items);
-			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+		
+		if(req.getParameter("workPage")!=null) {
+			WorkPage workModel = new WorkPage();
+			EmployeeAccount account = db.getEmployeeAccount(accountNumber);
+			String name = account.getFirstName();
+			
+			if(db.getNotifications(accountNumber).size()!=0) {
+				req.setAttribute("notification", db.getNotifications(accountNumber));
+			}
+			boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
+			workModel.setOrders(db.getOrders());
+			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
+			req.setAttribute("isManager", isManager);
+			req.setAttribute("employeeNames", db.AllEmployeeNames());
+			req.setAttribute("name", name);
+			req.setAttribute("accountNumber", accountNumber);
+			req.setAttribute("model", workModel);
+			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}else {
 			throw new ServletException("Unknown command");
 		}
