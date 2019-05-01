@@ -28,7 +28,7 @@
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control"  name="pin" value="${model.password}" placeholder="Password" required autofocus>
+                <input type="password" id="inputPassword" class="form-control"  name="pin" value="${model.password}" placeholder="Pin" required autofocus>
                 <label for="inputPassword">Pin</label>
               </div>
          
