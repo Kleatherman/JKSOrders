@@ -135,9 +135,11 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("logOut")!=null) {
-			if(req.getSession().getAttribute("orderNumber")!=null) {
-				db.cancelOrder(order.getOrderType());
+			if((req.getSession().getAttribute("orderNumber")!=null)) {
 				req.getSession().removeAttribute("orderNumber");
+			}
+			if(addedItemToCart) {
+					db.cancelOrder(order.getOrderType());
 			}
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}

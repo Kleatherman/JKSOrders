@@ -1,58 +1,37 @@
+
+
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <html lag= "en">
 	<head>
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	style
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	
-		<title>Thank You</title>
-		<style type="text/css">
-		.error {
-			color: red;
-		}
-		
-		.text {
-			text-align: center;
-		}
-		.TitleText {
-						font-size: 550%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		.TitleText2 {
-						font-size: 300%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		.SpaceTaker{
-		font-size: 3000%;
-		}
-		</style>
-	</head>
 
-	<body>
-		<div class = "container-fluid">
-			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-				<div class="col-sm-4" style="background-color:white;">
-					<div class= "TitleText"> Thank You! </div>
+<div class="container"  style="text-align:center;">
+  <div class="card border-0 shadow my-5"  style="background-color:#cccccc;display:inline-block;"  >
+    <div class="card-body p-5">
+  		<div class="centered text-center" >
+  		
+  			<div class = "container-fluid">
+				<div class= "TitleText"> Thank You! </div>
 					<div class= "TitleText2"> For shopping with us today </div>
 					<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">
-						<div>
 							<input type="Submit" name="storePage" value="Close">
+							
+							  <button class="btn btn-lg btn-primary btn-block text-uppercase" name="submit"  value="Login" type="Submit">Return to Store Page</button>
+							  
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
 					</form>
 				</div>
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
 			</div>
 		</div>
-		
-	</body>
+	</div>
+</div>	
+	
 </html>
