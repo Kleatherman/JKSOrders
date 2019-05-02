@@ -548,6 +548,18 @@ public class fakeDatabase implements Database{
 		return sourceOrders;
 	}
 
+	@Override
+	public void updateEmployeeAcount(EmployeeAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateCustomerAcount(CustomerAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	

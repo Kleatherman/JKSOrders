@@ -38,6 +38,14 @@ public class CreateEmployeeAccountController {
 		
 			model.getAccount().setPhoneNumber(phoneNumber);
 		}
+		public void setEmail(String email) {
+			
+			model.getAccount().setEmail(email);
+		}
+		public void setManager(boolean status) {
+			
+			model.getAccount().setManager(status);
+		}
 	
 		public void setAccountNumber(Database dbase) {
 			model.getAccount().setAccountNumber(dbase.getLastEmployeeAccountNumber().substring(0, 1) + Integer.parseInt(dbase.getLastEmployeeAccountNumber())+1);
@@ -47,7 +55,6 @@ public class CreateEmployeeAccountController {
 		public void setNullValues() {
 			model.getAccount().setEmail(" ");
 			model.getAccount().setPhoneNumber(" ");
-			model.getAccount().setManager(false);
 			
 			
 		}
@@ -55,6 +62,10 @@ public class CreateEmployeeAccountController {
 
 		public void addAccount(Database dbase) {
 			dbase.addEmployeeAccount(model.getAccount());
+			
+		}
+		public void editAccount(Database dbase) {
+			dbase.updateEmployeeAcount(model.getAccount());
 			
 		}
 		
