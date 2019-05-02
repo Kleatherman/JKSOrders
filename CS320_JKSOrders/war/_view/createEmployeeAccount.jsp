@@ -24,7 +24,7 @@
 	<form action="${pageContext.servletContext.contextPath}/createEmployeeAccount" method="post">
 	
  				<div class="form-label-group">
-                <input type="text" id="inputEmail" class="form-control"  name = "username" placeholder="UserName" required autofocus>
+                <input type="text" id="inputName" class="form-control"  name = "username" placeholder="UserName" required autofocus>
                 <label for="inputEmail">UserName</label>
               </div>
 
@@ -36,7 +36,7 @@
               </div>
 
 				<div class="form-label-group">
-                <input type="name" id="inputname" class="form-control" name = "name" placeholder="Name" required autofocus>
+                <input type="text" id="inputEmail" class="form-control" name = "email" placeholder="Email" required autofocus>
                 <label for="inputName">Name</label>
               </div>
               
