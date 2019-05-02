@@ -121,14 +121,14 @@ public class DerbyTest {
 		Elist= db.getEmployeeAccounts();
 		assertTrue(Elist.size()==count+1);
 		assertTrue(Elist.get(0).getAccountNumber().equals("M0"));
-		assertTrue(Elist.get(3).getAccountNumber()!=null);
-		System.out.println("\\n\\n\\n\\n\\n\\n\\n"+ Elist.get(3).getFirstName());
-		assertTrue(Elist.get(2).getFirstName().equals("Bob"));
-		assertTrue(Elist.get(2).getLastName().equals("McJoe"));
-		assertTrue(Elist.get(2).getEmail().equals("Yadda@gmail.com"));
-		assertTrue(Elist.get(2).getPhoneNumber().equals("7175559848"));
-		assertTrue(Elist.get(2).getLogin().getOwnerAccount()!= null);
-		assertTrue(Elist.get(2).getLogin().getPassword().equals("password"));
+		assertTrue(Elist.get(2).getAccountNumber()!=null);
+		System.out.println("\\n\\n\\n\\n\\n\\n\\n"+ Elist.get(2).getFirstName());
+		assertTrue(Elist.get(1).getFirstName().equals("Bob"));
+		assertTrue(Elist.get(1).getLastName().equals("McJoe"));
+		assertTrue(Elist.get(1).getEmail().equals("Yadda@gmail.com"));
+		assertTrue(Elist.get(1).getPhoneNumber().equals("7175559848"));
+		assertTrue(Elist.get(1).getLogin().getOwnerAccount()!= null);
+		assertTrue(Elist.get(1).getLogin().getPassword().equals("password"));
 	}
 	@Test
 	public void testAddCustomerAccount() {
@@ -233,22 +233,25 @@ public class DerbyTest {
 		assertTrue(Elist.size()==Ecount);
 		assertTrue(!Clist.get(0).getAccountNumber().equals("C0"));
 		assertTrue(cars.size()==carSize-1);
-		assertTrue(db.getSourceOrders("C0")==null);
+		ArrayList<Order> ordersOfTheCustomer = db.getSourceOrders("C0");
+		System.out.println("......................................................................"+ordersOfTheCustomer.size());
+		assertTrue(ordersOfTheCustomer.size()==0);
 		
-		db.deleteAccount("M0");
+		db.deleteAccount("M1");
 		Elist= db.getEmployeeAccounts();
 		Clist= db.getCustomerAccounts();
 		Nlist = db.getNotifications();
 		cars = db.getCars();
 		allOrders = db.getOrders();
 		
+		System.out.println("Notification Size now is............................... "+ Nlist.size()+". It Should Be "+(notificationSize-1));
 		assertTrue(Clist.size()==Ccount-1);
 		assertTrue(Nlist.size()==notificationSize-1);
 		assertTrue(Elist.size()==Ecount-1);
 		assertTrue(!Clist.get(0).getAccountNumber().equals("C0"));
 		assertTrue(cars.size()==carSize-1);
-		assertTrue(db.getSourceNotifications("M0")==null);
-		assertTrue(!Elist.get(0).getAccountNumber().equals("M0"));
+		assertTrue(db.getSourceNotifications("M1").size()==0);
+		assertTrue(!Elist.get(1).getAccountNumber().equals("M1"));
 	
 	}
 
@@ -344,32 +347,32 @@ public class DerbyTest {
 	
 	@Test
 	public void testUpdateCustomerAccount() {
-		CustomerAccount updatedCustomer = db.getCustomerAccount("C0");
+		CustomerAccount updatedCustomer = db.getCustomerAccount("C1");
 		updatedCustomer.setEmail("newEmail@email.com");
 		updatedCustomer.setFirstName("John");
 		updatedCustomer.setLastName("Smith");
 		updatedCustomer.getLogin().setUserName("fakeUserNameYall!!");
 		db.updateCustomerAccount(updatedCustomer);
 		
-		CustomerAccount newCustomer = db.getCustomerAccount("C0");
+		CustomerAccount newCustomer = db.getCustomerAccount("C1");
 		assertTrue(newCustomer.getFirstName().equals("John")&&newCustomer.getLastName().equals("Smith"));
-		assertTrue(newCustomer.getLogin().getUserName().equals("fakeUserNameyall!!"));
+		assertTrue(newCustomer.getLogin().getUserName().equals("fakeUserNameYall!!"));
 		assertTrue(newCustomer.getEmail().equals("newEmail@email.com"));
 		assertTrue(newCustomer.getAccountNumber().equals(updatedCustomer.getAccountNumber()));
 	}
 
 	@Test
 	public void testUpdateEmployeeAccount() {
-		EmployeeAccount updatedEmployee = db.getEmployeeAccount("M0");
+		EmployeeAccount updatedEmployee = db.getEmployeeAccount("M2");
 		updatedEmployee.setEmail("newEmail@email.com");
 		updatedEmployee.setFirstName("John");
 		updatedEmployee.setLastName("Smith");
 		updatedEmployee.getLogin().setUserName("fakeUserNameYall!!");
 		db.updateEmployeeAccount(updatedEmployee);
 		
-		EmployeeAccount newEmployee = db.getEmployeeAccount("M0");
+		EmployeeAccount newEmployee = db.getEmployeeAccount("M2");
 		assertTrue(newEmployee.getFirstName().equals("John")&&newEmployee.getLastName().equals("Smith"));
-		assertTrue(newEmployee.getLogin().getUserName().equals("fakeUserNameyall!!"));
+		assertTrue(newEmployee.getLogin().getUserName().equals("fakeUserNameYall!!"));
 		assertTrue(newEmployee.getEmail().equals("newEmail@email.com"));
 		assertTrue(newEmployee.getAccountNumber().equals(updatedEmployee.getAccountNumber()));
 	}
