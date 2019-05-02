@@ -76,7 +76,7 @@ public class DerbyTest {
 		db.setVisibility(99);
 		Ilist = db.getVisibleItems();
 		assertTrue(Ilist.size()==0);
-		db.setVisibility(6);
+		db.setVisibility(60);
 		Ilist= db.getVisibleItems();
 		assertTrue(Ilist.size()==1);
 	}
@@ -207,28 +207,51 @@ public class DerbyTest {
 		assertTrue(db.getOrder("S0").getItemlist().get(0).getUPC().equals("I0"));
 		assertTrue(db.getOrder("S0").getItemlist().get(1).getUPC().equals("I1"));
 	}
-	/*
+	
 	@Test
 	public void testDeleteAccount() {
 		Elist= db.getEmployeeAccounts();
 		Clist= db.getCustomerAccounts();
+		Nlist = db.getNotifications();
+		ArrayList<Car> cars = db.getCars();
+		ArrayList<Order> allOrders = db.getOrders();
+		int carSize = cars.size();
+		int orderSize = allOrders.size();
 		int Ecount = Elist.size();
 		int Ccount = Clist.size();
+		int notificationSize = Nlist.size();
+		
 		db.deleteAccount("C0");
 		Elist= db.getEmployeeAccounts();
 		Clist= db.getCustomerAccounts();
+		Nlist = db.getNotifications();
+		cars = db.getCars();
+		allOrders = db.getOrders();
+		
 		assertTrue(Clist.size()==Ccount-1);
+		assertTrue(Nlist.size()==notificationSize);
 		assertTrue(Elist.size()==Ecount);
 		assertTrue(!Clist.get(0).getAccountNumber().equals("C0"));
+		assertTrue(cars.size()==carSize-1);
+		assertTrue(db.getSourceOrders("C0")==null);
+		
 		db.deleteAccount("M0");
 		Elist= db.getEmployeeAccounts();
 		Clist= db.getCustomerAccounts();
-		assertTrue(Elist.size()==Ecount-1);
+		Nlist = db.getNotifications();
+		cars = db.getCars();
+		allOrders = db.getOrders();
+		
 		assertTrue(Clist.size()==Ccount-1);
+		assertTrue(Nlist.size()==notificationSize-1);
+		assertTrue(Elist.size()==Ecount-1);
+		assertTrue(!Clist.get(0).getAccountNumber().equals("C0"));
+		assertTrue(cars.size()==carSize-1);
+		assertTrue(db.getSourceNotifications("M0")==null);
 		assertTrue(!Elist.get(0).getAccountNumber().equals("M0"));
 	
 	}
-*/
+
 	@Test
 	public void testAddOrders() {
 		TreeMap<String, Integer> Map= new TreeMap<String,Integer>();
@@ -318,5 +341,36 @@ public class DerbyTest {
 		lastInt = Integer.parseInt(test.substring(1));
 		assertTrue(96==lastInt);
 	}
+	
+	@Test
+	public void testUpdateCustomerAccount() {
+		CustomerAccount updatedCustomer = db.getCustomerAccount("C0");
+		updatedCustomer.setEmail("newEmail@email.com");
+		updatedCustomer.setFirstName("John");
+		updatedCustomer.setLastName("Smith");
+		updatedCustomer.getLogin().setUserName("fakeUserNameYall!!");
+		db.updateCustomerAccount(updatedCustomer);
+		
+		CustomerAccount newCustomer = db.getCustomerAccount("C0");
+		assertTrue(newCustomer.getFirstName().equals("John")&&newCustomer.getLastName().equals("Smith"));
+		assertTrue(newCustomer.getLogin().getUserName().equals("fakeUserNameyall!!"));
+		assertTrue(newCustomer.getEmail().equals("newEmail@email.com"));
+		assertTrue(newCustomer.getAccountNumber().equals(updatedCustomer.getAccountNumber()));
+	}
 
+	@Test
+	public void testUpdateEmployeeAccount() {
+		EmployeeAccount updatedEmployee = db.getEmployeeAccount("M0");
+		updatedEmployee.setEmail("newEmail@email.com");
+		updatedEmployee.setFirstName("John");
+		updatedEmployee.setLastName("Smith");
+		updatedEmployee.getLogin().setUserName("fakeUserNameYall!!");
+		db.updateEmployeeAccount(updatedEmployee);
+		
+		EmployeeAccount newEmployee = db.getEmployeeAccount("M0");
+		assertTrue(newEmployee.getFirstName().equals("John")&&newEmployee.getLastName().equals("Smith"));
+		assertTrue(newEmployee.getLogin().getUserName().equals("fakeUserNameyall!!"));
+		assertTrue(newEmployee.getEmail().equals("newEmail@email.com"));
+		assertTrue(newEmployee.getAccountNumber().equals(updatedEmployee.getAccountNumber()));
+	}
 }
