@@ -150,9 +150,9 @@ public interface Database {
 	
 	public void deleteAccount(String accountNumber);
 	
-	public void updateEmployeeAcount(EmployeeAccount account);
+	public void updateEmployeeAccount(EmployeeAccount account);
 	
-	public void updateCustomerAcount(CustomerAccount account);
+	public void updateCustomerAccount(CustomerAccount account);
 
 	public void deleteOrder(Order order);
 	

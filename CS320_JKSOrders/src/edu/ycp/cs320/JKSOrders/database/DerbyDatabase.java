@@ -1586,7 +1586,7 @@ class DerbyDatabase implements Database {
 	}
 
 	@Override
-	public void updateEmployeeAcount(EmployeeAccount account) {
+	public void updateEmployeeAccount(EmployeeAccount account) {
 		deleteAccount(account.getAccountNumber());
 		addEmployeeAccount(account);
 		
@@ -1594,7 +1594,7 @@ class DerbyDatabase implements Database {
 	}
 
 	@Override
-	public void updateCustomerAcount(CustomerAccount account) {
+	public void updateCustomerAccount(CustomerAccount account) {
 		deleteAccount(account.getAccountNumber());
 		addCustomerAccount(account);
 	}

@@ -65,7 +65,7 @@ public class CreateEmployeeAccountController {
 			
 		}
 		public void editAccount(Database dbase) {
-			dbase.updateEmployeeAcount(model.getAccount());
+			dbase.updateEmployeeAccount(model.getAccount());
 			
 		}
 		

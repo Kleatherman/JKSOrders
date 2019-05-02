@@ -549,13 +549,13 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-	public void updateEmployeeAcount(EmployeeAccount account) {
+	public void updateEmployeeAccount(EmployeeAccount account) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateCustomerAcount(CustomerAccount account) {
+	public void updateCustomerAccount(CustomerAccount account) {
 		// TODO Auto-generated method stub
 		
 	}
