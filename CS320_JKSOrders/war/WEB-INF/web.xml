@@ -69,6 +69,10 @@
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateEmployeeAccountServlet</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>CreateEmployeeServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateEmployeeServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>CreateCustomerAccountServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateCustomerAccountServlet</servlet-class>
   </servlet>
@@ -139,6 +143,10 @@
   <servlet-mapping>
     <servlet-name>CreateEmployeeAccountServlet</servlet-name>
     <url-pattern>/createEmployeeAccount</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CreateEmployeeServlet</servlet-name>
+    <url-pattern>/createEmployee</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>CreateCustomerAccountServlet</servlet-name>

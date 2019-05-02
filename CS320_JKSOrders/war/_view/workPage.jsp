@@ -33,10 +33,11 @@
 					<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
 						<div>
 							<input name="profilePage" type="submit" value="Profile Page!" />
-							<input name="fulfillOrder" type="submit" value="FulFill That Order Baby!" />
+							<input name="fulfillOrder" type="submit" value="FulFill Order" />
 							<input name="employeeLogin" type="submit" value="Log out!" />
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 							<c:if test="${isManager}">
+								<input name="createEmployee" type="submit" value="Create an employee" />
 								<input name="message" type="text" value="${message}" length=300 />
 								<input name="notify" type="submit" value="Submit Notification" />
 								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
