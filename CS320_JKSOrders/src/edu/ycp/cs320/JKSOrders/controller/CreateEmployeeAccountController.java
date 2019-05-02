@@ -29,6 +29,10 @@ public class CreateEmployeeAccountController {
 			
 			model.getAccount().setFirstName(firstName);
 		}
+		public void setLastName(String lastName) {
+			
+			model.getAccount().setFirstName(lastName);
+		}
 		
 		public void setPhoneNumber(String phoneNumber) {
 		
@@ -42,7 +46,7 @@ public class CreateEmployeeAccountController {
 		
 		public void setNullValues() {
 			model.getAccount().setEmail(" ");
-			model.getAccount().setLastName(" ");
+			model.getAccount().setPhoneNumber(" ");
 			model.getAccount().setManager(false);
 			
 			
