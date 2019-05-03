@@ -61,7 +61,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			controller.setUserName(req.getParameter("username"));
 			controller.setPassword(req.getParameter("pin"));
 			
-			
+			SystemController system = new SystemController();
 			
 			if (req.getParameter("createEmployeeAccount")!=null) {
 				System.out.println("We're headed to employee account JSP");
@@ -70,7 +70,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			else if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			else if(model.getLoginInfo().equals(db.getEmployeeLoginInfo())) {
+			else if(!system.verifyEmployeeLoginInfo(model.getLoginInfo(), db.getEmployeeLoginInfo())) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
