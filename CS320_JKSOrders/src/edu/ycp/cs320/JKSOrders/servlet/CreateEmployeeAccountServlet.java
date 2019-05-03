@@ -47,6 +47,7 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		controller.setModel(model);
 		
 		Database dbase = InitDatabase.init();
+		boolean success= false;
 
 		// call JSP to generate empty form
 		
@@ -60,18 +61,36 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		else if(req.getParameter("createAccount")!=null) {
 			
 			System.out.println("Do we get here");
-
-			if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getUserName()!=null && dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getPassword()==null) {
-				controller.setLogin(req.getParameter("password"), req.getParameter("username"));
-				controller.setPhoneNumber(req.getParameter("number"));
-				controller.setEmail(req.getParameter("email"));
-				controller.addAccount(dbase);
+			
+		try {
+			if(dbase.getEmployeeAccount(req.getParameter("username"))!= null) {
+				if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getUserName()!=null && dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getPassword()=="") {
+					controller.setLogin(req.getParameter("password"), req.getParameter("username"));
+					controller.setPhoneNumber(req.getParameter("number"));
+					controller.setEmail(req.getParameter("email"));
+					controller.addAccount(dbase);
+					success= true;
+				}
+				else {
+					String error = "Account not found";
+				}
 			}
 			else {
 				String error = "Account not found";
 			}
+		}catch(Exception e) {
+			String error = "Account not found";
+		}
+		finally {
+			if(success) {
+				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+			}
+			else {
+				req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
+			}
+				
+		}
 			
-			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			
 		}
 		 req.setAttribute("model", model);
