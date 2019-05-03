@@ -35,7 +35,7 @@
 							<input name="profilePage" type="submit" value="Profile Page!" />
 							<input name="employeeLogin" type="submit" value="Log out!" />
 							<input name="accountNumber" type="hidden" value="${model.accountNumber}" />
-							<c:if test="${model.isManager}">
+							<c:if test="${model.manager}">
 								<input name="message" type="text" value="${model.message}" length=300 />
 								<input name="notify" type="submit" value="Submit Notification" />
 								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
