@@ -86,12 +86,7 @@ class DerbyDatabase implements Database {
 		}
 	}
 
-	// TODO: Here is where you name and specify the location of your Derby SQL
-	// database
-	// TODO: Change it here and in SQLDemo.java under
-	// CS320_LibraryExample_Lab06->edu.ycp.cs320.sqldemo
-	// TODO: DO NOT PUT THE DB IN THE SAME FOLDER AS YOUR PROJECT - that will cause
-	// conflicts later w/Git
+	
 	private Connection connect() throws SQLException {
 		Connection conn = DriverManager
 				.getConnection("jdbc:derby:C:/JKSOrders-2019-LibraryExample-DB/library.db;create=true");
@@ -999,14 +994,14 @@ class DerbyDatabase implements Database {
 					insertEmployeeLoginInfo.setString(3, account.getLogin().getPassword());
 
 					insertEmployeeLoginInfo.execute();
-
+					System.out.println("Employee Account Added");
 				}
 
 				finally {
 
 					DBUtil.closeQuietly(insertEmployee);
+					DBUtil.closeQuietly(insertEmployeeLoginInfo);
 					
-					System.out.println("Employee Account Added");
 
 				}
 				return true;
@@ -1594,8 +1589,11 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public void updateEmployeeAccount(EmployeeAccount account) {
+		System.out.println("MADE IT IN");
 		deleteAccount(account.getAccountNumber());
+		System.out.println("ACCOUNT DELETED");
 		addEmployeeAccount(account);
+		System.out.println("ACCOUNT READDED");
 		
 		
 	}

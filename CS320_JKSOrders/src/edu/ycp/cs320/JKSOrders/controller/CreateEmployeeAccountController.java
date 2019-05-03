@@ -54,6 +54,7 @@ public class CreateEmployeeAccountController {
 		
 		public void setNullValues() {
 			model.getAccount().setEmail(" ");
+			model.getAccount().setLastName(" ");
 			model.getAccount().setPhoneNumber(" ");
 			
 			

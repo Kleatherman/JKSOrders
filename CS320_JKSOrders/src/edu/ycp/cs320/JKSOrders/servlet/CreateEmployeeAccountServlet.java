@@ -47,6 +47,7 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		controller.setModel(model);
 		
 		Database dbase = InitDatabase.init();
+		boolean success= false;
 
 		// call JSP to generate empty form
 		
@@ -60,18 +61,56 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		else if(req.getParameter("createAccount")!=null) {
 			
 			System.out.println("Do we get here");
+			
+		try {
+			if(dbase.getEmployeeAccount(req.getParameter("username"))!= null) {
+				System.out.println("We made it into the first if before a null pointer exception was thrown");
+				if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getUserName()!=null && dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getPassword().equals(" ")) {
+					System.out.println("We are inside the first if statement in createEmployeeAccount");
+					controller.setLogin(req.getParameter("password"), req.getParameter("username"));
+					System.out.println("We are inside the first if statement in 1");
+					controller.setPhoneNumber(req.getParameter("number"));
+					System.out.println("We are inside the first if statement in 2");
+					controller.setLastName(req.getParameter("lastname"));
+					System.out.println("We are inside the first if statement in 3");
+					controller.editAccount(dbase);
+					System.out.println("We are inside the first if statement in 4");
+					success= true;
 
-			if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getUserName()!=null && dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getPassword()==null) {
-				controller.setLogin(req.getParameter("password"), req.getParameter("username"));
-				controller.setPhoneNumber(req.getParameter("number"));
-				controller.setEmail(req.getParameter("email"));
-				controller.addAccount(dbase);
+					System.out.println("We are inside the first if statement in 5");
+				}
+				else if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getPassword().equals(" ")) {
+					String error = "Account not found";
+					System.out.println("Error account not found but check 1 passed, Username error");
+				}
+				else if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getUserName()!=null) {
+					String error = "Account not found";
+					System.out.println("Error account not found but check 1 passed, password error");
+				}
+				else {
+					String error = "Account not found";
+					System.out.println("Error account not found but check 1 passed, total error");
+				}
 			}
 			else {
 				String error = "Account not found";
+				System.out.println("Error account not found but try passed");
 			}
+		}catch(Exception e) {
+			String error = "Account not found";
+			System.out.println("Error account not found nothing passed");
+			System.out.println(e);
+		}
+		finally {
+			if(success==true) {
+				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+			}
+			else {
+				req.getRequestDispatcher("/_view/createEmployeeAccount.jsp").forward(req, resp);
+			}
+				
+		}
 			
-			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			
 		}
 		 req.setAttribute("model", model);
