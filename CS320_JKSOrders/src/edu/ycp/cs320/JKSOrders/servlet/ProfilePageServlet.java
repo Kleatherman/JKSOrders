@@ -65,7 +65,9 @@ public class ProfilePageServlet extends HttpServlet{
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("workPage") != null) {
+
 			WorkPage workModel = new WorkPage();
+			workModel.setReceivedNotifications(db.getNotifications(accountNumber));
 			workModel.setManager(isManager);
 			workModel.setOrders(db.getOrders());
 			workModel.setAccountNumber(accountNumber);
