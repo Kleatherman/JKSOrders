@@ -42,12 +42,14 @@
 									<c:forEach items="${model.employeeNames}" var="name">
 										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
 									</c:forEach> 
+								
 									<h1>Pending Orders:</h1>
 										<select name="editOrder">	
 											<c:forEach items="${model.orders}" var = "order">
-											<option value="${order.orderType}">${model.order.orderType} : $${order.totalPrice}</option>
+											<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
 											</c:forEach>
 										</select>
+										<input name="fulfillOrder" type="submit" value="Fulfill Order" />
 									<h1>Your Notifications</h1>
 									<select name="editNotification">	
 										<c:forEach items="${model.sourceNotifications}" var = "sourceNotify">
@@ -64,7 +66,7 @@
 							<th>Message</th>
 							<th>Urgent?</th>
 						</tr>
-						<c:forEach items="${model.notification}" var="notify">
+						<c:forEach items="${model.receivedNotifications}" var="notify">
 							<tr>
 								<td>${notify.message}</td>
 								<c:choose>

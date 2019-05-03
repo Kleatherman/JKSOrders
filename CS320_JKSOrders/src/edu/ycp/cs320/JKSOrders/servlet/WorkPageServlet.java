@@ -56,6 +56,7 @@ public class WorkPageServlet  extends HttpServlet{
 			Account account = db.getAccount(accountNumber);
 			model.setAccountNumber(account.getAccountNumber());
 			accountNumber = req.getParameter("accountNumber");
+			req.setAttribute("accountNumber", accountNumber);
 			if(db.getNotifications(accountNumber).size()!=0) {
 				notify = db.getNotifications(accountNumber).get(0);
 				model.setNotification(notify);
