@@ -994,14 +994,14 @@ class DerbyDatabase implements Database {
 					insertEmployeeLoginInfo.setString(3, account.getLogin().getPassword());
 
 					insertEmployeeLoginInfo.execute();
-
+					System.out.println("Employee Account Added");
 				}
 
 				finally {
 
 					DBUtil.closeQuietly(insertEmployee);
+					DBUtil.closeQuietly(insertEmployeeLoginInfo);
 					
-					System.out.println("Employee Account Added");
 
 				}
 				return true;
@@ -1589,8 +1589,11 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public void updateEmployeeAccount(EmployeeAccount account) {
+		System.out.println("MADE IT IN");
 		deleteAccount(account.getAccountNumber());
+		System.out.println("ACCOUNT DELETED");
 		addEmployeeAccount(account);
+		System.out.println("ACCOUNT READDED");
 		
 		
 	}

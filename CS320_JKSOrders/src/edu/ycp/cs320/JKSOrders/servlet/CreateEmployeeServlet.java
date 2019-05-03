@@ -52,7 +52,7 @@ public class CreateEmployeeServlet extends HttpServlet {
 				}
 				else if(req.getParameter("createAccount")!= null) {
 					
-					controller.setLogin ("", req.getParameter("username"));
+					controller.setLogin (" ", req.getParameter("username"));
 					controller.setName(req.getParameter("name"));
 					controller.setNullValues();
 					if(req.getParameter("manager") != null) {
