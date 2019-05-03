@@ -45,7 +45,7 @@
 									<h1>Pending Orders:</h1>
 										<select name="editOrder">	
 											<c:forEach items="${model.orders}" var = "order">
-											<option value="${model.order.orderType}">${model.order.orderType} : $${model.order.totalPrice}</option>
+											<option value="${order.orderType}">${model.order.orderType} : $${order.totalPrice}</option>
 											</c:forEach>
 										</select>
 									<h1>Your Notifications</h1>

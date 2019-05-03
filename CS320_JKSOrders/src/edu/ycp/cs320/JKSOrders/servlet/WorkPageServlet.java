@@ -122,6 +122,12 @@ public class WorkPageServlet  extends HttpServlet{
 			
 		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
+		else if(req.getParameter("fulfillOrder")!=null) {
+			req.getRequestDispatcher("/_view/fulfillOrder.jsp").forward(req, resp);
+		}
+		else if(req.getParameter("createEmployee")!=null) {
+			req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
+		}
 		else if (req.getParameter("editNotification")!= null) {
 			EditNotificationController editController = new EditNotificationController();
 			EditNotificationModel editModel = new EditNotificationModel();

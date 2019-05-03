@@ -27,7 +27,15 @@
    <servlet>
     <servlet-name>CartPageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CartPageServlet</servlet-class>
-  </servlet>  
+  </servlet>
+  <servlet>
+    <servlet-name>FulfillOrderServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.FulfillOrderServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ViewOrderServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ViewOrderServlet</servlet-class>
+  </servlet>      
   <servlet>
     <servlet-name>ProfilePageServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.ProfilePageServlet</servlet-class>
@@ -59,6 +67,10 @@
   <servlet>
     <servlet-name>CreateEmployeeAccountServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateEmployeeAccountServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>CreateEmployeeServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateEmployeeServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>CreateCustomerAccountServlet</servlet-name>
@@ -103,7 +115,15 @@
   <servlet-mapping> 
     <servlet-name>CartPageServlet</servlet-name>
     <url-pattern>/cart</url-pattern>
-  </servlet-mapping>     
+  </servlet-mapping>
+   <servlet-mapping> 
+    <servlet-name>FulfillOrderServlet</servlet-name>
+    <url-pattern>/fulfillOrder</url-pattern>
+  </servlet-mapping> 
+   <servlet-mapping> 
+    <servlet-name>ViewOrderServlet</servlet-name>
+    <url-pattern>/viewOrder</url-pattern>
+  </servlet-mapping>      
    <servlet-mapping> 
     <servlet-name>WorkPageServlet</servlet-name>
     <url-pattern>/workPage</url-pattern>
@@ -123,6 +143,10 @@
   <servlet-mapping>
     <servlet-name>CreateEmployeeAccountServlet</servlet-name>
     <url-pattern>/createEmployeeAccount</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CreateEmployeeServlet</servlet-name>
+    <url-pattern>/createEmployee</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>CreateCustomerAccountServlet</servlet-name>
