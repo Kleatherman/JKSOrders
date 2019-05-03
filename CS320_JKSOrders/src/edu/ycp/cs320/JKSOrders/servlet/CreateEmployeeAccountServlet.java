@@ -61,12 +61,15 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 			
 			System.out.println("Do we get here");
 
-			
-			controller.setLogin(req.getParameter("password"), req.getParameter("username"));
-			controller.setName(req.getParameter("name"));
-			controller.setPhoneNumber(req.getParameter("number"));
-			controller.setNullValues();
-			controller.addAccount(dbase);
+			if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getUserName()!=null && dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getPassword()==null) {
+				controller.setLogin(req.getParameter("password"), req.getParameter("username"));
+				controller.setPhoneNumber(req.getParameter("number"));
+				controller.setEmail(req.getParameter("email"));
+				controller.addAccount(dbase);
+			}
+			else {
+				String error = "Account not found";
+			}
 			
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			
