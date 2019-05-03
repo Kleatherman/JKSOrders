@@ -14,4 +14,9 @@ public class CreateEmployeeAccount {
 		return account; 
 	}
 
+	public void setAccount(EmployeeAccount account) {
+		
+		this.account = account;
+	}
+
 }

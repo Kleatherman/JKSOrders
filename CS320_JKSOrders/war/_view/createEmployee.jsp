@@ -35,7 +35,7 @@
               </div>
               
               <input name="manager" type="checkbox" value="Manager" />Manager<br>
-			
+				<input name="accountNumber" type="hidden" value="${accountNumber}" /><br>
               
               
   

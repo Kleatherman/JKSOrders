@@ -7,10 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.controller.CreateEmployeeAccountController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CreateEmployeeAccount;
+import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 public class CreateEmployeeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -48,6 +50,23 @@ public class CreateEmployeeServlet extends HttpServlet {
 	
 				
 				if(req.getParameter("workPage")!= null) {
+					WorkPage workModel = new WorkPage();
+					String accountNumber = req.getParameter("accountNumber");
+					EmployeeAccount account = dbase.getEmployeeAccount(accountNumber);
+					String name = account.getFirstName();
+					
+					if(dbase.getNotifications(accountNumber).size()!=0) {
+						workModel.setReceivedNotifications(dbase.getNotifications(accountNumber));
+					}
+					boolean isManager = dbase.getEmployeeAccount(accountNumber).isManager();
+					workModel.setOrders(dbase.getOrders());
+					workModel.setSourceNotifications(dbase.getSourceNotifications(accountNumber));
+					workModel.setManager(isManager);
+					workModel.setEmployeeNames(dbase.AllEmployeeNames());
+					req.setAttribute("name", name);
+					workModel.setAccountNumber(accountNumber);
+					req.setAttribute("model", workModel);
+					
 					 req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 				}
 				else if(req.getParameter("createAccount")!= null) {
