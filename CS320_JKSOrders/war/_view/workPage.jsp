@@ -41,7 +41,7 @@
 								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
 									<c:forEach items="${model.employeeNames}" var="name">
 										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
-									</c:forEach>
+									</c:forEach> 
 									<h1>Pending Orders:</h1>
 										<select name="editOrder">	
 											<c:forEach items="${model.orders}" var = "order">
