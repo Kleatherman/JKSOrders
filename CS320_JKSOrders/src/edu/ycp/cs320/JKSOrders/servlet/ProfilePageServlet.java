@@ -65,9 +65,15 @@ public class ProfilePageServlet extends HttpServlet{
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("workPage") != null) {
+
 			WorkPage workModel = new WorkPage();
+			workModel.setReceivedNotifications(db.getNotifications(accountNumber));
+			workModel.setManager(isManager);
 			workModel.setOrders(db.getOrders());
-			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
+			workModel.setAccountNumber(accountNumber);
+			workModel.setEmployeeNames(db.AllEmployeeNames());
+			workModel.setOrders(db.getOrders());
+			workModel.setSourceNotifications( db.getSourceNotifications(accountNumber));
 			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}

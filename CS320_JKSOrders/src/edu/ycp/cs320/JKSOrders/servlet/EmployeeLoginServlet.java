@@ -61,7 +61,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			controller.setUserName(req.getParameter("username"));
 			controller.setPassword(req.getParameter("pin"));
 			
-			
+			SystemController system = new SystemController();
 			
 			if (req.getParameter("createEmployeeAccount")!=null) {
 				System.out.println("We're headed to employee account JSP");
@@ -70,7 +70,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 			else if(req.getParameter("forgot")!=null) {
 				req.getRequestDispatcher("/_view/employeeForgotLogin.jsp").forward(req, resp);
 			}
-			else if(model.getLoginInfo().equals(db.getEmployeeLoginInfo())) {
+			else if(!system.verifyEmployeeLoginInfo(model.getLoginInfo(), db.getEmployeeLoginInfo())) {
 				req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
@@ -80,15 +80,15 @@ public class EmployeeLoginServlet extends HttpServlet {
 				String name = account.getFirstName();
 				
 				if(db.getNotifications(accountNumber).size()!=0) {
-					req.setAttribute("notification", db.getNotifications(accountNumber));
+					workModel.setReceivedNotifications(db.getNotifications(accountNumber));
 				}
 				boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
 				workModel.setOrders(db.getOrders());
-				req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
-				req.setAttribute("isManager", isManager);
-				req.setAttribute("employeeNames", db.AllEmployeeNames());
+				workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
+				workModel.setManager(isManager);
+				workModel.setEmployeeNames(db.AllEmployeeNames());
 				req.setAttribute("name", name);
-				req.setAttribute("accountNumber", accountNumber);
+				workModel.setAccountNumber(accountNumber);
 				req.setAttribute("model", workModel);
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}

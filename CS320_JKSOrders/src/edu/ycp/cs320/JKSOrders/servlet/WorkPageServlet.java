@@ -54,24 +54,26 @@ public class WorkPageServlet  extends HttpServlet{
 		
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
-			req.setAttribute("accountNumber", account.getAccountNumber());
+			model.setAccountNumber(account.getAccountNumber());
 			accountNumber = req.getParameter("accountNumber");
+			req.setAttribute("accountNumber", accountNumber);
 			if(db.getNotifications(accountNumber).size()!=0) {
 				notify = db.getNotifications(accountNumber).get(0);
-				req.setAttribute("notify", notify);
+				model.setNotification(notify);
+				
 			}
 			if(db.getEmployeeAccount(accountNumber)!=null) {
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
 			}
 			req.setAttribute("isManager", isManager);
-			req.setAttribute("employeeNames", db.AllEmployeeNames());
+			model.setManager(isManager);
+			model.setEmployeeNames(db.AllEmployeeNames());
 		}
 		if(req.getParameter("notify")!=null) {
-			WorkPage workModel = new WorkPage();
-			workModel.setOrders(db.getOrders());
-			req.setAttribute("model", workModel);
+			model.setOrders(db.getOrders());
+			model.setSourceNotifications( db.getSourceNotifications(accountNumber));
+			
 			notify = new Notification();
-			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			notify.setSourceAccountNumber(accountNumber);
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();
@@ -93,10 +95,11 @@ public class WorkPageServlet  extends HttpServlet{
 				notify.setMessage(message);
 			}
 			db.addNotification(notify);
-			req.setAttribute("message", message);
+			model.setMessage(message);
 			if(db.getNotifications(accountNumber).size()!=0) {
-				req.setAttribute("notification", db.getNotifications(accountNumber));
+				model.setReceivedNotifications(db.getNotifications(accountNumber));
 			}
+			req.setAttribute("model", model);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		
@@ -117,8 +120,8 @@ public class WorkPageServlet  extends HttpServlet{
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
-			// call addNumbers JSP
-			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+			
+		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("fulfillOrder")!=null) {
 			req.getRequestDispatcher("/_view/fulfillOrder.jsp").forward(req, resp);

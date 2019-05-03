@@ -87,9 +87,9 @@ public class DerbyInitialDataTest {
 		ArrayList<String> less = new ArrayList<String>();
 		Catalog catalog = db.getCatalog();
 		assertTrue(!catalog.getItemMap().isEmpty());
-		assertTrue(catalog.getItemMap().get("I0").getNumInInventory()==5);
-		assertTrue(catalog.getItemMap().get("I1").getNumInInventory()==7);
-		catalog.returnGreaterorLess(6, greater, less);
+		assertTrue(catalog.getItemMap().get("I0").getNumInInventory()==50);
+		assertTrue(catalog.getItemMap().get("I1").getNumInInventory()==70);
+		catalog.returnGreaterorLess(60, greater, less);
 		assertTrue(greater.get(0).equals("I1"));
 		assertTrue(less.get(0).equals("I0"));
 	}

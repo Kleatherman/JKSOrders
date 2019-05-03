@@ -966,7 +966,10 @@ class DerbyDatabase implements Database {
 
 					}
 
-					if (account.isManager()) {
+					if(account.getAccountNumber()!=null) {
+						employee_id = account.getAccountNumber();
+					}
+					else if (account.isManager()) {
 						employee_id = "M" + managers;
 					} else
 						employee_id = "E" + (employees.size() - managers);
@@ -1020,7 +1023,11 @@ class DerbyDatabase implements Database {
 				PreparedStatement insertLoginInfo = null;
 
 				try {
+
 					String customer_id = ("C" +getCustomerAccounts().size());
+					if(account.getAccountNumber()!=null) {
+						customer_id = account.getAccountNumber();
+					}
 					
 					
 					insertCustomer = conn.prepareStatement(
@@ -1429,7 +1436,7 @@ class DerbyDatabase implements Database {
 								"DELETE FROM cars WHERE customer_id = ? ");
 						
 						deleteAccount3 = conn.prepareStatement(
-								"DELETE FROM login WHERE customer_id = ? ");
+								"DELETE FROM login WHERE user_id = ? ");
 						
 						ArrayList<Order> orders= getSourceOrders(accountNumber);
 						
@@ -1446,7 +1453,7 @@ class DerbyDatabase implements Database {
 								"DELETE FROM employees WHERE employee_id = ? ");
 						
 						deleteAccount2 = conn.prepareStatement(
-								"DELETE FROM login WHERE employee_id = ? ");
+								"DELETE FROM login WHERE user_id = ? ");
 						
 						ArrayList<Notification> notes= getSourceNotifications(accountNumber);
 						
@@ -1458,9 +1465,9 @@ class DerbyDatabase implements Database {
 					
 					deleteAccount.setString(1, accountNumber);
 					deleteAccount2.setString(1, accountNumber);
-					deleteAccount.execute();
-					deleteAccount2.execute();
 					
+					deleteAccount2.execute();
+					deleteAccount.execute();
 	
 		
 				}
