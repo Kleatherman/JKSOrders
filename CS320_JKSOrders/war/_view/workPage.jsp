@@ -35,22 +35,22 @@
 							<input name="profilePage" type="submit" value="Profile Page!" />
 							<input name="employeeLogin" type="submit" value="Log out!" />
 							<input name="accountNumber" type="hidden" value="${model.accountNumber}" />
-							<c:if test="${isManager}">
+							<c:if test="${model.isManager}">
 								<input name="message" type="text" value="${model.message}" length=300 />
 								<input name="notify" type="submit" value="Submit Notification" />
 								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
-									<c:forEach items="${employeeNames}" var="name">
+									<c:forEach items="${model.employeeNames}" var="name">
 										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
 									</c:forEach>
 									<h1>Pending Orders:</h1>
 										<select name="editOrder">	
 											<c:forEach items="${model.orders}" var = "order">
-											<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
+											<option value="${model.order.orderType}">${model.order.orderType} : $${model.order.totalPrice}</option>
 											</c:forEach>
 										</select>
 									<h1>Your Notifications</h1>
 									<select name="editNotification">	
-										<c:forEach items="${sourceNotifications}" var = "sourceNotify">
+										<c:forEach items="${model.sourceNotifications}" var = "sourceNotify">
 											<option value="${sourceNotify.notificationID}">${sourceNotify.notificationID}</option>
 										</c:forEach>
 									</select>
@@ -64,7 +64,7 @@
 							<th>Message</th>
 							<th>Urgent?</th>
 						</tr>
-						<c:forEach items="${notification}" var="notify">
+						<c:forEach items="${model.notification}" var="notify">
 							<tr>
 								<td>${notify.message}</td>
 								<c:choose>
