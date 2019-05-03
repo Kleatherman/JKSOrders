@@ -20,10 +20,8 @@
   			<div class = "container-fluid">
 				<div class= "TitleText"> Thank You! </div>
 					<div class= "TitleText2"> For shopping with us today </div>
-					<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">
-							<input type="Submit" name="storePage" value="Close">
-							
-							  <button class="btn btn-lg btn-primary btn-block text-uppercase" name="submit"  value="Login" type="Submit">Return to Store Page</button>
+					<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">		
+							  <button class="btn btn-lg btn-primary btn-block text-uppercase" name="storePage"  value="Login" type="Submit">Return to Store Page</button>
 							  
 							<input name="accountNumber" type="hidden" value="${accountNumber}" />
 						</div>
