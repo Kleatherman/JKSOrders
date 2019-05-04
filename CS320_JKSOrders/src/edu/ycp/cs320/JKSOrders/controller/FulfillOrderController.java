@@ -23,10 +23,10 @@ public class FulfillOrderController {
 	}
 	
 	public void setModelName(String orderNumber) {
-		ArrayList<Order> orders= db.getOrders();
+		ArrayList<Order> orders= db.getAllPickUpOrders();
 		for(Order order : orders) {
 			if(order.getOrderType().equals(model.getOrder().getOrderType())) {
-				model.setCustomerName(db.getCustomerAccount(order.getAccountNum()));
+				model.setCustomer(db.getCustomerAccount(order.getAccountNum()));
 			}
 		}
 	}

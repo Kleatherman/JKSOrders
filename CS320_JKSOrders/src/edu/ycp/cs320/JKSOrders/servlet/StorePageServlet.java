@@ -153,7 +153,7 @@ public class StorePageServlet extends HttpServlet {
 			CartModel cartModel = new CartModel();
 			cartModel.setAccount(db.getCustomerAccount(accountNumber));
 			if(cartOrder!=null) {
-				if(cartOrder.getItemlist().size()!=0) {
+				if(cartOrder.getItemList().size()!=0) {
 					cartOrder.setItemQuantities();
 					itemsAreHere = true;
 				}

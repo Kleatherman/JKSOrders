@@ -44,14 +44,14 @@ public class FulfillOrderServlet  extends HttpServlet{
 		
 		if(req.getParameter("workPage")!=null) {
 			WorkPage workModel = new WorkPage();
-			workModel.setOrders(db.getOrders());
+			workModel.setOrders(db.getAllPickUpOrders());
 			req.setAttribute("model", workModel);
 			String name = db.getAccount(accountNumber).getFirstName();
 			if(db.getNotifications(accountNumber).size()!=0) {
 				workModel.setReceivedNotifications(db.getNotifications(accountNumber));
 			}
 			boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
-			workModel.setOrders(db.getOrders());
+			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
 			workModel.setManager(isManager);
 			workModel.setEmployeeNames(db.AllEmployeeNames());

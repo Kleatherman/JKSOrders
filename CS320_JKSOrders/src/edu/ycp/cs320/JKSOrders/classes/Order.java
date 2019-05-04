@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Order {
-	private ArrayList<Item> Itemlist;
+	private ArrayList<Item> itemList;
 	private double totalPrice;
 	private Map<String, Integer> QuantityMap;
 	private Account account;
@@ -15,7 +15,7 @@ public class Order {
 	
 	public Order(){
 		account = new CustomerAccount();
-		Itemlist= new ArrayList<Item>();
+		itemList= new ArrayList<Item>();
 		QuantityMap= new TreeMap<String, Integer>();
 		complete = false;
 	}
@@ -23,14 +23,14 @@ public class Order {
 	/**
 	 * @return ArrayList of items in order
 	 */
-	public ArrayList<Item> getItemlist() {
-		return Itemlist;
+	public ArrayList<Item> getItemList() {
+		return itemList;
 	}
 	/**
 	 * @param itemlist ArrayList of items in order to set
 	 */
-	public void setItemlist(ArrayList<Item> itemlist) {
-		Itemlist = itemlist;
+	public void setItemList(ArrayList<Item> itemlist) {
+		itemList = itemlist;
 	}
 	/**
 	 * @return total price of order
@@ -83,20 +83,20 @@ public class Order {
 		this.accountNum = accountNum;
 	}
 	public void addItem(Item item, int quantity) {
-		Itemlist.add(item);
+		itemList.add(item);
 		QuantityMap.put(item.getUPC(), quantity);
 	}
 	
 	public void setTotalPrice() {
 		totalPrice = 0.0;
-		for(Item item : Itemlist) {
+		for(Item item : itemList) {
 			totalPrice += (item.getPrice()*QuantityMap.get(item.getUPC()));
 		}
 	}
 	
 	//This method is for setting the internal quantity integer of all the items prior to sending to cart page or check out page
 	public void setItemQuantities() {
-		for(Item item : Itemlist) {
+		for(Item item : itemList) {
 				item.setNumInOrder(QuantityMap.get(item.getUPC()));
 		}
 		
