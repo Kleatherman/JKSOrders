@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<head>
 
-<body style="background-color:#cccccc;">
+
   <div class="container">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -28,7 +28,7 @@
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control"  name="pin" value="${model.password}" placeholder="Password" required autofocus>
+                <input type="password" id="inputPassword" class="form-control"  name="pin" value="${model.password}" placeholder="Pin" required autofocus>
                 <label for="inputPassword">Pin</label>
               </div>
          

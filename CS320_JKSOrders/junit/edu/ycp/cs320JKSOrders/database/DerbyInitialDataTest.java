@@ -38,7 +38,7 @@ public class DerbyInitialDataTest {
 		InitI= db.getVisibleItems();
 		InitN= db.getNotifications();
 		InitV= db.getCars();
-		InitO= db.getOrders();
+		InitO= db.getAllOrders();
 		InitLC= db.getCustomerLoginInfo();
 		InitLE= db.getEmployeeLoginInfo();
 	}
@@ -76,8 +76,8 @@ public class DerbyInitialDataTest {
 	public void testGetOrders() {
 		assertTrue(InitO.size()==2);
 		assertTrue(InitO.get(0).getAccountNum().equals("C0"));
-		assertTrue(InitO.get(0).getItemlist().get(0).getUPC().equals("I0"));
-		assertTrue(InitO.get(1).getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(InitO.get(0).getItemList().get(0).getUPC().equals("I0"));
+		assertTrue(InitO.get(1).getItemList().get(0).getUPC().equals("I0"));
 	}
 	
 	
@@ -87,9 +87,9 @@ public class DerbyInitialDataTest {
 		ArrayList<String> less = new ArrayList<String>();
 		Catalog catalog = db.getCatalog();
 		assertTrue(!catalog.getItemMap().isEmpty());
-		assertTrue(catalog.getItemMap().get("I0").getNumInInventory()==5);
-		assertTrue(catalog.getItemMap().get("I1").getNumInInventory()==7);
-		catalog.returnGreaterorLess(6, greater, less);
+		assertTrue(catalog.getItemMap().get("I0").getNumInInventory()==50);
+		assertTrue(catalog.getItemMap().get("I1").getNumInInventory()==70);
+		catalog.returnGreaterorLess(60, greater, less);
 		assertTrue(greater.get(0).equals("I1"));
 		assertTrue(less.get(0).equals("I0"));
 	}

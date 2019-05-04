@@ -47,10 +47,10 @@ public class fakeDatabase implements Database{
 				order.addItem(catalog.returnItemList().get(0), 1);
 				order.setTotalPrice();
 			}
-			System.out.println("This is the total price of order: "+order.getOrderType()+". It has "+order.getQuantityMap().get(order.getItemlist().get(0).getUPC()) +
-					" of "+order.getItemlist().get(0).getItemName()+" which are priced "+order.getItemlist().get(0).getPrice()+". It also has "+
-					order.getQuantityMap().get(order.getItemlist().get(1).getUPC()) +
-					" of "+order.getItemlist().get(1).getItemName()+" which are priced "+order.getItemlist().get(1).getPrice()+
+			System.out.println("This is the total price of order: "+order.getOrderType()+". It has "+order.getQuantityMap().get(order.getItemList().get(0).getUPC()) +
+					" of "+order.getItemList().get(0).getItemName()+" which are priced "+order.getItemList().get(0).getPrice()+". It also has "+
+					order.getQuantityMap().get(order.getItemList().get(1).getUPC()) +
+					" of "+order.getItemList().get(1).getItemName()+" which are priced "+order.getItemList().get(1).getPrice()+
 					". So it's total price is "+order.getTotalPrice());
 			orders.add(order);
 		}
@@ -459,7 +459,7 @@ public class fakeDatabase implements Database{
 		orders.add(order);
 		Order newOrder = orders.get(orders.size()-1);
 		System.out.println("A new order has been created!! Order number: "+newOrder.getOrderType()+" with this price: "+newOrder.getTotalPrice()+" And the owner account "+newOrder.getAccountNum()+"And the following items: ");
-		for(Item item : newOrder.getItemlist()) {
+		for(Item item : newOrder.getItemList()) {
 			System.out.println(item.getItemName()+" : "+ item.getUPC()+" : "+item.getPrice()+" : "+newOrder.getQuantityMap().get(item.getUPC()));
 		}
 	}
@@ -474,7 +474,7 @@ public class fakeDatabase implements Database{
 		}
 		Order newOrder = orders.get(orders.size()-1);
 		System.out.println("An order has been Updated!! Order number: "+newOrder.getOrderType()+" with this price: "+newOrder.getTotalPrice()+" And the owner account "+newOrder.getAccountNum()+"And the following items: ");
-		for(Item item : newOrder.getItemlist()) {
+		for(Item item : newOrder.getItemList()) {
 			System.out.println(item.getItemName()+" : "+ item.getUPC()+" : "+item.getPrice()+" : "+newOrder.getQuantityMap().get(item.getUPC()));
 		}
 	}
@@ -490,7 +490,7 @@ public class fakeDatabase implements Database{
 	}
 
 	@Override
-	public ArrayList<Order> getOrders() {
+	public ArrayList<Order> getAllPickUpOrders() {
 		return orders;
 	}
 
@@ -532,7 +532,7 @@ public class fakeDatabase implements Database{
 	@Override
 	public void cancelOrder(String orderNumber) {
 		Order order = getOrder(orderNumber);
-		for(Item item : order.getItemlist()) {
+		for(Item item : order.getItemList()) {
 			updateItem(item);
 		}
 		deleteOrder(order);
@@ -546,6 +546,24 @@ public class fakeDatabase implements Database{
 			}
 		}
 		return sourceOrders;
+	}
+
+	@Override
+	public void updateEmployeeAccount(EmployeeAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateCustomerAccount(CustomerAccount account) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<Order> getAllOrders() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

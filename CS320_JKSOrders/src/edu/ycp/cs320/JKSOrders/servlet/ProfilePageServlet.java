@@ -65,13 +65,22 @@ public class ProfilePageServlet extends HttpServlet{
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("workPage") != null) {
+
 			WorkPage workModel = new WorkPage();
-			workModel.setOrders(db.getOrders());
-			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
+			workModel.setReceivedNotifications(db.getNotifications(accountNumber));
+			workModel.setManager(isManager);
+			workModel.setOrders(db.getAllPickUpOrders());
+			workModel.setAccountNumber(accountNumber);
+			workModel.setEmployeeNames(db.AllEmployeeNames());
+			workModel.setOrders(db.getAllPickUpOrders());
+			workModel.setSourceNotifications( db.getSourceNotifications(accountNumber));
 			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
-		
+		else if(req.getParameter("viewOrder") !=null) {
+
+			req.getRequestDispatcher("/_view/viewOrder.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}

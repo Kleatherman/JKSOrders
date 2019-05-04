@@ -4,59 +4,37 @@
 
 <html lag= "en">
 	<head>
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	style
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+<div class="container"  style="text-align:center;">
+  <div class="card border-0 shadow my-5"  style="background-color:#cccccc;display:inline-block;"  >
+    <div class="card-body p-5">
+  		<div class="centered text-center" >
+				<div class="row" >
 	
-		<title>Cart Page</title>
-		<style type="text/css">
-		.TitleText2 {
-						font-size: 300%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		
-		.ErrorMessage {
-						font-size: 150%;
-						text-align: center;
-						color: red;		
-		}
-		table {
- 						 font-family: arial, sans-serif;
-						 border-collapse: collapse;
-						 width: 100%;
-		}
-		td, th {
-						 border: 1px solid #dddddd;
-						 text-align: left;
-						 padding: 8px;
-		}
-		tr:nth-child(even) {
- 						 background-color: #dddddd;
-		}
-		</style>
-	</head>
-
-	<body style="background-color:gray; padding-top: 200px; ">
-	<div class = "container-fluid">
-			<div class="row">
-				<div class="col-sm-4" style="background-color:clear;"></div>
-				<div class="col-sm-4" style="background-color:white;border-style:solid;border-color:blue; border-width:thick;">
 				
 					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
-						<h1 style="text-align:center">Your Cart Page</h1><br/><br />
-						<input name="store" type="Submit" value="Back to Store" />
-						<input name="checkOut" type="Submit" value="Checkout" />
-						<input name="cancelOrder" type="Submit" value="Cancel Order" />
-						<input name="accountNumber" type="Hidden" value="${accountNumber}"/>
+						<h1 align="center">Your Cart Page</h1><br/><br />
+						<input name="accountNumber" type="Hidden" value="${cartModel.accountNumber}"/>
 						
-						<table>
+						<ul class="pagination justify-content-center">
+						
+						
+					
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "store" formnovalidate >Back to Store</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button  class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "checkOut" formnovalidate >Checkout</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cancelOrder" formnovalidate >Cancel Order</button>
+						
+						</div>
+						
+						<table  align="center" class="table">
 							<th>Item Name</th>
 							<th>Item Quantity</th>
 							<th>Item Price</th>
@@ -64,16 +42,15 @@
 								<tr>
 									<td>${item.itemName}</td>
 									<td>${item.numInOrder}</td>
-									<td>${item.price}</td>
+									<td>$${item.price}</td>
 								</tr>
 							</c:forEach>
-						</table>
-						<span style="color:blue; font-size:20px;">Your Order's Total Price: $${cartModel.price }</span>
+						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${cartModel.price }</b></span>
 					</form>		
 					<span class = ErrorMessage>${model.errorMessage}</span>
 				</div>
-				<div class="col-sm-4" style="background-color:clear;"></div>
 			</div>	
 		</div>
-	</body>
+    </div>
+
 </html>

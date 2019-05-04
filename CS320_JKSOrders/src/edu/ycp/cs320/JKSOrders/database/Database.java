@@ -144,11 +144,15 @@ public interface Database {
 	
 	public Order getOrder(String orderNumber);
 
-	public ArrayList<Order> getOrders();
+	public ArrayList<Order> getAllPickUpOrders();
 
 	public ArrayList<Car> getCars();
 	
 	public void deleteAccount(String accountNumber);
+	
+	public void updateEmployeeAccount(EmployeeAccount account);
+	
+	public void updateCustomerAccount(CustomerAccount account);
 
 	public void deleteOrder(Order order);
 	
@@ -161,4 +165,6 @@ public interface Database {
 	public void cancelOrder(String orderNumber);
 
 	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber);
+
+	public ArrayList<Order> getAllOrders();
 }
