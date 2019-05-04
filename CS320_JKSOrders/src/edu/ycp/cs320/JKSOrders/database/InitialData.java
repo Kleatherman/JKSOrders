@@ -166,7 +166,7 @@ public class InitialData {
 					if(order.getOrderType().equals(orderid)) {
 						String upc = i.next();
 						order.getQuantityMap().put(upc,  Integer.parseInt(i.next())); 
-						order.getItemlist().add(catalog.getItem(upc));
+						order.getItemList().add(catalog.getItem(upc));
 					}
 				}
 				
