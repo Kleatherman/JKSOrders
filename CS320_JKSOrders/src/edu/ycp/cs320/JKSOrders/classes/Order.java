@@ -11,11 +11,13 @@ public class Order {
 	private Account account;
 	private String orderType;
 	private String accountNum;
+	private boolean complete;
 	
 	public Order(){
 		account = new CustomerAccount();
 		Itemlist= new ArrayList<Item>();
 		QuantityMap= new TreeMap<String, Integer>();
+		complete = false;
 	}
 	
 	/**
@@ -99,4 +101,13 @@ public class Order {
 		}
 		
 	}
+
+	public boolean isComplete() {
+		return complete;
+	}
+
+	public void setComplete(boolean complete) {
+		this.complete = complete;
+	}
+	
 }

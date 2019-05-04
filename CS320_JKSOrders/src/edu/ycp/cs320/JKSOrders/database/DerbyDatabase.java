@@ -160,7 +160,7 @@ class DerbyDatabase implements Database {
 					System.out.println("notifications table created");
 
 					stmt7 = conn.prepareStatement("create table orders (" + "	order_id varchar(5) primary key, "
-							+ "	user_id varchar(5)" + ")");
+							+ "	user_id varchar(5)," + " complete boolean)");
 					stmt7.executeUpdate();
 
 					System.out.println("Order table created");
@@ -325,10 +325,11 @@ class DerbyDatabase implements Database {
 
 					System.out.println("notificationRecipients table populated");
 
-					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
+					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id, complete) values (?, ?, ?)");
 					for (Order order : ordersList) {
 						insertOrder.setString(1, order.getOrderType());
 						insertOrder.setString(2, order.getAccountNum());
+						insertOrder.setBoolean(3, false);
 						insertOrder.addBatch();
 					}
 					insertOrder.executeBatch();
@@ -1199,10 +1200,11 @@ class DerbyDatabase implements Database {
 				PreparedStatement insertOrderItemJunction = null;
 
 				try {
-					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
+					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id, complete) values (?, ?, ?)");
 					
 						insertOrder.setString(1, order.getOrderType());
 						insertOrder.setString(2, order.getAccountNum());
+						insertOrder.setBoolean(3, order.isComplete());
 						insertOrder.execute();
 				
 					
@@ -1387,6 +1389,7 @@ class DerbyDatabase implements Database {
 						Order order = new Order();
 						order.setOrderType(ordersResults.getString(1));
 						order.setAccountNum(ordersResults.getString(2));
+						order.setComplete(ordersResults.getBoolean(3));
 						Orders.add(order);
 					}
 					while (orderItemResults.next()) {
