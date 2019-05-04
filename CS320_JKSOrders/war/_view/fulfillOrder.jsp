@@ -20,6 +20,8 @@
 							<ul class="pagination justify-content-center">
 							<h1 align="center">Fulfill Order Page</h1><br/><br />
 							<input name="accountNumber" type="Hidden" value="${accountNumber}"/>
+							<input name="customerAccountNumber" type="Hidden" value="${model.customer.accountNumber}"/>
+							<input name="orderNumber" type="Hidden" value="${model.order.orderType}"/>
 					</div>
 				</div>
 			</div>
@@ -34,7 +36,7 @@
 				
 				
 						
-						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Order Status: <c:if test="${order.complete}">Finished</c:if>Pending</b></span>
+						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Order Status: <c:choose><c:when test="${model.order.complete}">Complete</c:when><c:otherwise>Pending</c:otherwise></c:choose></b></span>
 				
 						<table align="center" class="table">
 							<tr>
@@ -63,8 +65,8 @@
 				<div class="card-body p-5">
   					<div class="centered text-center" >
 						<h2>Customer: ${model.customer.firstName} ${model.customer.lastName}</h2>
-						
 						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Customer Car</b></span>
+				
 						<table align="center" class="table">
 							<tr>
 								<th>Brand</th>
@@ -78,7 +80,6 @@
 								<td>${model.car.color}</td>
 								<td>${model.car.year}</td>
 						</table>
-						<br><br>
 						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "workPage" formnovalidate >Back to WorkPage</button>
 						
 						
