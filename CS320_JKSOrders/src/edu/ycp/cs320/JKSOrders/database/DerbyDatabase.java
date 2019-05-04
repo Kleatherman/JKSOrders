@@ -965,7 +965,7 @@ class DerbyDatabase implements Database {
 						}
 
 					}
-
+					
 					if(account.getAccountNumber()!=null) {
 						employee_id = account.getAccountNumber();
 					}
@@ -973,6 +973,8 @@ class DerbyDatabase implements Database {
 						employee_id = "M" + managers;
 					} else
 						employee_id = "E" + (employees.size() - managers);
+					
+					System.out.println(employee_id);
 
 					insertEmployee = conn.prepareStatement(
 							"insert into employees (employee_id, first_name, last_name, email, phoneNumber) values (?, ?, ?, ?, ?)");
@@ -1590,6 +1592,7 @@ class DerbyDatabase implements Database {
 	@Override
 	public void updateEmployeeAccount(EmployeeAccount account) {
 		System.out.println("MADE IT IN");
+		System.out.println(account.getAccountNumber());
 		deleteAccount(account.getAccountNumber());
 		System.out.println("ACCOUNT DELETED");
 		addEmployeeAccount(account);

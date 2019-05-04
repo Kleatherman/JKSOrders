@@ -65,7 +65,9 @@ public class CreateEmployeeAccountServlet extends HttpServlet {
 		try {
 			if(dbase.getEmployeeAccount(req.getParameter("username"))!= null) {
 				System.out.println("We made it into the first if before a null pointer exception was thrown");
+				
 				if(dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getUserName()!=null && dbase.getEmployeeAccount(req.getParameter("username")).getLogin().getPassword().equals(" ")) {
+					controller.loadInAccount(dbase.getEmployeeAccount(req.getParameter("username")));
 					System.out.println("We are inside the first if statement in createEmployeeAccount");
 					controller.setLogin(req.getParameter("password"), req.getParameter("username"));
 					System.out.println("We are inside the first if statement in 1");

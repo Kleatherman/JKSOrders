@@ -127,6 +127,7 @@ public class WorkPageServlet  extends HttpServlet{
 			req.getRequestDispatcher("/_view/fulfillOrder.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("createEmployee")!=null) {
+			req.setAttribute("accountNumber", accountNumber);
 			req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("editNotification")!= null) {

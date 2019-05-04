@@ -69,6 +69,10 @@ public class CreateEmployeeAccountController {
 			dbase.updateEmployeeAccount(model.getAccount());
 			
 		}
+		public void loadInAccount(EmployeeAccount Account) {
+			model.setAccount(Account);
+		}
+		
 		
 		
 		}
