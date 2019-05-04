@@ -11,12 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.controller.EditNotificationController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.controller.WorkPageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
+import edu.ycp.cs320.JKSOrders.model.FulfillOrderModel;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -54,24 +56,26 @@ public class WorkPageServlet  extends HttpServlet{
 		
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
-			req.setAttribute("accountNumber", account.getAccountNumber());
+			model.setAccountNumber(account.getAccountNumber());
 			accountNumber = req.getParameter("accountNumber");
+			req.setAttribute("accountNumber", accountNumber);
 			if(db.getNotifications(accountNumber).size()!=0) {
 				notify = db.getNotifications(accountNumber).get(0);
-				req.setAttribute("notify", notify);
+				model.setNotification(notify);
+				
 			}
 			if(db.getEmployeeAccount(accountNumber)!=null) {
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
 			}
 			req.setAttribute("isManager", isManager);
-			req.setAttribute("employeeNames", db.AllEmployeeNames());
+			model.setManager(isManager);
+			model.setEmployeeNames(db.AllEmployeeNames());
 		}
 		if(req.getParameter("notify")!=null) {
-			WorkPage workModel = new WorkPage();
-			workModel.setOrders(db.getOrders());
-			req.setAttribute("model", workModel);
+			model.setOrders(db.getAllPickUpOrders());
+			model.setSourceNotifications( db.getSourceNotifications(accountNumber));
+			
 			notify = new Notification();
-			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			notify.setSourceAccountNumber(accountNumber);
 			String message = req.getParameter("message");
 			ArrayList<String> destNames = new ArrayList<String>();
@@ -93,10 +97,11 @@ public class WorkPageServlet  extends HttpServlet{
 				notify.setMessage(message);
 			}
 			db.addNotification(notify);
-			req.setAttribute("message", message);
+			model.setMessage(message);
 			if(db.getNotifications(accountNumber).size()!=0) {
-				req.setAttribute("notification", db.getNotifications(accountNumber));
+				model.setReceivedNotifications(db.getNotifications(accountNumber));
 			}
+			req.setAttribute("model", model);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		
@@ -117,13 +122,21 @@ public class WorkPageServlet  extends HttpServlet{
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
-			// call addNumbers JSP
-			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+			
+		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("fulfillOrder")!=null) {
+			String orderID = req.getParameter("editOrder");
+			Order order = db.getOrder(orderID);
+			FulfillOrderModel fulfillOrder = new FulfillOrderModel();
+			fulfillOrder.setOrder(order);
+			fulfillOrder.setCar(db.getCustomerAccount(order.getAccountNum()).getPickUpInfo().getCar());
+			fulfillOrder.setCustomer(db.getCustomerAccount(order.getAccountNum()));
+			req.setAttribute("model", fulfillOrder);
 			req.getRequestDispatcher("/_view/fulfillOrder.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("createEmployee")!=null) {
+			req.setAttribute("accountNumber", accountNumber);
 			req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("editNotification")!= null) {
@@ -132,12 +145,9 @@ public class WorkPageServlet  extends HttpServlet{
 			editController.setModel(editModel);
 			editController.setErrorMessage("No notification Selected for editing");
 			String editNotifyID = req.getParameter("editNotification");
-			System.out.println("Source Notification ID: "+ editNotifyID);
 			ArrayList<Notification> sourceNotifications = db.getSourceNotifications(accountNumber);
 			for(Notification note : sourceNotifications) {
-				System.out.println("We are looking for the notification!!");
 				if(editNotifyID.equals(note.getNotificationID())) {
-					System.out.println("We found the notification! it has ID#:" + note.getNotificationID());
 					editController.setModelNotification(note);
 					editController.setErrorMessage(null);
 				}

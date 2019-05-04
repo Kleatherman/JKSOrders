@@ -58,8 +58,8 @@ public class DerbyTest {
 		System.out.println("jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"+ InitN.size());
 		Cars = db.getCars();
 		InitV= db.getCars();
-		Olist= db.getOrders();
-		InitO= db.getOrders();
+		Olist= db.getAllPickUpOrders();
+		InitO= db.getAllPickUpOrders();
 		LClist= db.getCustomerLoginInfo();
 		InitLC= db.getCustomerLoginInfo();
 		LElist= db.getEmployeeLoginInfo();
@@ -197,15 +197,15 @@ public class DerbyTest {
 	
 	@Test
 	public void testDeleteOrders() {
-		Olist= db.getOrders();
+		Olist= db.getAllOrders();
 		int count = Olist.size();
 		db.deleteOrder(db.getOrder("P0"));
-		Olist= db.getOrders();
+		Olist= db.getAllOrders();
 		assertTrue(Olist.size()==count-1);
 		assertTrue(db.getOrder("P0")==null);
-		assertTrue(db.getOrder("S0").getItemlist().size()==2);
-		assertTrue(db.getOrder("S0").getItemlist().get(0).getUPC().equals("I0"));
-		assertTrue(db.getOrder("S0").getItemlist().get(1).getUPC().equals("I1"));
+		assertTrue(db.getOrder("S0").getItemList().size()==2);
+		assertTrue(db.getOrder("S0").getItemList().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("S0").getItemList().get(1).getUPC().equals("I1"));
 	}
 	
 	@Test
@@ -214,7 +214,7 @@ public class DerbyTest {
 		Clist= db.getCustomerAccounts();
 		Nlist = db.getNotifications();
 		ArrayList<Car> cars = db.getCars();
-		ArrayList<Order> allOrders = db.getOrders();
+		ArrayList<Order> allOrders = db.getAllPickUpOrders();
 		int carSize = cars.size();
 		int orderSize = allOrders.size();
 		int Ecount = Elist.size();
@@ -226,7 +226,7 @@ public class DerbyTest {
 		Clist= db.getCustomerAccounts();
 		Nlist = db.getNotifications();
 		cars = db.getCars();
-		allOrders = db.getOrders();
+		allOrders = db.getAllPickUpOrders();
 		
 		assertTrue(Clist.size()==Ccount-1);
 		assertTrue(Nlist.size()==notificationSize);
@@ -242,7 +242,7 @@ public class DerbyTest {
 		Clist= db.getCustomerAccounts();
 		Nlist = db.getNotifications();
 		cars = db.getCars();
-		allOrders = db.getOrders();
+		allOrders = db.getAllPickUpOrders();
 		
 		System.out.println("Notification Size now is............................... "+ Nlist.size()+". It Should Be "+(notificationSize-1));
 		assertTrue(Clist.size()==Ccount-1);
@@ -264,25 +264,25 @@ public class DerbyTest {
 		Map.put(itemlist.get(0).getUPC(), 2);
 		Order order = new Order();
 		order.setAccountNum("C2");
-		order.setItemlist(itemlist);
+		order.setItemList(itemlist);
 		order.setQuantityMap(Map);
 		order.setItemQuantities();
 		order.setOrderType("P12");
 		order.setTotalPrice();
-		Olist= db.getOrders();
+		Olist= db.getAllPickUpOrders();
 		int count = Olist.size();
 		db.addOrder(order);
-		Olist= db.getOrders();
+		Olist= db.getAllPickUpOrders();
 		assertTrue(Olist.size()==count+1);
-		assertTrue(db.getOrder("P12").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("P12").getItemList().get(0).getUPC().equals("I0"));
 		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-2);
-		assertTrue(db.getOrder("P12").getItemlist().get(0).getNumInOrder()==2);
+		assertTrue(db.getOrder("P12").getItemList().get(0).getNumInOrder()==2);
 		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
 		order.setOrderType("P13");
 		db.addOrder(order);
-		assertTrue(db.getOrder("P13").getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("P13").getItemList().get(0).getUPC().equals("I0"));
 		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-4);
-		assertTrue(db.getOrder("P13").getItemlist().get(0).getNumInOrder()==2);
+		assertTrue(db.getOrder("P13").getItemList().get(0).getNumInOrder()==2);
 		assertTrue(db.getOrder("P13").getTotalPrice()!=0);
 	}
 	@Test
@@ -321,7 +321,7 @@ public class DerbyTest {
 		Map.put(itemlist.get(0).getUPC(), 1);
 		Order order = new Order();
 		order.setAccountNum("C2");
-		order.setItemlist(itemlist);
+		order.setItemList(itemlist);
 		order.setQuantityMap(Map);
 		order.setItemQuantities();
 		order.setOrderType("P96");
@@ -334,7 +334,7 @@ public class DerbyTest {
 		assertTrue(96==lastInt);
 		
 		order.setAccountNum("C2");
-		order.setItemlist(itemlist);
+		order.setItemList(itemlist);
 		order.setQuantityMap(Map);
 		order.setItemQuantities();
 		order.setOrderType("I675");

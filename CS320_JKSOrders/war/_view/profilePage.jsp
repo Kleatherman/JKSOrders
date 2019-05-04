@@ -54,7 +54,7 @@
 							<c:if test="${isEmployee}">
 								<input name="workPage" type="submit" value="Work Page!"/>
 							</c:if>	
-								<input name="accountNumber" type="hidden" value="${accountNumber}" />
+								<input name="accountNumber" type="hidden" value="${Anumber}" />
 						</div>
 					</form>
 	

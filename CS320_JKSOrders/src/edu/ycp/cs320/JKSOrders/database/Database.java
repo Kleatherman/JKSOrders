@@ -144,7 +144,7 @@ public interface Database {
 	
 	public Order getOrder(String orderNumber);
 
-	public ArrayList<Order> getOrders();
+	public ArrayList<Order> getAllPickUpOrders();
 
 	public ArrayList<Car> getCars();
 	
@@ -165,4 +165,6 @@ public interface Database {
 	public void cancelOrder(String orderNumber);
 
 	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber);
+
+	public ArrayList<Order> getAllOrders();
 }

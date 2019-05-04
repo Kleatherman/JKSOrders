@@ -38,7 +38,7 @@
               </div>
 
 				<div class="form-label-group">
-                <input type="text" id="inputEmail" class="form-control" name = "email" placeholder="Email" required autofocus>
+                <input type="text" id="inputEmail" class="form-control" name = "lastname" placeholder="LastName" required autofocus>
                 <label for="inputName">Name</label>
               </div>
               

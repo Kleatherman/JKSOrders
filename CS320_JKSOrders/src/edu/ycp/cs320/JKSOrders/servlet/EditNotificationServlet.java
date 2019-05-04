@@ -49,18 +49,25 @@ public class EditNotificationServlet  extends HttpServlet{
 		boolean isManager = false;
 		if(req.getParameter("workPage")!=null) {
 			WorkPage workModel = new WorkPage();
-			workModel.setOrders(db.getOrders());
+			workModel.setOrders(db.getAllPickUpOrders());
 			req.setAttribute("model", workModel);
 			String name = db.getAccount(accountNumber).getFirstName();
 			if(db.getNotifications(accountNumber).size()!=0) {
-				req.setAttribute("notification", db.getNotifications(accountNumber));
+				workModel.setReceivedNotifications(db.getNotifications(accountNumber));
 			}
 			isManager = db.getEmployeeAccount(accountNumber).isManager();
-			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
+			/*req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.setAttribute("isManager", isManager);
 			req.setAttribute("employeeNames", db.AllEmployeeNames());
 			req.setAttribute("name", name);
-			req.setAttribute("accountNumber", accountNumber);
+			req.setAttribute("accountNumber", accountNumber);*/
+			workModel.setOrders(db.getAllPickUpOrders());
+			workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
+			workModel.setManager(isManager);
+			workModel.setEmployeeNames(db.AllEmployeeNames());
+			req.setAttribute("name", name);
+			workModel.setAccountNumber(accountNumber);
+			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("update")!=null) {
@@ -113,13 +120,20 @@ public class EditNotificationServlet  extends HttpServlet{
 			}
 			isManager = db.getEmployeeAccount(accountNumber).isManager();
 			WorkPage workModel = new WorkPage();
-			workModel.setOrders(db.getOrders());
-			req.setAttribute("model", workModel);
-			req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
+			//workModel.setOrders(db.getOrders());
+		/*	req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.setAttribute("isManager", isManager);
 			req.setAttribute("employeeNames", db.AllEmployeeNames());
 			req.setAttribute("name", name);
 			req.setAttribute("accountNumber", accountNumber);
+*/
+			workModel.setOrders(db.getAllPickUpOrders());
+			workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
+			workModel.setManager(isManager);
+			workModel.setEmployeeNames(db.AllEmployeeNames());
+			req.setAttribute("name", name);
+			workModel.setAccountNumber(accountNumber);
+			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		else {
