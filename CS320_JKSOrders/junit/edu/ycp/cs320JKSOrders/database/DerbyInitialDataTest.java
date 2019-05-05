@@ -38,7 +38,7 @@ public class DerbyInitialDataTest {
 		InitI= db.getVisibleItems();
 		InitN= db.getNotifications();
 		InitV= db.getCars();
-		InitO= db.getOrders();
+		InitO= db.getAllOrders();
 		InitLC= db.getCustomerLoginInfo();
 		InitLE= db.getEmployeeLoginInfo();
 	}
@@ -76,8 +76,8 @@ public class DerbyInitialDataTest {
 	public void testGetOrders() {
 		assertTrue(InitO.size()==2);
 		assertTrue(InitO.get(0).getAccountNum().equals("C0"));
-		assertTrue(InitO.get(0).getItemlist().get(0).getUPC().equals("I0"));
-		assertTrue(InitO.get(1).getItemlist().get(0).getUPC().equals("I0"));
+		assertTrue(InitO.get(0).getItemList().get(0).getUPC().equals("I0"));
+		assertTrue(InitO.get(1).getItemList().get(0).getUPC().equals("I0"));
 	}
 	
 	

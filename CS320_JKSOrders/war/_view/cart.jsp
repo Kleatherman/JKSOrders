@@ -38,7 +38,7 @@
 							<th>Item Name</th>
 							<th>Item Quantity</th>
 							<th>Item Price</th>
-							<c:forEach items="${cartModel.itemArrayList}" var="item">
+							<c:forEach items="${viewOrderModel.itemArrayList}" var="item">
 								<tr>
 									<td>${item.itemName}</td>
 									<td>${item.numInOrder}</td>
@@ -46,8 +46,7 @@
 								</tr>
 							</c:forEach>
 						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${cartModel.price }</b></span>
-					</form>		
-					<span class = ErrorMessage>${model.errorMessage}</span>
+					</form>
 				</div>
 			</div>	
 		</div>

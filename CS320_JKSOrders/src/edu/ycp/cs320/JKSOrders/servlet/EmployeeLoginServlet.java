@@ -83,7 +83,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 					workModel.setReceivedNotifications(db.getNotifications(accountNumber));
 				}
 				boolean isManager = db.getEmployeeAccount(accountNumber).isManager();
-				workModel.setOrders(db.getOrders());
+				workModel.setOrders(db.getAllPickUpOrders());
 				workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
 				workModel.setManager(isManager);
 				workModel.setEmployeeNames(db.AllEmployeeNames());

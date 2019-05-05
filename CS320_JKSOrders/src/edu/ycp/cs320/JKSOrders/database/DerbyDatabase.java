@@ -160,7 +160,7 @@ class DerbyDatabase implements Database {
 					System.out.println("notifications table created");
 
 					stmt7 = conn.prepareStatement("create table orders (" + "	order_id varchar(5) primary key, "
-							+ "	user_id varchar(5)" + ")");
+							+ "	user_id varchar(5)," + " complete boolean)");
 					stmt7.executeUpdate();
 
 					System.out.println("Order table created");
@@ -325,10 +325,11 @@ class DerbyDatabase implements Database {
 
 					System.out.println("notificationRecipients table populated");
 
-					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
+					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id, complete) values (?, ?, ?)");
 					for (Order order : ordersList) {
 						insertOrder.setString(1, order.getOrderType());
 						insertOrder.setString(2, order.getAccountNum());
+						insertOrder.setBoolean(3, false);
 						insertOrder.addBatch();
 					}
 					insertOrder.executeBatch();
@@ -338,7 +339,7 @@ class DerbyDatabase implements Database {
 					insertOrderItemJunction = conn.prepareStatement(
 							"insert into orderItemJunction (order_id, item_id, quantity) values (?, ?, ?)");
 					for (Order order : ordersList) {
-						for (Item item : order.getItemlist()) {
+						for (Item item : order.getItemList()) {
 							insertOrderItemJunction.setString(1, order.getOrderType());
 							insertOrderItemJunction.setString(2, item.getUPC());
 							insertOrderItemJunction.setInt(3, order.getQuantityMap().get(item.getUPC()));
@@ -1176,16 +1177,11 @@ class DerbyDatabase implements Database {
 	@Override
 	public String getLastPickUpOrderNumber() {
 		int i = 1;
-		ArrayList<Order> orders = getOrders();
-		while(orders.size()>=i) {
-			Order nextOrder = orders.get(orders.size()-i);
-			if(nextOrder.getOrderType().substring(0,1).equals("P")) {
-				return nextOrder.getOrderType();
-			}
-			else
-				i++;
+		ArrayList<Order> orders = getAllPickUpOrders();
+		if(orders.size()==0) {
+			return "P0";
 		}
-		 return "P0";
+		return orders.get(orders.size()-1).getOrderType();
 	}
 
 	@Override
@@ -1199,10 +1195,11 @@ class DerbyDatabase implements Database {
 				PreparedStatement insertOrderItemJunction = null;
 
 				try {
-					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id) values (?, ?)");
+					insertOrder = conn.prepareStatement("insert into orders (order_id, user_id, complete) values (?, ?, ?)");
 					
 						insertOrder.setString(1, order.getOrderType());
 						insertOrder.setString(2, order.getAccountNum());
+						insertOrder.setBoolean(3, order.isComplete());
 						insertOrder.execute();
 				
 					
@@ -1210,7 +1207,7 @@ class DerbyDatabase implements Database {
 					insertOrderItemJunction = conn.prepareStatement(
 							"insert into orderItemJunction (order_id, item_id, quantity) values (?, ?, ?)");
 				
-						for (Item item : order.getItemlist()) {
+						for (Item item : order.getItemList()) {
 							insertOrderItemJunction.setString(1, order.getOrderType());
 							insertOrderItemJunction.setString(2, item.getUPC());
 							insertOrderItemJunction.setInt(3, order.getQuantityMap().get(item.getUPC()));
@@ -1275,7 +1272,7 @@ class DerbyDatabase implements Database {
 	@Override
 	
 	public Order getOrder(String orderNumber) {
-		ArrayList<Order> orders = getOrders();
+		ArrayList<Order> orders = getAllOrders();
 		for(Order order : orders) {
 			if (order.getOrderType().equals(orderNumber)) {
 				order.setItemQuantities();
@@ -1333,7 +1330,93 @@ class DerbyDatabase implements Database {
 	}
 
 	@Override
-	public ArrayList<Order> getOrders() {
+	public ArrayList<Order> getAllPickUpOrders() {
+		return executeTransaction(new Transaction<ArrayList<Order>>() {
+			@Override
+			public ArrayList<Order> execute(Connection conn) throws SQLException {
+				PreparedStatement getOrdersfromOrders = null;
+				ResultSet ordersResults = null;
+
+				PreparedStatement getOrdersfromOrderItemJunction = null;
+				ResultSet orderItemResults = null;
+				try {
+					ArrayList<Pair<String, String>> orderItem = new ArrayList<Pair<String, String>>();
+					TreeMap<String, Integer> itemQuantityMap = new TreeMap<String, Integer>();
+					getOrdersfromOrders = conn.prepareStatement("select * from orders " + " where order_id like 'P%' order by order_id");
+					ArrayList<Order> Orders = new ArrayList<Order>();
+					ordersResults = getOrdersfromOrders.executeQuery();
+					getOrdersfromOrderItemJunction = conn.prepareStatement(
+							"select * from orderItemJunction " + " where order_id like 'P%' order by order_id, item_id");
+					orderItemResults = getOrdersfromOrderItemJunction.executeQuery();
+					// for testing that a result was returned
+					Boolean found = false;		
+					/*while (orderItemResults.next()) {
+						Pair<String, String> pair = new Pair<String, String>();
+						pair.setLeft(orderItemResults.getString(1));
+						pair.setRight(orderItemResults.getString(2));
+						itemQuantityMap.put(pair.getRight(), orderItemResults.getInt(3));
+						System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS" + itemQuantityMap.get(orderItemResults.getString(2))+ "With order "+orderItemResults.getString(1));
+						orderItem.add(pair);
+					}
+
+					while (ordersResults.next()) {
+						Catalog catalog = getCatalog();
+						found = true;
+						Order order = new Order();
+						order.setOrderType(ordersResults.getString(1));
+						order.setAccountNum(ordersResults.getString(2));
+						//order.setQuantityMap(itemQuantityMap);
+						
+						for(Pair<String, String> pair : orderItem) {
+							if(order.getOrderType().equals(pair.getLeft())) {
+								System.out.println("DDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD" + itemQuantityMap.get(pair.getRight())+ "With order "+pair.getLeft());
+								order.addItem(catalog.getItem(pair.getRight()), itemQuantityMap.get(pair.getRight()));
+							}
+						}
+						order.setItemQuantities();
+						Orders.add(order);
+						
+					}*/
+
+					Catalog catalog = getCatalog();
+					while (ordersResults.next()) {
+						found = true;
+						Order order = new Order();
+						order.setOrderType(ordersResults.getString(1));
+						order.setAccountNum(ordersResults.getString(2));
+						order.setComplete(ordersResults.getBoolean(3));
+						Orders.add(order);
+					}
+					while (orderItemResults.next()) {
+						String orderNumber = orderItemResults.getString(1);
+						for(Order order : Orders) {
+							if(orderNumber.equals(order.getOrderType())) {
+								order.addItem(catalog.getItem(orderItemResults.getString(2)), orderItemResults.getInt(3));
+							}
+							order.setItemQuantities();
+							order.setTotalPrice();
+						}
+					}
+					if (!found) {
+						System.out.println("No Orders were found");
+					} else
+						System.out.println("We got all Orders");
+					return Orders;
+					}
+					
+				finally {
+					DBUtil.closeQuietly(getOrdersfromOrders);
+					DBUtil.closeQuietly(ordersResults);
+					DBUtil.closeQuietly(getOrdersfromOrderItemJunction);
+					DBUtil.closeQuietly(orderItemResults);
+				}
+			}
+		});
+	
+	}
+
+	@Override
+	public ArrayList<Order> getAllOrders() {
 		return executeTransaction(new Transaction<ArrayList<Order>>() {
 			@Override
 			public ArrayList<Order> execute(Connection conn) throws SQLException {
@@ -1387,6 +1470,7 @@ class DerbyDatabase implements Database {
 						Order order = new Order();
 						order.setOrderType(ordersResults.getString(1));
 						order.setAccountNum(ordersResults.getString(2));
+						order.setComplete(ordersResults.getBoolean(3));
 						Orders.add(order);
 					}
 					while (orderItemResults.next()) {
@@ -1416,7 +1500,7 @@ class DerbyDatabase implements Database {
 		});
 	
 	}
-
+	
 	@Override
 	public void deleteAccount(String accountNumber) {
 		
@@ -1568,7 +1652,7 @@ class DerbyDatabase implements Database {
 		Catalog catalog = getCatalog();
 		Order order = getOrder(orderNumber);
 		order.setItemQuantities();
-		for(Item item : order.getItemlist()) {
+		for(Item item : order.getItemList()) {
 			item.setNumInInventory(catalog.getItem(item.getUPC()).getNumInInventory()+item.getNumInOrder());
 			updateItem(item);
 		}
@@ -1578,7 +1662,7 @@ class DerbyDatabase implements Database {
 	//This method returns all of the orders owned by a particular customer
 	@Override
 	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber) {
-		ArrayList<Order> allOrders = getOrders();
+		ArrayList<Order> allOrders = getAllPickUpOrders();
 		ArrayList<Order> sourceOrders = new ArrayList<Order>();
 		for(Order order : allOrders) {
 			if(order.getAccountNum().equals(CustomerAccountNumber)) {

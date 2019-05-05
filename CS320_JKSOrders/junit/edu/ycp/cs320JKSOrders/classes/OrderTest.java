@@ -23,8 +23,8 @@ public class OrderTest {
 	@Test
 	public void testSetItemList() {
 		ArrayList<Item> itemlist = null;
-		order.setItemlist(itemlist);
-		assertEquals(itemlist,order.getItemlist());
+		order.setItemList(itemlist);
+		assertEquals(itemlist,order.getItemList());
 	}
 	
 	@Test

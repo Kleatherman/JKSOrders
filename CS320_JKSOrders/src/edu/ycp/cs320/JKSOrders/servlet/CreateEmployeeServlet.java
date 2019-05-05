@@ -59,7 +59,7 @@ public class CreateEmployeeServlet extends HttpServlet {
 						workModel.setReceivedNotifications(dbase.getNotifications(accountNumber));
 					}
 					boolean isManager = dbase.getEmployeeAccount(accountNumber).isManager();
-					workModel.setOrders(dbase.getOrders());
+					workModel.setOrders(dbase.getAllPickUpOrders());
 					workModel.setSourceNotifications(dbase.getSourceNotifications(accountNumber));
 					workModel.setManager(isManager);
 					workModel.setEmployeeNames(dbase.AllEmployeeNames());
