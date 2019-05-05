@@ -19,42 +19,72 @@
           <div class="card-body">
             <h5 class="card-title text-center">This is your profile page</h5>
             <form action="${pageContext.servletContext.contextPath}/profilePage" method="post">
-						<table class = "table">
+							<c:if test="${model.customer}">
+							
+										<table class = "table">
 							<tr>
 								<td class="label">First name:</td>
-								<td>${Name}</td>
+								<td>${model.customerAccount.firstName}</td>
 							</tr>
 							<tr>
 								<td class="label">Account Number:</td>
-								<td>${Anumber}</td>
+								<td>${model.customerAccount.accountNumber}</td>
 							</tr>
 							<tr>
 								<td class="label">Phone Number:</td>
-								<td>${Pnumber}</td>
+								<td>${model.customerAccount.phoneNumber}</td>
 							</tr>
 							<tr>
 								<td class="label">Username:</td>
-								<td>${Username}</td>
+								<td>${model.customerAccount.login.userName}</td>
 							</tr>
 							<tr>
 								<td class="label">Password:</td>
-								<td>${password}</td>
+								<td>${model.customerAccount.login.password}</td>
 							</tr>
 						</table>
 						<div>
-							<c:if test="${isCustomer}">
 								<select name="sourceOrders">	
-										<c:forEach items="${sourceOrders}" var = "order">
+										<c:forEach items="${model.customerAccount.orders}" var = "order">
 											<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
 										</c:forEach>
 									</select>
 								<input name = "viewOrder" type = "submit" value = "View Order" />
 								<input name="storePage" type="submit" value="Store Page!" />
+								
+								<input name="accountNumber" type="hidden" value="${model.customerAccount.accountNumber}" />
+								
 							</c:if>
-							<c:if test="${isEmployee}">
+							
+							<c:if test="${model.employee}">
+							
+									
+										<table class = "table">
+							<tr>
+								<td class="label">First name:</td>
+								<td>${model.employeeAccount.firstName}</td>
+							</tr>
+							<tr>
+								<td class="label">Account Number:</td>
+								<td>${model.employeeAccount.accountNumber}</td>
+							</tr>
+							<tr>
+								<td class="label">Phone Number:</td>
+								<td>${model.employeeAccount.phoneNumber}</td>
+							</tr>
+							<tr>
+								<td class="label">Username:</td>
+								<td>${model.employeeAccount.login.userName}</td>
+							</tr>
+							<tr>
+								<td class="label">Password:</td>
+								<td>${model.employeeAccount.login.password}</td>
+							</tr>
+						<div>
 								<input name="workPage" type="submit" value="Work Page!"/>
+								<input name="accountNumber" type="hidden" value="${model.employeeAccount.accountNumber}" />
 							</c:if>	
-								<input name="accountNumber" type="hidden" value="${Anumber}" />
+								
 						</div>
 					</form>
 	

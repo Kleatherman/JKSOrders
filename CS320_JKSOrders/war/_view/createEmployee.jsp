@@ -34,8 +34,7 @@
                 <label for="inputName">Name</label>
               </div>
               
-              <input name="manager" type="checkbox" value="Manager" />Manager<br>
-				<input name="accountNumber" type="hidden" value="${accountNumber}" /><br>
+              <input name="manager" type="checkbox" value="Manager" />Manager<br><br>
               
               
   

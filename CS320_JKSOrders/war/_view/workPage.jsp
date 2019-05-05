@@ -34,7 +34,6 @@
 						<div>
 							<input name="profilePage" type="submit" value="Profile Page!" />
 							<input name="employeeLogin" type="submit" value="Log out!" />
-							<input name="accountNumber" type="hidden" value="${model.accountNumber}" />
 							<c:if test="${model.manager}">
 								<input name="createEmployee" type="submit" value="Create an employee" />
 								<input name="message" type="text" value="${model.message}" length=300 />
@@ -53,10 +52,10 @@
 								<input name="editNotification" type="submit" value="Edit Notification" />
 							</c:if>
 							
-								<h1>Pending Orders:</h1>
+								<h1>All Orders:</h1>
 								<select name="editOrder">	
 									<c:forEach items="${model.orders}" var = "order">
-										<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
+										<option value="${order.orderType}">${order.orderType} : $${order.totalPrice} : <c:choose><c:when test="${order.complete}">Complete</c:when><c:otherwise>Pending</c:otherwise></c:choose></option>
 									</c:forEach>
 								</select>
 								<input name="fulfillOrder" type="submit" value="Fulfill Order" />

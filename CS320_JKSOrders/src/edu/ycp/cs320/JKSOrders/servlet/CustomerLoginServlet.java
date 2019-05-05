@@ -17,6 +17,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.Login;
+import edu.ycp.cs320.JKSOrders.model.StorePage;
 import edu.ycp.cs320.JKSOrders.classes.LoginInfo;
 
 
@@ -84,10 +85,13 @@ public class CustomerLoginServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 			}
 			else if (req.getParameter("submit")!=null) {
+				StorePage storeModel = new StorePage();
 				CustomerAccount account = (CustomerAccount) db.getCustomerAccount(model.getUserName());
 				ArrayList<Item> items = db.getVisibleItems();
+				storeModel.setCustomerAccount(account);
+				storeModel.setItems(items);
 				req.setAttribute("accountNumber", account.getAccountNumber());
-				req.setAttribute("items", items);
+				req.setAttribute("model", storeModel);
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 			

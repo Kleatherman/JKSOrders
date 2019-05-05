@@ -77,7 +77,7 @@ public class EmployeeLoginServlet extends HttpServlet {
 				WorkPage workModel = new WorkPage();
 				String accountNumber = db.getEmployeeAccount(model.getUserName()).getAccountNumber();
 				EmployeeAccount account = db.getEmployeeAccount(accountNumber);
-				String name = account.getFirstName();
+			
 				
 				if(db.getNotifications(accountNumber).size()!=0) {
 					workModel.setReceivedNotifications(db.getNotifications(accountNumber));
@@ -87,9 +87,9 @@ public class EmployeeLoginServlet extends HttpServlet {
 				workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
 				workModel.setManager(isManager);
 				workModel.setEmployeeNames(db.AllEmployeeNames());
-				req.setAttribute("name", name);
 				workModel.setAccountNumber(accountNumber);
 				req.setAttribute("model", workModel);
+				req.getSession().setAttribute("accountNumber", accountNumber);
 				req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 			}
 
