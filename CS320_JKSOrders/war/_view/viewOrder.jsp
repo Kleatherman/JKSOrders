@@ -26,7 +26,7 @@
 						
 						
 					
-						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "store" formnovalidate >Back to Profile</button>
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "profilePage" formnovalidate >Back to Profile</button>
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cancelOrder" formnovalidate >Cancel Order</button>
 						
