@@ -69,10 +69,10 @@ public class ProfilePageServlet extends HttpServlet{
 			WorkPage workModel = new WorkPage();
 			workModel.setReceivedNotifications(db.getNotifications(accountNumber));
 			workModel.setManager(isManager);
-			workModel.setOrders(db.getOrders());
+			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setAccountNumber(accountNumber);
 			workModel.setEmployeeNames(db.AllEmployeeNames());
-			workModel.setOrders(db.getOrders());
+			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setSourceNotifications( db.getSourceNotifications(accountNumber));
 			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);

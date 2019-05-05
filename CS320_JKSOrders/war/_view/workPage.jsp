@@ -36,6 +36,7 @@
 							<input name="employeeLogin" type="submit" value="Log out!" />
 							<input name="accountNumber" type="hidden" value="${model.accountNumber}" />
 							<c:if test="${model.manager}">
+								<input name="createEmployee" type="submit" value="Create an employee" />
 								<input name="message" type="text" value="${model.message}" length=300 />
 								<input name="notify" type="submit" value="Submit Notification" />
 								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
@@ -43,13 +44,6 @@
 										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
 									</c:forEach> 
 								
-									<h1>Pending Orders:</h1>
-										<select name="editOrder">	
-											<c:forEach items="${model.orders}" var = "order">
-											<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
-											</c:forEach>
-										</select>
-										<input name="fulfillOrder" type="submit" value="Fulfill Order" />
 									<h1>Your Notifications</h1>
 									<select name="editNotification">	
 										<c:forEach items="${model.sourceNotifications}" var = "sourceNotify">
@@ -58,6 +52,14 @@
 									</select>
 								<input name="editNotification" type="submit" value="Edit Notification" />
 							</c:if>
+							
+								<h1>Pending Orders:</h1>
+								<select name="editOrder">	
+									<c:forEach items="${model.orders}" var = "order">
+										<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
+									</c:forEach>
+								</select>
+								<input name="fulfillOrder" type="submit" value="Fulfill Order" />
 							
 						</div>
 					</form>

@@ -11,12 +11,14 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.JKSOrders.classes.Account;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
+import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.controller.EditNotificationController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.controller.WorkPageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
+import edu.ycp.cs320.JKSOrders.model.FulfillOrderModel;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -70,7 +72,7 @@ public class WorkPageServlet  extends HttpServlet{
 			model.setEmployeeNames(db.AllEmployeeNames());
 		}
 		if(req.getParameter("notify")!=null) {
-			model.setOrders(db.getOrders());
+			model.setOrders(db.getAllPickUpOrders());
 			model.setSourceNotifications( db.getSourceNotifications(accountNumber));
 			
 			notify = new Notification();
@@ -124,9 +126,17 @@ public class WorkPageServlet  extends HttpServlet{
 		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("fulfillOrder")!=null) {
+			String orderID = req.getParameter("editOrder");
+			Order order = db.getOrder(orderID);
+			FulfillOrderModel fulfillOrder = new FulfillOrderModel();
+			fulfillOrder.setOrder(order);
+			fulfillOrder.setCar(db.getCustomerAccount(order.getAccountNum()).getPickUpInfo().getCar());
+			fulfillOrder.setCustomer(db.getCustomerAccount(order.getAccountNum()));
+			req.setAttribute("model", fulfillOrder);
 			req.getRequestDispatcher("/_view/fulfillOrder.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("createEmployee")!=null) {
+			req.setAttribute("accountNumber", accountNumber);
 			req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("editNotification")!= null) {
@@ -135,12 +145,9 @@ public class WorkPageServlet  extends HttpServlet{
 			editController.setModel(editModel);
 			editController.setErrorMessage("No notification Selected for editing");
 			String editNotifyID = req.getParameter("editNotification");
-			System.out.println("Source Notification ID: "+ editNotifyID);
 			ArrayList<Notification> sourceNotifications = db.getSourceNotifications(accountNumber);
 			for(Notification note : sourceNotifications) {
-				System.out.println("We are looking for the notification!!");
 				if(editNotifyID.equals(note.getNotificationID())) {
-					System.out.println("We found the notification! it has ID#:" + note.getNotificationID());
 					editController.setModelNotification(note);
 					editController.setErrorMessage(null);
 				}

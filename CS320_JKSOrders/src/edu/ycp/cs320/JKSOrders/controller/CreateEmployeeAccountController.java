@@ -54,6 +54,7 @@ public class CreateEmployeeAccountController {
 		
 		public void setNullValues() {
 			model.getAccount().setEmail(" ");
+			model.getAccount().setLastName(" ");
 			model.getAccount().setPhoneNumber(" ");
 			
 			
@@ -68,6 +69,10 @@ public class CreateEmployeeAccountController {
 			dbase.updateEmployeeAccount(model.getAccount());
 			
 		}
+		public void loadInAccount(EmployeeAccount Account) {
+			model.setAccount(Account);
+		}
+		
 		
 		
 		}
