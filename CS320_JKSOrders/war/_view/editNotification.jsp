@@ -41,7 +41,6 @@
 							<input name="workPage" type="submit" value="Return to Work Page" />
 							<input name="update" type="submit" value="Update Notification" />
 							<input name="delete" type="submit" value="Delete This Notification" />
-							<input name="accountNumber" type="hidden" value="${accountNumber}"/>
 							<input name="editNotification" type="hidden" value="${model.notify.notificationID}"/>
 							<input name="message" style="height:50px;font-size:14pt;width:150%" type="text" value="${model.notify.message}" /><br>
 							<input name="urgency" type="checkbox" />Urgency<br>
