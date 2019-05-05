@@ -16,6 +16,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.ProfilePage;
+import edu.ycp.cs320.JKSOrders.model.ViewOrder;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -78,8 +79,11 @@ public class ProfilePageServlet extends HttpServlet{
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("viewOrder") !=null) {
-
+			ViewOrder viewOrderModel = new ViewOrder(); 
+			viewOrderModel.setOrder(db.getOrder(req.getParameter("option")));
+			viewOrderModel.setAccount(db.getCustomerAccount(accountNumber));
 			req.getRequestDispatcher("/_view/viewOrder.jsp").forward(req, resp);
+			req.setAttribute("viewOrderModel", viewOrderModel);
 		}
 		else {
 			throw new ServletException("Unknown command");
