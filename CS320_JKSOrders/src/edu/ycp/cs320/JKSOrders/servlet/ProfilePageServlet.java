@@ -17,11 +17,8 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.ProfilePage;
-<<<<<<< HEAD
 import edu.ycp.cs320.JKSOrders.model.ViewOrder;
-=======
 import edu.ycp.cs320.JKSOrders.model.StorePage;
->>>>>>> master
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
