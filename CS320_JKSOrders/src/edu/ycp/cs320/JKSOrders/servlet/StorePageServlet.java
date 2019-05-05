@@ -110,9 +110,13 @@ public class StorePageServlet extends HttpServlet {
 		}
 		else if(addedItemToCart) {
 			CustomerAccount account = (CustomerAccount) db.getAccount(accountNumber);
-			ArrayList<Item> item = db.getVisibleItems();
-			req.setAttribute("accountNumber", account.getAccountNumber());
-			req.setAttribute("items", item);
+			StorePage storeModel = new StorePage();
+			ArrayList<Item> itemsForStorePage = db.getVisibleItems();
+			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
+			storeModel.setItems(itemsForStorePage);
+			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
+			req.setAttribute("model", storeModel);
+			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("profilePage") != null) {
@@ -165,10 +169,13 @@ public class StorePageServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
 			}
 			else if(!itemsAreHere){
-				ArrayList<Item> itemList = db.getVisibleItems();
-				req.setAttribute("items", itemList);
-				req.setAttribute("model", model);
-				req.setAttribute("errorMessage", "You have not Items in your cart!");
+				StorePage storeModel = new StorePage();
+				ArrayList<Item> itemsForStore = db.getVisibleItems();
+				storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
+				storeModel.setItems(itemsForStore);
+				req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
+				model.setErrorMessage("You have not Items in your cart!");
+				req.setAttribute("model", storeModel);
 				req.getSession().removeAttribute("orderNumber");
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}

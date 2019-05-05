@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
@@ -16,6 +17,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.ProfilePage;
+import edu.ycp.cs320.JKSOrders.model.StorePage;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -43,25 +45,25 @@ public class ProfilePageServlet extends HttpServlet{
 		ProfilePage model= new ProfilePage();
 		controller.setModel(model);
 		String accountNumber = req.getParameter("accountNumber");
+		Account account = null;
 		if(accountNumber != null) {
-			Account account =  db.getAccount(accountNumber);
+			account =  db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
 			ArrayList<Notification> notify = db.getNotifications(accountNumber);
 			if(notify.size()!=0) {
-				req.setAttribute("notification", notify);
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
-				req.setAttribute("isManager", isManager);
-				req.setAttribute("employeeNames",db.AllEmployeeNames());
 			}	
 		}
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {
 			// call addNumbers JSP
-			ArrayList<Item> items = new ArrayList<Item>();
-			items = db.getVisibleItems();
-			System.out.println("StorePage: "+ items.get(0).getDescription());
-			req.setAttribute("items", items);
+			StorePage storeModel = new StorePage();
+			ArrayList<Item> items = db.getVisibleItems();
+			storeModel.setCustomerAccount(db.getCustomerAccount(account.getAccountNumber()));
+			storeModel.setItems(items);
+			req.setAttribute("accountNumber", account.getAccountNumber());
+			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("workPage") != null) {

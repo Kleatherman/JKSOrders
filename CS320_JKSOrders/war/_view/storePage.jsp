@@ -11,7 +11,7 @@
         <small>Inventory</small>
       </h1>
 
-    <c:forEach items="${items}" var="item">
+    <c:forEach items="${model.items}" var="item">
 		
         <div class="row">
             <div class="col-md-7">
