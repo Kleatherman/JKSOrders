@@ -27,12 +27,12 @@ public class FulfillOrderServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("Fulfill Order Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
-			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		if(req.getSession().getAttribute("accountNumber")==null) {
+			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
 		else{
-			req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
+			req.getRequestDispatcher("/_view/fulfillOrder.jsp").forward(req, resp);
 		}
 	}
 	
@@ -42,8 +42,7 @@ public class FulfillOrderServlet  extends HttpServlet{
 		
 		System.out.println("Fulfill Order Servlet: doPost");
 		Database db = InitDatabase.init();
-		String accountNumber = (String)req.getParameter("accountNumber");
-		req.setAttribute("accountNumber", accountNumber);
+		String accountNumber = (String)req.getSession().getAttribute("accountNumber");
 		if(req.getParameter("fulfilledOrder")!=null) {
 			String orderNumber = req.getParameter("orderNumber");
 			String customerAccountNumber = req.getParameter("customerAccountNumber");

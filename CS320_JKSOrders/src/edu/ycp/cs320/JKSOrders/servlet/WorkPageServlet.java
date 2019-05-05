@@ -32,7 +32,7 @@ public class WorkPageServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("WorkPage Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -53,13 +53,11 @@ public class WorkPageServlet  extends HttpServlet{
 		controller.setModel(model);
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
-		String accountNumber = req.getParameter("accountNumber");
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
-			model.setAccountNumber(account.getAccountNumber());
-			accountNumber = req.getParameter("accountNumber");
-			req.setAttribute("accountNumber", accountNumber);
+			model.setAccountNumber(account.getAccountNumber());		
 			if(db.getNotifications(accountNumber).size()!=0) {
 				notify = db.getNotifications(accountNumber).get(0);
 				model.setNotification(notify);
@@ -128,6 +126,7 @@ public class WorkPageServlet  extends HttpServlet{
 		}
 		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
 			
+		req.getSession().setAttribute("accountNumber", null);	
 		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("fulfillOrder")!=null) {
