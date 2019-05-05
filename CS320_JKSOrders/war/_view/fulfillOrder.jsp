@@ -19,7 +19,6 @@
 						<form action="${pageContext.servletContext.contextPath}/fulfillOrder" method="post">
 							<ul class="pagination justify-content-center">
 							<h1 align="center">Fulfill Order Page</h1><br/><br />
-							<input name="accountNumber" type="Hidden" value="${accountNumber}"/>
 							<input name="customerAccountNumber" type="Hidden" value="${model.customer.accountNumber}"/>
 							<input name="orderNumber" type="Hidden" value="${model.order.orderType}"/>
 					</div>
