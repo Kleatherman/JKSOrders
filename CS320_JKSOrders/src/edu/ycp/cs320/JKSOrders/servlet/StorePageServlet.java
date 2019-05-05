@@ -119,6 +119,7 @@ public class StorePageServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
+		//Kyle is telling me what to do. :(
 		else if (req.getParameter("profilePage") != null) {
 			if(accountNumber!=null) {
 				controller.loadUpCustomerAccount(db, accountNumber);
