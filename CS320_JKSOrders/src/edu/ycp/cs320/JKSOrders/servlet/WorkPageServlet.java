@@ -19,6 +19,7 @@ import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
 import edu.ycp.cs320.JKSOrders.model.FulfillOrderModel;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -31,7 +32,7 @@ public class WorkPageServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("WorkPage Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -52,13 +53,11 @@ public class WorkPageServlet  extends HttpServlet{
 		controller.setModel(model);
 		Database db = InitDatabase.init();
 		System.out.println("WorkPage Servlet: doPost");
-		String accountNumber = req.getParameter("accountNumber");
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
-			model.setAccountNumber(account.getAccountNumber());
-			accountNumber = req.getParameter("accountNumber");
-			req.setAttribute("accountNumber", accountNumber);
+			model.setAccountNumber(account.getAccountNumber());		
 			if(db.getNotifications(accountNumber).size()!=0) {
 				notify = db.getNotifications(accountNumber).get(0);
 				model.setNotification(notify);
@@ -110,19 +109,24 @@ public class WorkPageServlet  extends HttpServlet{
 			if (accountNumber!=null) {
 				controller.loadUpEmployeeAccount(db, accountNumber);
 				if(model.getEmployeeAccount()!= null) {
-					isEmployee= true; 
-					req.setAttribute("Anumber", model.getEmployeeAccount().getAccountNumber());
-					req.setAttribute("Username", model.getEmployeeAccount().getLogin().getUserName());
-					req.setAttribute("password", model.getEmployeeAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getEmployeeAccount().getFirstName());
-					req.setAttribute("isEmployee", isEmployee);
-					req.setAttribute("isCustomer", isCustomer);
+					
+					ProfilePage profilePage = new ProfilePage();
+									
+					profilePage.setEmployeeAccount(db.getEmployeeAccount(accountNumber));
+					profilePage.setCustomer(false);
+					profilePage.setEmployee(true);
+					req.setAttribute("model", profilePage );
+				
 				}
 			}
+			
+			
+			
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
 			
+		req.getSession().setAttribute("accountNumber", null);	
 		req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		else if(req.getParameter("fulfillOrder")!=null) {

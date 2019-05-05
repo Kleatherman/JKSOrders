@@ -29,7 +29,7 @@ public class EditNotificationServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("Edit Notification Servlet: doGet");	
-		if(req.getParameter("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -44,8 +44,7 @@ public class EditNotificationServlet  extends HttpServlet{
 		
 		Database db = InitDatabase.init();
 		System.out.println("Edit Notification Servlet: doPost");
-		String accountNumber = req.getParameter("accountNumber");
-		req.setAttribute("accountNumber", accountNumber);
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		boolean isManager = false;
 		if(req.getParameter("workPage")!=null) {
 			WorkPage workModel = new WorkPage();

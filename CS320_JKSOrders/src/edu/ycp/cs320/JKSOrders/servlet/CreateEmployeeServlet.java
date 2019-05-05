@@ -21,11 +21,14 @@ public class CreateEmployeeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		System.out.println("Create Employee Account Servlet: doGet");	
-		
-		
+		System.out.println("CreateEmployee Servlet: doGet");	
+		if(req.getSession().getAttribute("accountNumber")==null) {
+			req.getRequestDispatcher("/_view/employeeLogin.jsp").forward(req, resp);
+		}
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
+		else{
+			req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
+		}
 	}
 	
 	@Override
@@ -51,7 +54,7 @@ public class CreateEmployeeServlet extends HttpServlet {
 				
 				if(req.getParameter("workPage")!= null) {
 					WorkPage workModel = new WorkPage();
-					String accountNumber = req.getParameter("accountNumber");
+					String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 					EmployeeAccount account = dbase.getEmployeeAccount(accountNumber);
 					String name = account.getFirstName();
 					

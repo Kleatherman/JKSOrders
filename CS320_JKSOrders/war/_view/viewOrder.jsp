@@ -19,14 +19,31 @@
 	
 				
 					<form action="${pageContext.servletContext.contextPath}/viewOrder" method="post">
-						<h1 align="center">Your View Order Page</h1><br/><br />
-						<input name="accountNumber" type="Hidden" value="${accountNumber}"/>
+						<h1 align="center">View Order</h1><br/><br />
+						<input name="accountNumber" type="Hidden" value="${viewOrderModel.accountNumber}"/>
 						
 						<ul class="pagination justify-content-center">
 						
-						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "profilePage" formnovalidate >Back to Profile Page</button>
-						&nbsp;&nbsp;&nbsp;&nbsp;
 						
+					
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "store" formnovalidate >Back to Profile</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cancelOrder" formnovalidate >Cancel Order</button>
+						
+						</div>
+						
+						<table  align="center" class="table">
+							<th>Item Name</th>
+							<th>Item Quantity</th>
+							<th>Item Price</th>
+							<c:forEach items="${viewOrderModel.itemArrayList}" var="item">
+								<tr>
+									<td>${item.itemName}</td>
+									<td>${item.numInOrder}</td>
+									<td>$${item.price}</td>
+								</tr>
+							</c:forEach>
+						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${cartModel.price }</b></span>
 					</form>		
 					<span class = ErrorMessage>${model.errorMessage}</span>
 				</div>

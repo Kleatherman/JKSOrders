@@ -34,7 +34,6 @@
 						<div>
 							<input name="profilePage" type="submit" value="Profile Page!" />
 							<input name="employeeLogin" type="submit" value="Log out!" />
-							<input name="accountNumber" type="hidden" value="${model.accountNumber}" />
 							<c:if test="${model.manager}">
 								<input name="createEmployee" type="submit" value="Create an employee" />
 								<input name="message" type="text" value="${model.message}" length=300 />
