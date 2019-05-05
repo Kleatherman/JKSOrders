@@ -17,6 +17,8 @@
   		<div class="centered text-center" >
 				<div class="row" >
 	
+	
+	
 				
 					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
 						<h1 align="center">Your Cart Page</h1><br/><br />
