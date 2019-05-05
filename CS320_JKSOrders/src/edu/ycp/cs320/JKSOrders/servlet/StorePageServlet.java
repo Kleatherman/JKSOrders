@@ -20,6 +20,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CartModel;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -127,7 +128,6 @@ public class StorePageServlet extends HttpServlet {
 					req.getSession().removeAttribute("orderNumber");
 				}
 				if(model.getCustomerAccount()!=null) {
-					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
 					ProfilePage profilePageModel = new ProfilePage();
 					profilePageModel.setCustomer(true);
 					profilePageModel.setEmployee(false);
