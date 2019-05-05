@@ -32,8 +32,14 @@ public class ProfilePageServlet extends HttpServlet{
 
 		System.out.println("ProfilePage Servlet: doGet");	
 
+		if(req.getSession().getAttribute("accountNumber")==null) {
+			req.getRequestDispatcher("/_view/index.jsp").forward(req, resp);
+		}
 		// call JSP to generate empty form
-		req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
+		else{
+			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
+		}
+		
 	}
 	
 	@Override
@@ -45,7 +51,7 @@ public class ProfilePageServlet extends HttpServlet{
 		ProfilePageController controller= new ProfilePageController();
 		ProfilePage model= new ProfilePage();
 		controller.setModel(model);
-		String accountNumber = req.getParameter("accountNumber");
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		Account account = null;
 		if(accountNumber != null) {
 			account =  db.getAccount(accountNumber);
@@ -63,7 +69,6 @@ public class ProfilePageServlet extends HttpServlet{
 			ArrayList<Item> items = db.getVisibleItems();
 			storeModel.setCustomerAccount(db.getCustomerAccount(account.getAccountNumber()));
 			storeModel.setItems(items);
-			req.setAttribute("accountNumber", account.getAccountNumber());
 			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}

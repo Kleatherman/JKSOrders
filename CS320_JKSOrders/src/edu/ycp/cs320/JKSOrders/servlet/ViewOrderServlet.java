@@ -8,10 +8,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.controller.StorePageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -24,7 +26,7 @@ public class ViewOrderServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("View Order Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -42,21 +44,20 @@ public class ViewOrderServlet  extends HttpServlet{
 		StorePage model= new StorePage();
 		controller.setModel(model);
 		Database db = InitDatabase.init();
-		String accountNumber = (String)req.getParameter("accountNumber");
-		req.setAttribute("accountNumber", accountNumber);
+		String accountNumber = (String)req.getSession().getAttribute("accountNumber");
 		if (req.getParameter("profilePage") != null) {
+			
 			if(accountNumber!=null) {
 				controller.loadUpCustomerAccount(db, accountNumber);
 				if(model.getCustomerAccount()!=null) {
-					boolean isCustomer= true;
-					boolean isEmployee = false;
-					req.setAttribute("sourceOrders", db.getSourceOrders(model.getCustomerAccount().getAccountNumber()));
-					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
-					req.setAttribute("Username", model.getCustomerAccount().getLogin().getUserName());
-					req.setAttribute("password", model.getCustomerAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getCustomerAccount().getFirstName());
-					req.setAttribute("isCustomer", isCustomer);
-					req.setAttribute("isEmployee", isEmployee);
+					
+					ProfilePage profilePageModel = new ProfilePage();
+					profilePageModel.setCustomer(true);
+					profilePageModel.setEmployee(false);
+					CustomerAccount account = db.getCustomerAccount(accountNumber);
+					account.setOrders(db.getSourceOrders(accountNumber));
+					profilePageModel.setCustomerAccount(account);
+					req.setAttribute("model", profilePageModel);
 					}
 			}
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
