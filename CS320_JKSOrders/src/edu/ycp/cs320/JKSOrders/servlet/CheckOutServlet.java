@@ -19,6 +19,7 @@ import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CartModel;
 import edu.ycp.cs320.JKSOrders.model.CheckOut;
+import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 public class CheckOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -65,10 +66,12 @@ public class CheckOutServlet extends HttpServlet {
 			req.getRequestDispatcher("/_view/thankYou.jsp").forward(req, resp);
 		
 		} else if (req.getParameter("cancel") != null) {
+			StorePage storeModel = new StorePage();
 			ArrayList<Item> items = db.getVisibleItems();
-			System.out.println("StorePage: " + items.get(0).getDescription());
-			req.setAttribute("items", items);
-			req.setAttribute("model", model);
+			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
+			storeModel.setItems(items);
+			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
+			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("cart") != null) {

@@ -53,10 +53,10 @@
 								<input name="editNotification" type="submit" value="Edit Notification" />
 							</c:if>
 							
-								<h1>Pending Orders:</h1>
+								<h1>All Orders:</h1>
 								<select name="editOrder">	
 									<c:forEach items="${model.orders}" var = "order">
-										<option value="${order.orderType}">${order.orderType} : $${order.totalPrice}</option>
+										<option value="${order.orderType}">${order.orderType} : $${order.totalPrice} : <c:choose><c:when test="${order.complete}">Complete</c:when><c:otherwise>Pending</c:otherwise></c:choose></option>
 									</c:forEach>
 								</select>
 								<input name="fulfillOrder" type="submit" value="Fulfill Order" />
