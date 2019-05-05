@@ -20,6 +20,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CartModel;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -126,14 +127,16 @@ public class StorePageServlet extends HttpServlet {
 					req.getSession().removeAttribute("orderNumber");
 				}
 				if(model.getCustomerAccount()!=null) {
-					isCustomer= true;
-					req.setAttribute("sourceOrders", db.getSourceOrders(model.getCustomerAccount().getAccountNumber()));
-					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
-					req.setAttribute("Username", model.getCustomerAccount().getLogin().getUserName());
-					req.setAttribute("password", model.getCustomerAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getCustomerAccount().getFirstName());
-					req.setAttribute("isCustomer", isCustomer);
-					req.setAttribute("isEmployee", isEmployee);
+					ProfilePage profilePageModel = new ProfilePage();
+					profilePageModel.setCustomer(true);
+					profilePageModel.setEmployee(false);
+					CustomerAccount account = db.getCustomerAccount(accountNumber);
+					account.setOrders(db.getSourceOrders(accountNumber));
+					profilePageModel.setCustomerAccount(account);
+					req.setAttribute("model", profilePageModel);
+				
+				
+					
 					}
 			}
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
@@ -174,7 +177,7 @@ public class StorePageServlet extends HttpServlet {
 				storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 				storeModel.setItems(itemsForStore);
 				req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
-				model.setErrorMessage("You have not Items in your cart!");
+				storeModel.setErrorMessage("You have not Items in your cart!");
 				req.setAttribute("model", storeModel);
 				req.getSession().removeAttribute("orderNumber");
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);

@@ -34,7 +34,7 @@
     </c:forEach>
  	
 	
-    <div style="color: red">${errorMessage}</div><br />
+    <div style="color: red">${model.errorMessage}</div><br />
     <ul class="pagination justify-content-center">
  
 	<p><br /><br /><br /></p>

@@ -38,7 +38,7 @@
 							<th>Item Name</th>
 							<th>Item Quantity</th>
 							<th>Item Price</th>
-							<c:forEach items="${viewOrderModel.itemArrayList}" var="item">
+							<c:forEach items="${cartModel.itemArrayList}" var="item">
 								<tr>
 									<td>${item.itemName}</td>
 									<td>${item.numInOrder}</td>
