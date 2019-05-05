@@ -20,7 +20,7 @@
 				
 					<form action="${pageContext.servletContext.contextPath}/viewOrder" method="post">
 						<h1 align="center">View Order</h1><br/><br />
-						<input name="accountNumber" type="Hidden" value="${viewOrderModel.accountNumber}"/>
+					
 						
 						<ul class="pagination justify-content-center">
 						

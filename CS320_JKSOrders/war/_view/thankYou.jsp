@@ -23,7 +23,7 @@
 					<form action="${pageContext.servletContext.contextPath}/thankYou" method="post">		
 							  <button class="btn btn-lg btn-primary btn-block text-uppercase" name="storePage"  value="Login" type="Submit">Return to Store Page</button>
 							  
-							<input name="accountNumber" type="hidden" value="${accountNumber}" />
+							
 						</div>
 					</form>
 				</div>

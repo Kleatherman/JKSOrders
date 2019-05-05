@@ -9,9 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
+import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
 public class ThankYouServlet extends HttpServlet {
@@ -22,7 +25,7 @@ public class ThankYouServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("Thank You Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -36,19 +39,25 @@ public class ThankYouServlet extends HttpServlet {
 			throws ServletException, IOException {
 		Database db = InitDatabase.init();
 		req.getSession().removeAttribute("orderNumber");
-		System.out.println("HEYHEYHEYHEYHEYHEYHEYHEYHEYHEHYEHYEHEYHEYHRSJKBFKJDH"+"        "+req.getSession().getAttribute("orderNumber"));
 		System.out.println("ThankYou Servlet: doPost");
-		String accountNumber = req.getParameter("accountNumber");
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		if(accountNumber != null) {
 			Account account =  db.getAccount(accountNumber);
-			req.setAttribute("accountNumber", account.getAccountNumber());
 		}
 		if(req.getParameter("storePage")!= null) {
-			ArrayList<Item> items = db.getVisibleItems();
-			System.out.println("StorePage: "+ items.get(0).getDescription());
-			req.setAttribute("items", items);
+			
 			// Forward to view to render the result HTML document
-			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+			
+			
+				StorePage storeModel = new StorePage();
+				ArrayList<Item> itemsForStorePage = db.getVisibleItems();
+				storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
+				storeModel.setItems(itemsForStorePage);
+				req.setAttribute("model", storeModel);
+				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+				
+			
+			
 		}
 	}
 }

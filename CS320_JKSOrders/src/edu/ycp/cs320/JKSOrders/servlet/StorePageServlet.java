@@ -33,7 +33,7 @@ public class StorePageServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("StorePage Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -50,7 +50,7 @@ public class StorePageServlet extends HttpServlet {
 		System.out.println("StorePage Servlet: doPost");
 		Database db = InitDatabase.init();
 		SystemController system = new SystemController();
-		String accountNumber = req.getParameter("accountNumber");
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		StorePageController controller= new StorePageController();
 		StorePage model= new StorePage();
 		controller.setModel(model);
@@ -101,11 +101,7 @@ public class StorePageServlet extends HttpServlet {
 			db.updateOrder(order);
 		}
 		
-		if(accountNumber != null) {
-			Account account =  db.getAccount(accountNumber);
-			req.setAttribute("accountNumber", account.getAccountNumber());
-			accountNumber = req.getParameter("accountNumber");
-		}
+		
 		if (req.getParameter("checkOut") != null) {
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}
@@ -115,10 +111,9 @@ public class StorePageServlet extends HttpServlet {
 			ArrayList<Item> itemsForStorePage = db.getVisibleItems();
 			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 			storeModel.setItems(itemsForStorePage);
-			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
 			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
-			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+			
 		}
 		//Kyle is telling me what to do. :(
 		else if (req.getParameter("profilePage") != null) {
@@ -168,7 +163,6 @@ public class StorePageServlet extends HttpServlet {
 			}
 			cartModel.setOrder(cartOrder);
 			req.setAttribute("cartModel", cartModel);
-			req.setAttribute("accountNumber", accountNumber);
 			if(itemsAreHere) {
 				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
 			}

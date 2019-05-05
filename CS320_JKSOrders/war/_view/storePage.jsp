@@ -47,7 +47,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
            		<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="cart"> My Cart </button>
            
-                <input name="accountNumber" type="hidden" value="${accountNumber}" />
+               
 				
 				
  		   	         

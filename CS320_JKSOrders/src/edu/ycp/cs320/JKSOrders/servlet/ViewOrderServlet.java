@@ -26,7 +26,7 @@ public class ViewOrderServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("View Order Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -44,8 +44,7 @@ public class ViewOrderServlet  extends HttpServlet{
 		StorePage model= new StorePage();
 		controller.setModel(model);
 		Database db = InitDatabase.init();
-		String accountNumber = (String)req.getParameter("accountNumber");
-		req.setAttribute("accountNumber", accountNumber);
+		String accountNumber = (String)req.getSession().getAttribute("accountNumber");
 		if (req.getParameter("profilePage") != null) {
 			
 			if(accountNumber!=null) {
