@@ -19,6 +19,7 @@ import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
 import edu.ycp.cs320.JKSOrders.model.FulfillOrderModel;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.WorkPage;
 
 
@@ -110,15 +111,19 @@ public class WorkPageServlet  extends HttpServlet{
 			if (accountNumber!=null) {
 				controller.loadUpEmployeeAccount(db, accountNumber);
 				if(model.getEmployeeAccount()!= null) {
-					isEmployee= true; 
-					req.setAttribute("Anumber", model.getEmployeeAccount().getAccountNumber());
-					req.setAttribute("Username", model.getEmployeeAccount().getLogin().getUserName());
-					req.setAttribute("password", model.getEmployeeAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getEmployeeAccount().getFirstName());
-					req.setAttribute("isEmployee", isEmployee);
-					req.setAttribute("isCustomer", isCustomer);
+					
+					ProfilePage profilePage = new ProfilePage();
+									
+					profilePage.setEmployeeAccount(db.getEmployeeAccount(accountNumber));
+					profilePage.setCustomer(false);
+					profilePage.setEmployee(true);
+					req.setAttribute("model", profilePage );
+				
 				}
 			}
+			
+			
+			
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
 		else if (req.getParameter("employeeLogin") != null || accountNumber==null) {
