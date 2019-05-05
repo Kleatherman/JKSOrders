@@ -80,10 +80,10 @@ public class ProfilePageServlet extends HttpServlet{
 		}
 		else if(req.getParameter("viewOrder") !=null) {
 			ViewOrder viewOrderModel = new ViewOrder(); 
-			viewOrderModel.setOrder(db.getOrder(req.getParameter("option")));
+			viewOrderModel.setOrder(db.getOrder(req.getParameter("sourceOrders")));
 			viewOrderModel.setAccount(db.getCustomerAccount(accountNumber));
-			req.getRequestDispatcher("/_view/viewOrder.jsp").forward(req, resp);
 			req.setAttribute("viewOrderModel", viewOrderModel);
+			req.getRequestDispatcher("/_view/viewOrder.jsp").forward(req, resp);
 		}
 		else {
 			throw new ServletException("Unknown command");

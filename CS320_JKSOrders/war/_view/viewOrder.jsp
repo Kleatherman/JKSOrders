@@ -18,8 +18,8 @@
 				<div class="row" >
 	
 				
-					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
-						<h1 align="center">Your Cart Page</h1><br/><br />
+					<form action="${pageContext.servletContext.contextPath}/viewOrder" method="post">
+						<h1 align="center">View Order</h1><br/><br />
 						<input name="accountNumber" type="Hidden" value="${viewOrderModel.accountNumber}"/>
 						
 						<ul class="pagination justify-content-center">
@@ -27,8 +27,6 @@
 						
 					
 						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "store" formnovalidate >Back to Profile</button>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<button  class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "checkOut" formnovalidate >Checkout</button>
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cancelOrder" formnovalidate >Cancel Order</button>
 						
