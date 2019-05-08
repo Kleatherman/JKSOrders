@@ -20,6 +20,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CartModel;
+import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -32,7 +33,7 @@ public class StorePageServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("StorePage Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -49,7 +50,7 @@ public class StorePageServlet extends HttpServlet {
 		System.out.println("StorePage Servlet: doPost");
 		Database db = InitDatabase.init();
 		SystemController system = new SystemController();
-		String accountNumber = req.getParameter("accountNumber");
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		StorePageController controller= new StorePageController();
 		StorePage model= new StorePage();
 		controller.setModel(model);
@@ -100,11 +101,7 @@ public class StorePageServlet extends HttpServlet {
 			db.updateOrder(order);
 		}
 		
-		if(accountNumber != null) {
-			Account account =  db.getAccount(accountNumber);
-			req.setAttribute("accountNumber", account.getAccountNumber());
-			accountNumber = req.getParameter("accountNumber");
-		}
+		
 		if (req.getParameter("checkOut") != null) {
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}
@@ -114,12 +111,11 @@ public class StorePageServlet extends HttpServlet {
 			ArrayList<Item> itemsForStorePage = db.getVisibleItems();
 			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 			storeModel.setItems(itemsForStorePage);
-			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
 			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
-			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+			
 		}
-		//Kyle is telling me what to do. :(
+		//<COMMENT REDACTED>
 		else if (req.getParameter("profilePage") != null) {
 			if(accountNumber!=null) {
 				controller.loadUpCustomerAccount(db, accountNumber);
@@ -127,14 +123,16 @@ public class StorePageServlet extends HttpServlet {
 					req.getSession().removeAttribute("orderNumber");
 				}
 				if(model.getCustomerAccount()!=null) {
-					isCustomer= true;
-					req.setAttribute("sourceOrders", db.getSourceOrders(model.getCustomerAccount().getAccountNumber()));
-					req.setAttribute("Anumber", model.getCustomerAccount().getAccountNumber());
-					req.setAttribute("Username", model.getCustomerAccount().getLogin().getUserName());
-					req.setAttribute("password", model.getCustomerAccount().getLogin().getPassword());
-					req.setAttribute("Name", model.getCustomerAccount().getFirstName());
-					req.setAttribute("isCustomer", isCustomer);
-					req.setAttribute("isEmployee", isEmployee);
+					ProfilePage profilePageModel = new ProfilePage();
+					profilePageModel.setCustomer(true);
+					profilePageModel.setEmployee(false);
+					CustomerAccount account = db.getCustomerAccount(accountNumber);
+					account.setOrders(db.getSourceOrders(accountNumber));
+					profilePageModel.setCustomerAccount(account);
+					req.setAttribute("model", profilePageModel);
+				
+				
+					
 					}
 			}
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
@@ -165,7 +163,6 @@ public class StorePageServlet extends HttpServlet {
 			}
 			cartModel.setOrder(cartOrder);
 			req.setAttribute("cartModel", cartModel);
-			req.setAttribute("accountNumber", accountNumber);
 			if(itemsAreHere) {
 				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
 			}
@@ -175,7 +172,7 @@ public class StorePageServlet extends HttpServlet {
 				storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 				storeModel.setItems(itemsForStore);
 				req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
-				model.setErrorMessage("You have not Items in your cart!");
+				storeModel.setErrorMessage("You have not Items in your cart!");
 				req.setAttribute("model", storeModel);
 				req.getSession().removeAttribute("orderNumber");
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);

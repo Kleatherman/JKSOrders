@@ -32,7 +32,7 @@
 							<input type="Submit" name="cancel" value="Back to Store Page">
 							<input type="Submit" name="cart" value="My Cart">
 							<input type="Submit" name="thankYou" value="Submit Order">
-							<input name="accountNumber" type="hidden" value="${accountNumber}" />
+							
 						</div>
 						
   					  <div style="color: red">${errorMessage}</div><br />
