@@ -167,4 +167,6 @@ public interface Database {
 	public ArrayList<Order> getSourceOrders(String CustomerAccountNumber);
 
 	public ArrayList<Order> getAllOrders();
+
+	public ArrayList<Item> getSearchItems(String attribute);
 }

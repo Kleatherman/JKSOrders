@@ -178,6 +178,18 @@ public class StorePageServlet extends HttpServlet {
 				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 			}
 		}
+		else if(req.getParameter("find")!=null) {
+			String search = (String)req.getParameter("search");
+			System.out.println("----------------------------------"+search);
+			ArrayList<Item> itemsFromSearch = db.getSearchItems(search);
+			StorePage storeModel = new StorePage();
+			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
+			storeModel.setItems(itemsFromSearch);
+			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
+			req.setAttribute("model", storeModel);
+			req.getSession().removeAttribute("orderNumber");
+			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+		}
 		else {
 			throw new ServletException("Unknown command");
 		}

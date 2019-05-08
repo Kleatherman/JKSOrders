@@ -11,6 +11,22 @@
         <small>Inventory</small>
       </h1>
 
+
+	<ul class="pagination justify-content-center">
+ 
+	<p><br /><br /><br /></p>
+			
+            	<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 3px;" type="submit" name="checkOut"> Check Out </button>
+            	&nbsp;&nbsp;&nbsp;&nbsp;
+            	<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="profilePage"> Profile Page </button>
+            	&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="logOut"> Log Out </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+           		<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="cart"> My Cart </button>
+           
+    </ul>	<br><br>
+   	<input type="search" name="search" /><input type="submit" name="find" value="Search" /> 
+    <br><br>
     <c:forEach items="${model.items}" var="item">
 		
         <div class="row">
@@ -35,19 +51,7 @@
  	
 	
     <div style="color: red">${model.errorMessage}</div><br />
-    <ul class="pagination justify-content-center">
- 
-	<p><br /><br /><br /></p>
-			
-            	<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 3px;" type="submit" name="checkOut"> Check Out </button>
-            	&nbsp;&nbsp;&nbsp;&nbsp;
-            	<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="profilePage"> Profile Page </button>
-            	&nbsp;&nbsp;&nbsp;&nbsp;
-                <button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="logOut"> Log Out </button>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-           		<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="cart"> My Cart </button>
-           
-               
+    
 				
 				
  		   	         

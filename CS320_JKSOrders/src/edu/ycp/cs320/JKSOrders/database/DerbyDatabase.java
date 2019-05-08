@@ -597,7 +597,7 @@ class DerbyDatabase implements Database {
 				ResultSet resultSet = null;
 
 				try {
-					stmt = conn.prepareStatement("select * from catalog " + " order by item_id");
+					stmt = conn.prepareStatement("select * from catalog " + " order by item_name");
 
 					Catalog result = new Catalog();
 					resultSet = stmt.executeQuery();
@@ -706,7 +706,7 @@ class DerbyDatabase implements Database {
 				ResultSet resultSet = null;
 
 				try {
-					stmt = conn.prepareStatement("select * from catalog " + " order by item_id");
+					stmt = conn.prepareStatement("select * from catalog " + " order by item_name");
 
 					ArrayList<Item> result = new ArrayList<Item>();
 					resultSet = stmt.executeQuery();
@@ -1689,5 +1689,49 @@ class DerbyDatabase implements Database {
 	public void updateCustomerAccount(CustomerAccount account) {
 		deleteAccount(account.getAccountNumber());
 		addCustomerAccount(account);
+	}
+
+	@Override
+	public ArrayList<Item> getSearchItems(String attribute) {
+		return executeTransaction(new Transaction<ArrayList<Item>>() {
+			@Override
+			public ArrayList<Item> execute(Connection conn) throws SQLException {
+				PreparedStatement stmt = null;
+				ResultSet resultSet = null;
+
+				try {
+					stmt = conn.prepareStatement("select * from catalog where item_name like '%?%' or item_description like '%?%' order by item_name");
+					stmt.setString(1, attribute);
+					stmt.setString(2, attribute);
+					ArrayList<Item> result = new ArrayList<Item>();
+					resultSet = stmt.executeQuery();
+
+					boolean found = false;
+					while (resultSet.next()) {
+						found = true;
+						if (resultSet.getInt(7) == 1) {
+							Item item = new Item();
+							item.setUPC(resultSet.getString(1));
+							item.setItemName(resultSet.getString(2));
+							item.setDescription(resultSet.getString(3));
+							item.setPrice(resultSet.getFloat(4));
+							item.setLocation(resultSet.getString(5));
+							item.setNumInInventory(resultSet.getInt(6));
+							item.setVisable(true);
+							result.add(item);
+						}
+					}
+
+					if (!found) {
+						System.out.println("No visible items were found in the database");
+					} else
+						System.out.println("We got all visible items");
+					return result;
+				} finally {
+					DBUtil.closeQuietly(resultSet);
+					DBUtil.closeQuietly(stmt);
+				}
+			}
+		});
 	}
 }
