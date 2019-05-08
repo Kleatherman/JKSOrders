@@ -58,9 +58,8 @@ public class ProfilePageServlet extends HttpServlet{
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
 			ArrayList<Notification> notify = db.getNotifications(accountNumber);
-			if(notify.size()!=0) {
-				isManager = db.getEmployeeAccount(accountNumber).isManager();
-			}	
+			isManager = db.getEmployeeAccount(accountNumber).isManager();
+	
 		}
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {
@@ -85,12 +84,27 @@ public class ProfilePageServlet extends HttpServlet{
 			req.setAttribute("model", workModel);
 			req.getRequestDispatcher("/_view/workPage.jsp").forward(req, resp);
 		}
-		else if(req.getParameter("viewOrder") !=null) {
+		else if((req.getParameter("viewOrder") !=null)) {
+			if(db.getOrder(req.getParameter("sourceOrders"))==null) {
+				ProfilePage profilePageModel = new ProfilePage();
+				profilePageModel.setCustomer(true);
+				profilePageModel.setEmployee(false);
+				account.setOrders(db.getSourceOrders(accountNumber));
+				profilePageModel.setCustomerAccount((CustomerAccount)account);
+				req.setAttribute("model", profilePageModel);
+			
+			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
+			}
+			else {
+				
+			
 			ViewOrder viewOrderModel = new ViewOrder(); 
 			viewOrderModel.setOrder(db.getOrder(req.getParameter("sourceOrders")));
 			viewOrderModel.setAccount(db.getCustomerAccount(accountNumber));
+			req.getSession().setAttribute("orderNumberToView", req.getParameter("sourceOrders"));
 			req.setAttribute("viewOrderModel", viewOrderModel);
 			req.getRequestDispatcher("/_view/viewOrder.jsp").forward(req, resp);
+			}
 		}
 		else {
 			throw new ServletException("Unknown command");
