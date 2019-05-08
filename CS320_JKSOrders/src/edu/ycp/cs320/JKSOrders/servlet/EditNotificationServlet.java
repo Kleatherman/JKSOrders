@@ -114,11 +114,12 @@ public class EditNotificationServlet  extends HttpServlet{
 		else if(req.getParameter("delete")!=null) {
 			db.deleteNotification(req.getParameter("editNotification"));
 			String name = db.getAccount(accountNumber).getFirstName();
-			if(db.getNotifications(accountNumber).size()!=0) {
-				req.setAttribute("notification", db.getNotifications(accountNumber));
-			}
+			
 			isManager = db.getEmployeeAccount(accountNumber).isManager();
 			WorkPage workModel = new WorkPage();
+			if(db.getNotifications(accountNumber).size()!=0) {
+				workModel.setReceivedNotifications(db.getNotifications(accountNumber));
+			}
 			//workModel.setOrders(db.getOrders());
 		/*	req.setAttribute("sourceNotifications", db.getSourceNotifications(accountNumber));
 			req.setAttribute("isManager", isManager);
