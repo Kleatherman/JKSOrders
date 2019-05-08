@@ -21,7 +21,7 @@
 				
 					<form action="${pageContext.servletContext.contextPath}/cart" method="post">
 						<h1 align="center">Your Cart Page</h1><br/><br />
-						<input name="accountNumber" type="Hidden" value="${cartModel.accountNumber}"/>
+						
 						
 						<ul class="pagination justify-content-center">
 						

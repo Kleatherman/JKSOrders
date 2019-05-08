@@ -23,7 +23,7 @@ public class CartPageServlet  extends HttpServlet{
 			throws ServletException, IOException {
 
 		System.out.println("Cart Servlet: doGet");	
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -38,15 +38,13 @@ public class CartPageServlet  extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		Database db = InitDatabase.init();
-		String accountNumber = (String)req.getParameter("accountNumber");
-		req.setAttribute("accountNumber", accountNumber);
+		String accountNumber = (String)req.getSession().getAttribute("accountNumber");
 		String orderNumber = (String) req.getSession().getAttribute("orderNumber");
 		if(req.getParameter("store")!=null) {
 			StorePage storeModel = new StorePage();
 			ArrayList<Item> items = db.getVisibleItems();
 			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 			storeModel.setItems(items);
-			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
 			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}else if(req.getParameter("checkOut")!=null) {
@@ -58,7 +56,6 @@ public class CartPageServlet  extends HttpServlet{
 			ArrayList<Item> items = db.getVisibleItems();
 			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 			storeModel.setItems(items);
-			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
 			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}else {

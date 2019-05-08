@@ -22,7 +22,7 @@
             <div class="col-md-5">
                 <h3>${item.itemName}</h3>
                 <p>${item.description}</p>
-                 ${item.price}
+                 $ ${item.price}
           		<input name="${item.itemName}Quantity" type="number" min="0" max="${item.numInInventory}" /><p><br /></p>
        			<button class="btn btn-lg btn-primary btn-block" style="width: 300px;" style="height: 2px;" type="submit" name="${item.itemName}">Add ${item.itemName} To Cart</button>
        			<p><br /><br /></p>
@@ -34,7 +34,7 @@
     </c:forEach>
  	
 	
-    <div style="color: red">${errorMessage}</div><br />
+    <div style="color: red">${model.errorMessage}</div><br />
     <ul class="pagination justify-content-center">
  
 	<p><br /><br /><br /></p>
@@ -47,7 +47,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
            		<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="cart"> My Cart </button>
            
-                <input name="accountNumber" type="hidden" value="${accountNumber}" />
+               
 				
 				
  		   	         

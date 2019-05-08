@@ -28,7 +28,7 @@ public class CheckOutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		System.out.println("CheckOut Servlet: doGet");
-		if(req.getAttribute("accountNumber")==null) {
+		if(req.getSession().getAttribute("accountNumber")==null) {
 			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		}
 		// call JSP to generate empty form
@@ -43,11 +43,11 @@ public class CheckOutServlet extends HttpServlet {
 		System.out.println("CheckOut Servlet: doPost");
 		Database db = InitDatabase.init();
 
-		String accountNumber = req.getParameter("accountNumber");
+		String accountNumber = (String) req.getSession().getAttribute("accountNumber");
 		if(accountNumber != null) {
 			Account account = db.getAccount(accountNumber);
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
-			req.setAttribute("accountNumber", account.getAccountNumber());
+			
 		}
 
 		// create model - model does not persist between requests
@@ -70,7 +70,6 @@ public class CheckOutServlet extends HttpServlet {
 			ArrayList<Item> items = db.getVisibleItems();
 			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 			storeModel.setItems(items);
-			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
 			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
@@ -86,7 +85,6 @@ public class CheckOutServlet extends HttpServlet {
 			}
 			cartModel.setOrder(cartOrder);
 			req.setAttribute("cartModel", cartModel);
-			req.setAttribute("accountNumber", accountNumber);
 			if(itemsAreHere) {
 				req.getRequestDispatcher("/_view/cart.jsp").forward(req, resp);
 			}
