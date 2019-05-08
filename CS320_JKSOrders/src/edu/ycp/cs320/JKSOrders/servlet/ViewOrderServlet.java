@@ -61,7 +61,7 @@ public class ViewOrderServlet extends HttpServlet {
 			
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 		}
-			req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
+		else req.getRequestDispatcher("/_view/customerLogin.jsp").forward(req, resp);
 		
 	}
 }
