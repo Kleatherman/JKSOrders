@@ -9,7 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.ycp.cs320.JKSOrders.classes.Account;
+import edu.ycp.cs320.JKSOrders.classes.Catalog;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.classes.Order;
 import edu.ycp.cs320.JKSOrders.controller.EditNotificationController;
@@ -17,6 +19,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.controller.WorkPageController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.EditItemModel;
 import edu.ycp.cs320.JKSOrders.model.EditNotificationModel;
 import edu.ycp.cs320.JKSOrders.model.FulfillOrderModel;
 import edu.ycp.cs320.JKSOrders.model.ProfilePage;
@@ -97,6 +100,8 @@ public class WorkPageServlet  extends HttpServlet{
 			}
 			db.addNotification(notify);
 			model.setMessage(message);
+
+			model.setItems(db.getCatalog().returnItemList());
 			if(db.getNotifications(accountNumber).size()!=0) {
 				model.setReceivedNotifications(db.getNotifications(accountNumber));
 			}
@@ -143,6 +148,25 @@ public class WorkPageServlet  extends HttpServlet{
 			req.setAttribute("accountNumber", accountNumber);
 			req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
 		}
+		else if(req.getParameter("editItem")!=null) {
+			Catalog catalog = db.getCatalog();
+			EditItemModel itemModel = new EditItemModel();
+			ArrayList<Item> itemArrayList = catalog.returnItemList();
+			String upc = req.getParameter("editItem");
+			if(!upc.equals("addItem")) {
+				for(Item item : itemArrayList) {
+					if(item.getUPC().equals(upc)) {
+						itemModel.setItem(item);
+						itemModel.setNewItem(false);
+					}
+				}
+			}
+			else {
+				itemModel.getItem().setUPC("I"+itemArrayList.size());
+			}
+			req.setAttribute("model", itemModel);
+			req.getRequestDispatcher("/_view/editItem.jsp").forward(req, resp);
+		}
 		else if (req.getParameter("editNotification")!= null) {
 			EditNotificationController editController = new EditNotificationController();
 			EditNotificationModel editModel = new EditNotificationModel();
@@ -161,6 +185,7 @@ public class WorkPageServlet  extends HttpServlet{
 			req.setAttribute("model", editModel);
 			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
 		}
+		
 		else {
 			throw new ServletException("Unknown command from work page");
 		}

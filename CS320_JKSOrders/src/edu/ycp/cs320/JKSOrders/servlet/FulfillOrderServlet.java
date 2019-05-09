@@ -72,6 +72,7 @@ public class FulfillOrderServlet  extends HttpServlet{
 			workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
 			workModel.setManager(isManager);
 			workModel.setEmployeeNames(db.AllEmployeeNames());
+			workModel.setItems(db.getCatalog().returnItemList());
 			req.setAttribute("name", name);
 			workModel.setAccountNumber(accountNumber);
 			req.setAttribute("model", workModel);

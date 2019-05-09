@@ -72,13 +72,14 @@ public class DerbyTest {
 	public void testSetVisible() {
 		db.setVisibility(0);
 		Ilist = db.getVisibleItems();
-		assertTrue(InitI.size()==2);
-		db.setVisibility(99);
+		assertTrue(InitI.size()==11);
+		db.setVisibility(100000);
 		Ilist = db.getVisibleItems();
 		assertTrue(Ilist.size()==0);
-		db.setVisibility(60);
+		db.setVisibility(2);
 		Ilist= db.getVisibleItems();
-		assertTrue(Ilist.size()==1);
+		System.out.println("IList size---------------------"+Ilist.size());
+		assertTrue(Ilist.size()==10);
 	}
 	@Test
 	public void testAddNotification() {
@@ -274,13 +275,13 @@ public class DerbyTest {
 		db.addOrder(order);
 		Olist= db.getAllPickUpOrders();
 		assertTrue(Olist.size()==count+1);
-		assertTrue(db.getOrder("P12").getItemList().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("P12").getItemList().get(0).getUPC().equals("I2"));
 		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-2);
 		assertTrue(db.getOrder("P12").getItemList().get(0).getNumInOrder()==2);
 		assertTrue(db.getOrder("P12").getTotalPrice()!=0);
 		order.setOrderType("P13");
 		db.addOrder(order);
-		assertTrue(db.getOrder("P13").getItemList().get(0).getUPC().equals("I0"));
+		assertTrue(db.getOrder("P13").getItemList().get(0).getUPC().equals("I2"));
 		assertTrue(db.getVisibleItems().get(0).getNumInInventory()==itemcount-4);
 		assertTrue(db.getOrder("P13").getItemList().get(0).getNumInOrder()==2);
 		assertTrue(db.getOrder("P13").getTotalPrice()!=0);

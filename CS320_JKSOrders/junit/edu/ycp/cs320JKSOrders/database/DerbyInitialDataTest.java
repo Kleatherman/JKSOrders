@@ -202,7 +202,7 @@ public class DerbyInitialDataTest {
 	public void testGetVisibleItems() {
 		db.setVisibility(0);
 		InitI= db.getVisibleItems();
-		assertTrue(InitI.size()==2);
+		assertTrue(InitI.size()==11);
 		for(Item item : InitI) {
 			assertTrue(item.isVisable());
 		}

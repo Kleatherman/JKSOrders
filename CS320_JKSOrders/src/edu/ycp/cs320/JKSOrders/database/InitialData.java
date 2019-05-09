@@ -185,12 +185,14 @@ public class InitialData {
 		List<Item> itemList = new ArrayList<Item>();
 		ReadCSV readItems = new ReadCSV("Catalog.csv");
 		try {
-			
+			int j = 0;
 			while (true) {
 				List<String> tuple = readItems.next();
 				if (tuple == null) {
 					break;
 				}
+				j++;
+				System.out.println(j);
 				Iterator<String> i = tuple.iterator();
 				Item item = new Item();
 				item.setUPC(i.next());

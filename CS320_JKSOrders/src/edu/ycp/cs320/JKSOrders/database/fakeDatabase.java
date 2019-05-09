@@ -566,6 +566,12 @@ public class fakeDatabase implements Database{
 		return null;
 	}
 
+	@Override
+	public ArrayList<Item> getSearchItems(String attribute) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 	

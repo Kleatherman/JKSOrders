@@ -86,6 +86,16 @@
 										</c:forEach>
 									</select>
 								<input name="editNotification" type="submit" value="Edit Notification" />
+								
+								<h1>Inventory Items</h1>
+									<select name="editItem">	
+										<c:forEach items="${model.items}" var = "item">
+											<option value="${item.UPC}">${item.itemName}</option>
+										</c:forEach>
+											<option value="addItem">Add New Item</option>
+									</select>
+								<input name="editItem" type="submit" value="Edit Item" />
+								
 							</c:if>
 							
 								<h1>All Orders:</h1>
