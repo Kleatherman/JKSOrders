@@ -82,6 +82,7 @@ public class ProfilePageServlet extends HttpServlet{
 			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setAccountNumber(accountNumber);
 			workModel.setEmployeeNames(db.AllEmployeeNames());
+			workModel.setItems(db.getCatalog().returnItemList());
 			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setSourceNotifications( db.getSourceNotifications(accountNumber));
 			req.setAttribute("model", workModel);

@@ -64,6 +64,7 @@ public class EditNotificationServlet  extends HttpServlet{
 			workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
 			workModel.setManager(isManager);
 			workModel.setEmployeeNames(db.AllEmployeeNames());
+			workModel.setItems(db.getCatalog().returnItemList());
 			req.setAttribute("name", name);
 			workModel.setAccountNumber(accountNumber);
 			req.setAttribute("model", workModel);
@@ -127,6 +128,7 @@ public class EditNotificationServlet  extends HttpServlet{
 			req.setAttribute("name", name);
 			req.setAttribute("accountNumber", accountNumber);
 */
+			workModel.setItems(db.getCatalog().returnItemList());
 			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setSourceNotifications(db.getSourceNotifications(accountNumber));
 			workModel.setManager(isManager);
