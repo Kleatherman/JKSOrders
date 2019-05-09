@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import edu.ycp.cs320.JKSOrders.classes.CustomerAccount;
 import edu.ycp.cs320.JKSOrders.classes.EmployeeAccount;
+import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.classes.Notification;
 import edu.ycp.cs320.JKSOrders.classes.Order;
 
@@ -14,6 +15,7 @@ public class WorkPage {
 	private ArrayList<Order> orders;
 	private ArrayList<Notification> sourceNotifications;
 	private ArrayList<Notification> receivedNotifications;
+	private ArrayList<Item> items;
 	private String message; 
 	private String accountNumber; 
 	private Notification notification; 
@@ -30,7 +32,7 @@ public class WorkPage {
 		receivedNotifications = new ArrayList<Notification>();
 		notification = new Notification();
 		employeeNames = new ArrayList<String>();
-	
+		items = new ArrayList<Item>();
 	}
 	
 	public ArrayList<Notification> getSourceNotifications() {
@@ -104,6 +106,14 @@ public class WorkPage {
 
 	public void setEmployeeNames(ArrayList<String> employeeNames) {
 		this.employeeNames = employeeNames;
+	}
+
+	public ArrayList<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(ArrayList<Item> items) {
+		this.items = items;
 	}
 
 	

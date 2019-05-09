@@ -8,7 +8,7 @@ public class Item {
 	private double price;
 	private String description;
 	private String location;
-	private String Photo;
+	private String photo;
 	private boolean visable;
 	
 	
@@ -82,13 +82,13 @@ public class Item {
 	 * @return photo (file name) of item
 	 */
 	public String getPhoto() {
-		return Photo;
+		return photo;
 	}
 	/**
 	 * @param photo photo file name to set
 	 */
 	public void setPhoto(String photo) {
-		Photo = photo;
+		this.photo = photo;
 	}
 	/**
 	 * @return is the item visible in the online store?

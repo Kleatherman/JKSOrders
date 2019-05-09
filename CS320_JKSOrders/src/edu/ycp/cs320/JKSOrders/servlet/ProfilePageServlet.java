@@ -58,9 +58,11 @@ public class ProfilePageServlet extends HttpServlet{
 			System.out.println("Work page servlet right before setting account number:"+account.getAccountNumber());
 			req.setAttribute("accountNumber", account.getAccountNumber());
 			ArrayList<Notification> notify = db.getNotifications(accountNumber);
-			if(notify.size()!=0) {
+			char[] accountArray = accountNumber.toCharArray();
+			if(accountArray[0]=='M')	
 				isManager = db.getEmployeeAccount(accountNumber).isManager();
-			}	
+			else
+				isManager = false;
 		}
 		// check which button the user pressed
 		if (req.getParameter("storePage") != null) {
@@ -80,6 +82,7 @@ public class ProfilePageServlet extends HttpServlet{
 			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setAccountNumber(accountNumber);
 			workModel.setEmployeeNames(db.AllEmployeeNames());
+			workModel.setItems(db.getCatalog().returnItemList());
 			workModel.setOrders(db.getAllPickUpOrders());
 			workModel.setSourceNotifications( db.getSourceNotifications(accountNumber));
 			req.setAttribute("model", workModel);
