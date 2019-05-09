@@ -72,7 +72,6 @@
 							<c:if test="${model.manager}">
 								<input name="createEmployee" type="submit" value="Create an employee" />
 								<div>
-								<input name="addItem" type="submit" value="Add Item To Inventory" />
 								<input name="message" type="text" value="${model.message}" length=300 />
 								<input name="notify" type="submit" value="Submit Notification" />
 								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
@@ -93,6 +92,7 @@
 										<c:forEach items="${model.items}" var = "item">
 											<option value="${item.UPC}">${item.itemName}</option>
 										</c:forEach>
+											<option value="addItem">Add New Item</option>
 									</select>
 								<input name="editItem" type="submit" value="Edit Item" />
 								
