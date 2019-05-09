@@ -1700,9 +1700,7 @@ class DerbyDatabase implements Database {
 				ResultSet resultSet = null;
 
 				try {
-					stmt = conn.prepareStatement("select * from catalog where item_name like '%?%' or item_description like '%?%' order by item_name");
-					stmt.setString(1, attribute);
-					stmt.setString(2, attribute);
+					stmt = conn.prepareStatement("select * from catalog where item_name like '%"+attribute+"%' or item_description like '%"+attribute+"%' order by item_name");
 					ArrayList<Item> result = new ArrayList<Item>();
 					resultSet = stmt.executeQuery();
 
