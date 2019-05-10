@@ -46,6 +46,20 @@
 								</tr>
 							</c:forEach>
 						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${checkoutModel.price }</b></span>
+						 <br /> 
+						 <br />
+						<c:choose>
+						<c:when test="${checkoutModel.car}">
+					       <span  style="color:#006400; text-align:center"; font-size:40px;"><b>Your Order will be delivered to your car! </b></span>
+					        <br />
+					         <br />
+					    </c:when>    
+					    <c:otherwise>
+					    <span  style="color:#ff564; text-align:center"; font-size:40px;"><b>Your Order will be ready for you at pickup, you can add a car on the "edit profile" page! </b></span>
+					        <br />
+					        <br />
+					    </c:otherwise>
+					</c:choose>
 					</form>
 				</div>
 			</div>	

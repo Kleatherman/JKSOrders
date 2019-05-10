@@ -126,9 +126,10 @@ public class StorePageServlet extends HttpServlet {
 			checkoutModel.setAccount(db.getCustomerAccount(accountNumber));
 			checkoutModel.setOrder(db.getOrder(currentOrderNumber));
 			
-			if(db.getCustomerAccount(accountNumber).getPickUpInfo().getCar()!=null){
+			if(!db.getCustomerAccount(accountNumber).getPickUpInfo().getCar().getBrand().equals(" ")){
 				checkoutModel.setCar(true);	
-			}
+			
+				}
 			
 			req.setAttribute("checkoutModel", checkoutModel);
 			
