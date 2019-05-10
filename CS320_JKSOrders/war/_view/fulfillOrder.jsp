@@ -26,18 +26,18 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
+	<div class="row"  >
 		<div class = "col-sm-6">
 			<div class="card border-0 w-100 shadow my-5"  style="background-color:#cccccc;display:inline-block;"  >
 				<div class="card-body p-5">
-  					<div class="centered text-center" >
+  					<div  class="table-responsive fixed-table-body" class="centered text-center" word-break: break-all >
 						<h2>Order: ${model.order.orderType}</h2>
 				
 				
 						
 						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Order Status: <c:choose><c:when test="${model.order.complete}">Complete</c:when><c:otherwise>Pending</c:otherwise></c:choose></b></span>
 				
-						<table align="center" class="table">
+						<table align="center" class="table" width: 100%>
 							<tr>
 								<th>Item</th>
 								<th>Item UPC</th>
@@ -52,17 +52,16 @@
 									<td>${item.numInOrder}</td>
 								</tr>
 							</c:forEach>
-						</table>
-						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "fulfilledOrder" formnovalidate >Order Is Complete</button>
-						
+						</table>					
 					</div>
+					<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "fulfilledOrder" formnovalidate >Order Is Complete</button>
 				</div>
 			</div>
 		</div>
-		<div class = "col-sm-6">
+		<div class = "col-sm-6"  width: 100000000px;>
 			<div class="card border-0 w-100 shadow my-5"  style="background-color:#cccccc;display:inline-block;"  >
 				<div class="card-body p-5">
-  					<div class="centered text-center" >
+  					<div  class="table-responsive fixed-table-body" class="centered text-center" >
 						<h2>Customer: ${model.customer.firstName} ${model.customer.lastName}</h2>
 						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Customer Car</b></span>
 				
@@ -79,12 +78,13 @@
 								<td>${model.car.color}</td>
 								<td>${model.car.year}</td>
 						</table>
-						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "workPage" formnovalidate >Back to WorkPage</button>
+						
+			    	</div>
+			    	<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "workPage" formnovalidate >Back to WorkPage</button>
 						
 						
 					</form>		
 					<span class = ErrorMessage>${model.errorMessage}</span>
-			    	</div>
 				</div>
 			</div>	
 		</div>

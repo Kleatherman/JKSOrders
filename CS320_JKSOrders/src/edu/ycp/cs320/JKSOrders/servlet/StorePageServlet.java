@@ -20,6 +20,7 @@ import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
 import edu.ycp.cs320.JKSOrders.model.CartModel;
+import edu.ycp.cs320.JKSOrders.model.CheckOut;
 import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
@@ -103,7 +104,38 @@ public class StorePageServlet extends HttpServlet {
 		
 		
 		if (req.getParameter("checkOut") != null) {
+			
+		
+			if(db.getOrder(currentOrderNumber)==null) {
+				
+				StorePage storeModel = new StorePage();
+				ArrayList<Item> itemsForStore = db.getVisibleItems();
+				storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
+				storeModel.setItems(itemsForStore);
+				req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
+				storeModel.setErrorMessage("You have not Items in your cart!");
+				req.setAttribute("model", storeModel);
+				req.getSession().removeAttribute("orderNumber");
+				req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
+				
+			}
+			
+			else {
+			CheckOut checkoutModel = new CheckOut();
+			
+			checkoutModel.setAccount(db.getCustomerAccount(accountNumber));
+			checkoutModel.setOrder(db.getOrder(currentOrderNumber));
+			
+			if(!db.getCustomerAccount(accountNumber).getPickUpInfo().getCar().getBrand().equals(" ")){
+				checkoutModel.setCar(true);	
+			
+				}
+			
+			req.setAttribute("checkoutModel", checkoutModel);
+			
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
+			
+			}
 		}
 		else if(addedItemToCart) {
 			CustomerAccount account = (CustomerAccount) db.getAccount(accountNumber);
