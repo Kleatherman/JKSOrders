@@ -1,46 +1,55 @@
 <!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <html lag= "en">
 	<head>
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-		
-		<title>Check Out</title>
-		<style type="text/css">
-		
-		.text {
-			text-align: left;
-		}
-		</style>
-	</head>
 
-	<body>
-		<div class = "container-fluid">
-			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-				<div class="col-sm-4" style="background-color:white;">
-					<h1> This is checkout </h1>
-					<h1> Hi Y'all </h1>
+
+<div class="container"  style="text-align:center;">
+  <div class="card border-0 shadow my-5"  style="background-color:#cccccc;display:inline-block;"  >
+    <div class="card-body p-5">
+  		<div class="centered text-center" >
+				<div class="row" >
+	
+	
+				
 					<form action="${pageContext.servletContext.contextPath}/checkOut" method="post">
-						<div>
-							<input type="Submit" name="cancel" value="Back to Store Page">
-							<input type="Submit" name="cart" value="My Cart">
-							<input type="Submit" name="thankYou" value="Submit Order">
-							
+						<h1 align="center">CheckOut Page</h1><br/><br />
+						
+						
+						<ul class="pagination justify-content-center">
+						
+						
+					
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cancel" formnovalidate >Back to Store</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button  class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cart" formnovalidate >Back to Cart</button>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "thankyou" formnovalidate >Submit Order</button>
+						
 						</div>
 						
-  					  <div style="color: red">${errorMessage}</div><br />
+						<table  align="center" class="table">
+							<th>Item Name</th>
+							<th>Item Quantity</th>
+							<th>Item Price</th>
+							<c:forEach items="${checkoutModel.itemArrayList}" var="item">
+								<tr>
+									<td>${item.itemName}</td>
+									<td>${item.numInOrder}</td>
+									<td>$${item.price}</td>
+								</tr>
+							</c:forEach>
+						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${checkoutModel.price }</b></span>
 					</form>
 				</div>
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
 			</div>	
 		</div>
-		
-	</body>
+    </div>
+
 </html>

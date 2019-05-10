@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.ycp.cs320.JKSOrders.classes.Item;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.CheckOut;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
 
 
@@ -48,6 +49,17 @@ public class CartPageServlet  extends HttpServlet{
 			req.setAttribute("model", storeModel);
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}else if(req.getParameter("checkOut")!=null) {
+			CheckOut checkoutModel = new CheckOut();
+			
+			checkoutModel.setAccount(db.getCustomerAccount(accountNumber));
+			checkoutModel.setOrder(db.getOrder(orderNumber));
+			
+			if(db.getCustomerAccount(accountNumber).getPickUpInfo().getCar()!=null){
+				checkoutModel.setCar(true);	
+			}
+			
+			req.setAttribute("checkoutModel", checkoutModel);
+			
 			req.getRequestDispatcher("/_view/checkOut.jsp").forward(req, resp);
 		}else if(req.getParameter("cancelOrder")!=null) {
 			db.cancelOrder(orderNumber);
