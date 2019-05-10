@@ -42,6 +42,27 @@
 								<td class="label">Password:</td>
 								<td>${model.customerAccount.login.password}</td>
 							</tr>
+							<tr>
+								<td class="label">Email:</td>
+								<td>${model.customerAccount.email}</td>
+							</tr>
+							<tr>
+								<td class="label">Car Make:</td>
+								<td>${model.customerAccount.pickUpInfo.car.brand}</td>
+							</tr>
+							<tr>
+								<td class="label">Car Model:</td>
+								<td>${model.customerAccount.pickUpInfo.car.type}</td>
+							</tr>
+							<tr>
+								<td class="label">Car Color:</td>
+								<td>${model.customerAccount.pickUpInfo.car.color}</td>
+							</tr>
+							<tr>
+								<td class="label"> Car Year:</td>
+								<td>${model.customerAccount.pickUpInfo.car.year}</td>
+							</tr>
+							
 						</table>
 						<div>
 								<select name="sourceOrders">	
@@ -80,10 +101,14 @@
 								<td class="label">Password:</td>
 								<td>${model.employeeAccount.login.password}</td>
 							</tr>
+							<tr>
+								<td class="label">Email:</td>
+								<td>${model.employeeAccount.email}</td>
+							</tr>
 						<div>
 								<input name="workPage" type="submit" value="Work Page!"/>
 								<input name="editProfile" type="submit" value="Edit Profile" />
-								<input name="accountNumber" type="hidden" value="${model.employeeAccount.accountNumber}" />
+							
 							</c:if>	
 								
 						</div>

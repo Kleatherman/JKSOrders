@@ -22,7 +22,7 @@
              
              	<div class="form-label-group">
                 <input type="name" id="userName" class="form-control"  placeholder="userName" name = "Username" required autofocus>
-                <label for="userName">Name</label>
+                <label for="userName">UserName</label>
               </div>
 
 				<div class="form-label-group">

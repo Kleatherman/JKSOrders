@@ -11,17 +11,24 @@ public class EditProfileController {
 		this.model = model;
 	}
 	public void setID(String id, boolean customer) {
-		if(customer)
+		if(customer) {
 		model.getCustomerAccount().setAccountNumber(id);
-		else
+		}
+		else {
 			model.getEmployeeAccount().setAccountNumber(id);
+			char[] accountArray = id.toCharArray();
+			if(accountArray[0]=='C')	
+				model.getEmployeeAccount().setManager(false);
+			else
+				model.getEmployeeAccount().setManager(true);
+		}
 	}
 
 	public void setLogin(String password, String userName, boolean customer) {
 		LoginInfo login = new LoginInfo();
 		login.setUserName(userName);
 		login.setPassword(password);
-		if(customer=true) {
+		if(customer==true) {
 			model.getCustomerAccount().setLogin(login);
 		}
 		else {
@@ -32,7 +39,7 @@ public class EditProfileController {
 
 
 	public void setName(String firstName, boolean customer) {
-		if(customer=false) {
+		if(customer==false) {
 			model.getEmployeeAccount().setFirstName(firstName);
 		}
 		else {
@@ -40,9 +47,18 @@ public class EditProfileController {
 		}
 		
 	}
+	public void setLastName(String lastName, boolean customer) {
+		if(customer==false) {
+			model.getEmployeeAccount().setLastName(lastName);
+		}
+		else {
+			model.getCustomerAccount().setLastName(lastName);
+		}
+		
+	}
 
 	public void setPhoneNumber(String phoneNumber, boolean customer) {
-		if(customer= true) {
+		if(customer== true) {
 			model.getCustomerAccount().setPhoneNumber(phoneNumber);
 		}
 		else {
@@ -52,7 +68,7 @@ public class EditProfileController {
 	}
 	
 	public void setEmail(String email, boolean customer) {
-		if(customer= true) {
+		if(customer== true) {
 			model.getCustomerAccount().setEmail(email);
 		}
 		else {
@@ -89,7 +105,7 @@ public class EditProfileController {
 
 
 	public void editAccount(Database dbase, boolean customer) {
-		if(customer=true) {
+		if(customer==true) {
 			dbase.updateCustomerAccount(model.getCustomerAccount());
 		}
 		else {

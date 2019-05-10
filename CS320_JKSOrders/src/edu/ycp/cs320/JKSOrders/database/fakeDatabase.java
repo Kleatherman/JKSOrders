@@ -572,6 +572,12 @@ public class fakeDatabase implements Database{
 		return null;
 	}
 
+	@Override
+	public void refactorAccount(String accountNumber) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	
