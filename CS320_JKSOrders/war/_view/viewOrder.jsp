@@ -43,7 +43,23 @@
 									<td>$${item.price}</td>
 								</tr>
 							</c:forEach>
-						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${cartModel.price }</b></span>
+						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${viewOrderModel.price }</b></span>
+						<br />
+						<br />
+						<c:choose>
+					    <c:when test="${viewOrderModel.order.complete}">
+					    
+					       <span  style="color:#006400; text-align:center"; font-size:40px;"><b>Your Order is Complete!</b></span>
+					    </c:when>    
+					    <c:otherwise>
+					    <span  style="color:#ff0000; text-align:center"; font-size:40px;"><b>Your Order is being fufilled!</b></span>
+					        <br />
+					    </c:otherwise>
+					</c:choose>
+						
+						<br />
+						<br />
+						
 					</form>		
 					<span class = ErrorMessage>${model.errorMessage}</span>
 				</div>

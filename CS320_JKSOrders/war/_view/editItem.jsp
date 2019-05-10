@@ -43,7 +43,7 @@
 								<c:when test="${model.newItem}"><input name="addItem" type="submit" value="Add Item" /></c:when>
 								<c:otherwise><input name="update" type="submit" value="Update Item" /></c:otherwise>
 							</c:choose>
-							<input name="delete" type="submit" value="Delete This Item" />
+							 <!–– <input name="delete" type="submit" value="Delete This Item" /> -->
 							<input name="itemUPC" type="hidden" value="${model.item.UPC}"/>
 							<input name="name" type="text" value="${model.item.itemName}" />Item Name<br>
 							<input name="description" style="height:50px;font-size:14pt;width:150%" type="text" value="${model.item.description}" /><br>
