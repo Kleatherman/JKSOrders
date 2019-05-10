@@ -21,6 +21,10 @@
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.WorkPageServlet</servlet-class>
   </servlet> 
   <servlet>
+    <servlet-name>EditItemServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.EditItemServlet</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>EditNotificationServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.EditNotificationServlet</servlet-class>
   </servlet>
@@ -107,6 +111,10 @@
    <servlet-mapping>
     <servlet-name>StorePageServlet</servlet-name>
     <url-pattern>/storePage</url-pattern>
+  </servlet-mapping>
+   <servlet-mapping> 
+    <servlet-name>EditItemServlet</servlet-name>
+    <url-pattern>/editItem</url-pattern>
   </servlet-mapping>
    <servlet-mapping> 
     <servlet-name>EditNotificationServlet</servlet-name>
