@@ -43,7 +43,7 @@
 									<td>$${item.price}</td>
 								</tr>
 							</c:forEach>
-						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${cartModel.price }</b></span>
+						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Your Order's Total Price: $${viewOrderModel.price }</b></span>
 					</form>		
 					<span class = ErrorMessage>${model.errorMessage}</span>
 				</div>

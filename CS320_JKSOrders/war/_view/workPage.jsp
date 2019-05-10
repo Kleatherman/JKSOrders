@@ -86,6 +86,16 @@
 										</c:forEach>
 									</select>
 								<input name="editNotification" type="submit" value="Edit Notification" />
+								
+								<h1>Inventory Items</h1>
+									<select name="editItem">	
+										<c:forEach items="${model.items}" var = "item">
+											<option value="${item.UPC}">${item.itemName}</option>
+										</c:forEach>
+											<option value="addItem">Add New Item</option>
+									</select>
+								<input name="editItem" type="submit" value="Edit Item" />
+								
 							</c:if>
 							
 								<h1>All Orders:</h1>
@@ -127,52 +137,3 @@
   </body>
 </html>
 
-
-
-<!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-<html lag= "en">
-	<head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-
-
-
-
-<div class="container"  style="text-align:center;">
-	<div class="row">
-  		<div class="card border-0 shadow w-100 my-5"  style="background-color:#cccccc;display:inline-block;"  >
-    		<div class="card-body p-5">
-  				<div class="centered text-center" >
-					<div>
-						<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class = "col-sm-6">
-			<div class="card border-0 w-100 shadow my-5"  style="background-color:#cccccc;display:inline-block;"  >
-				<div class="card-body p-5">
-  					<div class="centered text-center" >
-						
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class = "col-sm-6">
-			<div class="card border-0 w-100 shadow my-5"  style="background-color:#cccccc;display:inline-block;"  >
-				<div class="card-body p-5">
-  					<div class="centered text-center" >
-					
-			    	</div>
-				</div>
-			</div>	
-		</div>
-    </div>
-</div>
-</html>
