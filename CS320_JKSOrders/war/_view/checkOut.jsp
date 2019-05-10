@@ -30,7 +30,7 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;
 						<button  class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "cart" formnovalidate >Back to Cart</button>
 						&nbsp;&nbsp;&nbsp;&nbsp;
-						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "thankyou" formnovalidate >Submit Order</button>
+						<button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit" name = "thankYou" formnovalidate >Submit Order</button>
 						
 						</div>
 						
