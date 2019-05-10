@@ -16,6 +16,7 @@ import edu.ycp.cs320.JKSOrders.controller.ProfilePageController;
 import edu.ycp.cs320.JKSOrders.controller.SystemController;
 import edu.ycp.cs320.JKSOrders.database.Database;
 import edu.ycp.cs320.JKSOrders.database.InitDatabase;
+import edu.ycp.cs320.JKSOrders.model.EditProfileModel;
 import edu.ycp.cs320.JKSOrders.model.ProfilePage;
 import edu.ycp.cs320.JKSOrders.model.ViewOrder;
 import edu.ycp.cs320.JKSOrders.model.StorePage;
@@ -99,6 +100,7 @@ public class ProfilePageServlet extends HttpServlet{
 			
 			req.getRequestDispatcher("/_view/profilePage.jsp").forward(req, resp);
 			}
+		
 			else {
 				
 			
@@ -109,6 +111,19 @@ public class ProfilePageServlet extends HttpServlet{
 			req.setAttribute("viewOrderModel", viewOrderModel);
 			req.getRequestDispatcher("/_view/viewOrder.jsp").forward(req, resp);
 			}
+		}
+		if (req.getParameter("editProfile") != null) {
+			// call addNumbers JSP
+			EditProfileModel editModel = new EditProfileModel();
+			char[] accountArray = accountNumber.toCharArray();
+			boolean customer;
+			if(accountArray[0]=='C')	
+				customer= true;
+			else
+				customer= false;
+			editModel.setCustomer(customer);
+			req.setAttribute("model", editModel);
+			req.getRequestDispatcher("/_view/editProfile.jsp").forward(req, resp);
 		}
 		else {
 			throw new ServletException("Unknown command");
