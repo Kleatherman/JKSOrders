@@ -1767,11 +1767,7 @@ class DerbyDatabase implements Database {
 						deleteAccount2 = conn.prepareStatement(
 								"DELETE FROM login WHERE user_id = ? ");
 						
-						ArrayList<Notification> notes= getSourceNotifications(accountNumber);
 						
-						for(Notification note : notes) {
-							deleteNotification(note.getNotificationID());
-						}
 							
 					}
 					
