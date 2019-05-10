@@ -51,8 +51,8 @@
 									</select>
 								<input name = "viewOrder" type = "submit" value = "View Order" />
 								<input name="storePage" type="submit" value="Store Page!" />
+								<input name="editProfile" type="submit" value="Edit Profile" />
 								
-								<input name="accountNumber" type="hidden" value="${model.customerAccount.accountNumber}" />
 								
 							</c:if>
 							
@@ -82,6 +82,7 @@
 							</tr>
 						<div>
 								<input name="workPage" type="submit" value="Work Page!"/>
+								<input name="editProfile" type="submit" value="Edit Profile" />
 								<input name="accountNumber" type="hidden" value="${model.employeeAccount.accountNumber}" />
 							</c:if>	
 								
