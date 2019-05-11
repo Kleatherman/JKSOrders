@@ -100,7 +100,7 @@ public class WorkPageServlet  extends HttpServlet{
 			}
 			db.addNotification(notify);
 			model.setMessage(message);
-
+			model.setSourceNotifications(db.getNotifications(accountNumber));
 			model.setItems(db.getCatalog().returnItemList());
 			if(db.getNotifications(accountNumber).size()!=0) {
 				model.setReceivedNotifications(db.getNotifications(accountNumber));

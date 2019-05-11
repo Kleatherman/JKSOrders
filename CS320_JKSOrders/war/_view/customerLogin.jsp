@@ -21,7 +21,7 @@
 	<form formnovalidate action="${pageContext.servletContext.contextPath}/customerLogin" method="post">
 		 <div class="form-label-group">
                 <input type="emailAddress" id="inputuserName" value="${model.userName}" name="emailAddress" class="form-control" placeholder="Username" required autofocus>
-                <label for="inputuserName">Email address</label>
+                <label for="inputuserName">Username</label>
               </div>
 
               <div class="form-label-group">
