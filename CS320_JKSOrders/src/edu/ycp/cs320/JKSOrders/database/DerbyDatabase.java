@@ -792,12 +792,16 @@ class DerbyDatabase implements Database {
 
 					notifications = getNotifications();
 
-					int urgents = 0;
+					ArrayList<String> urgents = new ArrayList<String>();
+					ArrayList<String> nonurgents = new ArrayList<String>();
 					String notification_id = null;
 
 					for (Notification notification : notifications) {
 						if (notification.getUrgency()) {
-							urgents++;
+							urgents.add(notification.getNotificationID());
+						}
+						else {
+							nonurgents.add(notification.getNotificationID());
 						}
 
 					}
@@ -806,9 +810,11 @@ class DerbyDatabase implements Database {
 					}
 
 					else if (notify.getUrgency()) {
-						notification_id = "U" + urgents;
+						
+						notification_id = "U" +(Integer.parseInt( urgents.get(urgents.size()-1).substring(1))+1);
+					
 					} else
-						notification_id = "N" + (notifications.size() - urgents);
+						notification_id = "N" +(Integer.parseInt( nonurgents.get(nonurgents.size()-1).substring(1))+1);
 
 					insertNotificationIntoNotifications = conn.prepareStatement(
 							"insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
