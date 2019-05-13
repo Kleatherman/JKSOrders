@@ -810,12 +810,16 @@ class DerbyDatabase implements Database {
 					}
 
 					else if (notify.getUrgency()) {
-						
-						notification_id = "U" +(Integer.parseInt( urgents.get(urgents.size()-1).substring(1))+1);
-					
-					} else
-						notification_id = "N" +(Integer.parseInt( nonurgents.get(nonurgents.size()-1).substring(1))+1);
-
+						if(urgents.size()!=0)
+							notification_id = "U" +(Integer.parseInt( urgents.get(urgents.size()-1).substring(1))+1);
+						else
+							notification_id = "U0";
+					} else {
+						if(nonurgents.size()!=0)
+							notification_id = "N" +(Integer.parseInt( nonurgents.get(nonurgents.size()-1).substring(1))+1);
+						else
+							notification_id = "N0";
+					}
 					insertNotificationIntoNotifications = conn.prepareStatement(
 							"insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
 

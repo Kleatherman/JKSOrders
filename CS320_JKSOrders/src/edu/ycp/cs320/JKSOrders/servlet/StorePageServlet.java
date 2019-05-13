@@ -219,7 +219,6 @@ public class StorePageServlet extends HttpServlet {
 			storeModel.setItems(itemsFromSearch);
 			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
 			req.setAttribute("model", storeModel);
-			req.getSession().removeAttribute("orderNumber");
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else {
