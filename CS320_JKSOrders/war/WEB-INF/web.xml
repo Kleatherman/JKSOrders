@@ -80,6 +80,10 @@
     <servlet-name>CreateCustomerAccountServlet</servlet-name>
     <servlet-class>edu.ycp.cs320.JKSOrders.servlet.CreateCustomerAccountServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>EditProfileServlet</servlet-name>
+    <servlet-class>edu.ycp.cs320.JKSOrders.servlet.EditProfileServlet</servlet-class>
+  </servlet>
   
   <!-- AJAX servlets. -->
   <servlet>
@@ -159,6 +163,10 @@
   <servlet-mapping>
     <servlet-name>CreateCustomerAccountServlet</servlet-name>
     <url-pattern>/createCustomerAccount</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>EditProfileServlet</servlet-name>
+    <url-pattern>/editProfile</url-pattern>
   </servlet-mapping>
   <!--  AJAX servlet mappings. -->
   <servlet-mapping>

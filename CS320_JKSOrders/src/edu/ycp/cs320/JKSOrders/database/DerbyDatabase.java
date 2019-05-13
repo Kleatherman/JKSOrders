@@ -792,12 +792,16 @@ class DerbyDatabase implements Database {
 
 					notifications = getNotifications();
 
-					int urgents = 0;
+					ArrayList<String> urgents = new ArrayList<String>();
+					ArrayList<String> nonurgents = new ArrayList<String>();
 					String notification_id = null;
 
 					for (Notification notification : notifications) {
 						if (notification.getUrgency()) {
-							urgents++;
+							urgents.add(notification.getNotificationID());
+						}
+						else {
+							nonurgents.add(notification.getNotificationID());
 						}
 
 					}
@@ -806,9 +810,11 @@ class DerbyDatabase implements Database {
 					}
 
 					else if (notify.getUrgency()) {
-						notification_id = "U" + urgents;
+						
+						notification_id = "U" +(Integer.parseInt( urgents.get(urgents.size()-1).substring(1))+1);
+					
 					} else
-						notification_id = "N" + (notifications.size() - urgents);
+						notification_id = "N" +(Integer.parseInt( nonurgents.get(nonurgents.size()-1).substring(1))+1);
 
 					insertNotificationIntoNotifications = conn.prepareStatement(
 							"insert into notifications (notification_id, employee_id, message) values (?, ?, ?)");
@@ -1677,7 +1683,7 @@ class DerbyDatabase implements Database {
 	public void updateEmployeeAccount(EmployeeAccount account) {
 		System.out.println("MADE IT IN");
 		System.out.println(account.getAccountNumber());
-		deleteAccount(account.getAccountNumber());
+		refactorAccount(account.getAccountNumber());
 		System.out.println("ACCOUNT DELETED");
 		addEmployeeAccount(account);
 		System.out.println("ACCOUNT READDED");
@@ -1687,7 +1693,7 @@ class DerbyDatabase implements Database {
 
 	@Override
 	public void updateCustomerAccount(CustomerAccount account) {
-		deleteAccount(account.getAccountNumber());
+		refactorAccount(account.getAccountNumber());
 		addCustomerAccount(account);
 	}
 
@@ -1731,5 +1737,66 @@ class DerbyDatabase implements Database {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void refactorAccount(String accountNumber) {
+		executeTransaction(new Transaction<Boolean>() {
+			@Override
+			public Boolean execute(Connection conn) throws SQLException {
+				PreparedStatement deleteAccount = null;
+				PreparedStatement deleteAccount2 = null;
+				PreparedStatement deleteAccount3 = null;
+	
+				try {			
+					char[] accountNumberChar = accountNumber.toCharArray();
+					
+					if(accountNumberChar[0]=='C') {
+						deleteAccount = conn.prepareStatement(
+								"DELETE FROM customers WHERE customer_id = ? ");
+						
+						deleteAccount2 = conn.prepareStatement(
+								"DELETE FROM cars WHERE customer_id = ? ");
+						
+						deleteAccount3 = conn.prepareStatement(
+								"DELETE FROM login WHERE user_id = ? ");
+						
+						
+						deleteAccount3.setString(1, accountNumber);
+						deleteAccount3.execute();
+						
+					}
+					else {
+						deleteAccount = conn.prepareStatement(
+								"DELETE FROM employees WHERE employee_id = ? ");
+						
+						deleteAccount2 = conn.prepareStatement(
+								"DELETE FROM login WHERE user_id = ? ");
+						
+						
+							
+					}
+					
+					deleteAccount.setString(1, accountNumber);
+					deleteAccount2.setString(1, accountNumber);
+					
+					deleteAccount2.execute();
+					deleteAccount.execute();
+	
+		
+				}
+				
+				finally {
+					DBUtil.closeQuietly(deleteAccount);
+					DBUtil.closeQuietly(deleteAccount2);
+					DBUtil.closeQuietly(deleteAccount3);
+					
+	
+				}
+				return true;
+	
+			}
+		});
+		
 	}
 }

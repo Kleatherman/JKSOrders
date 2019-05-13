@@ -1,113 +1,108 @@
+
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-
-
 <html lag= "en">
 	<head>
-	
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-	<head>
-	
-		<meta charset ="utf-8">
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-		<!-- jQuery library -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-		<!-- Latest compiled JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-	
-		<title>Work Page</title>
-		<style type="text/css">
-		.TitleText2 {
-						font-size: 300%;
-                        font-weight: bold; 
-                        text-align: center;
-		}
-		</style>
-	</head>
 
-	<body>
-	<div class = "container-fluid">
-			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-				<div class="col-sm-4" style="background-color:white;">
 
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
-			</div>	
+<div class="container"  style="text-align:center;">
+	<div class="row">
+  		<div class="card border-0 shadow w-100 my-5"  style="background-color:#cccccc;display:inline-block;"  >
+    		<div class="card-body p-5">
+  				<div class="centered text-center" >
+					<div>
+						<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
+							<ul class="pagination justify-content-center">
+							<h1 align="center">Welcome To Work</h1><br/><br />
+					</div>
+				</div>
+			</div>
 		</div>
-	</body>
-</html>
+	</div>
+	
+<ul class="pagination justify-content-center">
+ 
+	<p><br /><br /><br /></p>
+			
+        
+            	<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="profilePage"> Profile Page </button>
+            	&nbsp;&nbsp;&nbsp;&nbsp;
+                <button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="employeeLogin"> Log Out </button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+           <c:if test="${model.manager}">
+								<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="createEmployee"> Add Employee </button>
+    </ul>	<br><br>
+		
+		
 
-
-
-
-<!DOCTYPE html>
-
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
-
-<html lag= "en">
-	<head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-	<head>
-
-
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin my-5">
-          <div class="card-body">
-     					<div class= "TitleText2">Welcome to work! </div>
-					<form action="${pageContext.servletContext.contextPath}/workPage" method="post">
-						<div>
-							<input name="profilePage" type="submit" value="Profile Page!" />
-							<input name="employeeLogin" type="submit" value="Log out!" />
-							<c:if test="${model.manager}">
-								<input name="createEmployee" type="submit" value="Create an employee" />
-								<div>
-								<input name="message" type="text" value="${model.message}" length=300 />
-								<input name="notify" type="submit" value="Submit Notification" />
-								<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
-									<c:forEach items="${model.employeeNames}" var="name">
-										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
-									</c:forEach> 
-								<div  class="text-center">
+    
+<div class="row">
+  		<div class="card border-0 shadow w-100 my-5"  style="background-color:#cccccc;display:inline-block;"  >
+    		<div class="card-body p-5">
+  				<div class="centered text-center" >
+						<div  class="text-center"  class = "col-xs-8 text-center">
 									<h1>Your Notifications</h1>
-									<select name="editNotification">	
+									
+									<ul class="pagination justify-content-center">
+         							
+         							<select name="notifications">	
 										<c:forEach items="${model.sourceNotifications}" var = "sourceNotify">
 											<option value="${sourceNotify.notificationID}">${sourceNotify.notificationID}</option>
 										</c:forEach>
 									</select>
-								<input name="editNotification" type="submit" value="Edit Notification" />
-								
+									<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="editNotification"> Edit Notification </button>
+            
+    								</ul>
+    
+									
+																
 								<h1>Inventory Items</h1>
-									<select name="editItem">	
+								
+								
+								
+									<ul class="pagination justify-content-center">
+         							
+         							<select name="items">	
 										<c:forEach items="${model.items}" var = "item">
 											<option value="${item.UPC}">${item.itemName}</option>
 										</c:forEach>
 											<option value="addItem">Add New Item</option>
 									</select>
-								<input name="editItem" type="submit" value="Edit Item" />
+									
+
 								
-							</c:if>
+								<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="editItem"> Edit Item </button>
+            						</c:if>
+    								</ul>
+								
+									
+								
+							
 							
 								<h1>All Orders:</h1>
-								<select name="editOrder">	
+								
+								
+									<ul class="pagination justify-content-center">
+         							
+         				<select name="editOrder">	
 									<c:forEach items="${model.orders}" var = "order">
-										<option value="${order.orderType}">${order.orderType} : $${order.totalPrice} : <c:choose><c:when test="${order.complete}">Complete</c:when><c:otherwise>Pending</c:otherwise></c:choose></option>
+										<option value="${order.orderType}">${order.orderType}: <c:choose><c:when test="${order.complete}">Complete</c:when><c:otherwise>Pending</c:otherwise></c:choose></option>
 									</c:forEach>
 								</select>
-								<input name="fulfillOrder" type="submit" value="Fulfill Order" />
+								
+								<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="fulfillOrder"> Fulfill Order </button>
+								
+								
+    								</ul>
 							
 						</div>
-					</form>
+					
 					<table align="center" class = "table">
 						<tr>
 							<th>Message</th>
@@ -128,11 +123,33 @@
 						</c:forEach>
 						
 					</table>
+					
+					
+					<ul class="pagination justify-content-center">
+         							
+         								
+					<input name="message" type="text" value="${model.message}" length=300 />
+					<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="notify"> Submit Notification </button>
+								
+								
+    				</ul>
+				
+					
+									<input name="urgency" type="checkbox" value="Urgent" />Urgency<br>
+									<c:forEach items="${model.employeeNames}" var="name">
+										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
+									</c:forEach> 
+							
+					</form>		
+					</div>
 				</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </body>
+			</div>
+		</div>
+	</div>
+	
+			
+					
+ </body>
 </html>
+
+		

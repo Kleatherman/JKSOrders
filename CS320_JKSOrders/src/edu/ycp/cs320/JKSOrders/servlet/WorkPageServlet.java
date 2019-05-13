@@ -100,7 +100,7 @@ public class WorkPageServlet  extends HttpServlet{
 			}
 			db.addNotification(notify);
 			model.setMessage(message);
-
+			model.setSourceNotifications(db.getNotifications(accountNumber));
 			model.setItems(db.getCatalog().returnItemList());
 			if(db.getNotifications(accountNumber).size()!=0) {
 				model.setReceivedNotifications(db.getNotifications(accountNumber));
@@ -148,11 +148,31 @@ public class WorkPageServlet  extends HttpServlet{
 			req.setAttribute("accountNumber", accountNumber);
 			req.getRequestDispatcher("/_view/createEmployee.jsp").forward(req, resp);
 		}
+		
+		else if ((req.getParameter("editNotification")!= null)&&(req.getParameter("editItem")==null)) {
+			EditNotificationController editController = new EditNotificationController();
+			EditNotificationModel editModel = new EditNotificationModel();
+			editController.setModel(editModel);
+			editController.setErrorMessage("No notification Selected for editing");
+			String editNotifyID = req.getParameter("notifications");
+			ArrayList<Notification> sourceNotifications = db.getSourceNotifications(accountNumber);
+			for(Notification note : sourceNotifications) {
+				if(editNotifyID.equals(note.getNotificationID())) {
+					editController.setModelNotification(note);
+					editController.setErrorMessage(null);
+				}
+			}
+			editController.setModelAllNames(db.AllEmployeeNames());
+			editController.setDestinationNames(db);
+			req.setAttribute("model", editModel);
+			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
+		}
+		
 		else if(req.getParameter("editItem")!=null) {
 			Catalog catalog = db.getCatalog();
 			EditItemModel itemModel = new EditItemModel();
 			ArrayList<Item> itemArrayList = catalog.returnItemList();
-			String upc = req.getParameter("editItem");
+			String upc = req.getParameter("items");
 			if(!upc.equals("addItem")) {
 				for(Item item : itemArrayList) {
 					if(item.getUPC().equals(upc)) {
@@ -167,24 +187,7 @@ public class WorkPageServlet  extends HttpServlet{
 			req.setAttribute("model", itemModel);
 			req.getRequestDispatcher("/_view/editItem.jsp").forward(req, resp);
 		}
-		else if (req.getParameter("editNotification")!= null) {
-			EditNotificationController editController = new EditNotificationController();
-			EditNotificationModel editModel = new EditNotificationModel();
-			editController.setModel(editModel);
-			editController.setErrorMessage("No notification Selected for editing");
-			String editNotifyID = req.getParameter("editNotification");
-			ArrayList<Notification> sourceNotifications = db.getSourceNotifications(accountNumber);
-			for(Notification note : sourceNotifications) {
-				if(editNotifyID.equals(note.getNotificationID())) {
-					editController.setModelNotification(note);
-					editController.setErrorMessage(null);
-				}
-			}
-			editController.setModelAllNames(db.AllEmployeeNames());
-			editController.setDestinationNames(db);
-			req.setAttribute("model", editModel);
-			req.getRequestDispatcher("/_view/editNotification.jsp").forward(req, resp);
-		}
+		
 		
 		else {
 			throw new ServletException("Unknown command from work page");
