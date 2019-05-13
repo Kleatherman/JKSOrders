@@ -37,6 +37,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;
            <c:if test="${model.manager}">
 								<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="createEmployee"> Add Employee </button>
+			</c:if>
     </ul>	<br><br>
 		
 		
@@ -47,6 +48,7 @@
     		<div class="card-body p-5">
   				<div class="centered text-center" >
 						<div  class="text-center"  class = "col-xs-8 text-center">
+								<c:if test="${model.manager}">
 									<h1>Your Notifications</h1>
 									
 									<ul class="pagination justify-content-center">
@@ -63,8 +65,6 @@
 									
 																
 								<h1>Inventory Items</h1>
-								
-								
 								
 									<ul class="pagination justify-content-center">
          							
@@ -127,7 +127,7 @@
 					
 					<ul class="pagination justify-content-center">
          							
-         								
+         		<c:if test="${model.manager}">					
 					<input name="message" type="text" value="${model.message}" length=300 />
 					<button class="btn btn-lg btn-primary btn-block text-uppercase" style="width: 300px;" style="height: 300px;" type="submit" name="notify"> Submit Notification </button>
 								
@@ -139,7 +139,7 @@
 									<c:forEach items="${model.employeeNames}" var="name">
 										<input name="${name}" type="checkbox" value="${name}" />${name}<br>
 									</c:forEach> 
-							
+				</c:if>
 					</form>		
 					</div>
 				</div>
