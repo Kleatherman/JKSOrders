@@ -33,12 +33,12 @@
 	<body>
 	<div class = "container-fluid">
 			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:#007bff;"> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
 				<div class="col-sm-4" style="background-color:white;">
 					<div class= "TitleText2">Edit Notification ${model.notify.notificationID}</div>
 					<form action="${pageContext.servletContext.contextPath}/editNotification" method="post">
 						<div>
-							<input name="workPage" type="submit" value="Return to Work Page" />
+							<input  name="workPage" type="submit" value="Return to Work Page" />
 							<input name="update" type="submit" value="Update Notification" />
 							<input name="delete" type="submit" value="Delete This Notification" />
 							<input name="editNotification" type="hidden" value="${model.notify.notificationID}"/>
@@ -64,7 +64,7 @@
 					
 					<span class = ErrorMessage>${model.errorMessage}</span>
 				</div>
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:#007bff;"> <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
 			</div>	
 		</div>
 	</body>

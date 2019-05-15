@@ -33,7 +33,7 @@
 	<body>
 	<div class = "container-fluid">
 			<div class="row">
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:#007bff;"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
 				<div class="col-sm-4" style="background-color:white;">
 					<div class= "TitleText2">Edit Item ${model.item.UPC}</div>
 					<form action="${pageContext.servletContext.contextPath}/editItem" method="post">
@@ -55,7 +55,7 @@
 						<input name="image" type="text" value="${model.item.photo}" />Picture<br>
 					</form>
 				</div>
-				<div class="col-sm-4" style="background-color:lavender;">space</div>
+				<div class="col-sm-4" style="background-color:#007bff;"><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br></div>
 			</div>	
 		</div>
 	</body>
