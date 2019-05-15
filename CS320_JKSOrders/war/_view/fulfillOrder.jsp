@@ -34,9 +34,17 @@
 						<h2>Order: ${model.order.orderType}</h2>
 				
 				
+						<c:choose>
+					    <c:when test="${model.order.complete}">
+					    
+					       <span  style="color:#006400; text-align:center"; font-size:40px;"><b>This Order is Complete!</b></span>
+					    </c:when>    
+					    <c:otherwise>
+					    <span  style="color:#ff0000; text-align:center"; font-size:40px;"><b>This Order needs to be fulfilled!!</b></span>
+					        <br />
+					    </c:otherwise>
+					</c:choose>
 						
-						<span  style="color:#007bff; text-align:center"; font-size:40px;"><b>Order Status: <c:choose><c:when test="${model.order.complete}">Complete</c:when><c:otherwise>Pending</c:otherwise></c:choose></b></span>
-				
 						<table align="center" class="table" width: 100%>
 							<tr>
 								<th>Item</th>

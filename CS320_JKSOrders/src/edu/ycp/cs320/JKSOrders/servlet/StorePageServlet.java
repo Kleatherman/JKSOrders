@@ -138,7 +138,6 @@ public class StorePageServlet extends HttpServlet {
 			}
 		}
 		else if(addedItemToCart) {
-			CustomerAccount account = (CustomerAccount) db.getAccount(accountNumber);
 			StorePage storeModel = new StorePage();
 			ArrayList<Item> itemsForStorePage = db.getVisibleItems();
 			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
@@ -212,13 +211,16 @@ public class StorePageServlet extends HttpServlet {
 		}
 		else if(req.getParameter("find")!=null) {
 			String search = (String)req.getParameter("search");
-			System.out.println("----------------------------------"+search);
+			System.out.println("----------------------------------"+search+currentOrderNumber);
 			ArrayList<Item> itemsFromSearch = db.getSearchItems(search);
 			StorePage storeModel = new StorePage();
 			storeModel.setCustomerAccount(db.getCustomerAccount(accountNumber));
 			storeModel.setItems(itemsFromSearch);
 			req.setAttribute("accountNumber", storeModel.getCustomerAccount().getAccountNumber());
 			req.setAttribute("model", storeModel);
+			if(newOrder) {
+				req.getSession().removeAttribute("orderNumber");
+			}
 			req.getRequestDispatcher("/_view/storePage.jsp").forward(req, resp);
 		}
 		else {
